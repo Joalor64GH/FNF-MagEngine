@@ -1,4 +1,4 @@
-![Mag Engine](art/logo.png)
+![Mag Engine](logo.png)
 ## Mag Engine
 
 A Full Engine Mod For Friday Night Funkin', No code required.
