@@ -1,3 +1,6 @@
+---
+layout: default
+---
 ![Mag Engine](logo.png)
 ## Mag Engine
 
