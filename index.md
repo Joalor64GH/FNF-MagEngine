@@ -69,5 +69,3 @@ The build will be in "Mag-Engine-Public-Main/export/release/"target"/bin, with <
 Incase you added the -debug flag the files will be inside Kade-Engine/export/debug/<target>/bin.
 If you are planning on making your mod public, though, you should only release the "release" version, NOT the "debug" version.
 Only the bin folder is necessary to run the game. The other ones in export/release/"target" aren't.
-  
-![Image](logo.png)
