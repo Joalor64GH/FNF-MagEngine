@@ -1,9 +1,6 @@
 ---
 layout: default
 ---
-## Mag Engine
-A Full Engine Mod For Friday Night Funkin', No code required.
-
 ### Features
 - The popular "New input system" by [Yoshubs](https://gamebanana.com/members/1908070)
 - Accuracy System with decimals.
