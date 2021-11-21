@@ -1,7 +1,6 @@
 ---
 layout: default
 ---
-![Mag Engine](logo.png)
 ## Mag Engine
 [Link](https://github.com/magnumsrtisswag/MagEngine-Public-Main/) and ![Image](logo.png)
 ```
