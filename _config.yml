@@ -1,2 +1,5 @@
-theme: jekyll-theme-minimal
+title: Minimal theme
 logo: logo.png
+show_downloads: true
+description: A Full Engine Rework For Friday Night Funkin', No Code Required.
+theme: jekyll-theme-minimal
