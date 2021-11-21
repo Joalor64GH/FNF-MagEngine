@@ -3,7 +3,8 @@ layout: default
 ---
 ![Mag Engine](logo.png)
 ## Mag Engine
-
+[Link](https://github.com/magnumsrtisswag/MagEngine-Public-Main/) and ![Image](logo.png)
+```
 A Full Engine Mod For Friday Night Funkin', No code required.
 
 ### Features
