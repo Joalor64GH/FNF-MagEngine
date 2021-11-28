@@ -122,26 +122,6 @@ class DownscrollOption extends Option
 		return FlxG.save.data.downscroll ? "Downscroll" : "Upscroll";
 	}
 }
-class ModChartOption extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.modcharts = !FlxG.save.data.modcharts;
-		display = updateDisplay();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		return FlxG.save.data.modcharts ? "Modcharts Off" : "ModCharts On";
-	}
-}
 class PhotoSensitivityOption extends Option
 {
 	public function new(desc:String)
@@ -221,5 +201,26 @@ class AccuracyOption extends Option
 	private override function updateDisplay():String
 	{
 		return FlxG.save.data.accuracy ? "Accuracy Off" : "Accuracy On";
+	}
+}
+
+class SplooshOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.splooshes = !FlxG.save.data.splooshes;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return FlxG.save.data.splooshes ? "Note Splashes On" : "Note Splashes Off";
 	}
 }

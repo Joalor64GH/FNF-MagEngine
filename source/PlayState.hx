@@ -146,7 +146,7 @@ class PlayState extends MusicBeatState
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
-	var bruhmomento:Bool = SONG.song.toLowerCase() != 'bopeebo' && SONG.song.toLowerCase() != 'fresh' && SONG.song.toLowerCase() != 'dadbattle' && SONG.song.toLowerCase() != 'spookeez' && SONG.song.toLowerCase() != 'south' && SONG.song.toLowerCase() != 'monster' && SONG.song.toLowerCase() != 'pico' && SONG.song.toLowerCase() != 'philly' && SONG.song.toLowerCase() != 'blammed' && SONG.song.toLowerCase() != 'satin-panties' &&  SONG.song.toLowerCase() != 'high' && SONG.song.toLowerCase() != 'milf' && SONG.song.toLowerCase() != 'cocoa' && SONG.song.toLowerCase() != 'eggnog' && SONG.song.toLowerCase() != 'winter-horrorland' && SONG.song.toLowerCase() != 'senpai' && SONG.song.toLowerCase() != 'roses' &&SONG.song.toLowerCase() != 'thorns';
+    var bruhmomento:Bool = SONG.song.toLowerCase() != 'bopeebo' && SONG.song.toLowerCase() != 'fresh' && SONG.song.toLowerCase() != 'dadbattle' && SONG.song.toLowerCase() != 'spookeez' && SONG.song.toLowerCase() != 'south' && SONG.song.toLowerCase() != 'monster' && SONG.song.toLowerCase() != 'pico' && SONG.song.toLowerCase() != 'philly' && SONG.song.toLowerCase() != 'blammed' && SONG.song.toLowerCase() != 'satin-panties' &&  SONG.song.toLowerCase() != 'high' && SONG.song.toLowerCase() != 'milf' && SONG.song.toLowerCase() != 'cocoa' && SONG.song.toLowerCase() != 'eggnog' && SONG.song.toLowerCase() != 'winter-horrorland' && SONG.song.toLowerCase() != 'senpai' && SONG.song.toLowerCase() != 'roses' &&SONG.song.toLowerCase() != 'thorns';
 	var inCutscene:Bool = false;
 
 	#if desktop
@@ -177,7 +177,7 @@ class PlayState extends MusicBeatState
 		persistentUpdate = true;
 		persistentDraw = true;
 
-		if (SONG == null)
+	if (SONG == null)
 			SONG = Song.loadFromJson('tutorial');
 
 		Conductor.mapBPMChanges(SONG);
@@ -540,22 +540,61 @@ class PlayState extends MusicBeatState
 			}
 			case 'schoolEvil':
 			{
-					curStage = 'schoolEvil';
+				
+				curStage = 'schoolEvil';
 
-					var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
-					var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
+				var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
+				var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
 
-					var posX = 400;
-					var posY = 200;
+				var posX = 400;
+				var posY = 200;
 
-					var bg:FlxSprite = new FlxSprite(posX, posY);
-					bg.frames = Paths.getSparrowAtlas('weeb/animatedEvilSchool','week6');
-					bg.animation.addByPrefix('idle', 'background 2', 24);
-					bg.animation.play('idle');
-					bg.scrollFactor.set(0.8, 0.9);
-					bg.scale.set(6, 6);
-					add(bg);
-
+				var bg:FlxSprite = new FlxSprite(posX, posY);
+				bg.frames = Paths.getSparrowAtlas('weeb/animatedEvilSchool','week6');
+				bg.animation.addByPrefix('idle', 'background 2', 24);
+				bg.animation.play('idle');
+				bg.scrollFactor.set(0.8, 0.9);
+				bg.scale.set(6, 6);
+				add(bg);
+	
+						/* 
+							var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.loadImage('weeb/evilSchoolBG'));
+							bg.scale.set(6, 6);
+							// bg.setGraphicSize(Std.int(bg.width * 6));
+							// bg.updateHitbox();
+							add(bg);
+							var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.loadImage('weeb/evilSchoolFG'));
+							fg.scale.set(6, 6);
+							// fg.setGraphicSize(Std.int(fg.width * 6));
+							// fg.updateHitbox();
+							add(fg);
+							wiggleShit.effectType = WiggleEffectType.DREAMY;
+							wiggleShit.waveAmplitude = 0.01;
+							wiggleShit.waveFrequency = 60;
+							wiggleShit.waveSpeed = 0.8;
+						 */
+	
+						// bg.shader = wiggleShit.shader;
+						// fg.shader = wiggleShit.shader;
+	
+						/* 
+							var waveSprite = new FlxEffectSprite(bg, [waveEffectBG]);
+							var waveSpriteFG = new FlxEffectSprite(fg, [waveEffectFG]);
+							// Using scale since setGraphicSize() doesnt work???
+							waveSprite.scale.set(6, 6);
+							waveSpriteFG.scale.set(6, 6);
+							waveSprite.setPosition(posX, posY);
+							waveSpriteFG.setPosition(posX, posY);
+							waveSprite.scrollFactor.set(0.7, 0.8);
+							waveSpriteFG.scrollFactor.set(0.9, 0.8);
+							// waveSprite.setGraphicSize(Std.int(waveSprite.width * 6));
+							// waveSprite.updateHitbox();
+							// waveSpriteFG.setGraphicSize(Std.int(fg.width * 6));
+							// waveSpriteFG.updateHitbox();
+							add(waveSprite);
+							add(waveSpriteFG);
+						 */
+					
 				}
 				case 'customcharoneStage':
 				{
@@ -741,45 +780,8 @@ class PlayState extends MusicBeatState
 					bg.antialiasing = true;
 					bg.active = false;
 					add(bg);
-					/* 
-							var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolBG'));
-							bg.scale.set(6, 6);
-							// bg.setGraphicSize(Std.int(bg.width * 6));
-							// bg.updateHitbox();
-							add(bg);
-							var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolFG'));
-							fg.scale.set(6, 6);
-							// fg.setGraphicSize(Std.int(fg.width * 6));
-							// fg.updateHitbox();
-							add(fg);
-							wiggleShit.effectType = WiggleEffectType.DREAMY;
-							wiggleShit.waveAmplitude = 0.01;
-							wiggleShit.waveFrequency = 60;
-							wiggleShit.waveSpeed = 0.8;
-						*/
-
-					// bg.shader = wiggleShit.shader;
-					// fg.shader = wiggleShit.shader;
-
-					/* 
-								var waveSprite = new FlxEffectSprite(bg, [waveEffectBG]);
-								var waveSpriteFG = new FlxEffectSprite(fg, [waveEffectFG]);
-								// Using scale since setGraphicSize() doesnt work???
-								waveSprite.scale.set(6, 6);
-								waveSpriteFG.scale.set(6, 6);
-								waveSprite.setPosition(posX, posY);
-								waveSpriteFG.setPosition(posX, posY);
-								waveSprite.scrollFactor.set(0.7, 0.8);
-								waveSpriteFG.scrollFactor.set(0.9, 0.8);
-								// waveSprite.setGraphicSize(Std.int(waveSprite.width * 6));
-								// waveSprite.updateHitbox();
-								// waveSpriteFG.setGraphicSize(Std.int(fg.width * 6));
-								// waveSpriteFG.updateHitbox();
-								add(waveSprite);
-								add(waveSpriteFG);
-						*/
-			}
-			case 'stage':
+				}
+			default:
 			{
 						defaultCamZoom = 0.9;
 						curStage = 'stage';
@@ -807,8 +809,8 @@ class PlayState extends MusicBeatState
 						add(stageCurtains);
 
 			}
+		
 		}
-	
 
 								
 
@@ -962,48 +964,7 @@ class PlayState extends MusicBeatState
 				boyfriend.y += 220;
 				gf.x += 180;
 				gf.y += 300;
-
-			case 'stage1':
-				boyfriend.x += 200;
-			case 'stage2':
-				boyfriend.x += 200;
-			case 'stage3':
-				boyfriend.x += 200;
-			case 'stage4':
-				boyfriend.x += 200;
-			case 'stage5':
-				boyfriend.x += 200;
-			case 'stage6':
-				boyfriend.x += 200;
-			case 'stage7':
-				boyfriend.x += 200;
-			case 'stage8':
-				boyfriend.x += 200;
-			case 'stage9':
-				boyfriend.x += 200;
-			case 'stage10':
-				boyfriend.x += 200;
-			case 'stage11':
-				boyfriend.x += 200;
-			case 'stage12':
-				boyfriend.x += 200;
-			case 'stage13':
-				boyfriend.x += 200;
-			case 'stage14':
-				boyfriend.x += 200;
-			case 'stage15':
-				boyfriend.x += 200;
-			case 'stage16':
-				boyfriend.x += 200;
-			case 'stage17':
-				boyfriend.x += 200;
-			case 'stage18':
-				boyfriend.x += 200;
-			case 'stage19':
-				boyfriend.x += 200;
-			case 'stage20':
-				boyfriend.x += 200;
-		}
+	}
 
 		add(gf);
 
@@ -1079,7 +1040,7 @@ class PlayState extends MusicBeatState
 			SONG.song
 			+ " - "
 			+ CoolUtil.difficultyString()
-			+ (" | ME 1.0 "), 16);
+			+ (" | ME 1.1 "), 16);
 			if (FlxG.save.data.downscroll)
 		   thingy.setPosition(healthBarBG.y + -65, 700);
 	    thingy.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -1292,11 +1253,14 @@ class PlayState extends MusicBeatState
 				
 			}
 
+	
+
 	var startTimer:FlxTimer;
 	var perfectMode:Bool = false;
 
 	function startCountdown():Void
 	{
+
 		inCutscene = false;
 
 		generateStaticArrows(0);
@@ -1532,7 +1496,7 @@ class PlayState extends MusicBeatState
 		for (i in 0...4)
 		{
 			// FlxG.log.add(i);
-			var babyArrow:FlxSprite = new FlxSprite(0, strumLine.y);
+		    var babyArrow:FlxSprite = new FlxSprite(0, strumLine.y);
 
 			switch (curStage)
 			{
@@ -2210,8 +2174,23 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('Lights_Shut_off'));
 				}
 
-				FlxTransitionableState.skipNextTransIn = true;
-				FlxTransitionableState.skipNextTransOut = true;
+				//FlxTransitionableState.skipNextTransIn = true;
+				//FlxTransitionableState.skipNextTransOut = true;
+
+				var video:MP4Handler = new MP4Handler();
+				switch (SONG.videotoggle){
+
+				case 'true':
+                video.playMP4(Paths.modvideo(SONG.song.toLowerCase() + 'Video'));
+				#if polymod
+				polymod.Polymod.init({modRoot: "mods", dirs: [SONG.song.toLowerCase() + 'Video']});
+				#end
+                video.finishCallback = function()
+                {
+	            LoadingState.loadAndSwitchState(new PlayState());
+                }
+				case 'false':
+			}
 				prevCamFollow = camFollow;
 
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
@@ -2229,7 +2208,7 @@ class PlayState extends MusicBeatState
 
 	var endingSong:Bool = false;
 
-	private function popUpScore(strumtime:Float):Void
+	private function popUpScore(strumtime:Float, note:Note):Void
 	{
 		var noteDiff:Float = Math.abs(strumtime - Conductor.songPosition);
 		// boyfriend.playAnim('hey');
@@ -2322,6 +2301,67 @@ class PlayState extends MusicBeatState
 
 		comboSpr.updateHitbox();
 		rating.updateHitbox();
+		
+		var sploosh:FlxSprite = new FlxSprite(note.x, playerStrums.members[note.noteData].y);
+		if (FlxG.save.data.splooshes)
+		{
+			if (!curStage.startsWith('school'))
+			{
+				var babyArrow:FlxSprite = new FlxSprite(0, strumLine.y);
+				var daNote:Note;
+				var tex:flixel.graphics.frames.FlxAtlasFrames = Paths.getSparrowAtlas('noteSplashes', 'shared');
+				sploosh.frames = tex;
+				sploosh.animation.addByPrefix('splash 0 0', 'note impact 1 purple', 24, false);
+				sploosh.animation.addByPrefix('splash 0 1', 'note impact 1 blue', 24, false);
+				sploosh.animation.addByPrefix('splash 0 2', 'note impact 1 green', 24, false);
+				sploosh.animation.addByPrefix('splash 0 3', 'note impact 1 red', 24, false);
+				sploosh.animation.addByPrefix('splash 0 4', 'note impact 1 yellow', 24, false);
+				sploosh.animation.addByPrefix('splash 1 0', 'note impact 2 purple', 24, false);
+				sploosh.animation.addByPrefix('splash 1 1', 'note impact 2 blue', 24, false);
+				sploosh.animation.addByPrefix('splash 1 2', 'note impact 2 green', 24, false);
+				sploosh.animation.addByPrefix('splash 1 3', 'note impact 2 red', 24, false);
+				sploosh.animation.addByPrefix('splash 1 4', 'note impact 2 yellow', 24, false);
+				if (daRating == 'sick')
+				{
+					add(sploosh);
+					sploosh.cameras = [camHUD];
+					sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + note.noteData);
+					sploosh.alpha = 0.6;
+					sploosh.offset.x += 90;
+					sploosh.offset.y += 80;
+					sploosh.animation.finishCallback = function(name) sploosh.kill();
+				}
+			}
+			else
+			{
+				var daNote:Note;
+				var babyArrow:FlxSprite = new FlxSprite(0, strumLine.y);
+				sploosh.loadGraphic(Paths.image('weeb/pixelUI/noteSplashes-pixels', 'week6'), true, 50, 50);
+				sploosh.animation.add('splash 0 0', [0, 1, 2, 3], 24, false);
+				sploosh.animation.add('splash 1 0', [4, 5, 6, 7], 24, false);
+				sploosh.animation.add('splash 0 1', [8, 9, 10, 11], 24, false);
+				sploosh.animation.add('splash 1 1', [12, 13, 14, 15], 24, false);
+				sploosh.animation.add('splash 0 2', [16, 17, 18, 19], 24, false);
+				sploosh.animation.add('splash 1 2', [20, 21, 22, 23], 24, false);
+				sploosh.animation.add('splash 0 3', [24, 25, 26, 27], 24, false);
+				sploosh.animation.add('splash 1 3', [28, 29, 30, 31], 24, false);
+				sploosh.animation.add('splash 0 4', [32, 33, 34, 35], 24, false);
+				sploosh.animation.add('splash 1 4', [36, 37, 38, 39], 24, false);
+				if (daRating == 'sick')
+				{
+					sploosh.setGraphicSize(Std.int(sploosh.width * daPixelZoom));
+					sploosh.updateHitbox();
+					add(sploosh);
+					sploosh.cameras = [camHUD];
+					sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + note.noteData);
+					sploosh.alpha = 0.6;
+					sploosh.offset.x += 90;
+					sploosh.offset.y += 80;
+					sploosh.animation.finishCallback = function(name) sploosh.kill();
+				}
+			}
+		}
+
 
 		var seperatedScore:Array<Int> = [];
 
@@ -2784,7 +2824,7 @@ class PlayState extends MusicBeatState
 		{
 			if (!note.isSustainNote)
 				{
-					popUpScore(note.strumTime);
+					popUpScore(note.strumTime, note);
 					combo += 1;
 				}
 				else

@@ -25,8 +25,6 @@ class StoryMenuState extends MusicBeatState
 
 	var curDifficulty:Int = 1;
 
-	public static var weekUnlocked:Bool = true;
-
 	var weekNames:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekNames'));
 
 	var txtWeekTitle:FlxText;
@@ -83,7 +81,7 @@ class StoryMenuState extends MusicBeatState
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
 
-		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 56, FlxColor.BLUE);
+		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
 		blackBarThingie.alpha = 0.5;
 		add(blackBarThingie);
 
@@ -103,24 +101,13 @@ class StoryMenuState extends MusicBeatState
 			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i);
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
+			weekThing.screenCenter(X);
 			grpWeekText.add(weekThing);
 
-			weekThing.screenCenter(X);
-			weekThing.screenCenter(Y);
 			weekThing.antialiasing = true;
 			// weekThing.updateHitbox();
 
-			// Needs an offset thingie
-			if (!weekUnlocked)
-			{
-				var lock:FlxSprite = new FlxSprite(weekThing.width + 10 + weekThing.x);
-				lock.frames = ui_tex;
-				lock.animation.addByPrefix('lock', 'lock');
-				lock.animation.play('lock');
-				lock.ID = i;
-				lock.antialiasing = true;
-				grpLocks.add(lock);
-			}
+
 		}
 
 		trace("Line 96");
@@ -192,7 +179,6 @@ class StoryMenuState extends MusicBeatState
 
 		// FlxG.watch.addQuick('font', scoreText.font);
 
-		difficultySelectors.visible = weekUnlocked;
 
 		grpLocks.forEach(function(lock:FlxSprite)
 		{
@@ -251,8 +237,6 @@ class StoryMenuState extends MusicBeatState
 
 	function selectWeek()
 	{
-		if (weekUnlocked)
-		{
 			if (stopspamming == false)
 			{
 				FlxG.sound.play(Paths.sound('titleShoot'));
@@ -274,7 +258,6 @@ class StoryMenuState extends MusicBeatState
 				case 2:
 					diffic = '-hard';
 			}
-
 			PlayState.storyDifficulty = curDifficulty;
 
 			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
@@ -284,7 +267,7 @@ class StoryMenuState extends MusicBeatState
 			{
 				LoadingState.loadAndSwitchState(new PlayState(), true);
 			});
-		}
+		
 	}
 
 	function weekData():Array<Array<String>>
@@ -357,7 +340,7 @@ class StoryMenuState extends MusicBeatState
 		for (item in grpWeekText.members)
 		{
 			item.targetY = bullShit - curWeek;
-			if (item.targetY == Std.int(0) && weekUnlocked)
+			if (item.targetY == Std.int(0))
 				item.alpha = 1;
 			else
 				item.alpha = 0.6;

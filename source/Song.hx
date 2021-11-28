@@ -26,6 +26,7 @@ typedef SwagSong =
 	var stage:String;
 	var gfVersion:String;
 	public var dialoguetoggle:String;
+	public var videotoggle:String;
 }
 
 class Song
@@ -38,9 +39,10 @@ class Song
 
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
-	public var stage:String = 'stage';
+	public var stage:String = PlayState.curStage;
 	public var gfVersion:String = 'gf';
 	public var dialoguetoggle:String = 'false';
+	public var videotoggle:String = 'false';
 
 	public function new(song, notes, bpm)
 	{
@@ -55,7 +57,7 @@ class Song
 			
 			var formattedFolder:String = Paths.formatToSongPath(folder);
 			var formattedSong:String = Paths.formatToSongPath(jsonInput);
-			var moddyFile:String = Paths.modsong(formattedFolder + '/' + formattedSong);
+			var moddyFile:String = Paths.modsJson(formattedFolder + '/' + formattedSong);
 			if(FileSystem.exists(moddyFile)) {
 				rawJson = File.getContent(moddyFile).trim();
 			}
@@ -93,11 +95,13 @@ class Song
 			var songJson:SwagSong = parseJSONshit(rawJson);
 			return songJson;
 		}
-
-	public static function parseJSONshit(rawJson:String):SwagSong
-	{
-		var swagShit:SwagSong = cast Json.parse(rawJson).song;
-		swagShit.validScore = true;
-		return swagShit;
+	
+	
+		public static function parseJSONshit(rawJson:String):SwagSong
+		{
+			var swagShit:SwagSong = cast Json.parse(rawJson).song;
+			swagShit.validScore = true;
+			return swagShit;
+		}
 	}
-}
+	

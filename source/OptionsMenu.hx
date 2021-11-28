@@ -44,6 +44,9 @@ class OptionsMenu extends MusicBeatState
 		]),
 		new OptionCategory("FPS Settings", [
 		new FPSOption("input system settings")
+		]),
+		new OptionCategory("Note Effect Settings", [
+		new SplooshOption("input system settings")
 		])
 
 		

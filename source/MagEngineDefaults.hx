@@ -28,6 +28,11 @@ class CableEngineData
 
 		if (FlxG.save.data.mode == null)
 			FlxG.save.data.mode = false;
+
+		if (FlxG.save.data.splooshes == null)
+			FlxG.save.data.splooshes = true;
+		
+		
 			
 		Conductor.recalculateTimings();
 		PlayerSettings.player1.controls.loadKeyBinds();

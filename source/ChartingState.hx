@@ -85,6 +85,10 @@ class ChartingState extends MusicBeatState
 	{
 		curSection = lastSection;
 
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg.color = FlxColor.BLUE;
+		bg.scrollFactor.set();
+		add(bg);
 
 		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
 		add(gridBG);
@@ -123,6 +127,7 @@ class ChartingState extends MusicBeatState
 				gfVersion: 'gf',
 				stage: 'stage',
 				dialoguetoggle: 'false',
+				videotoggle: 'false',
 				speed: 1,
 				validScore: false
 			};
@@ -221,6 +226,8 @@ class ChartingState extends MusicBeatState
 
 		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'load autosave', loadAutosave);
 
+
+		
 		var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, 80, 0.1, 1, 0.1, 10, 1);
 		stepperSpeed.value = _song.speed;
 		stepperSpeed.name = 'song_speed';
@@ -231,6 +238,7 @@ class ChartingState extends MusicBeatState
 
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/characterList'));
 		var dialogueintros:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/dialogueIntroToggle'));
+		var videointros:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/videoIntroToggle'));
 		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/gfVersionList'));
 		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/stageList'));
 
@@ -274,6 +282,14 @@ class ChartingState extends MusicBeatState
 		
 				var dialoguelabel = new FlxText(10,80,64,'Dialogues');
 
+				var viddropdown = new FlxUIDropDownMenu(140, 100, FlxUIDropDownMenu.makeStrIdLabelArray(videointros, true), function(videointro:String)
+					{
+						_song.videotoggle = videointros[Std.parseInt(videointro)];
+					});
+					viddropdown.selectedLabel = _song.videotoggle;
+			
+					var videolabel = new FlxText(140,80,64,'Videos');
+
 		player2DropDown.selectedLabel = _song.player2;
 
 		var tab_group_song = new FlxUI(null, UI_box);
@@ -304,6 +320,8 @@ class ChartingState extends MusicBeatState
 		tab_group_intro.name = "Intro";
 		tab_group_intro.add(introdropdown);
 		tab_group_intro.add(dialoguelabel);
+		tab_group_intro.add(viddropdown);
+		tab_group_intro.add(videolabel);
 
 		UI_box.addGroup(tab_group_song);
 		UI_box.addGroup(tab_group_assets);
@@ -716,11 +734,16 @@ class ChartingState extends MusicBeatState
 		if (FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.A)
 			changeSection(curSection - shiftThing);
 
-		bpmTxt.text = bpmTxt.text = Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
-			+ " / "
-			+ Std.string(FlxMath.roundDecimal(FlxG.sound.music.length / 1000, 2))
-			+ "\nSection: "
-			+ curSection;
+
+		bpmTxt.text = Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
+		+ " / "
+		+ Std.string(FlxMath.roundDecimal(FlxG.sound.music.length / 1000, 2))
+		+ "\nSection: "
+		+ curSection
+		+ "\nCurBeat: "
+		+ HelperFunctions.truncateFloat(curBeat, 3)
+		+ "\nCurStep: "
+		+ curStep;
 		super.update(elapsed);
 	}
 
@@ -776,6 +799,8 @@ class ChartingState extends MusicBeatState
 
 		vocals.time = FlxG.sound.music.time;
 		updateCurStep();
+
+		
 
 		updateGrid();
 		updateSectionUI();

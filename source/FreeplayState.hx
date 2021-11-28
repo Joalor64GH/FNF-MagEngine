@@ -9,6 +9,7 @@ import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
+import flixel.input.gamepad.FlxGamepad;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
@@ -175,18 +176,27 @@ class FreeplayState extends MusicBeatState
 			lerpScore = intendedScore;
 
 		scoreText.text = "PERSONAL BEST:" + lerpScore;
-
+		
 		var upP = controls.UP_P;
 		var downP = controls.DOWN_P;
 		var accepted = controls.ACCEPT;
+		var space = FlxG.keys.justPressed.SPACE;
+
+		var shiftMult:Int = 1;
+		if(FlxG.keys.pressed.SHIFT) shiftMult = 3;
 
 		if (upP)
 		{
-			changeSelection(-1);
+			changeSelection(-shiftMult);
 		}
 		if (downP)
 		{
-			changeSelection(1);
+			changeSelection(shiftMult);
+		}
+
+		if (controls.BACK)
+		{
+			MusicBeatState.switchState(new MainMenuState());
 		}
 
 		if (controls.LEFT_P)
@@ -194,11 +204,7 @@ class FreeplayState extends MusicBeatState
 		if (controls.RIGHT_P)
 			changeDiff(1);
 
-		if (controls.BACK)
-		{
-			FlxG.switchState(new MainMenuState());
-		}
-
+		
 		if (accepted)
 		{
 			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
@@ -239,53 +245,45 @@ class FreeplayState extends MusicBeatState
 	}
 
 	function changeSelection(change:Int = 0)
-	{
-
-		// NGio.logEvent('Fresh');
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-
-		curSelected += change;
-
-		if (curSelected < 0)
-			curSelected = songs.length - 1;
-		if (curSelected >= songs.length)
-			curSelected = 0;
-
-		// selector.y = (70 * curSelected) + 30;
-
-		#if !switch
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-		// lerpScore = 0;
-		#end
-
-		#if PRELOAD_ALL
-		FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
-		#end
-
-		var bullShit:Int = 0;
-
-		for (i in 0...iconArray.length)
 		{
-			iconArray[i].alpha = 0.6;
-		}
-
-		iconArray[curSelected].alpha = 1;
-
-		for (item in grpSongs.members)
-		{
-			item.targetY = bullShit - curSelected;
-			bullShit++;
-
-			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
-
-			if (item.targetY == 0)
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+	
+			curSelected += change;
+	
+			if (curSelected < 0)
+				curSelected = songs.length - 1;
+			if (curSelected >= songs.length)
+				curSelected = 0;
+	
+			
+	
+			// selector.y = (70 * curSelected) + 30;
+			var bullShit:Int = 0;
+	
+			for (i in 0...iconArray.length)
 			{
-				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
+				iconArray[i].alpha = 0.6;
 			}
+	
+			iconArray[curSelected].alpha = 1;
+	
+			for (item in grpSongs.members)
+			{
+				item.targetY = bullShit - curSelected;
+				bullShit++;
+	
+				item.alpha = 0.6;
+				// item.setGraphicSize(Std.int(item.width * 0.8));
+	
+				if (item.targetY == 0)
+				{
+					item.alpha = 1;
+					// item.setGraphicSize(Std.int(item.width));
+				}
+			}
+			changeDiff();
 		}
-	}
+
 }
 
 class SongMetadata
