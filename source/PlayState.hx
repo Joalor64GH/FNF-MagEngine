@@ -527,10 +527,9 @@ class PlayState extends MusicBeatState
 
 					if (SONG.song.toLowerCase() == 'roses')
 						{
-							
-								bgGirls.getScared();
-							
-						}
+							bgGirls.getScared();
+					}
+
 
 					bgGirls.setGraphicSize(Std.int(bgGirls.width * daPixelZoom));
 					bgGirls.updateHitbox();
@@ -1127,23 +1126,20 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('ANGRY'));
 					schoolIntro(doof);
 				case 'thorns':
-				     schoolIntro(doof);
+				    schoolIntro(doof);
+				 default:
+					startCountdown();
+
 			}
 			switch(SONG.dialoguetoggle)
 			{
 				case 'true':
-					if (curSong.toLowerCase() == 'senpai' || curSong.toLowerCase() == 'roses' || curSong.toLowerCase() == 'thorns'){
-						schoolIntro(doof);
-					}
+					if (SONG.song.toLowerCase() == 'senpai' || SONG.song.toLowerCase() == 'roses' || SONG.song.toLowerCase() == 'thorns')
+					schoolIntro(doof);
 					else
-					{
 					magengineIntro(doof);
-					}
+					
 				case 'false':
-					startCountdown();
-				default:
-					startCountdown();
-
 			}
 		}
 		else

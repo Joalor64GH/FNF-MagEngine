@@ -158,7 +158,7 @@ class DialogueBox extends FlxSpriteGroup
 
 		if (!talkingRight)
 		{
-			// box.flipX = true;
+			box.flipX = true;
 		}
 
 		dropText = new FlxText(242, 502, Std.int(FlxG.width * 0.6), "", 32);
@@ -185,19 +185,19 @@ class DialogueBox extends FlxSpriteGroup
 	{
 		// HARD CODING CUZ IM STUPDI
 
-		if (PlayState.SONG.song.toLowerCase() == 'senpai'){
+		if (PlayState.SONG.song.toLowerCase() == 'senpai')
 	     	dropText.setFormat(Paths.font("pixel.otf"), 32);
 			dropText.color = 0xFFD89494;
 			swagDialogue.setFormat(Paths.font("pixel.otf"), 32);
 			swagDialogue.color = 0xFF3F2021;
-		}
-		if (PlayState.SONG.song.toLowerCase() == 'roses'){
+		
+		if (PlayState.SONG.song.toLowerCase() == 'roses')
 			portraitLeft.visible = false;
 	     	dropText.setFormat(Paths.font("pixel.otf"), 32);
 			dropText.color = 0xFFD89494;
 			swagDialogue.setFormat(Paths.font("pixel.otf"), 32);
 			swagDialogue.color = 0xFF3F2021;
-		}
+		
 		if (PlayState.SONG.song.toLowerCase() == 'thorns')
 		{
 			portraitLeft.color = FlxColor.BLACK;

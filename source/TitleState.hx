@@ -150,7 +150,7 @@ class TitleState extends MusicBeatState
 		logoBg = new FlxSprite().loadGraphic(Paths.image('bg', 'MagEngine'));
 		logoBg.screenCenter();
 		add(logoBg);
-		add(logoBl);
+		
 
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
@@ -158,6 +158,7 @@ class TitleState extends MusicBeatState
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		gfDance.antialiasing = true;
 		add(gfDance);
+		add(logoBl);
 
 		titleText = new FlxSprite(150, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
