@@ -26,18 +26,18 @@ FOR LINUX: install the git package in cmd: | sudo apt install git (ubuntu) | - a
 
 # Building The Engine (If You're Using The Source Code)
 ### First, Type These Commands In Order In The Command Line
-haxelib install lime
-haxelib run lime setup
-haxelib install flixel
-haxelib install flixel-tools
-haxelib run flixel setup
-haxelib install openfl
-haxelib run openfl setup
-haxelib install newgrounds
-haxelib install hscript
-haxelib install thx.color 0.19.1
-haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
-haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
+- haxelib install lime
+- haxelib run lime setup
+- haxelib install flixel
+- haxelib install flixel-tools
+- haxelib run flixel setup
+- haxelib install openfl
+- haxelib run openfl setup
+- haxelib install newgrounds
+- haxelib install hscript
+- haxelib install thx.color 0.19.1
+- haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
+- haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
 ### FOR WINDOWS
 You'll need to install Visual Studio 2019. While installing it, don’t click on any of the options to install workloads or anything. Go to the individual components tab and install the following:
 
