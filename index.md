@@ -35,8 +35,9 @@ haxelib install openfl
 haxelib run openfl setup
 haxelib install newgrounds
 haxelib install hscript
-haxelib install thx.color 0.19.1 
-
+haxelib install thx.color 0.19.1
+haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
+haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
 ### FOR WINDOWS
 You'll need to install Visual Studio 2019. While installing it, don’t click on any of the options to install workloads or anything. Go to the individual components tab and install the following:
 
