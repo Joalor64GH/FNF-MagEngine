@@ -71,10 +71,25 @@ class Option
 	public function getValue():String { return throw "stub!"; };
 	
 	// Returns whether the label is to be updated.
-	public function press():Bool { return throw "stub!"; }
-	private function updateDisplay():String { return throw "stub!"; }
-	public function left():Bool { return throw "stub!"; }
-	public function right():Bool { return throw "stub!"; }
+	public function press():Bool
+		{
+			return true;
+		}
+	
+		private function updateDisplay():String
+		{
+			return "";
+		}
+	
+		public function left():Bool
+		{
+			return false;
+		}
+	
+		public function right():Bool
+		{
+			return false;
+		}
 }
 
 
@@ -97,7 +112,7 @@ class DFJKOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Edit Key Bindings";
+		return "Key Bindings";
 		FlxG.save.data.flush();
 	}
 	
@@ -162,27 +177,6 @@ class NewInputOption extends Option
 		return FlxG.save.data.newInput ? "New Input" : "Old Input";
 	}
 }
-class FPSOption extends Option
-{
-	public function new(desc:String)
-		{
-			super();
-			description = desc;
-		}
-	
-		public override function press():Bool
-		{
-			FlxG.save.data.fps = !FlxG.save.data.fps;
-			(cast (Lib.current.getChildAt(0), Main)).toggleFPS(FlxG.save.data.fps);
-			display = updateDisplay();
-			return true;
-		}
-	
-		private override function updateDisplay():String
-		{
-			return "FPS Counter " + (!FlxG.save.data.fps ? "off" : "on");
-		}
-}
 class AccuracyOption extends Option
 {
 	public function new(desc:String)
@@ -203,7 +197,6 @@ class AccuracyOption extends Option
 		return FlxG.save.data.accuracy ? "Accuracy Off" : "Accuracy On";
 	}
 }
-
 class SplooshOption extends Option
 {
 	public function new(desc:String)
@@ -224,3 +217,25 @@ class SplooshOption extends Option
 		return FlxG.save.data.splooshes ? "Note Splashes On" : "Note Splashes Off";
 	}
 }
+
+class ModChartOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.modchart = !FlxG.save.data.modchart;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return FlxG.save.data.modchart ? "ModCharts Off" : "ModCharts On";
+	}
+}
+

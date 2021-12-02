@@ -30,24 +30,19 @@ class OptionsMenu extends MusicBeatState
 
 
 	var options:Array<OptionCategory> = [
-		new OptionCategory("KeyBinds Settings", [
+		new OptionCategory("Preferences", [
+		new DownscrollOption(''),
+		new NewInputOption(''),
+		new AccuracyOption(''),
+		new ModChartOption('')
+		]),
+		new OptionCategory("Controls", [
 		new DFJKOption(controls)
 		]),
-		new OptionCategory("Downscroll Settings", [
-		new DownscrollOption("Toggle The Location Of The Arrow HUD.")
-		]),
-		new OptionCategory("Input System Settings", [
-		new NewInputOption("input system settings")
-		]),
-		new OptionCategory("Accuracy Settings", [
-		new AccuracyOption("input system settings")
-		]),
-		new OptionCategory("FPS Settings", [
-		new FPSOption("input system settings")
-		]),
-		new OptionCategory("Note Effect Settings", [
-		new SplooshOption("input system settings")
+		new OptionCategory("Notes", [
+		new SplooshOption('')
 		])
+		
 
 		
 	];

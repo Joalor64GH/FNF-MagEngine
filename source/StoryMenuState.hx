@@ -25,6 +25,8 @@ class StoryMenuState extends MusicBeatState
 
 	var curDifficulty:Int = 1;
 
+	var swagbf:FlxSprite;
+
 	var weekNames:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekNames'));
 
 	var txtWeekTitle:FlxText;
@@ -36,6 +38,8 @@ class StoryMenuState extends MusicBeatState
 	var grpWeekText:FlxTypedGroup<MenuItem>;
 
 	var grpLocks:FlxTypedGroup<FlxSprite>;
+
+	var weekbg:FlxSprite;
 
 	var difficultySelectors:FlxGroup;
 	var sprDifficulty:FlxSprite;
@@ -69,7 +73,7 @@ class StoryMenuState extends MusicBeatState
 		rankText.screenCenter(X);
 
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
-		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.BLUE);
+		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
 
 		
 		var bg:FlxSprite = new FlxSprite(FlxG.width * 0.07, yellowBG.y + 420).loadGraphic(Paths.image('storybg', 'MagEngine'));
@@ -81,10 +85,23 @@ class StoryMenuState extends MusicBeatState
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
 
-		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
+
+		var itsanillusionn:FlxSprite = new FlxSprite().loadGraphic(Paths.image('illusion', 'MagEngine'));
+		itsanillusionn.antialiasing = true;
+		add(itsanillusionn);
+
+		
+		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 470, 0xFFF9CF51);
 		blackBarThingie.alpha = 0.5;
 		add(blackBarThingie);
-
+		
+		swagbf = new FlxSprite(420, 30);
+		swagbf.antialiasing = true;
+		swagbf.frames = Paths.getSparrowAtlas('BOYFRIEND'); 
+		swagbf.animation.addByPrefix('idle', 'BF idle dance', 24, true);
+		swagbf.animation.addByPrefix('hey', 'BF HEY', 24, false);
+		swagbf.animation.play('idle');
+		add(swagbf);
 
 		grpLocks = new FlxTypedGroup<FlxSprite>();
 		add(grpLocks);
@@ -144,15 +161,15 @@ class StoryMenuState extends MusicBeatState
 
 		trace("Line 150");
 
-		var tracksarelookinggood:FlxSprite = new FlxSprite(FlxG.width * 0.07, yellowBG.y + 250).loadGraphic(Paths.image('ThefunneMenuTracks'));
+		var tracksarelookinggood:FlxSprite = new FlxSprite(FlxG.width * 0.07, yellowBG.y + 425).loadGraphic(Paths.image('ThefunneMenuTracks'));
 		tracksarelookinggood.antialiasing = true;
 		add(tracksarelookinggood);
 
 	
 
-		txtTracklist = new FlxText(FlxG.width * 0.05, yellowBG.x + yellowBG.height + 100, 0, "Tracks", 32);
+		txtTracklist = new FlxText(FlxG.width * 0.05, yellowBG.x + yellowBG.height + 200, 0, "", 32);
+		txtTracklist = new FlxText(FlxG.width * 0.05, tracksarelookinggood.y + 40, 0, "", 32);
 		txtTracklist.alignment = CENTER;
-		txtTracklist.screenCenter(Y);
 		txtTracklist.font = rankText.font;
 		txtTracklist.color = 0xFFe55777;
 		add(txtTracklist);
@@ -217,6 +234,7 @@ class StoryMenuState extends MusicBeatState
 
 			if (controls.ACCEPT)
 			{
+				swagbf.animation.play('hey');
 				selectWeek();
 			}
 		}
@@ -348,6 +366,7 @@ class StoryMenuState extends MusicBeatState
 		}
 
 		FlxG.sound.play(Paths.sound('scrollMenu'));
+
 
 		updateText();
 	}

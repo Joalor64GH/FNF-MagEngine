@@ -105,7 +105,7 @@ class Paths
 		return '$library:assets/$library/$file';
 	}
 
-	inline static function getPreloadPath(file:String)
+	inline public static function getPreloadPath(file:String)
 	{
 		return 'assets/$file';
 	}
@@ -128,6 +128,10 @@ class Paths
 	inline static public function txt(key:String, ?library:String)
 		{
 			return getPath('$key.txt', TEXT, library);
+		}
+
+		inline static public function modchart(song:String,?library:String){
+			return getPath('data/$song/modchart.lua',TEXT,library);
 		}
 	
 		
@@ -272,7 +276,7 @@ class Paths
 	}
 
 	inline static public function modicon(key:String) {
-		return modfold('images' + key + '.png');
+		return modfold('images/' + key + '.png');
 	}
 	
 	inline static public function lua(key:String, ?library:String)
@@ -287,7 +291,7 @@ class Paths
 		
 
 	inline static public function swagmodicon(key:String) {
-		return modfold('shared/images' + key + '.png');
+		return modfold('shared/images/' + key + '.png');
 	}
 
 	inline static public function modsXml(key:String) {

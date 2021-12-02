@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Mag Engine" file="Mag Engine" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="1.1" company="ninjamuffin99" />
+	<app title="Friday Night Funkin': Mag Engine" file="Mag Engine" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="1.1.1" company="Magnumsrt" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -39,13 +39,16 @@
 	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
 
 	<classpath name="source" />
+	
 
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
 	
+	<define name="LUAON" if="windows" />
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
+	
 	
 	<section if="PRELOAD_ALL">
 		<library name="songs"    preload="true" />
@@ -102,7 +105,7 @@
         <assets path="plugins/" rename='' if="windows"/>
         <assets path="dlls/" rename='' if="windows"/>
 
-	<assets path='example_mods' rename='mods' embed='false'/>
+	<assets path='example_mods' rename='mods' embed='false' if="mods"/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<!-- <template path='mods' /> -->
 	
@@ -124,6 +127,7 @@
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
+	<haxelib name="linc_luajit" if="LUAON"/>
 	<haxelib name="newgrounds"/>
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="polymod"/>

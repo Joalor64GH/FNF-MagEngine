@@ -16,8 +16,8 @@ import openfl.text.TextFormat;
 
 class SimpleInfoDisplay extends TextField
 {
-    //                                      fps    mem    version
-    public var infoDisplayed:Array<Bool> = [false, false, false];
+    //                               
+    public var infoDisplayed:Array<Bool> = [true, true, true];
 
 	public var memPeak:Float = 0;
     public var currentFPS:Int = 0;
@@ -31,7 +31,7 @@ class SimpleInfoDisplay extends TextField
 		x = inX;
 		y = inY;
 		selectable = false;
-		defaultTextFormat = new TextFormat(font != null ? font : openfl.utils.Assets.getFont(Paths.font("vcr.ttf")).fontName, (font == "_sans" ? 12 : 14), inCol);
+		defaultTextFormat = new TextFormat(font != null ? font : '_sans', (font == "_sans" ? 10 : 12), inCol);
 
         fpsCounter = new FPS(10000, 10000, inCol);
         fpsCounter.visible = false;

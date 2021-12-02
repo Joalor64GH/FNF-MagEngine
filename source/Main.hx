@@ -71,30 +71,54 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 
+		#if !cpp
+		framerate = 120;
+		#end
+
 		#if !debug
 		initialState = TitleState;
 		#end
 
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
-		
+
 		#if !mobile
-		fpsCounter = new FPS(10, 3, 0xFFFFFF);
-		addChild(fpsCounter);
-		toggleFPS(FlxG.save.data.fps);
+		display = new SimpleInfoDisplay(10, 3, 0xFFFFFF);
+		addChild(display);
 		#end
 	}
 	
-	var game:FlxGame;
+	public static var display:SimpleInfoDisplay;
 
-	var fpsCounter:FPS;
+	public function toggleFPS(fpsEnabled:Bool):Void
+	{
+		display.infoDisplayed[0] = fpsEnabled;
+	}
 
-	public function toggleFPS(fpsEnabled:Bool):Void {
-	fpsCounter.visible = fpsEnabled;
-	}	
-	public function getFPS():Float
-		{
-			return fpsCounter.currentFPS;
-		}
+	public static function toggleMem(memEnabled:Bool):Void
+	{
+		display.infoDisplayed[1] = memEnabled;
+	}
+	
+	public static function toggleVers(versEnabled:Bool):Void
+	{
+		display.infoDisplayed[2] = versEnabled;
+	}
+
+	public static function changeFont(font:String):Void
+	{
+		display.defaultTextFormat = new TextFormat(font, (font == "_sans" ? 12 : 14), display.textColor);
+	}
+
+	public function setFPSCap(cap:Float)
+	{
+		openfl.Lib.current.stage.frameRate = cap;
+	}
+
+	public function getFPSCap():Float
+	{
+		return openfl.Lib.current.stage.frameRate;
+	}
+	
 }
 
 
