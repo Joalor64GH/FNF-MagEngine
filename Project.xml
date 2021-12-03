@@ -44,7 +44,6 @@
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
 	
-	<define name="LUAON" if="windows" />
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
@@ -105,7 +104,7 @@
         <assets path="plugins/" rename='' if="windows"/>
         <assets path="dlls/" rename='' if="windows"/>
 
-	<assets path='example_mods' rename='mods' embed='false' if="mods"/>
+	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<!-- <template path='mods' /> -->
 	
@@ -127,7 +126,6 @@
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
-	<haxelib name="linc_luajit" if="LUAON"/>
 	<haxelib name="newgrounds"/>
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="polymod"/>
@@ -186,5 +184,5 @@
 
 	<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->
 	<haxedef name="NG_LOGIN" if="newgrounds" />	
-<!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
+
 </project>
