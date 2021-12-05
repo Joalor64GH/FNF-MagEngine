@@ -290,7 +290,7 @@ class StoryMenuState extends MusicBeatState
 
 	function weekData():Array<Array<String>>
 		{
-			var fullText:String = Assets.getText(Paths.txt('data/weekData'));
+			var fullText:String = Assets.getText(Paths.txt('data/weekData')).trim();
 	
 			var firstArray:Array<String> = fullText.split('\n');
 			var swagGoodArray:Array<Array<String>> = [];

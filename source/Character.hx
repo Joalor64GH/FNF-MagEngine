@@ -13,10 +13,12 @@ class Character extends FlxSprite
 	public var animOffsets:Map<String, Array<Dynamic>>;
 	public var debugMode:Bool = false;
 
+	public var disabledDance:Bool = false;
 	public var isPlayer:Bool = false;
 	public var curCharacter:String = 'bf';
 
 	public var singDuration:Float = 4;
+	public var holding:Bool=false;
 
 	public var holdTimer:Float = 0;	
 
@@ -733,6 +735,8 @@ class Character extends FlxSprite
 		}
 
 		super.update(elapsed);
+		if(holding)
+			animation.curAnim.curFrame=0;
 	}
 
 	private var danced:Bool = false;
@@ -740,67 +744,26 @@ class Character extends FlxSprite
 	/**
 	 * FOR GF DANCING SHIT
 	 */
-	public function dance()
-	{
-		if (!debugMode)
+	 public function dance()
 		{
-			switch (curCharacter)
+			if (!debugMode && !disabledDance)
 			{
-				case 'gf':
+				holding=false;
+				if(animation.getByName("idle")!=null)
+					playAnim("idle");
+				else if (animation.getByName("danceRight")!=null && animation.getByName("danceLeft")!=null){
 					if (!animation.curAnim.name.startsWith('hair'))
 					{
 						danced = !danced;
-
+	
 						if (danced)
 							playAnim('danceRight');
 						else
 							playAnim('danceLeft');
 					}
-
-				case 'gf-christmas':
-					if (!animation.curAnim.name.startsWith('hair'))
-					{
-						danced = !danced;
-
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-
-				case 'gf-car':
-					if (!animation.curAnim.name.startsWith('hair'))
-					{
-						danced = !danced;
-
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-				case 'gf-pixel':
-					if (!animation.curAnim.name.startsWith('hair'))
-					{
-						danced = !danced;
-
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-
-				case 'spooky':
-					danced = !danced;
-
-					if (danced)
-						playAnim('danceRight');
-					else
-						playAnim('danceLeft');
-				default:
-					playAnim('idle');
+				}
 			}
 		}
-	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{

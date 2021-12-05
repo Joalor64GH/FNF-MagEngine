@@ -120,7 +120,7 @@ class DialogueBox extends FlxSpriteGroup
 		add(portraitLeft);
 		portraitLeft.visible = false;
 		
-		portraitLeftCustom = new FlxSprite(155, FlxG.height - 510).loadGraphic(Paths.swagmodicon('portraits/customcharonePort'));
+		portraitLeftCustom = new FlxSprite(155, FlxG.height - 510).loadGraphic(Paths.swagmodicon('portraits/' + curCharacter + 'Port'));
 		portraitLeftCustom.antialiasing = false;
 		portraitLeftCustom.updateHitbox();
 		portraitLeftCustom.scrollFactor.set();
@@ -295,6 +295,7 @@ class DialogueBox extends FlxSpriteGroup
 				portraitRightCustom.visible = false;
 				if (!portraitLeftCustom.visible)
 				{
+					box.flipX = true;
 					portraitLeftCustom.visible = true;
 					portraitLeftCustom.animation.play('enter');
 				}
@@ -311,6 +312,7 @@ class DialogueBox extends FlxSpriteGroup
 				portraitLeftCustom.visible = false;
 				if (!portraitRightCustom.visible)
 				{
+					box.flipX = false;
 					portraitRightCustom.visible = true;
 				}
 		}
