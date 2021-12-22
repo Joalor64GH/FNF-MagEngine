@@ -239,3 +239,67 @@ class ModChartOption extends Option
 	}
 }
 
+class FPSOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.fps = !FlxG.save.data.fps;
+		(cast (Lib.current.getChildAt(0), Main)).toggleFPS(FlxG.save.data.fps);
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "FPS Counter " + (!FlxG.save.data.fps ? "off" : "on");
+	}
+}
+class MEMOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.mem = !FlxG.save.data.mem;
+		(cast (Lib.current.getChildAt(0), Main)).toggleMem(FlxG.save.data.mem);
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Memory Info " + (!FlxG.save.data.mem ? "off" : "on");
+	}
+}
+class VerOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.v = !FlxG.save.data.v;
+		(cast (Lib.current.getChildAt(0), Main)).toggleVers(FlxG.save.data.v);
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Version Display " + (!FlxG.save.data.v ? "off" : "on");
+	}
+}
+

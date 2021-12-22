@@ -16,6 +16,14 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
 import openfl.Assets;
+import haxe.Json;
+import haxe.format.JsonParser;
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+import flixel.graphics.FlxGraphic;
+import openfl.display.BitmapData;
+#end
 
 using StringTools;
 
@@ -25,13 +33,23 @@ class StoryMenuState extends MusicBeatState
 
 	var curDifficulty:Int = 1;
 
+
+	var weeksArray:Array<String> = [];
+
+
 	var swagbf:FlxSprite;
+
+	
+	var weekthingy:Array<String> = CoolUtil.coolTextFile(Paths.txt('weeks/weekList'));
+
 
 	var weekNames:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekNames'));
 
 	var txtWeekTitle:FlxText;
 
 	var curWeek:Int = 0;
+	
+	var getPreloadPath:Array<String> = [Paths.getPreloadPath('')];
 
 	var txtTracklist:FlxText;
 
@@ -45,11 +63,70 @@ class StoryMenuState extends MusicBeatState
 	var sprDifficulty:FlxSprite;
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
+	var _swagweek:SwagWeek;
+	var swagger:Array<SwagWeek>;
+	
+	
 
 	override function create()
 	{
+		function getJSON(path:String):SwagWeek {
+			var rawJson:String = null;
+			//we use file.getcontent so it reads from the mods folder
+			if(FileSystem.exists(path)) {
+				rawJson = File.getContent(path);
+			}
+			if(rawJson != null && rawJson.length > 0) {
+				return cast Json.parse(rawJson);
+			}
+			return null;
+		}
+
+
+		function parseJSONshit(rawJson:String):SwagWeek
+			{
+				var swagShit:SwagWeek = cast Json.parse(rawJson);
+				return swagShit;
+			}
+
+        //LMAO STOLEN FROM SONG
+		function loadFromWEEKJson(jsonInput:String):SwagWeek
+			{
+				var rawJson = null;
+				var moddyFile:String = Paths.modsong('weeks/' + jsonInput);
+				if(FileSystem.exists(moddyFile)) {
+					rawJson = File.getContent(moddyFile).trim();
+				}
+		
+				if(rawJson == null) {
+					//why the fuck did i do this lmao
+					#if sys
+					rawJson = File.getContent(Paths.cooljson('weeks/' + jsonInput)).trim();
+					#else
+					rawJson = Assets.getText(Paths.cooljson('weeks/' + jsonInput)).trim();
+					#end
+				}
+		
+				while (!rawJson.endsWith("}"))
+				{
+					rawJson = rawJson.substr(0, rawJson.length - 1);
+					// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
+				}
+
+				var weekJson:SwagWeek = parseJSONshit(rawJson);
+				return weekJson;
+			}
+
+			weeksArray = [];
+			for (i in 0...weekthingy.length) {
+				weeksArray.push(weekthingy[i]);
+				var filethingy:String = 'weeks/' + weeksArray[i] + '.json';
+				var swagshit:SwagWeek = getJSON(filethingy);
+			}
+	
+
 		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
+		transOut = FlxTransitionableState.defaultTransOut; 
 
 		if (FlxG.sound.music != null)
 		{
@@ -64,6 +141,7 @@ class StoryMenuState extends MusicBeatState
 
 		txtWeekTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
 		txtWeekTitle.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT);
+		txtWeekTitle.bold = true;
 		txtWeekTitle.alpha = 0.7;
 
 		var rankText:FlxText = new FlxText(0, 10);
@@ -113,7 +191,7 @@ class StoryMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		for (i in 0...weekData().length)
+		for (i in 0...weekthingy.length)
 		{
 			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i);
 			weekThing.y += ((weekThing.height + 20) * i);
@@ -170,7 +248,7 @@ class StoryMenuState extends MusicBeatState
 		txtTracklist = new FlxText(FlxG.width * 0.05, yellowBG.x + yellowBG.height + 200, 0, "", 32);
 		txtTracklist = new FlxText(FlxG.width * 0.05, tracksarelookinggood.y + 40, 0, "", 32);
 		txtTracklist.alignment = CENTER;
-		txtTracklist.font = rankText.font;
+		txtTracklist.setFormat(Paths.font("funkin.otf"), 42);
 		txtTracklist.color = 0xFFe55777;
 		add(txtTracklist);
 		// add(rankText);
@@ -186,7 +264,8 @@ class StoryMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		// scoreText.setFormat('VCR OSD Mono', 32);
+		// scoreText.setFormat('VCR OSD Mono', 32)
+
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.5));
 
 		scoreText.text = "WEEK SCORE:" + lerpScore;
@@ -263,7 +342,7 @@ class StoryMenuState extends MusicBeatState
 				stopspamming = true;
 			}
 
-			PlayState.storyPlaylist = weekData()[curWeek];
+			PlayState.storyPlaylist = loadFromWEEKJson(weeksArray[curWeek]).songs;
 			PlayState.isStoryMode = true;
 			selectedWeek = true;
 
@@ -287,23 +366,6 @@ class StoryMenuState extends MusicBeatState
 			});
 		
 	}
-
-	function weekData():Array<Array<String>>
-		{
-			var fullText:String = Assets.getText(Paths.txt('data/weekData')).trim();
-	
-			var firstArray:Array<String> = fullText.split('\n');
-			var swagGoodArray:Array<Array<String>> = [];
-	
-			for (i in firstArray)
-			{
-				swagGoodArray.push(i.split('--'));
-			}
-	
-			return swagGoodArray;
-		}
-
-
 	function changeDifficulty(change:Int = 0):Void
 	{
 		curDifficulty += change;
@@ -341,6 +403,38 @@ class StoryMenuState extends MusicBeatState
 		FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07);
 	}
 
+	function loadFromWEEKJson(jsonInput:String):SwagWeek
+		{
+			var rawJson = null;
+			var moddyFile:String = Paths.modsong('weeks/' + jsonInput);
+			if(FileSystem.exists(moddyFile)) {
+				rawJson = File.getContent(moddyFile).trim();
+			}
+	
+			if(rawJson == null) {
+				//why the fuck did i do this lmao
+				#if sys
+				rawJson = File.getContent(Paths.cooljson('weeks/' + jsonInput)).trim();
+				#else
+				rawJson = Assets.getText(Paths.cooljson('weeks/' + jsonInput)).trim();
+				#end
+			}
+	
+			while (!rawJson.endsWith("}"))
+			{
+				rawJson = rawJson.substr(0, rawJson.length - 1);
+				// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
+			}
+
+			var weekJson:SwagWeek = parseJSONshit(rawJson);
+			return weekJson;
+		}
+			function parseJSONshit(rawJson:String):SwagWeek
+			{
+				var swagShit:SwagWeek = cast Json.parse(rawJson);
+				return swagShit;
+			}
+
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
 
@@ -348,10 +442,10 @@ class StoryMenuState extends MusicBeatState
 	{
 		curWeek += change;
 
-		if (curWeek >= weekData().length)
+		if (curWeek >= weeksArray.length)
 			curWeek = 0;
 		if (curWeek < 0)
-			curWeek = weekData().length - 1;
+			curWeek = weeksArray.length - 1;
 
 		var bullShit:Int = 0;
 
@@ -375,7 +469,7 @@ class StoryMenuState extends MusicBeatState
 	{
 		txtTracklist.text = '';
 		
-		var stringThing:Array<String> = weekData()[curWeek];
+		var stringThing:Array<String> = loadFromWEEKJson(weeksArray[curWeek]).songs;
 
 		for (i in stringThing)
 		{
@@ -391,5 +485,17 @@ class StoryMenuState extends MusicBeatState
 		#if !switch
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
 		#end
+	}
+}
+typedef SwagWeek =
+{
+	var songs:Array<String>;
+}
+class Week
+{
+	public var songs:Array<String>;
+
+	public function new(swagWeek:SwagWeek) {
+		songs = swagWeek.songs;
 	}
 }

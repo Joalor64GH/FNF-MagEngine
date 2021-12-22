@@ -5,8 +5,28 @@ import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.Assets;
+import haxe.Json;
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+import flixel.graphics.FlxGraphic;
+import openfl.display.BitmapData;
+#end
+
 
 using StringTools;
+
+//im using these things a lot lol
+typedef SwagCharacter = {
+	var animations:Array<Animation>;
+	var image:String;
+}
+
+typedef Animation = {
+	var anim:String;
+	var name:String;
+	var loop:Bool;
+}
 
 class Character extends FlxSprite
 {
@@ -17,10 +37,25 @@ class Character extends FlxSprite
 	public var isPlayer:Bool = false;
 	public var curCharacter:String = 'bf';
 
-	public var singDuration:Float = 4;
-	public var holding:Bool=false;
+	public var anim:String;
+	public var name:String;
+	public var loop:Bool;
+	public var animations:Array<Animation>;
+	public var image:String;
 
-	public var holdTimer:Float = 0;	
+	public var singDuration:Float = 4;
+	
+	public var charthingy:Array<String> = CoolUtil.coolTextFile(Paths.bruhtxt('custom_characters/customCharacterList'));
+
+	public var holding:Bool = false;
+
+	public var holdTimer:Float = 4;	
+
+	public var imagePNG:String = '';
+	public var animationsthing:Array<Animation> = [];
+	
+	public var charArray:Array<String>;
+	
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -36,6 +71,8 @@ class Character extends FlxSprite
 
 		switch (curCharacter)
 		{
+
+			//might unhardcode these in the future
 			case 'gf':
 				// GIRLFRIEND CODE
 				tex = Paths.getSparrowAtlas('GF_assets','shared');
@@ -383,267 +420,31 @@ class Character extends FlxSprite
 				loadOffsetFromFile(curCharacter);
 
 				playAnim('idle');
-
-	        case 'customcharone':
-		        
-			    frames = Paths.getSparrowAtlas('customcharacters/customcharone', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
+				
+			default:
+				var charKey:String = 'mods/custom_characters/' + curCharacter + '.json';
+				var rawJson = File.getContent(charKey);
+				var parsedJson:SwagCharacter = cast Json.parse(rawJson);
+				frames = Paths.getModsSparrowAtlas(parsedJson.image);
+				imagePNG = parsedJson.image;
+				animationsthing = parsedJson.animations;
 		
+     if(animationsthing != null && animationsthing.length > 0) {
+		for (anim in animationsthing) {
+			 var animAnim:String = '' + anim.anim;
+			  var animName:String = '' + anim.name;
+			   var animLoop:Bool = !!anim.loop;
+			     loadOffsetFromthecoolFile(curCharacter);
+		        	animation.addByPrefix(animAnim, animName, 24, animLoop);
+						}
+
+						 
+						}
+					}
 				
+		
 
-
-			case 'customchartwo':
-				
-			    frames = Paths.getSparrowAtlas('customcharacters/customchartwo', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-
-			case 'customcharthree':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customcharthree', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-
-			case 'customcharfour':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customcharfour', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-				
-			case 'customcharfive':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customcharfive', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-				
-			case 'customcharsix':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customcharsix', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-				
-			case 'customcharseven':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customcharseven', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-			case 'customchareight':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customchareight', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-				
-			case 'customcharnine':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customcharnine', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-			case 'customcharten':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customcharten', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-			case 'customchareleven':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customchareleven', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-			
-			case 'customchartwelve':
-				
-			    frames = Paths.getSparrowAtlas('customcharacters/customchartwelve', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-
-			case 'customcharthirteen':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customcharthirteen', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-							
-			case 'customcharfourteen':
-				
-			    frames = Paths.getSparrowAtlas('customcharacters/customcharfourteen', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-
-			case 'customcharfifteen':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customcharfifteen', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-
-		    case 'customcharsixteen':
-				
-			    frames = Paths.getSparrowAtlas('customcharacters/customcharsixteen', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-										
-			case 'customcharseventeen':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customcharseventeen', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-										
-			case 'customchareighteen':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customchareighteen', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-
-			case 'customcharnineteen':
-				
-				frames = Paths.getSparrowAtlas('customcharacters/customcharnineteen','shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-			
-			case 'customchartwenty':
-				
-				frames = Paths.getSparrowAtlas('customchartwenty', 'shared');
-				animation.addByPrefix('idle', 'Idle', 24, false);
-				animation.addByPrefix('singUP', 'Sing Up', 24, false);
-				animation.addByPrefix('singLEFT', 'Sing Left', 24, false);
-				animation.addByPrefix('singRIGHT', 'Sing Right', 24, false);
-				animation.addByPrefix('singDOWN', 'Sing Down', 24, false);
-
-				loadOffsetFromthecoolFile(curCharacter);
-
-				playAnim('idle');
-		}
+		
 
 		dance();
 
@@ -669,7 +470,7 @@ class Character extends FlxSprite
 			}
 		}
 	}
-	
+		
 
 	public function loadOffsetFromFile(character:String, library:String = 'shared')
 		{
@@ -682,9 +483,9 @@ class Character extends FlxSprite
 			}
 		}
 
-		public function loadOffsetFromthecoolFile(character:String, library:String = 'shared')
+		public function loadOffsetFromthecoolFile(character:String)
 			{
-				var offset:Array<String> = CoolUtil.coolTextFile(Paths.txt('images/customcharacters/' + character + "Offsets", library));
+				var offset:Array<String> = CoolUtil.evenCoolerTextFile('mods/images/characters/' + character + "Offsets.txt");
 		
 				for (i in 0...offset.length)
 				{

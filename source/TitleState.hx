@@ -5,6 +5,7 @@ import Discord.DiscordClient;
 import sys.thread.Thread;
 #end
 import flixel.FlxG;
+import modloader.PolymodHandler;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.input.keyboard.FlxKey;
@@ -55,12 +56,10 @@ class TitleState extends MusicBeatState
 					folders.push(file);
 				}
 			}
-			if(folders.length > 0) {
-				polymod.Polymod.init({modRoot: "mods", dirs: folders});
-			}
+			PolymodHandler.loadMods();
 		}
 		#end
-
+		
 		PlayerSettings.init();
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());

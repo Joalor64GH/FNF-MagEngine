@@ -16,22 +16,20 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import io.newgrounds.NG;
 import lime.app.Application;
-import flixel.math.FlxMath;							
-import modloader.ModsMenu;
+import flixel.math.FlxMath;
 
 using StringTools;
 
-class MainMenuState extends MusicBeatState
+class SocialsState extends MusicBeatState
 {
 	var curSelected:Int = 0;
 
+    var youtube:String = sys.io.File.getContent(Paths.txt('data/youtube'));
+    var twitter:String = sys.io.File.getContent(Paths.txt('data/twitter'));
+
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
-	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'mods', 'credits', 'social', 'donate', 'options'];
-	#else
-	var optionShit:Array<String> = ['story mode', 'freeplay'];
-	#end
+	var optionShit:Array<String> = ['youtube', 'twitter'];
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -39,8 +37,6 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-
-		FlxG.mouse.visible = false;
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -56,10 +52,10 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 		
-		//
-		var psychScrolleffect:Float = Math.max(0.15 - (0.05 * (optionShit.length - 4)), 0.1);
+		
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
-		bg.scrollFactor.set(0, psychScrolleffect);
+		bg.scrollFactor.x = 0;
+		bg.scrollFactor.y = 0.18;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
 		bg.updateHitbox();
 		bg.screenCenter();
@@ -74,7 +70,8 @@ class MainMenuState extends MusicBeatState
 		add(camFollowPos);
 
 		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
-		magenta.scrollFactor.set(0, psychScrolleffect);
+		magenta.scrollFactor.x = 0;
+		magenta.scrollFactor.y = 0.25;
 		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
 		magenta.updateHitbox();
 		magenta.screenCenter();
@@ -90,35 +87,29 @@ class MainMenuState extends MusicBeatState
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
 
 		for (i in 0...optionShit.length)
-			{
-				var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
-				var menuItem:FlxSprite = new FlxSprite(0, (i * 140)  + offset);
-				menuItem.frames = tex;
-				menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-				menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
-				menuItem.animation.play('idle');
-				menuItem.ID = i;
-				menuItem.screenCenter(X);
-				menuItems.add(menuItem);
-				var scr:Float = (optionShit.length - 4) * 0.135;
-				if(optionShit.length < 7) scr = 0;
-				menuItem.scrollFactor.set(0, scr);
-				menuItem.antialiasing = true;
-				menuItem.updateHitbox();
-			}
+            {
+                var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
+                menuItem.frames = tex;
+                menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
+                menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+                menuItem.animation.play('idle');
+                menuItem.ID = i;
+                menuItem.screenCenter(X);
+                menuItems.add(menuItem);
+                menuItem.scrollFactor.set();
+                menuItem.antialiasing = true;
+            }
 
 			
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 38, 0, "Mag Engine v" + Application.current.meta.get('version'), 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Mag Engine v" + Application.current.meta.get('version'), 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		versionShit.bold = true;
 		add(versionShit);
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "Friday Night Funkin' v0.2.7.1", 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Friday Night Funkin' v0.2.7.1", 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		versionShit.bold = true;
 		add(versionShit);
 
 		// NG.core.calls.event.logEvent('swag').send();
@@ -156,26 +147,33 @@ class MainMenuState extends MusicBeatState
 
 			if (controls.BACK)
 			{
-				FlxG.switchState(new TitleState());
+				FlxG.switchState(new MainMenuState());
 			}
 
+            
 			if (controls.ACCEPT)
 			{
-				if (optionShit[curSelected] == 'donate')
+				if (optionShit[curSelected] == 'youtube')
 				{
 					#if linux
-					Sys.command('/usr/bin/xdg-open', ["https://ninja-muffin24.itch.io/funkin", "&"]);
+					Sys.command('/usr/bin/xdg-open', [youtube, "&"]);
 					#else
-					FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
+					FlxG.openURL(youtube);
 					#end
 				}
+				else if (optionShit[curSelected] == 'twitter')
+                {
+                     #if linux
+                     Sys.command('/usr/bin/xdg-open', [twitter, "&"]);
+                     #else
+                     FlxG.openURL(twitter);
+                     #end
+                 }
 				else
 				{
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 
-					FlxFlicker.flicker(magenta, 1.1, 0.15, false);
-					
 					menuItems.forEach(function(spr:FlxSprite)
 					{
 						if (curSelected != spr.ID)
@@ -206,12 +204,6 @@ class MainMenuState extends MusicBeatState
 									case 'credits':
 										MusicBeatState.switchState(new CreditsMenu());
 
-									case 'mods':
-										MusicBeatState.switchState(new ModsMenu());
-										
-									
-									case 'social':
-										MusicBeatState.switchState(new SocialsState());
 										
 
 									case 'options':
