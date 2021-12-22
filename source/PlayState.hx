@@ -238,9 +238,6 @@ class PlayState extends MusicBeatState
 						var content:String = sys.io.File.getContent(Paths.bruhtxt('data/' + SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase() + '-Dialogue'));
 						var firstArray:Array<String> = content.split('\n');
 						var swagGoodArray:Array<Array<String>> = [];
-						#if polymod
-						polymod.Polymod.init({modRoot: "mods", dirs: [content]});
-						#end
 						dialogue = firstArray;
 				   for (i in firstArray)
 				   {
@@ -968,7 +965,7 @@ class PlayState extends MusicBeatState
 					schoolIntro(doof);
 				case 'thorns':
 				    schoolIntro(doof);
-				 default:
+				default:
 					startCountdown();
 
 			}
@@ -978,7 +975,6 @@ class PlayState extends MusicBeatState
 					magengineIntro(doof);
 
 				case 'false':
-					startCountdown();
 			}
 		}
 		else
