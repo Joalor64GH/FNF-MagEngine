@@ -53,6 +53,14 @@ import openfl.display.BitmapData;
 
 using StringTools;
 
+typedef SwagStage =
+{
+	var image:String;
+	var stagename:String;
+	var xposition:Float;
+	var yposition:Float;
+}
+
 class PlayState extends MusicBeatState
 {
 	public static var currentPState:PlayState;
@@ -65,9 +73,14 @@ class PlayState extends MusicBeatState
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
 	public var camNotes:FlxCamera;
+	public static var practiceAllowed:Bool = false;
 	public var camSus:FlxCamera;
 	public var pauseHUD:FlxCamera;
 	public var camRating:FlxCamera;
+	public var _swagstage:SwagStage;
+	public var stageKey:String;
+	public var rawJson:String;
+	public var parsedJson:SwagStage;
 
 	var halloweenLevel:Bool = false;
 
@@ -117,6 +130,7 @@ class PlayState extends MusicBeatState
 	public var camGame:FlxCamera;
 
 	public static var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
+	public static var bbCounter:Int = 0;
 
 	var halloweenBG:FlxSprite;
 	var isHalloween:Bool = false;
@@ -169,6 +183,7 @@ class PlayState extends MusicBeatState
 	
 	override public function create()
 	{
+		
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
@@ -603,193 +618,8 @@ class PlayState extends MusicBeatState
 							add(waveSpriteFG);
 						 */
 					
-				}
-				case 'customcharoneStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage1';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharoneStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customchartwoStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage2';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customchartwoStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customcharthreeStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage3';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharthreeStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-					
-				}
-				case 'customcharfourStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage4';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharfourStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customcharfiveStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage5';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharfiveStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customcharsixStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage6';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharsixStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customcharsevenStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage7';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharsevenStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customchareightStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage8';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customchareightStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customcharnineStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage9';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharnineStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customchartenStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage10';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customchartenStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customcharelevenStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage11';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharelevenStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-
-				}
-				case 'customchartwelveStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage12';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customchartwelveStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customcharthirteenStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage13';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharthirteenStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customcharfourteenStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage14';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharfourteenStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-
-				}
-				case 'customcharfifteenStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage15';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharfifteenStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-
-				}
-				case 'customcharsixteenStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage16';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharsixteenStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customcharseventeenStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage17';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharseventeenStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customchareighteenStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage18';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharseightteenStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-
-				}
-				case 'customcharnineteenStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage19';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customcharnineteenStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
-				}
-				case 'customchartwentyStage':
-				{
-					defaultCamZoom = 0.9; 
-					curStage = 'stage20';
-					var bg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('customcharacters/stages/customchartwentyStage'));
-					bg.antialiasing = true;
-					bg.active = false;
-					add(bg);
 			}
-			default:
+			case 'stage':
 			{
 						defaultCamZoom = 0.9;
 						curStage = 'stage';
@@ -817,10 +647,13 @@ class PlayState extends MusicBeatState
 						add(stageCurtains);
 
 			}
-		
+			default:
+		    {	
+				curStage = SONG.song + 'Stage';
+				var custombg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.modspng('images/stages/' + SONG.song + 'Stage'));
+				add(custombg);
+		    }
 		}
-
-								
 
 		                  /* 
 		                           var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolBG'));
@@ -1047,8 +880,7 @@ class PlayState extends MusicBeatState
 			+ 50, 0,
 			SONG.song
 			+ " - "
-			+ CoolUtil.difficultyString()
-			+ (" | ME 1.1.1 "), 16);
+			+ CoolUtil.difficultyString(), 16);
 			if (FlxG.save.data.downscroll)
 		   thingy.setPosition(healthBarBG.y + -65, 700);
 	    thingy.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -1144,8 +976,9 @@ class PlayState extends MusicBeatState
 			{
 				case 'true':
 					magengineIntro(doof);
-					
+
 				case 'false':
+					startCountdown();
 			}
 		}
 		else
@@ -1952,6 +1785,8 @@ class PlayState extends MusicBeatState
 		{
 			boyfriend.stunned = true;
 
+			bbCounter++;
+
 			persistentUpdate = false;
 			persistentDraw = false;
 			paused = true;
@@ -2074,7 +1909,10 @@ class PlayState extends MusicBeatState
 		{
 			if (daNote.tooLate || !daNote.wasGoodHit)
 			{
+				if (!practiceAllowed){
 				health -= 0.0475;
+				}
+				else{}
 				misses += 1;
 				vocals.volume = 0;
 			}
@@ -2119,6 +1957,7 @@ class PlayState extends MusicBeatState
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
+		bbCounter = 0;
 		if (SONG.validScore)
 		{
 			#if !switch
@@ -2746,7 +2585,10 @@ class PlayState extends MusicBeatState
 	{
 		if (!boyfriend.stunned)
 		{
+			if (!practiceAllowed){
 			health -= 0.04;
+			}
+			else{}
 			if (combo > 5 && gf.animOffsets.exists('sad'))
 			{
 					gf.playAnim('sad');

@@ -95,15 +95,15 @@ class DialogueBox extends FlxSpriteGroup
 				face.setGraphicSize(Std.int(face.width * 6));
 				add(face);
 
-				default:
-					hasDialog = true;
-					box.frames = Paths.getSparrowAtlas('portraits/dialogueBox-notpixel');
-					box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
-					box.animation.addByPrefix('normal', 'speech bubble normal', 24, true);
-					box.width = 200;
-					box.height = 200;
-					box.x = -100;
-					box.y = 375;
+		    default:
+				hasDialog = true;
+				box.frames = Paths.getSparrowAtlas('portraits/dialogueBox-notpixel');
+				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
+				box.animation.addByPrefix('normal', 'speech bubble normal', 24, true);
+				box.width = 200;
+				box.height = 200;
+				box.x = -100;
+				box.y = 375;
 		}
 
 		this.dialogueList = dialogueList;
@@ -200,7 +200,7 @@ class DialogueBox extends FlxSpriteGroup
 		
 		if (PlayState.SONG.song.toLowerCase() == 'thorns')
 		{
-			portraitLeft.color = FlxColor.BLACK;
+			portraitLeft.visible = false;
 			swagDialogue.color = FlxColor.WHITE;
 			dropText.color = FlxColor.BLACK;
 			swagDialogue.setFormat(Paths.font("pixel.otf"), 32);
@@ -287,6 +287,7 @@ class DialogueBox extends FlxSpriteGroup
 				portraitRight.visible = false;
 				if (!portraitLeft.visible)
 				{
+					box.flipX = false;
 					portraitLeft.visible = true;
 					portraitLeft.animation.play('enter');
 				}
@@ -304,6 +305,7 @@ class DialogueBox extends FlxSpriteGroup
 
 				if (!portraitRight.visible)
 				{
+					box.flipX = false;
 					portraitRight.visible = true;
 					portraitRight.animation.play('enter');
 				}

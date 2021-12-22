@@ -19,35 +19,12 @@ using StringTools;
 class Paths
 {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
-
-	public static var modsthing:Map<String, Bool> = new Map<String, Bool>();
 	static public var modDir:String = null;
 	public static var customSoundsLoaded:Map<String, Sound> = new Map();
 	public static var customImagesLoaded:Map<String, Bool> = new Map<String, Bool>();
 
-	public static function destroyLoadedImages(ignoreCheck:Bool = false) {
-		for (key in customImagesLoaded.keys()) {
-			var graphic:FlxGraphic = FlxG.bitmap.get(key);
-			if(graphic != null) {
-				graphic.bitmap.dispose();
-				graphic.destroy();
-				FlxG.bitmap.removeByKey(key);
-			}
-		}
-		Paths.customImagesLoaded.clear();
-	}
-
 	static var currentLevel:String;
-
-	static public function getModFolders()
-		{
-			modsthing.set('data', true);
-			modsthing.set('songs', true);
-			modsthing.set('images', true);
-			modsthing.set('videos', true);
-			modsthing.set('sounds', true);
-		}
-
+	
 	static public function setCurrentLevel(name:String)
 	{
 		currentLevel = name.toLowerCase();
@@ -138,6 +115,11 @@ class Paths
 	inline static public function json(key:String, ?library:String)
 	{
 		return getPath('data/$key.json', TEXT, library);
+	}
+
+	inline static public function cooljson(key:String, ?library:String)
+	{
+			return getPath('$key.json', TEXT, library);
 	}
 
 	static public function sound(key:String, ?library:String)
@@ -248,7 +230,10 @@ class Paths
 	inline static public function mods(key:String = '') {
 		return 'mods/' + key;
 	}
-	
+
+	inline static public function jsonCool(key:String = '') {
+		return 'weeks/' + key;
+	}
 
 	inline static public function modsSongs(key:String) {
 		return modfold('songs/' + key + '.' + SOUND_EXT);
@@ -269,18 +254,7 @@ class Paths
 
 	inline static public function modicon(key:String) {
 		return modfold('images/' + key + '.png');
-	}
-	
-	inline static public function lua(key:String, ?library:String)
-		{
-			return getPath('data/$key.lua', TEXT, library);
-		}
-
-		inline static public function luaImage(key:String, ?library:String)
-			{
-				return getPath('data/$key.png', IMAGE, library);
-			}
-		
+	}	
 
 	inline static public function swagmodicon(key:String) {
 		return modfold('shared/images/' + key + '.png');
@@ -289,13 +263,6 @@ class Paths
 	inline static public function modsXml(key:String) {
 		return modfold('images/' + key + '.xml');
 	}
-
-	inline static public function jsonSYS(key:String, ?library:String)
-		{
-			#if sys
-			return pathStyleSYS(key + ".json", library, "data");
-			#end
-		}
 
 	inline static public function modvideo(key:String)
 	{
@@ -306,16 +273,27 @@ class Paths
 		return modfold('images/' + key + '.png');
 	}
 
+	inline static public function modspng(key:String) {
+		return modfold(key + '.png');
+	}
+
 	inline static public function getSparrowAtlas(key:String, ?library:String)
+	{
+		return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
+	}
+
+	inline static public function getModsSparrowAtlas(key:String, ?library:String)
 		{
-			return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
-		}
-		inline static public function getSparrowAtlasBruh(key:String, ?library:String)
-			{
-				return getSparrowAtlas(key, library);
+			var imageLoaded:FlxGraphic = addCustomGraphic(key);
+			var xmlExists:Bool = false;
+			if(FileSystem.exists(modsXml(key))) {
+				xmlExists = true;
 			}
-		
 	
+			return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)), (xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
+		}
+		
+	//why, spirit?
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
@@ -332,13 +310,4 @@ class Paths
 		}
 		return 'mods/' + key;
 	}
-	inline static public function pathStyleSYS(key:String, ?library:String, ?dataType:String = "images")
-		{
-			if(library != null)
-				library = library + "/";
-			else
-				library = "";
-	
-			return "assets/" + library + dataType + "/" + key;
-		}
 }

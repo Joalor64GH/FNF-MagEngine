@@ -94,12 +94,12 @@ class Main extends Sprite
 		display.infoDisplayed[0] = fpsEnabled;
 	}
 
-	public static function toggleMem(memEnabled:Bool):Void
+	public function toggleMem(memEnabled:Bool):Void
 	{
 		display.infoDisplayed[1] = memEnabled;
 	}
 	
-	public static function toggleVers(versEnabled:Bool):Void
+	public function toggleVers(versEnabled:Bool):Void
 	{
 		display.infoDisplayed[2] = versEnabled;
 	}
