@@ -120,7 +120,7 @@ class DialogueBox extends FlxSpriteGroup
 		add(portraitLeft);
 		portraitLeft.visible = false;
 		
-		portraitLeftCustom = new FlxSprite(155, FlxG.height - 510).loadGraphic(Paths.swagmodicon('portraits/' + Character + 'Port'));
+		portraitLeftCustom = new FlxSprite(155, FlxG.height - 510).loadGraphic(Paths.image('portraits/' + PlayState.SONG.song.toLowerCase() + 'characterPort'));
 		portraitLeftCustom.antialiasing = false;
 		portraitLeftCustom.updateHitbox();
 		portraitLeftCustom.scrollFactor.set();
@@ -298,7 +298,6 @@ class DialogueBox extends FlxSpriteGroup
 				{
 					box.flipX = true;
 					portraitLeftCustom.visible = true;
-					portraitLeftCustom.animation.play('enter');
 				}
 				case 'bf':
 				portraitLeft.visible = false;
