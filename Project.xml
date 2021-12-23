@@ -58,7 +58,7 @@
 		<library name="week4"    preload="true" />
 		<library name="week5"    preload="true" />
 		<library name="week6"    preload="true" />
-                <library name="MagEngine"    preload="true" />
+        <library name="MagEngine"    preload="true" />
 
 	</section>
 	
@@ -72,7 +72,7 @@
 		<library name="week4"    preload="false" />
 		<library name="week5"    preload="false" />
 		<library name="week6"    preload="false" />
-                <library name="MagEngine"    preload="false" />
+        <library name="MagEngine"    preload="false" />
 
 	</section>
 	
@@ -94,14 +94,14 @@
 	<assets path="assets/week5"    library="week5"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/week6"    library="week6"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web"/>
-        <assets path="assets/MagEngine"    library="MagEngine"    exclude="*.ogg" if="web"/>
+    <assets path="assets/MagEngine"    library="MagEngine"    exclude="*.ogg" if="web"/>
 	<assets path="assets/MagEngine"    library="MagEngine" exclude="*.mp3" unless="web"/> 
    
 
-        <assets path="assets/videos" exclude="*.mp3" if="web"/>
-        <assets path="assets/videos" exclude="*.ogg" unless="web"/>
-        <assets path="plugins/" rename='' if="windows"/>
-        <assets path="dlls/" rename='' if="windows"/>
+    <assets path="assets/videos" exclude="*.mp3" if="web"/>
+    <assets path="assets/videos" exclude="*.ogg" unless="web"/>
+    <assets path="plugins/" rename='' if="windows"/>
+    <assets path="dlls/" rename='' if="windows"/>
 
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
