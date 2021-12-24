@@ -10,16 +10,30 @@ import sys.io.File;
 import sys.FileSystem;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
+import modloader.PolymodHandler;
+import modloader.ModLoaderDirectory;
 import flash.media.Sound;
 
 using StringTools;
 
 class Paths
 {
+	inline public static var VIDEO_EXT = "mp4";
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 	static public var modDir:String = null;
 	public static var customSoundsLoaded:Map<String, Sound> = new Map();
 	public static var customImagesLoaded:Map<String, Bool> = new Map<String, Bool>();
+
+	public static var ignoredFolders:Array<String> = [
+		'custom_characters',
+		'data',
+		'songs',
+		'music',
+		'sounds',
+		'videos',
+		'images',
+		'weeks'
+	];
 
 	static var currentLevel:String;
 
@@ -130,13 +144,17 @@ class Paths
 	{
 		return sound(key + FlxG.random.int(min, max), library);
 	}
-
-	inline static public function video(key:String, ?library:String)
-	{
-		trace('assets/videos/$key.mp4');
-		return getPath('videos/$key.mp4', BINARY, library);
-	}
-
+	
+	static public function video(key:String)
+		{
+			var file:String = modvideo(key);
+			if(FileSystem.exists(file)) {
+				return file;
+			}
+			else
+			return 'assets/videos/$key.$VIDEO_EXT';
+		}
+  
 	inline static public function music(key:String, ?library:String)
 	{
 		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
@@ -278,9 +296,8 @@ class Paths
 		return modfold('images/' + key + '.xml');
 	}
 
-	inline static public function modvideo(key:String)
-	{
-		return modfold('videos/$key.mp4');
+	inline static public function modvideo(key:String) {
+		return modfold('videos/' + key + '.' + VIDEO_EXT);
 	}
 
 	inline static public function modsImages(key:String)
@@ -327,7 +344,23 @@ class Paths
 			{
 				return fileToCheck;
 			}
+			if(!FileSystem.exists(fileToCheck)) {
+				return ModLoaderDirectory.dir;
+			}
 		}
 		return 'mods/' + key;
+	}
+	static public function modDirectory():Array<String> {
+		var list:Array<String> = [];
+		var modsFolder:String = Paths.mods();
+		if(FileSystem.exists(modsFolder)) {
+			for (folder in FileSystem.readDirectory(modsFolder)) {
+				var path = haxe.io.Path.join([modsFolder, folder]);
+				if (sys.FileSystem.isDirectory(path) && !Paths.ignoredFolders.contains(folder) && !list.contains(folder)) {
+					list.push(folder);
+				}
+			}
+		}
+		return list;
 	}
 }

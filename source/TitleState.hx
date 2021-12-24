@@ -61,19 +61,6 @@ class TitleState extends MusicBeatState
 			}
 			// PolymodHandler.loadMods();
 		}
-		if (sys.FileSystem.exists('mods/ModLoader'))
-		{
-			var folders:Array<String> = [];
-			for (file in sys.FileSystem.readDirectory('mods/ModLoader'))
-			{
-				var path = haxe.io.Path.join(['mods/ModLoader', file]);
-				if (sys.FileSystem.isDirectory(path))
-				{
-					folders.push(file);
-				}
-			}
-			PolymodHandler.loadMods();
-		}
 		#end
 
 		PlayerSettings.init();

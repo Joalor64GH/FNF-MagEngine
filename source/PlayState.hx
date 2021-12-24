@@ -961,10 +961,9 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('ANGRY'));
 					schoolIntro(doof);
 				case 'thorns':
-					schoolIntro(doof);
+				    schoolIntro(doof);
 				default:
-					if (SONG.dialoguetoggle != 'true')
-					{
+					if (SONG.dialoguetoggle != 'true'){
 						startCountdown();
 					}
 			}
@@ -1064,10 +1063,8 @@ class PlayState extends MusicBeatState
 					{
 						add(dialogueBox);
 					}
-				}
-				else
-					startCountdown();
-
+				}	
+			}
 				remove(black);
 			}
 		});
@@ -2033,29 +2030,35 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('Lights_Shut_off'));
 				}
 
-				// FlxTransitionableState.skipNextTransIn = true;
-				// FlxTransitionableState.skipNextTransOut = true;
-
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+				
+				if (SONG.videotoggle == 'true'){
+				FlxTransitionableState.skipNextTransIn = false;
+				FlxTransitionableState.skipNextTransOut = false;
 				var video:MP4Handler = new MP4Handler();
-				switch (SONG.videotoggle)
-				{
-					case 'true':
-						video.playMP4(Paths.modvideo(SONG.song.toLowerCase() + 'Video'));
-						#if polymod
-						polymod.Polymod.init({modRoot: "mods", dirs: [SONG.song.toLowerCase() + 'Video']});
-						#end
-						video.finishCallback = function()
-						{
-							LoadingState.loadAndSwitchState(new PlayState());
-						}
-					case 'false':
-				}
+                video.playMP4(Paths.video(SONG.song.toLowerCase() + 'Video'));
+                video.finishCallback = function()
+                {
+
 				prevCamFollow = camFollow;
 
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 				FlxG.sound.music.stop();
 
 				LoadingState.loadAndSwitchState(new PlayState());
+				}
+			   }
+			   else
+			   {
+				prevCamFollow = camFollow;
+
+				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
+				FlxG.sound.music.stop();
+
+				LoadingState.loadAndSwitchState(new PlayState());
+				   
+			   }
 			}
 		}
 		else
@@ -2347,7 +2350,6 @@ class PlayState extends MusicBeatState
 					{
 						for (coolNote in possibleNotes)
 						{
-							trace('classic note check 2');
 							noteCheck(controlPressArray[coolNote.noteData], coolNote);
 						}
 					}
@@ -2490,17 +2492,17 @@ class PlayState extends MusicBeatState
 			else
 				health += 0.004;
 
-			switch (note.noteData)
-			{
-				case 0:
-					boyfriend.playAnim('singLEFT', true);
-				case 1:
-					boyfriend.playAnim('singDOWN', true);
-				case 2:
-					boyfriend.playAnim('singUP', true);
-				case 3:
-					boyfriend.playAnim('singRIGHT', true);
-			}
+			switch (Std.int(Math.abs(note.noteData)))
+				{
+					case 0:
+						boyfriend.playAnim('singLEFT', true);
+					case 1:
+						boyfriend.playAnim('singDOWN', true);
+					case 2:
+						boyfriend.playAnim('singUP', true);
+					case 3:
+						boyfriend.playAnim('singRIGHT', true);
+				}
 
 			playerStrums.forEach(function(spr:FlxSprite)
 			{
