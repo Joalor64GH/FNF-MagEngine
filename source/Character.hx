@@ -49,8 +49,6 @@ class Character extends FlxSprite
 	
 	public var charthingy:Array<String> = CoolUtil.coolTextFile(Paths.bruhtxt('custom_characters/customCharacterList'));
 
-	public var charthingy:Array<String> = CoolUtil.coolTextFile(Paths.bruhtxt('custom_characters/customCharacterList'));
-
 	public var holdTimer:Float = 0;	
 
 	public var imagePNG:String = '';
