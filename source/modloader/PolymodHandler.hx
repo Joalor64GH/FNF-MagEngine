@@ -34,11 +34,11 @@ class PolymodHandler
                 trace(error.message);
             });
     
-            for(metadata in tempArray)
-            {
-                metadataArrays.push(metadata.id);
-                ModList.modMetadatas.set(metadata.id, metadata);
-            }
-        }
-    }
+                         for(metadata in tempArray)
+                         {
+                             metadataArrays.push(metadata.id);
+                             ModList.modMetadatas.set(metadata.id, metadata);
+                         }
+}
+}
 #end

@@ -40,12 +40,7 @@ class HealthIcon extends FlxSprite
 			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) name = 'icons/icon-' + char;
 
 			var file:Dynamic = Paths.image(name);
-			var swagfile:Dynamic = Paths.modicon(name);
 			
-			if (char.startsWith('customchar')){
-				loadGraphic(swagfile, true, 150, 150);
-
-			}
 			loadGraphic(file, true, 150, 150);
 			animation.add(char, [0, 1], 0, false, isPlayer);
 			animation.play(char);
