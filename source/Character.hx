@@ -43,7 +43,7 @@ class Character extends FlxSprite
 	public var animations:Array<Animation>;
 	public var image:String;
 
-	public var singDuration:Float = 6;
+	public var singDuration:Float = 4;
 	
 	public var charthingy:Array<String> = CoolUtil.coolTextFile(Paths.bruhtxt('custom_characters/customCharacterList'));
 
