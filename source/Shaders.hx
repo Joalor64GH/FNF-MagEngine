@@ -7,28 +7,38 @@ import openfl.display.ShaderInput;
 import openfl.utils.Assets;
 import flixel.FlxG;
 import openfl.Lib;
+
 using StringTools;
-typedef ShaderEffect = {
-  var shader:Dynamic;
+
+typedef ShaderEffect =
+{
+	var shader:Dynamic;
 }
 
-class BuildingEffect {
-  public var shader:BuildingShader = new BuildingShader();
-  public function new(){
-    shader.alphaShit.value = [0];
-  }
-  public function addAlpha(alpha:Float){
-    trace(shader.alphaShit.value[0]);
-    shader.alphaShit.value[0]+=alpha;
-  }
-  public function setAlpha(alpha:Float){
-    shader.alphaShit.value[0]=alpha;
-  }
+class BuildingEffect
+{
+	public var shader:BuildingShader = new BuildingShader();
+
+	public function new()
+	{
+		shader.alphaShit.value = [0];
+	}
+
+	public function addAlpha(alpha:Float)
+	{
+		trace(shader.alphaShit.value[0]);
+		shader.alphaShit.value[0] += alpha;
+	}
+
+	public function setAlpha(alpha:Float)
+	{
+		shader.alphaShit.value[0] = alpha;
+	}
 }
 
 class BuildingShader extends FlxShader
 {
-  @:glFragmentSource('
+	@:glFragmentSource('
     #pragma header
     uniform float alphaShit;
     void main()
@@ -41,77 +51,90 @@ class BuildingShader extends FlxShader
       gl_FragColor = color;
     }
   ')
-  public function new()
-  {
-    super();
-  }
+	public function new()
+	{
+		super();
+	}
 }
 
 class RainEffect
 {
-  public var shader:RainShader = new RainShader();
-  public function new(){
-    shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
-    shader.iTime.value = [0];
-    var noise = Assets.getBitmapData(Paths.image("noise"));
-    shader.iChannel0.input = noise;
-    shader.iChannel0.wrap = REPEAT;
-  }
-  public function update(elapsed:Float){
-    shader.iTime.value[0] += elapsed;
-    shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
-  }
+	public var shader:RainShader = new RainShader();
+
+	public function new()
+	{
+		shader.iResolution.value = [Lib.current.stage.stageWidth, Lib.current.stage.stageHeight];
+		shader.iTime.value = [0];
+		var noise = Assets.getBitmapData(Paths.image("noise"));
+		shader.iChannel0.input = noise;
+		shader.iChannel0.wrap = REPEAT;
+	}
+
+	public function update(elapsed:Float)
+	{
+		shader.iTime.value[0] += elapsed;
+		shader.iResolution.value = [Lib.current.stage.stageWidth, Lib.current.stage.stageHeight];
+	}
 }
 
 class VCRDistortionEffect
 {
-  public var shader:VCRDistortionShader = new VCRDistortionShader();
-  public function new(){
-    shader.iTime.value = [0];
-    shader.vignetteOn.value = [true];
-    shader.perspectiveOn.value = [true];
-    shader.distortionOn.value = [true];
-    shader.scanlinesOn.value = [true];
-    shader.vignetteMoving.value = [true];
-    shader.glitchModifier.value = [1];
-    shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
-    var noise = Assets.getBitmapData(Paths.image("noise2"));
-    shader.noiseTex.input = noise;
-  }
+	public var shader:VCRDistortionShader = new VCRDistortionShader();
 
-  public function update(elapsed:Float){
-    shader.iTime.value[0] += elapsed;
-    shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
-  }
+	public function new()
+	{
+		shader.iTime.value = [0];
+		shader.vignetteOn.value = [true];
+		shader.perspectiveOn.value = [true];
+		shader.distortionOn.value = [true];
+		shader.scanlinesOn.value = [true];
+		shader.vignetteMoving.value = [true];
+		shader.glitchModifier.value = [1];
+		shader.iResolution.value = [Lib.current.stage.stageWidth, Lib.current.stage.stageHeight];
+		var noise = Assets.getBitmapData(Paths.image("noise2"));
+		shader.noiseTex.input = noise;
+	}
 
-  public function setVignette(state:Bool){
-    shader.vignetteOn.value[0] = state;
-  }
+	public function update(elapsed:Float)
+	{
+		shader.iTime.value[0] += elapsed;
+		shader.iResolution.value = [Lib.current.stage.stageWidth, Lib.current.stage.stageHeight];
+	}
 
-  public function setPerspective(state:Bool){
-    shader.perspectiveOn.value[0] = state;
-  }
+	public function setVignette(state:Bool)
+	{
+		shader.vignetteOn.value[0] = state;
+	}
 
-  public function setGlitchModifier(modifier:Float){
-    shader.glitchModifier.value[0] = modifier;
-  }
+	public function setPerspective(state:Bool)
+	{
+		shader.perspectiveOn.value[0] = state;
+	}
 
-  public function setDistortion(state:Bool){
-    shader.distortionOn.value[0] = state;
-  }
+	public function setGlitchModifier(modifier:Float)
+	{
+		shader.glitchModifier.value[0] = modifier;
+	}
 
-  public function setScanlines(state:Bool){
-    shader.scanlinesOn.value[0] = state;
-  }
+	public function setDistortion(state:Bool)
+	{
+		shader.distortionOn.value[0] = state;
+	}
 
-  public function setVignetteMoving(state:Bool){
-    shader.vignetteMoving.value[0] = state;
-  }
+	public function setScanlines(state:Bool)
+	{
+		shader.scanlinesOn.value[0] = state;
+	}
+
+	public function setVignetteMoving(state:Bool)
+	{
+		shader.vignetteMoving.value[0] = state;
+	}
 }
 
 class RainShader extends FlxShader // https://www.shadertoy.com/view/WldGRl
 {
-  @:glFragmentSource('
+	@:glFragmentSource('
     #pragma header
     uniform vec2 iResolution;
     uniform sampler2D iChannel0;
@@ -134,16 +157,15 @@ class RainShader extends FlxShader // https://www.shadertoy.com/view/WldGRl
       gl_FragColor = flixel_texture2D(bitmap,openfl_TextureCoordv)+vec4(col,1.0);
     }
   ')
-
-  public function new(){
-    super();
-  }
+	public function new()
+	{
+		super();
+	}
 }
 
 class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ldjGzV and https://www.shadertoy.com/view/Ms23DR and https://www.shadertoy.com/view/MsXGD4 and https://www.shadertoy.com/view/Xtccz4
 {
-
-  @:glFragmentSource('
+	@:glFragmentSource('
     #pragma header
 
     uniform float iTime;
@@ -263,8 +285,8 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
 
     }
   ')
-  public function new()
-  {
-    super();
-  }
+	public function new()
+	{
+		super();
+	}
 }

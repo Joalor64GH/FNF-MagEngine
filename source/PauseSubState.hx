@@ -16,9 +16,15 @@ import flixel.util.FlxColor;
 class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
-	
+
 	var menuItems:Array<String> = [];
-	var menuItemswhyhaxe:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Toggle Practice Mode', 'Exit to menu'];
+	var menuItemswhyhaxe:Array<String> = [
+		'Resume',
+		'Restart Song',
+		'Change Difficulty',
+		'Toggle Practice Mode',
+		'Exit to menu'
+	];
 	var levelpractice:FlxText;
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
@@ -34,7 +40,8 @@ class PauseSubState extends MusicBeatSubstate
 
 		funne = FlxG.save.data.accuracyyay;
 
-		for (i in 0...CoolUtil.difficultyStuff.length) {
+		for (i in 0...CoolUtil.difficultyStuff.length)
+		{
 			var diff:String = '' + CoolUtil.difficultyStuff[i][0];
 			difficultyChoices.push(diff);
 		}
@@ -50,7 +57,7 @@ class PauseSubState extends MusicBeatSubstate
 		bg.alpha = 0;
 		bg.scrollFactor.set();
 		add(bg);
-		
+
 		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
 		levelInfo.text += PlayState.SONG.song;
 		levelInfo.scrollFactor.set();
@@ -64,7 +71,7 @@ class PauseSubState extends MusicBeatSubstate
 		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
-		
+
 		var blueballedTxt:FlxText = new FlxText(20, 15 + 64, 0, "", 32);
 		blueballedTxt.text = "Blueballed: " + PlayState.bbCounter;
 		blueballedTxt.scrollFactor.set();
@@ -84,12 +91,11 @@ class PauseSubState extends MusicBeatSubstate
 		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;
 
-
 		levelInfo.x = FlxG.width - (levelInfo.width + 20);
 		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 20);
 		blueballedTxt.x = FlxG.width - (blueballedTxt.width + 20);
 		levelpractice.x = FlxG.width - (levelpractice.width + 20);
-		
+
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
 		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
 		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
@@ -132,19 +138,21 @@ class PauseSubState extends MusicBeatSubstate
 		}
 
 		if (accepted)
+		{
+			var daSelected:String = menuItems[curSelected];
+			for (i in 0...difficultyChoices.length - 1)
 			{
-				var daSelected:String = menuItems[curSelected];
-				for (i in 0...difficultyChoices.length-1) {
-					if(difficultyChoices[i] == daSelected) {
-						var name:String = PlayState.SONG.song.toLowerCase();
-						var poop = Highscore.formatSong(name, curSelected);
-						PlayState.SONG = Song.loadFromJson(poop, name);
-						PlayState.storyDifficulty = curSelected;
-						MusicBeatState.resetState();
-						FlxG.sound.music.volume = 0;
-						return;
-					}
-				} 
+				if (difficultyChoices[i] == daSelected)
+				{
+					var name:String = PlayState.SONG.song.toLowerCase();
+					var poop = Highscore.formatSong(name, curSelected);
+					PlayState.SONG = Song.loadFromJson(poop, name);
+					PlayState.storyDifficulty = curSelected;
+					MusicBeatState.resetState();
+					FlxG.sound.music.volume = 0;
+					return;
+				}
+			}
 			var daSelected:String = menuItems[curSelected];
 
 			switch (daSelected)
@@ -152,10 +160,10 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					close();
 
-			    case 'Change Difficulty':
+				case 'Change Difficulty':
 					menuItems = difficultyChoices;
 					regenerateMenu();
-				
+
 				case 'Toggle Practice Mode':
 					PlayState.practiceAllowed = !PlayState.practiceAllowed;
 					levelpractice.visible = PlayState.practiceAllowed;
@@ -210,11 +218,14 @@ class PauseSubState extends MusicBeatSubstate
 		}
 	}
 
-	function regenerateMenu():Void {
-		for (i in 0...grpMenuShit.members.length) {
+	function regenerateMenu():Void
+	{
+		for (i in 0...grpMenuShit.members.length)
+		{
 			this.grpMenuShit.remove(this.grpMenuShit.members[0], true);
 		}
-		for (i in 0...menuItems.length) {
+		for (i in 0...menuItems.length)
+		{
 			var item = new Alphabet(0, 70 * i + 30, menuItems[i], true, false);
 			item.isMenuItem = true;
 			item.targetY = i;
@@ -224,4 +235,3 @@ class PauseSubState extends MusicBeatSubstate
 		changeSelection();
 	}
 }
-

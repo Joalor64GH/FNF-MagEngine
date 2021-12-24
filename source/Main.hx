@@ -27,8 +27,7 @@ class Main extends Sprite
 
 	public static function main():Void
 	{
-
-		// quick checks 
+		// quick checks
 
 		Lib.current.addChild(new Main());
 	}
@@ -86,7 +85,7 @@ class Main extends Sprite
 		addChild(display);
 		#end
 	}
-	
+
 	public static var display:SimpleInfoDisplay;
 
 	public function toggleFPS(fpsEnabled:Bool):Void
@@ -98,7 +97,7 @@ class Main extends Sprite
 	{
 		display.infoDisplayed[1] = memEnabled;
 	}
-	
+
 	public function toggleVers(versEnabled:Bool):Void
 	{
 		display.infoDisplayed[2] = versEnabled;
@@ -118,7 +117,4 @@ class Main extends Sprite
 	{
 		return openfl.Lib.current.stage.frameRate;
 	}
-	
 }
-
-

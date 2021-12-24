@@ -43,7 +43,7 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 
-		x += 50;
+		x += PlayState.STRUM_X + 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
 		y -= 2000;
 		this.strumTime = strumTime;
@@ -118,15 +118,15 @@ class Note extends FlxSprite
 				x += swagWidth * 3;
 				animation.play('redScroll');
 		}
-		
-		if (FlxG.save.data.downscroll && sustainNote) 
-			flipY = true;
+
 		// trace(prevNote);
 
 		if (isSustainNote && prevNote != null)
 		{
 			noteScore * 0.2;
 			alpha = 0.6;
+			if (FlxG.save.data.downscroll)
+				flipY = true;
 
 			x += width / 2;
 

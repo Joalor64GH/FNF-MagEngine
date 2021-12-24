@@ -61,7 +61,7 @@ class ModsMenu extends MusicBeatState
 
 		var optionLoopNum:Int = 0;
 
-		for(modId in PolymodHandler.metadataArrays)
+		for (modId in PolymodHandler.metadataArrays)
 		{
 			var ModsMenuOption = new ModsMenuOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
 			page.add(ModsMenuOption);

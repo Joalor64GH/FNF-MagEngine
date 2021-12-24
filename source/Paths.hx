@@ -10,11 +10,9 @@ import sys.io.File;
 import sys.FileSystem;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
-
 import flash.media.Sound;
 
 using StringTools;
-
 
 class Paths
 {
@@ -24,7 +22,7 @@ class Paths
 	public static var customImagesLoaded:Map<String, Bool> = new Map<String, Bool>();
 
 	static var currentLevel:String;
-	
+
 	static public function setCurrentLevel(name:String)
 	{
 		currentLevel = name.toLowerCase();
@@ -49,28 +47,29 @@ class Paths
 		return getPreloadPath(file);
 	}
 
-	inline static public function formatToSongPath(path:String) {
+	inline static public function formatToSongPath(path:String)
+	{
 		return path.toLowerCase().replace(' ', '-');
 	}
 
 	static function getModPath(file:String, type:AssetType, library:Null<String>)
+	{
+		if (library != null)
+			return getLibraryPath(file, library);
+
+		if (currentLevel != null)
 		{
-			if (library != null)
-				return getLibraryPath(file, library);
-	
-			if (currentLevel != null)
-			{
-				var levelPath = getLibrarymodPathForce(file, currentLevel);
-				if (OpenFlAssets.exists(levelPath, type))
-					return levelPath;
-	
-				levelPath = getLibrarymodPathForce(file, "images");
-				if (OpenFlAssets.exists(levelPath, type))
-					return levelPath;
-			}
-	
-			return getmodPreloadPath(file);
+			var levelPath = getLibrarymodPathForce(file, currentLevel);
+			if (OpenFlAssets.exists(levelPath, type))
+				return levelPath;
+
+			levelPath = getLibrarymodPathForce(file, "images");
+			if (OpenFlAssets.exists(levelPath, type))
+				return levelPath;
 		}
+
+		return getmodPreloadPath(file);
+	}
 
 	static public function getLibraryPath(file:String, library = "preload")
 	{
@@ -88,14 +87,14 @@ class Paths
 	}
 
 	inline static function getLibrarymodPathForce(file:String, library:String)
-		{
-			return '$library:mods/$library/$file';
-		}
-	
-		inline static function getmodPreloadPath(file:String)
-		{
-			return 'mods/$file';
-		}
+	{
+		return '$library:mods/$library/$file';
+	}
+
+	inline static function getmodPreloadPath(file:String)
+	{
+		return 'mods/$file';
+	}
 
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String)
 	{
@@ -103,9 +102,9 @@ class Paths
 	}
 
 	inline static public function txt(key:String, ?library:String)
-		{
-			return getPath('$key.txt', TEXT, library);
-		}
+	{
+		return getPath('$key.txt', TEXT, library);
+	}
 
 	inline static public function xml(key:String, ?library:String)
 	{
@@ -119,7 +118,7 @@ class Paths
 
 	inline static public function cooljson(key:String, ?library:String)
 	{
-			return getPath('$key.json', TEXT, library);
+		return getPath('$key.json', TEXT, library);
 	}
 
 	static public function sound(key:String, ?library:String)
@@ -131,42 +130,46 @@ class Paths
 	{
 		return sound(key + FlxG.random.int(min, max), library);
 	}
-	
+
 	inline static public function video(key:String, ?library:String)
 	{
 		trace('assets/videos/$key.mp4');
 		return getPath('videos/$key.mp4', BINARY, library);
 	}
+
 	inline static public function music(key:String, ?library:String)
 	{
 		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
 	}
 
 	inline static public function voices(song:String):Any
+	{
+		var file:Sound = returnSongFile(modsSongs(song.toLowerCase().replace(' ', '-') + '/Voices'));
+		if (file != null)
 		{
-			var file:Sound = returnSongFile(modsSongs(song.toLowerCase().replace(' ', '-') + '/Voices'));
-			if(file != null) {
-				return file;
-			}
-	
-			return 'songs:assets/songs/${song.toLowerCase().replace(' ', '-')}/Voices.$SOUND_EXT';
+			return file;
 		}
-	
-		inline static public function inst(song:String):Any
+
+		return 'songs:assets/songs/${song.toLowerCase().replace(' ', '-')}/Voices.$SOUND_EXT';
+	}
+
+	inline static public function inst(song:String):Any
+	{
+		var file:Sound = returnSongFile(modsSongs(song.toLowerCase().replace(' ', '-') + '/Inst'));
+		if (file != null)
 		{
-		
-			var file:Sound = returnSongFile(modsSongs(song.toLowerCase().replace(' ', '-') + '/Inst'));
-			if(file != null) {
-				return file;
-			}
-		
-			return 'songs:assets/songs/${song.toLowerCase().replace(' ', '-')}/Inst.$SOUND_EXT';
+			return file;
 		}
+
+		return 'songs:assets/songs/${song.toLowerCase().replace(' ', '-')}/Inst.$SOUND_EXT';
+	}
 
 	inline static private function returnSongFile(file:String):Sound
 	{
-		if(FileSystem.exists(file)) {
-			if(!customSoundsLoaded.exists(file)) {
+		if (FileSystem.exists(file))
+		{
+			if (!customSoundsLoaded.exists(file))
+			{
 				customSoundsLoaded.set(file, Sound.fromFile(file));
 			}
 			return customSoundsLoaded.get(file);
@@ -175,23 +178,27 @@ class Paths
 	}
 
 	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String)
+	{
+		#if mods
+		if (FileSystem.exists(mods(currentModDirectory + '/' + key)) || FileSystem.exists(mods(key)))
 		{
-			#if mods
-			if(FileSystem.exists(mods(currentModDirectory + '/' + key)) || FileSystem.exists(mods(key))) {
-				return true;
-			}
-			#end
-			
-			if(OpenFlAssets.exists(Paths.getPath(key, type, library))) {
-				return true;
-			}
-			return false;
+			return true;
 		}
-	
+		#end
 
-	static public function addCustomGraphic(key:String):FlxGraphic {
-		if(FileSystem.exists(modsImages(key))) {
-			if(!customImagesLoaded.exists(key)) {
+		if (OpenFlAssets.exists(Paths.getPath(key, type, library)))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	static public function addCustomGraphic(key:String):FlxGraphic
+	{
+		if (FileSystem.exists(modsImages(key)))
+		{
+			if (!customImagesLoaded.exists(key))
+			{
 				var newBitmap:BitmapData = BitmapData.fromFile(modsImages(key));
 				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(newBitmap, false, key);
 				newGraphic.persist = true;
@@ -204,63 +211,70 @@ class Paths
 	}
 
 	inline static public function image(key:String, ?library:String):Dynamic
-		{
-			var imageToReturn:FlxGraphic = addCustomGraphic(key);
-			if(imageToReturn != null) return imageToReturn;
-			return getPath('images/$key.png', IMAGE, library);
-		}
+	{
+		var imageToReturn:FlxGraphic = addCustomGraphic(key);
+		if (imageToReturn != null)
+			return imageToReturn;
+		return getPath('images/$key.png', IMAGE, library);
+	}
 
-		inline static public function coolimage(key:String, ?library:String):Dynamic
-			{
-				return getModPath('images/$key.png', IMAGE, library);
-			}
-
+	inline static public function coolimage(key:String, ?library:String):Dynamic
+	{
+		return getModPath('images/$key.png', IMAGE, library);
+	}
 
 	inline static public function font(key:String)
 	{
 		return 'assets/fonts/$key';
-
 	}
 
 	inline static public function bruhtxt(key:String)
-		{
-			return modfold('$key.txt');
-		}
+	{
+		return modfold('$key.txt');
+	}
 
-	inline static public function mods(key:String = '') {
+	inline static public function mods(key:String = '')
+	{
 		return 'mods/' + key;
 	}
 
-	inline static public function jsonCool(key:String = '') {
+	inline static public function jsonCool(key:String = '')
+	{
 		return 'weeks/' + key;
 	}
 
-	inline static public function modsSongs(key:String) {
+	inline static public function modsSongs(key:String)
+	{
 		return modfold('songs/' + key + '.' + SOUND_EXT);
 	}
 
-	inline static public function modsong(key:String) {
+	inline static public function modsong(key:String)
+	{
 		return modfold(key + '.json');
 	}
-	
-	inline static public function modsJson(key:String) {
+
+	inline static public function modsJson(key:String)
+	{
 		return modfold('data/' + key + '.json');
 	}
 
-
-	inline static public function modimage(key:String) {
+	inline static public function modimage(key:String)
+	{
 		return modfold('stages/' + key + '.png');
 	}
 
-	inline static public function modicon(key:String) {
+	inline static public function modicon(key:String)
+	{
 		return modfold('images/' + key + '.png');
-	}	
+	}
 
-	inline static public function swagmodicon(key:String) {
+	inline static public function swagmodicon(key:String)
+	{
 		return modfold('shared/images/' + key + '.png');
 	}
 
-	inline static public function modsXml(key:String) {
+	inline static public function modsXml(key:String)
+	{
 		return modfold('images/' + key + '.xml');
 	}
 
@@ -268,12 +282,14 @@ class Paths
 	{
 		return modfold('videos/$key.mp4');
 	}
-	
-	inline static public function modsImages(key:String) {
+
+	inline static public function modsImages(key:String)
+	{
 		return modfold('images/' + key + '.png');
 	}
 
-	inline static public function modspng(key:String) {
+	inline static public function modspng(key:String)
+	{
 		return modfold(key + '.png');
 	}
 
@@ -283,28 +299,32 @@ class Paths
 	}
 
 	inline static public function getModsSparrowAtlas(key:String, ?library:String)
+	{
+		var imageLoaded:FlxGraphic = addCustomGraphic(key);
+		var xmlExists:Bool = false;
+		if (FileSystem.exists(modsXml(key)))
 		{
-			var imageLoaded:FlxGraphic = addCustomGraphic(key);
-			var xmlExists:Bool = false;
-			if(FileSystem.exists(modsXml(key))) {
-				xmlExists = true;
-			}
-	
-			return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)), (xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
+			xmlExists = true;
 		}
-		
-	//why, spirit?
+
+		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
+			(xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
+	}
+
+	// why, spirit?
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
 	}
 
-	
-	static public function modfold(key:String) {
-		if(modDir != null && modDir.length > 0) {
+	static public function modfold(key:String)
+	{
+		if (modDir != null && modDir.length > 0)
+		{
 			// psych engine for the win
 			var fileToCheck:String = mods(modDir + '/' + key);
-			if(FileSystem.exists(fileToCheck)) {
+			if (FileSystem.exists(fileToCheck))
+			{
 				return fileToCheck;
 			}
 		}

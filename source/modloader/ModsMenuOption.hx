@@ -12,8 +12,8 @@ import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
 import flixel.ui.FlxButton;
 
- class ModsMenuOption extends FlxTypedGroup<FlxSprite>
- {
+class ModsMenuOption extends FlxTypedGroup<FlxSprite>
+{
 	public var Alphabet_Text:Alphabet;
 	public var Mod_Icon:ModIcon;
 
@@ -23,7 +23,7 @@ import flixel.ui.FlxButton;
 
 	public var Option_Name:String = "-";
 	public var Option_Value:String = "Template Mod";
-	
+
 	public function new(_Option_Name:String = "-", _Option_Value:String = "Template Mod", _Option_Row:Int = 0)
 	{
 		super();
@@ -48,7 +48,6 @@ import flixel.ui.FlxButton;
 
 	override function update(elapsed:Float)
 	{
-
 		super.update(elapsed);
 
 		var enableButton:FlxButton = new FlxButton(920, 620, "Enable Mod", function()
@@ -61,20 +60,20 @@ import flixel.ui.FlxButton;
 		enableButton.label.fieldWidth = 135;
 		enableButton.label.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER);
 		add(enableButton);
-		
+
 		var disableButton:FlxButton = new FlxButton(1100, 620, "Disable Mod", function()
 		{
 			Mod_Enabled = false;
 		});
-		
+
 		disableButton.setGraphicSize(150, 70);
 		disableButton.updateHitbox();
 		disableButton.label.y += 22;
 		disableButton.label.fieldWidth = 135;
 		disableButton.label.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER);
 		add(disableButton);
-	
-		if(Mod_Enabled)
+
+		if (Mod_Enabled)
 		{
 			Alphabet_Text.color = FlxColor.GREEN;
 		}

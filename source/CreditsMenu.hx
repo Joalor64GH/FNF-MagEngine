@@ -28,8 +28,8 @@ class CreditsMenu extends MusicBeatState
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
-	
-    var descText:FlxText;
+
+	var descText:FlxText;
 	var bg:FlxSprite;
 	var intendedColor:Int;
 	var colorTween:FlxTween;
@@ -63,21 +63,20 @@ class CreditsMenu extends MusicBeatState
 		isDebug = true;
 		#end
 
-
 		// LOAD MUSIC
 
 		// LOAD CHARACTERS
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-        bg.color = FlxColor.PINK;
+		bg.color = FlxColor.PINK;
 		add(bg);
 
-        descText = new FlxText(50, 600, 1180, "", 32);
-        descText.setFormat(Paths.font("funkin.otf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-        descText.scrollFactor.set();
-        descText.text = 'what';
-        descText.borderSize = 2.4;
-        add(descText);
+		descText = new FlxText(50, 600, 1180, "", 32);
+		descText.setFormat(Paths.font("funkin.otf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText.scrollFactor.set();
+		descText.text = 'what';
+		descText.borderSize = 2.4;
+		add(descText);
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
@@ -88,7 +87,6 @@ class CreditsMenu extends MusicBeatState
 			songText.isMenuItem = true;
 			songText.targetY = i;
 			grpSongs.add(songText);
-            
 
 			// songText.x += 40;
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
@@ -104,12 +102,12 @@ class CreditsMenu extends MusicBeatState
 		selector.text = ">";
 		// add(selector);
 
-        var descText:FlxText = new FlxText(50, 600, 1180, "", 32);
-        descText.setFormat(Paths.font("funkin.otf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-        descText.scrollFactor.set();
-        descText.borderSize = 2.4;
-        add(descText);
-        
+		var descText:FlxText = new FlxText(50, 600, 1180, "", 32);
+		descText.setFormat(Paths.font("funkin.otf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText.scrollFactor.set();
+		descText.borderSize = 2.4;
+		add(descText);
+
 		var swag:Alphabet = new Alphabet(1, 0, "swag");
 
 		// JUST DOIN THIS SHIT FOR TESTING!!!
@@ -131,6 +129,7 @@ class CreditsMenu extends MusicBeatState
 
 		super.create();
 	}
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -141,7 +140,8 @@ class CreditsMenu extends MusicBeatState
 		var space = FlxG.keys.justPressed.SPACE;
 
 		var shiftMult:Int = 1;
-		if(FlxG.keys.pressed.SHIFT) shiftMult = 3;
+		if (FlxG.keys.pressed.SHIFT)
+			shiftMult = 3;
 
 		if (upP)
 		{
@@ -154,52 +154,51 @@ class CreditsMenu extends MusicBeatState
 
 		if (controls.BACK)
 		{
-
 			MusicBeatState.switchState(new MainMenuState());
 		}
 	}
 
 	function changeSelection(change:Int = 0)
-		{
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-	
-			curSelected += change;
-	
-			if (curSelected < 0)
-				curSelected = credits.length - 1;
-			if (curSelected >= credits.length)
-				curSelected = 0;
+	{
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
-            descText.text = credits[curSelected].desc;
-			
-	
-			// selector.y = (70 * curSelected) + 30;
-			var bullShit:Int = 0;
-	
-			for (item in grpSongs.members)
+		curSelected += change;
+
+		if (curSelected < 0)
+			curSelected = credits.length - 1;
+		if (curSelected >= credits.length)
+			curSelected = 0;
+
+		descText.text = credits[curSelected].desc;
+
+		// selector.y = (70 * curSelected) + 30;
+		var bullShit:Int = 0;
+
+		for (item in grpSongs.members)
+		{
+			item.targetY = bullShit - curSelected;
+			bullShit++;
+
+			item.alpha = 0.6;
+			// item.setGraphicSize(Std.int(item.width * 0.8));
+
+			if (item.targetY == 0)
 			{
-				item.targetY = bullShit - curSelected;
-				bullShit++;
-	
-				item.alpha = 0.6;
-				// item.setGraphicSize(Std.int(item.width * 0.8));
-	
-				if (item.targetY == 0)
-				{
-					item.alpha = 1;
-					// item.setGraphicSize(Std.int(item.width));
-				}
+				item.alpha = 1;
+				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+	}
 }
+
 class CreditsMetadata
 {
 	public var modderName:String = "";
-    public var desc:String = "";
+	public var desc:String = "";
 
 	public function new(name:String, desc:String)
 	{
 		this.modderName = name;
-        this.desc = desc;
+		this.desc = desc;
 	}
 }

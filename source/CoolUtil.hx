@@ -6,22 +6,21 @@ using StringTools;
 
 class CoolUtil
 {
-	public static var difficultyStuff:Array<Dynamic> = [
-		['EASY'],
-		['NORMAL'],
-		['HARD']
-	];
+	public static var difficultyStuff:Array<Dynamic> = [['EASY'], ['NORMAL'], ['HARD']];
 
 	public static function difficultyString():String
-		{
-			return difficultyStuff[PlayState.storyDifficulty][0].toUpperCase();
-		}
+	{
+		return difficultyStuff[PlayState.storyDifficulty][0].toUpperCase();
+	}
 
-	//code used in psych engine
-	public static function boundTo(value:Float, min:Float, max:Float):Float {
+	// code used in psych engine
+	public static function boundTo(value:Float, min:Float, max:Float):Float
+	{
 		var newValue:Float = value;
-		if(newValue < min) newValue = min;
-		else if(newValue > max) newValue = max;
+		if (newValue < min)
+			newValue = min;
+		else if (newValue > max)
+			newValue = max;
 		return newValue;
 	}
 
@@ -38,29 +37,28 @@ class CoolUtil
 	}
 
 	public static function evenCoolerTextFile(path:String):Array<String>
+	{
+		var daList:Array<String> = sys.io.File.getContent(path).trim().split('\n');
+
+		for (i in 0...daList.length)
 		{
-			var daList:Array<String> = sys.io.File.getContent(path).trim().split('\n');
-	
-			for (i in 0...daList.length)
-			{
-				daList[i] = daList[i].trim();
-			}
-	
-			return daList;
+			daList[i] = daList[i].trim();
 		}
-		
-		public static function coolOptions(path:String):Array<String>
-			{
-				var daList:Array<String> = path.trim().split('\n');
-		
-				for (i in 0...daList.length)
-				{
-					daList[i] = daList[i].trim();
-				}
-		
-				return daList;
-			}
-	
+
+		return daList;
+	}
+
+	public static function coolOptions(path:String):Array<String>
+	{
+		var daList:Array<String> = path.trim().split('\n');
+
+		for (i in 0...daList.length)
+		{
+			daList[i] = daList[i].trim();
+		}
+
+		return daList;
+	}
 
 	public static function numberArray(max:Int, ?min = 0):Array<Int>
 	{

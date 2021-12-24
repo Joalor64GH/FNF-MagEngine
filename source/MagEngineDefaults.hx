@@ -3,9 +3,9 @@ import flixel.FlxG;
 
 class CableEngineData
 {
-    public static function initSave()
-    {
-     	if (FlxG.save.data.downscroll == null)
+	public static function initSave()
+	{
+		if (FlxG.save.data.downscroll == null)
 			FlxG.save.data.downscroll = false;
 
 		if (FlxG.save.data.dfjk == null)
@@ -32,10 +32,8 @@ class CableEngineData
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 60;
 
-
 		Conductor.recalculateTimings();
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();
-        
 	}
 }

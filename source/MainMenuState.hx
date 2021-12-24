@@ -16,7 +16,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import io.newgrounds.NG;
 import lime.app.Application;
-import flixel.math.FlxMath;							
+import flixel.math.FlxMath;
 import modloader.ModsMenu;
 
 using StringTools;
@@ -39,7 +39,6 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-
 		FlxG.mouse.visible = false;
 		#if desktop
 		// Updating Discord Rich Presence
@@ -55,7 +54,7 @@ class MainMenuState extends MusicBeatState
 		}
 
 		persistentUpdate = persistentDraw = true;
-		
+
 		//
 		var psychScrolleffect:Float = Math.max(0.15 - (0.05 * (optionShit.length - 4)), 0.1);
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
@@ -66,8 +65,6 @@ class MainMenuState extends MusicBeatState
 		bg.antialiasing = true;
 		add(bg);
 
-
-		
 		camFollow = new FlxObject(0, 0, 1, 1);
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
@@ -90,24 +87,24 @@ class MainMenuState extends MusicBeatState
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
 
 		for (i in 0...optionShit.length)
-			{
-				var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
-				var menuItem:FlxSprite = new FlxSprite(0, (i * 140)  + offset);
-				menuItem.frames = tex;
-				menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-				menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
-				menuItem.animation.play('idle');
-				menuItem.ID = i;
-				menuItem.screenCenter(X);
-				menuItems.add(menuItem);
-				var scr:Float = (optionShit.length - 4) * 0.135;
-				if(optionShit.length < 7) scr = 0;
-				menuItem.scrollFactor.set(0, scr);
-				menuItem.antialiasing = true;
-				menuItem.updateHitbox();
-			}
+		{
+			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
+			var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + offset);
+			menuItem.frames = tex;
+			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
+			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+			menuItem.animation.play('idle');
+			menuItem.ID = i;
+			menuItem.screenCenter(X);
+			menuItems.add(menuItem);
+			var scr:Float = (optionShit.length - 4) * 0.135;
+			if (optionShit.length < 7)
+				scr = 0;
+			menuItem.scrollFactor.set(0, scr);
+			menuItem.antialiasing = true;
+			menuItem.updateHitbox();
+		}
 
-			
 		FlxG.camera.follow(camFollowPos, null, 1);
 
 		var versionShit:FlxText = new FlxText(5, FlxG.height - 38, 0, "Mag Engine v" + Application.current.meta.get('version'), 12);
@@ -175,7 +172,7 @@ class MainMenuState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 
 					FlxFlicker.flicker(magenta, 1.1, 0.15, false);
-					
+
 					menuItems.forEach(function(spr:FlxSprite)
 					{
 						if (curSelected != spr.ID)
@@ -208,11 +205,9 @@ class MainMenuState extends MusicBeatState
 
 									case 'mods':
 										MusicBeatState.switchState(new ModsMenu());
-										
-									
+
 									case 'social':
 										MusicBeatState.switchState(new SocialsState());
-										
 
 									case 'options':
 										MusicBeatState.switchState(new OptionsMenu());

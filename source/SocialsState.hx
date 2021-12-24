@@ -24,8 +24,8 @@ class SocialsState extends MusicBeatState
 {
 	var curSelected:Int = 0;
 
-    var youtube:String = sys.io.File.getContent(Paths.txt('data/youtube'));
-    var twitter:String = sys.io.File.getContent(Paths.txt('data/twitter'));
+	var youtube:String = sys.io.File.getContent(Paths.txt('data/youtube'));
+	var twitter:String = sys.io.File.getContent(Paths.txt('data/twitter'));
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
@@ -51,8 +51,7 @@ class SocialsState extends MusicBeatState
 		}
 
 		persistentUpdate = persistentDraw = true;
-		
-		
+
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.18;
@@ -62,8 +61,6 @@ class SocialsState extends MusicBeatState
 		bg.antialiasing = true;
 		add(bg);
 
-
-		
 		camFollow = new FlxObject(0, 0, 1, 1);
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
@@ -87,20 +84,19 @@ class SocialsState extends MusicBeatState
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
 
 		for (i in 0...optionShit.length)
-            {
-                var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
-                menuItem.frames = tex;
-                menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-                menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
-                menuItem.animation.play('idle');
-                menuItem.ID = i;
-                menuItem.screenCenter(X);
-                menuItems.add(menuItem);
-                menuItem.scrollFactor.set();
-                menuItem.antialiasing = true;
-            }
+		{
+			var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
+			menuItem.frames = tex;
+			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
+			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+			menuItem.animation.play('idle');
+			menuItem.ID = i;
+			menuItem.screenCenter(X);
+			menuItems.add(menuItem);
+			menuItem.scrollFactor.set();
+			menuItem.antialiasing = true;
+		}
 
-			
 		FlxG.camera.follow(camFollowPos, null, 1);
 
 		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Mag Engine v" + Application.current.meta.get('version'), 12);
@@ -150,7 +146,6 @@ class SocialsState extends MusicBeatState
 				FlxG.switchState(new MainMenuState());
 			}
 
-            
 			if (controls.ACCEPT)
 			{
 				if (optionShit[curSelected] == 'youtube')
@@ -162,13 +157,13 @@ class SocialsState extends MusicBeatState
 					#end
 				}
 				else if (optionShit[curSelected] == 'twitter')
-                {
-                     #if linux
-                     Sys.command('/usr/bin/xdg-open', [twitter, "&"]);
-                     #else
-                     FlxG.openURL(twitter);
-                     #end
-                 }
+				{
+					#if linux
+					Sys.command('/usr/bin/xdg-open', [twitter, "&"]);
+					#else
+					FlxG.openURL(twitter);
+					#end
+				}
 				else
 				{
 					selectedSomethin = true;
@@ -203,8 +198,6 @@ class SocialsState extends MusicBeatState
 										trace("Freeplay Menu Selected");
 									case 'credits':
 										MusicBeatState.switchState(new CreditsMenu());
-
-										
 
 									case 'options':
 										MusicBeatState.switchState(new OptionsMenu());

@@ -30,7 +30,7 @@ class MusicBeatState extends FlxUIState
 
 	override function update(elapsed:Float)
 	{
-		//everyStep();
+		// everyStep();
 		var oldStep:Int = curStep;
 
 		updateCurStep();
@@ -63,20 +63,24 @@ class MusicBeatState extends FlxUIState
 		curStep = lastChange.stepTime + Math.floor((Conductor.songPosition - lastChange.songTime) / Conductor.stepCrochet);
 	}
 
-	public static function switchState(nextState:FlxState) {
+	public static function switchState(nextState:FlxState)
+	{
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
-		if(!FlxTransitionableState.skipNextTransIn) {
-			if(nextState == FlxG.state) {
-					FlxG.resetState();
-				
-			}else{
-					FlxG.switchState(nextState);
-				};
-				//trace('changed state');
+		if (!FlxTransitionableState.skipNextTransIn)
+		{
+			if (nextState == FlxG.state)
+			{
+				FlxG.resetState();
 			}
-			return;
-		
+			else
+			{
+				FlxG.switchState(nextState);
+			};
+			// trace('changed state');
+		}
+		return;
+
 		FlxTransitionableState.skipNextTransIn = false;
 		FlxG.switchState(nextState);
 	}
@@ -89,10 +93,11 @@ class MusicBeatState extends FlxUIState
 
 	public function beatHit():Void
 	{
-		//do literally nothing dumbass
+		// do literally nothing dumbass
 	}
-	
-	public static function resetState() {
+
+	public static function resetState()
+	{
 		MusicBeatState.switchState(FlxG.state);
 	}
 }

@@ -175,7 +175,6 @@ class ChartingState extends MusicBeatState
 		UI_box.y = 20;
 		add(UI_box);
 
-
 		addSongUI();
 		addSectionUI();
 		addNoteUI();
@@ -229,8 +228,6 @@ class ChartingState extends MusicBeatState
 
 		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'load autosave', loadAutosave);
 
-
-		
 		var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, 80, 0.1, 1, 0.1, 10, 1);
 		stepperSpeed.value = _song.speed;
 		stepperSpeed.name = 'song_speed';
@@ -246,52 +243,53 @@ class ChartingState extends MusicBeatState
 		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/stageList'));
 
 		var player1DropDown = new FlxUIDropDownMenuCustom(10, 100, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
-			{
-				_song.player1 = characters[Std.parseInt(character)];
-			});
-			player1DropDown.selectedLabel = _song.player1;
-	
-			var player1Label = new FlxText(10,80,64,'Player 1');
-	
-			var player2DropDown = new FlxUIDropDownMenuCustom(140, 100, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
-			{
-				_song.player2 = characters[Std.parseInt(character)];
-			});
-			player2DropDown.selectedLabel = _song.player2;
-	
-			var player2Label = new FlxText(140,80,64,'Player 2');
-	
-			var gfVersionDropDown = new FlxUIDropDownMenuCustom(10, 200, FlxUIDropDownMenuCustom.makeStrIdLabelArray(gfVersions, true), function(gfVersion:String)
-				{
-					_song.gfVersion = gfVersions[Std.parseInt(gfVersion)];
-				});
-			gfVersionDropDown.selectedLabel = _song.gfVersion;
-	
-			var gfVersionLabel = new FlxText(10,180,64,'Girlfriend');
-	
-			var stageDropDown = new FlxUIDropDownMenuCustom(140, 200, FlxUIDropDownMenuCustom.makeStrIdLabelArray(stages, true), function(stage:String)
-				{
-					_song.stage = stages[Std.parseInt(stage)];
-				});
-			stageDropDown.selectedLabel = _song.stage;
-			
-			var stageLabel = new FlxText(140,180,64,'Stage');
+		{
+			_song.player1 = characters[Std.parseInt(character)];
+		});
+		player1DropDown.selectedLabel = _song.player1;
 
-			var introdropdown = new FlxUIDropDownMenuCustom(10, 100, FlxUIDropDownMenuCustom.makeStrIdLabelArray(dialogueintros, true), function(dialogueintro:String)
-				{
-					_song.dialoguetoggle = dialogueintros[Std.parseInt(dialogueintro)];
-				});
-				introdropdown.selectedLabel = _song.dialoguetoggle;
-		
-				var dialoguelabel = new FlxText(10,80,64,'Dialogues');
+		var player1Label = new FlxText(10, 80, 64, 'Player 1');
 
-				var viddropdown = new FlxUIDropDownMenuCustom(140, 100, FlxUIDropDownMenuCustom.makeStrIdLabelArray(videointros, true), function(videointro:String)
-					{
-						_song.videotoggle = videointros[Std.parseInt(videointro)];
-					});
-					viddropdown.selectedLabel = _song.videotoggle;
-			
-					var videolabel = new FlxText(140,80,64,'Videos');
+		var player2DropDown = new FlxUIDropDownMenuCustom(140, 100, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
+		{
+			_song.player2 = characters[Std.parseInt(character)];
+		});
+		player2DropDown.selectedLabel = _song.player2;
+
+		var player2Label = new FlxText(140, 80, 64, 'Player 2');
+
+		var gfVersionDropDown = new FlxUIDropDownMenuCustom(10, 200, FlxUIDropDownMenuCustom.makeStrIdLabelArray(gfVersions, true), function(gfVersion:String)
+		{
+			_song.gfVersion = gfVersions[Std.parseInt(gfVersion)];
+		});
+		gfVersionDropDown.selectedLabel = _song.gfVersion;
+
+		var gfVersionLabel = new FlxText(10, 180, 64, 'Girlfriend');
+
+		var stageDropDown = new FlxUIDropDownMenuCustom(140, 200, FlxUIDropDownMenuCustom.makeStrIdLabelArray(stages, true), function(stage:String)
+		{
+			_song.stage = stages[Std.parseInt(stage)];
+		});
+		stageDropDown.selectedLabel = _song.stage;
+
+		var stageLabel = new FlxText(140, 180, 64, 'Stage');
+
+		var introdropdown = new FlxUIDropDownMenuCustom(10, 100, FlxUIDropDownMenuCustom.makeStrIdLabelArray(dialogueintros, true),
+			function(dialogueintro:String)
+			{
+				_song.dialoguetoggle = dialogueintros[Std.parseInt(dialogueintro)];
+			});
+		introdropdown.selectedLabel = _song.dialoguetoggle;
+
+		var dialoguelabel = new FlxText(10, 80, 64, 'Dialogues');
+
+		var viddropdown = new FlxUIDropDownMenuCustom(140, 100, FlxUIDropDownMenuCustom.makeStrIdLabelArray(videointros, true), function(videointro:String)
+		{
+			_song.videotoggle = videointros[Std.parseInt(videointro)];
+		});
+		viddropdown.selectedLabel = _song.videotoggle;
+
+		var videolabel = new FlxText(140, 80, 64, 'Videos');
 
 		player2DropDown.selectedLabel = _song.player2;
 
@@ -307,7 +305,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(loadAutosaveBtn);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperSpeed);
-		
+
 		var tab_group_assets = new FlxUI(null, UI_box);
 		tab_group_assets.name = "Images";
 		tab_group_assets.add(gfVersionDropDown);
@@ -463,10 +461,7 @@ class ChartingState extends MusicBeatState
 		 */
 	}
 
-	
-
-		// FlxG.log.add(id + " WEED " + sender + " WEED " + data + " WEED " + params)
-
+	// FlxG.log.add(id + " WEED " + sender + " WEED " + data + " WEED " + params)
 	var updatedSection:Bool = false;
 
 	/* this function got owned LOL
@@ -686,16 +681,15 @@ class ChartingState extends MusicBeatState
 		if (FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.A)
 			changeSection(curSection - shiftThing);
 
-
 		bpmTxt.text = Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
-		+ " / "
-		+ Std.string(FlxMath.roundDecimal(FlxG.sound.music.length / 1000, 2))
-		+ "\nSection: "
-		+ curSection
-		+ "\nCurBeat: "
-		+ HelperFunctions.truncateFloat(curBeat, 3)
-		+ "\nCurStep: "
-		+ curStep;
+			+ " / "
+			+ Std.string(FlxMath.roundDecimal(FlxG.sound.music.length / 1000, 2))
+			+ "\nSection: "
+			+ curSection
+			+ "\nCurBeat: "
+			+ HelperFunctions.truncateFloat(curBeat, 3)
+			+ "\nCurStep: "
+			+ curStep;
 		super.update(elapsed);
 	}
 
@@ -751,8 +745,6 @@ class ChartingState extends MusicBeatState
 
 		vocals.time = FlxG.sound.music.time;
 		updateCurStep();
-
-		
 
 		updateGrid();
 		updateSectionUI();
