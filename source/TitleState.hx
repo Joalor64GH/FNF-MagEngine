@@ -59,7 +59,7 @@ class TitleState extends MusicBeatState
 					folders.push(file);
 				}
 			}
-			// PolymodHandler.loadMods();
+			PolymodHandler.loadMods();
 		}
 		#end
 

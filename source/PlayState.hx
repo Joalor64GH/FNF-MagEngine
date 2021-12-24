@@ -2029,36 +2029,34 @@ class PlayState extends MusicBeatState
 
 					FlxG.sound.play(Paths.sound('Lights_Shut_off'));
 				}
-
-				FlxTransitionableState.skipNextTransIn = true;
-				FlxTransitionableState.skipNextTransOut = true;
+        
+				//FlxTransitionableState.skipNextTransIn = true;
+				//FlxTransitionableState.skipNextTransOut = true;
 				
 				if (SONG.videotoggle == 'true'){
-				FlxTransitionableState.skipNextTransIn = false;
-				FlxTransitionableState.skipNextTransOut = false;
-				var video:MP4Handler = new MP4Handler();
-                video.playMP4(Paths.video(SONG.song.toLowerCase() + 'Video'));
-                video.finishCallback = function()
-                {
-
-				prevCamFollow = camFollow;
-
-				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
-				FlxG.sound.music.stop();
-
-				LoadingState.loadAndSwitchState(new PlayState());
-				}
-			   }
-			   else
-			   {
-				prevCamFollow = camFollow;
-
-				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
-				FlxG.sound.music.stop();
-
-				LoadingState.loadAndSwitchState(new PlayState());
+					var video:MP4Handler = new MP4Handler();
+					video.playMP4(Paths.video(SONG.song.toLowerCase() + 'Video'));
+					video.finishCallback = function()
+					{ 
+	
+					prevCamFollow = camFollow;
+	
+					PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
+					FlxG.sound.music.stop();
+	
+					LoadingState.loadAndSwitchState(new PlayState());
+					}
+				   }
+				   else
+				   {
+					prevCamFollow = camFollow;
+	
+					PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
+					FlxG.sound.music.stop();
+	
+					LoadingState.loadAndSwitchState(new PlayState());
 				   
-			   }
+				   }
 			}
 		}
 		else

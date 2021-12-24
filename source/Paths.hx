@@ -154,7 +154,7 @@ class Paths
 			else
 			return 'assets/videos/$key.$VIDEO_EXT';
 		}
-  
+
 	inline static public function music(key:String, ?library:String)
 	{
 		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
