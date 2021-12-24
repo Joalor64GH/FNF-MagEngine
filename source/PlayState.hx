@@ -1067,7 +1067,7 @@ class PlayState extends MusicBeatState
 			}
 				remove(black);
 			}
-		});
+		);
 	}
 
 	function magengineIntro(?dialogueBox:DialogueBox):Void
