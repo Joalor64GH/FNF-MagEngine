@@ -70,6 +70,7 @@ class PlayState extends MusicBeatState
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
 	public static var isStoryMode:Bool = false;
+	public static var isPixelStage:Bool = false;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
@@ -222,6 +223,7 @@ class PlayState extends MusicBeatState
 
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
+
 		switch (SONG.song.toLowerCase())
 		{
 			case 'tutorial':
@@ -701,7 +703,7 @@ class PlayState extends MusicBeatState
 			add(waveSpriteFG);
 		 */
 
-		var gfVersion:String = 'gf';
+		isPixelStage = curStage.startsWith('school');
 
 		var gfVersion:String = 'gf';
 
@@ -1131,7 +1133,7 @@ class PlayState extends MusicBeatState
 					ready.scrollFactor.set();
 					ready.updateHitbox();
 
-					if (curStage.startsWith('school'))
+					if (isPixelStage)
 						ready.setGraphicSize(Std.int(ready.width * daPixelZoom));
 
 					ready.screenCenter();
@@ -1148,7 +1150,7 @@ class PlayState extends MusicBeatState
 					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
 					set.scrollFactor.set();
 
-					if (curStage.startsWith('school'))
+					if (isPixelStage)
 						set.setGraphicSize(Std.int(set.width * daPixelZoom));
 
 					set.screenCenter();
@@ -1165,7 +1167,7 @@ class PlayState extends MusicBeatState
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
 					go.scrollFactor.set();
 
-					if (curStage.startsWith('school'))
+					if (isPixelStage)
 						go.setGraphicSize(Std.int(go.width * daPixelZoom));
 
 					go.updateHitbox();
@@ -1895,7 +1897,7 @@ class PlayState extends MusicBeatState
 						{
 							spr.animation.play('confirm', true);
 						}
-						if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
+						if (spr.animation.curAnim.name == 'confirm' && !isPixelStage)
 						{
 							spr.centerOffsets();
 							spr.offset.x -= 13;
@@ -2114,7 +2116,7 @@ class PlayState extends MusicBeatState
 		var pixelShitPart1:String = "";
 		var pixelShitPart2:String = '';
 
-		if (curStage.startsWith('school'))
+		if (isPixelStage)
 		{
 			pixelShitPart1 = 'weeb/pixelUI/';
 			pixelShitPart2 = '-pixel';
@@ -2137,7 +2139,7 @@ class PlayState extends MusicBeatState
 		comboSpr.velocity.x += FlxG.random.int(1, 10);
 		add(rating);
 
-		if (!curStage.startsWith('school'))
+		if (!isPixelStage)
 		{
 			rating.setGraphicSize(Std.int(rating.width * 0.7));
 			rating.antialiasing = true;
@@ -2156,7 +2158,7 @@ class PlayState extends MusicBeatState
 		var sploosh:FlxSprite = new FlxSprite(note.x, playerStrums.members[note.noteData].y);
 		if (FlxG.save.data.splooshes)
 		{
-			if (!curStage.startsWith('school'))
+			if (!isPixelStage)
 			{
 				var tex:flixel.graphics.frames.FlxAtlasFrames = Paths.getSparrowAtlas('noteSplashes', 'shared');
 				sploosh.frames = tex;
@@ -2223,7 +2225,7 @@ class PlayState extends MusicBeatState
 			numScore.x = coolText.x + (43 * daLoop) - 90;
 			numScore.y += 80;
 
-			if (!curStage.startsWith('school'))
+			if (!isPixelStage)
 			{
 				numScore.antialiasing = true;
 				numScore.setGraphicSize(Std.int(numScore.width * 0.5));
@@ -2279,11 +2281,6 @@ class PlayState extends MusicBeatState
 
 	private function keyShit():Void
 	{
-		var up = controls.UP;
-		var right = controls.RIGHT;
-		var down = controls.DOWN;
-		var left = controls.LEFT;
-
 		var upP = controls.UP_P;
 		var rightP = controls.RIGHT_P;
 		var downP = controls.DOWN_P;
@@ -2294,88 +2291,127 @@ class PlayState extends MusicBeatState
 		var downR = controls.DOWN_R;
 		var leftR = controls.LEFT_R;
 
-		var controlArray:Array<Bool> = [leftP, downP, upP, rightP];
-		var controlReleaseArray:Array<Bool> = [leftR, downR, upR, rightR];
-		var controlHoldArray:Array<Bool> = [left, down, up, right];
+		var controlArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
+		var controlPressArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
+		var controlReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
 
-		if (!boyfriend.stunned && generatedMusic)
+		// FlxG.watch.addQuick('asdfa', upP);
+		if (controlPressArray.contains(true) && !boyfriend.stunned && generatedMusic)
 		{
+			boyfriend.holdTimer = 0;
+
+			var possibleNotes:Array<Note> = [];
+
+			var ignoreList:Array<Int> = [];
+
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if (daNote.isSustainNote && controlHoldArray[daNote.noteData] && daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit)
+				if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit)
 				{
-					goodNoteHit(daNote);
+					// the sorting probably doesn't need to be in here? who cares lol
+					possibleNotes.push(daNote);
+					possibleNotes.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
+
+					ignoreList.push(daNote.noteData);
 				}
 			});
 
-			if ((controlHoldArray.contains(true) || controlArray.contains(true)) && !endingSong)
+			if (possibleNotes.length > 0)
 			{
-				if (controlArray.contains(true))
+				var daNote = possibleNotes[0];
+
+				if (perfectMode)
+					noteCheck(true, daNote);
+
+				// Jump notes
+				if (possibleNotes.length >= 2)
 				{
-					for (i in 0...controlArray.length)
+					if (daNote.strumTime == possibleNotes[1].strumTime)
 					{
-						var pressNotes:Array<Note> = [];
-						var notesDatas:Array<Int> = [];
-						var notesStopped:Bool = false;
-
-						var sortedNotesList:Array<Note> = [];
-						notes.forEachAlive(function(daNote:Note)
+						for (coolNote in possibleNotes)
 						{
-							if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit && daNote.noteData == i)
+							if (controlPressArray[coolNote.noteData])
+								goodNoteHit(coolNote);
+							else
 							{
-								sortedNotesList.push(daNote);
-								notesDatas.push(daNote.noteData);
-							}
-						});
-						sortedNotesList.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
-
-						if (sortedNotesList.length > 0)
-						{
-							for (epicNote in sortedNotesList)
-							{
-								for (doubleNote in pressNotes)
+								var inIgnoreList:Bool = false;
+								for (shit in 0...ignoreList.length)
 								{
-									if (Math.abs(doubleNote.strumTime - epicNote.strumTime) < 10)
-									{
-										doubleNote.kill();
-										notes.remove(doubleNote, true);
-										doubleNote.destroy();
-									}
-									else
-										notesStopped = true;
+									if (controlPressArray[ignoreList[shit]])
+										inIgnoreList = true;
 								}
-
-								if (controlArray[epicNote.noteData] && !notesStopped)
-								{
-									goodNoteHit(epicNote);
-									pressNotes.push(epicNote);
-								}
+								if (!inIgnoreList)
+									badNoteCheck();
 							}
 						}
-						else if (!FlxG.save.data.ghostTapping)
+					}
+					else if (daNote.noteData == possibleNotes[1].noteData)
+					{
+						noteCheck(controlPressArray[daNote.noteData], daNote);
+					}
+					else
+					{
+						for (coolNote in possibleNotes)
 						{
-							badNoteCheck();
+							noteCheck(controlPressArray[coolNote.noteData], coolNote);
 						}
 					}
 				}
+				else // regular notes?
+				{
+					noteCheck(controlPressArray[daNote.noteData], daNote);
+				}
 			}
-			else if (boyfriend.holdTimer > Conductor.stepCrochet * boyfriend.singDuration * 0.001
-				&& boyfriend.animation.curAnim.name.startsWith('sing')
-				&& !boyfriend.animation.curAnim.name.endsWith('miss'))
-				boyfriend.playAnim('idle');
+			else if (!FlxG.save.data.ghostTapping)
+			{
+				badNoteCheck();
+			}
+		}
+
+		if (controlArray.contains(true) && !boyfriend.stunned && generatedMusic)
+		{
+			notes.forEachAlive(function(daNote:Note)
+			{
+				// NOTES YOU ARE HOLDING
+				if (daNote.canBeHit && daNote.mustPress && daNote.isSustainNote)
+					goodNoteHit(daNote);
+			});
+		}
+
+		if (boyfriend.holdTimer > Conductor.stepCrochet * boyfriend.singDuration * 0.001
+			&& !controlArray.contains(true)
+			&& (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss')))
+		{
+			boyfriend.playAnim('idle');
 		}
 
 		playerStrums.forEach(function(spr:FlxSprite)
 		{
-			if (controlArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
+			switch (spr.ID)
 			{
-				spr.animation.play('pressed');
+				case 0:
+					if (leftP && spr.animation.curAnim.name != 'confirm')
+						spr.animation.play('pressed');
+					if (leftR)
+						spr.animation.play('static');
+				case 1:
+					if (downP && spr.animation.curAnim.name != 'confirm')
+						spr.animation.play('pressed');
+					if (downR)
+						spr.animation.play('static');
+				case 2:
+					if (upP && spr.animation.curAnim.name != 'confirm')
+						spr.animation.play('pressed');
+					if (upR)
+						spr.animation.play('static');
+				case 3:
+					if (rightP && spr.animation.curAnim.name != 'confirm')
+						spr.animation.play('pressed');
+					if (rightR)
+						spr.animation.play('static');
 			}
-			if (controlReleaseArray[spr.ID])
-			{
-				spr.animation.play('static');
-			}
-			if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
+
+			if (spr.animation.curAnim.name == 'confirm' && !isPixelStage)
 			{
 				spr.centerOffsets();
 				spr.offset.x -= 13;
