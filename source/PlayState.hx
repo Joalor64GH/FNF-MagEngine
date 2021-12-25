@@ -1922,14 +1922,9 @@ class PlayState extends MusicBeatState
 
 				if (doKill)
 				{
-					if (daNote.tooLate || !daNote.wasGoodHit)
+					if (daNote.mustPress && !endingSong && (daNote.tooLate || !daNote.wasGoodHit))
 					{
-						if (!practiceAllowed)
-						{
-							health -= 0.0475;
-						}
-						misses += 1;
-						vocals.volume = 0;
+						noteMiss(Math.abs(daNote.noteData) % 4);
 					}
 
 					daNote.active = false;
@@ -2278,91 +2273,80 @@ class PlayState extends MusicBeatState
 
 	private function keyShit():Void
 	{
-		var controlArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
-		var controlPressArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
+		var controlArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
 		var controlReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
+		var controlHoldArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
 
 		// FlxG.watch.addQuick('asdfa', upP);
-		if (controlPressArray.contains(true) && !boyfriend.stunned && generatedMusic)
+		if (!boyfriend.stunned && generatedMusic)
 		{
-			boyfriend.holdTimer = 0;
-
-			var possibleNotes:Array<Note> = [];
-
-			var ignoreList:Array<Int> = [];
-
+			// rewritten inputs???
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit)
+				// hold note functions
+				if (daNote.isSustainNote && controlHoldArray[daNote.noteData] && daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit)
 				{
-					// the sorting probably doesn't need to be in here? who cares lol
-					possibleNotes.push(daNote);
-					possibleNotes.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
-
-					ignoreList.push(daNote.noteData);
-				}
-			});
-
-			if (possibleNotes.length > 0)
-			{
-				var daNote = possibleNotes[0];
-
-				if (perfectMode)
-					noteCheck(true, daNote);
-
-				// Jump notes
-				if (possibleNotes.length >= 2)
-				{
-					if (daNote.strumTime == possibleNotes[1].strumTime)
-					{
-						for (coolNote in possibleNotes)
-						{
-							if (controlPressArray[coolNote.noteData])
-								goodNoteHit(coolNote);
-							else
-							{
-								var inIgnoreList:Bool = false;
-								for (shit in 0...ignoreList.length)
-								{
-									if (controlPressArray[ignoreList[shit]])
-										inIgnoreList = true;
-								}
-								if (!inIgnoreList)
-									badNoteCheck();
-							}
-						}
-					}
-					else if (daNote.noteData == possibleNotes[1].noteData)
-						noteCheck(controlPressArray[daNote.noteData], daNote);
-					else
-					{
-						for (coolNote in possibleNotes)
-						{
-							noteCheck(controlPressArray[coolNote.noteData], coolNote);
-						}
-					}
-				}
-				else // regular notes?
-					noteCheck(controlPressArray[daNote.noteData], daNote);
-			}
-			else if (!FlxG.save.data.ghostTapping)
-				badNoteCheck();
-		}
-
-		if (controlArray.contains(true) && !boyfriend.stunned && generatedMusic)
-		{
-			notes.forEachAlive(function(daNote:Note)
-			{
-				if (controlArray[daNote.noteData] && daNote.canBeHit && daNote.mustPress && daNote.isSustainNote)
-				{
-					// NOTES YOU ARE HOLDING
 					goodNoteHit(daNote);
 				}
 			});
+
+			if ((controlHoldArray.contains(true) || controlArray.contains(true)) && !endingSong)
+			{
+				var canMiss:Bool = !FlxG.save.data.ghostTapping;
+				if (controlArray.contains(true))
+				{
+					for (i in 0...controlArray.length)
+					{
+						// heavily based on my own code LOL if it aint broke dont fix it
+						var pressNotes:Array<Note> = [];
+						var notesDatas:Array<Int> = [];
+						var notesStopped:Bool = false;
+
+						var sortedNotesList:Array<Note> = [];
+						notes.forEachAlive(function(daNote:Note)
+						{
+							if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit && daNote.noteData == i)
+							{
+								sortedNotesList.push(daNote);
+								notesDatas.push(daNote.noteData);
+								canMiss = true;
+							}
+						});
+						sortedNotesList.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
+
+						if (sortedNotesList.length > 0)
+						{
+							for (epicNote in sortedNotesList)
+							{
+								for (doubleNote in pressNotes)
+								{
+									if (Math.abs(doubleNote.strumTime - epicNote.strumTime) < 10)
+									{
+										doubleNote.kill();
+										notes.remove(doubleNote, true);
+										doubleNote.destroy();
+									}
+									else
+										notesStopped = true;
+								}
+
+								// eee jack detection before was not super good
+								if (controlArray[epicNote.noteData] && !notesStopped)
+								{
+									goodNoteHit(epicNote);
+									pressNotes.push(epicNote);
+								}
+							}
+						}
+						else if (controlArray[i] && canMiss)
+							noteMiss(i);
+					}
+				}
+			}
 		}
 
 		if (boyfriend.holdTimer > Conductor.stepCrochet * boyfriend.singDuration * 0.001
-			&& !controlArray.contains(true)
+			&& !controlHoldArray.contains(true)
 			&& (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss')))
 		{
 			boyfriend.playAnim('idle');
@@ -2370,11 +2354,10 @@ class PlayState extends MusicBeatState
 
 		playerStrums.forEach(function(spr:FlxSprite)
 		{
-			if (controlPressArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
-				spr.animation.play('pressed');
+			if (controlArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
+				spr.animation.play('pressed', true);
 			if (controlReleaseArray[spr.ID])
-				spr.animation.play('static');
-
+				spr.animation.play('static', true);
 			if (spr.animation.curAnim.name == 'confirm' && !isPixelStage)
 			{
 				spr.centerOffsets();
@@ -2386,7 +2369,7 @@ class PlayState extends MusicBeatState
 		});
 	}
 
-	function noteMiss(direction:Int = 1):Void
+	function noteMiss(direction:Float = 1):Void
 	{
 		if (!boyfriend.stunned)
 		{
@@ -2426,41 +2409,10 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function badNoteCheck()
-	{
-		// just double pasting this shit cuz fuk u
-		// REDO THIS SYSTEM!
-		var upP = controls.UP_P;
-		var rightP = controls.RIGHT_P;
-		var downP = controls.DOWN_P;
-		var leftP = controls.LEFT_P;
-
-		if (leftP)
-			noteMiss(0);
-		if (downP)
-			noteMiss(1);
-		if (upP)
-			noteMiss(2);
-		if (rightP)
-			noteMiss(3);
-
-		updateAccuracy();
-	}
-
 	function updateAccuracy()
 	{
 		totalPlayed += 1;
 		accuracy = totalNotesHit / totalPlayed * 100;
-	}
-
-	function noteCheck(keyP:Bool, note:Note):Void
-	{
-		if (keyP)
-			goodNoteHit(note);
-		else
-		{
-			badNoteCheck();
-		}
 	}
 
 	function goodNoteHit(note:Note):Void
