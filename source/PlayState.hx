@@ -158,7 +158,7 @@ class PlayState extends MusicBeatState
 	var songScore:Int = 0;
 	var scoreTxt:FlxText;
 	var stats:FlxSprite;
-	var thingy:FlxText;
+	var infoTxt:FlxText;
 
 	public static var campaignScore:Int = 0;
 
@@ -870,12 +870,12 @@ class PlayState extends MusicBeatState
 		// healthBar
 		add(healthBar);
 
-		thingy = new FlxText(4, healthBarBG.y + 50, 0, SONG.song + " - " + CoolUtil.difficultyString(), 16);
+		infoTxt = new FlxText(4, healthBarBG.y + 50, 0, SONG.song + " - " + CoolUtil.difficultyString(false), 16);
 		if (FlxG.save.data.downscroll)
-			thingy.setPosition(healthBarBG.y + -65, 700);
-		thingy.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		thingy.scrollFactor.set();
-		add(thingy);
+			infoTxt.setPosition(healthBarBG.y + -65, 700);
+		infoTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		infoTxt.scrollFactor.set();
+		add(infoTxt);
 
 		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2.40 - 81, healthBarBG.y + 50, 0, "", 14);
 		scoreTxt.font = 'VCR OSD Mono';
@@ -910,7 +910,7 @@ class PlayState extends MusicBeatState
 		scoreTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 		stats.cameras = [camHUD];
-		thingy.cameras = [camHUD];
+		infoTxt.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -1572,10 +1572,14 @@ class PlayState extends MusicBeatState
 			if (FlxG.random.bool(0.1))
 			{
 				// gitaroo man easter egg
+				CustomFadeTransition.nextCamera = camHUD;
 				MusicBeatState.switchState(new GitarooPause());
 			}
 			else
+			{
+				PauseSubState.transCamera = camHUD;
 				openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			}
 
 			#if desktop
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
@@ -1924,7 +1928,9 @@ class PlayState extends MusicBeatState
 				{
 					if (daNote.mustPress && !endingSong && (daNote.tooLate || !daNote.wasGoodHit))
 					{
-						noteMiss(Math.abs(daNote.noteData) % 4);
+						if (!practiceAllowed)
+							health -= 0.0475;
+						noteMiss(Math.abs(daNote.noteData));
 					}
 
 					daNote.active = false;
@@ -1933,7 +1939,6 @@ class PlayState extends MusicBeatState
 					daNote.kill();
 					notes.remove(daNote, true);
 					daNote.destroy();
-					updateAccuracy();
 				}
 			});
 		}
@@ -2342,6 +2347,10 @@ class PlayState extends MusicBeatState
 							noteMiss(i);
 					}
 				}
+				else
+				{
+					trace('funny hit outside scope');
+				}
 			}
 		}
 
@@ -2407,6 +2416,7 @@ class PlayState extends MusicBeatState
 					boyfriend.playAnim('singRIGHTmiss', true);
 			}
 		}
+		updateAccuracy();
 	}
 
 	function updateAccuracy()
@@ -2432,7 +2442,7 @@ class PlayState extends MusicBeatState
 			else
 				health += 0.004;
 
-			switch (Std.int(Math.abs(note.noteData)))
+			switch (Math.abs(note.noteData))
 			{
 				case 0:
 					boyfriend.playAnim('singLEFT', true);

@@ -136,21 +136,9 @@ class SocialsState extends MusicBeatState
 			if (controls.ACCEPT)
 			{
 				if (optionShit[curSelected] == 'youtube')
-				{
-					#if linux
-					Sys.command('/usr/bin/xdg-open', [youtube, "&"]);
-					#else
-					FlxG.openURL(youtube);
-					#end
-				}
+					CoolUtil.openURL(youtube);
 				else if (optionShit[curSelected] == 'twitter')
-				{
-					#if linux
-					Sys.command('/usr/bin/xdg-open', [twitter, "&"]);
-					#else
-					FlxG.openURL(twitter);
-					#end
-				}
+					CoolUtil.openURL(twitter);
 				else
 				{
 					selectedSomethin = true;

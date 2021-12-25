@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxCamera;
 import Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -29,6 +30,8 @@ class PauseSubState extends MusicBeatSubstate
 	var curSelected:Int = 0;
 
 	var funne = false;
+
+	public static var transCamera:FlxCamera;
 
 	var pauseMusic:FlxSound;
 
@@ -147,6 +150,7 @@ class PauseSubState extends MusicBeatSubstate
 					var poop = Highscore.formatSong(name, curSelected);
 					PlayState.SONG = Song.loadFromJson(poop, name);
 					PlayState.storyDifficulty = curSelected;
+					CustomFadeTransition.nextCamera = transCamera;
 					MusicBeatState.resetState();
 					FlxG.sound.music.volume = 0;
 					return;
@@ -158,19 +162,23 @@ class PauseSubState extends MusicBeatSubstate
 			{
 				case "Resume":
 					close();
-
-				case 'Change Difficulty':
+				case "Change Difficulty":
 					menuItems = difficultyChoices;
 					regenerateMenu();
-
-				case 'Toggle Practice Mode':
+				case "Toggle Practice Mode":
 					PlayState.practiceAllowed = !PlayState.practiceAllowed;
 					levelpractice.visible = PlayState.practiceAllowed;
 				case "Restart Song":
+					CustomFadeTransition.nextCamera = transCamera;
 					MusicBeatState.resetState();
 				case "Exit to menu":
-					MusicBeatState.switchState(new MainMenuState());
-				case 'BACK':
+					CustomFadeTransition.nextCamera = transCamera;
+					if (PlayState.isStoryMode)
+						MusicBeatState.switchState(new StoryMenuState());
+					else
+						MusicBeatState.switchState(new FreeplayState());
+					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				case "BACK":
 					menuItems = menuItemswhyhaxe;
 					regenerateMenu();
 			}

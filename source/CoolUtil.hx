@@ -1,16 +1,29 @@
 package;
 
+import flixel.FlxG;
 import lime.utils.Assets;
 
 using StringTools;
 
 class CoolUtil
 {
-	public static var difficultyStuff:Array<Dynamic> = [['EASY'], ['NORMAL'], ['HARD']];
+	public static var difficultyStuff:Array<Dynamic> = [['Easy'], ['Normal'], ['Hard']];
 
-	public static function difficultyString():String
+	public static function difficultyString(uppercase:Bool = true):String
 	{
-		return difficultyStuff[PlayState.storyDifficulty][0].toUpperCase();
+		if (uppercase)
+			return difficultyStuff[PlayState.storyDifficulty][0].toUpperCase();
+		else
+			return difficultyStuff[PlayState.storyDifficulty][0];
+	}
+
+	public static function openURL(url:String)
+	{
+		#if linux
+		Sys.command('/usr/bin/xdg-open', [url]);
+		#else
+		FlxG.openURL(url);
+		#end
 	}
 
 	// code used in psych engine

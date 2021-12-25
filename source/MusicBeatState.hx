@@ -57,9 +57,8 @@ class MusicBeatState extends FlxUIState
 			{
 				CustomFadeTransition.finishCallback = function()
 				{
-					MusicBeatState.resetState();
+					FlxG.resetState();
 				};
-				// trace('resetted');
 			}
 			else
 			{
@@ -67,7 +66,6 @@ class MusicBeatState extends FlxUIState
 				{
 					FlxG.switchState(nextState);
 				};
-				// trace('changed state');
 			}
 			return;
 		}
