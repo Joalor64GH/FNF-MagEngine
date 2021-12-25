@@ -17,7 +17,7 @@ layout: default
 To Build Mag Engine, You Should Have Minor Knowledge Of The Command Line/cmd, If You Don't, Do Not Worry Because ninjamuffin99 Is Here To Save The Day, He Made A Guide: https://ninjamuffin99.newgrounds.com/news/post/1090480
 
 ## Dependencies For Compiling
-First, Install THE LATEST VERSION OF Haxe 4.1.5. PLEASE use the latest version because the latest version is what mag engine was programmed in.
+First, Install THE LATEST VERSION OF Haxe. PLEASE use the latest version because the latest version is what mag engine was programmed in.
 
 Second, AFTER installing Haxe, [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/) (Haxe's 2D Game Engine).
 Third, Install git.
