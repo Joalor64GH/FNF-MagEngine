@@ -5,7 +5,6 @@ import Discord.DiscordClient;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxGroup;
@@ -122,9 +121,6 @@ class StoryMenuState extends MusicBeatState
 			var filethingy:String = 'weeks/' + weeksArray[i] + '.json';
 			var swagshit:SwagWeek = getJSON(filethingy);
 		}
-
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
 
 		if (FlxG.sound.music != null)
 		{
@@ -311,7 +307,7 @@ class StoryMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
-			FlxG.switchState(new MainMenuState());
+			MusicBeatState.switchState(new MainMenuState());
 		}
 
 		super.update(elapsed);

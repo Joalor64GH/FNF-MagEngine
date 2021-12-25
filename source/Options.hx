@@ -206,7 +206,6 @@ class GhostTappingOption extends Option
 	}
 }
 
-
 class SplooshOption extends Option
 {
 	public function new(desc:String)

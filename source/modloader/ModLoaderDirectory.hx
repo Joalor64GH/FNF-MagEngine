@@ -7,16 +7,16 @@ import flixel.FlxSprite;
 
 using StringTools;
 
-class ModLoaderDirectory {
+class ModLoaderDirectory
+{
+	var modId:String;
 
-    var modId:String;
-    public static var dir:String;
+	public static var dir:String;
 
-
-    function loadModLoaderDirectory(){
-    modId = 'Template Mod';
-    dir = "mods/Modloader/" + modId + "/";
-    }
-
+	function loadModLoaderDirectory()
+	{
+		modId = 'Template Mod';
+		dir = "mods/Modloader/" + modId + "/";
+	}
 }
 #end

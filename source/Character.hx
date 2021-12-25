@@ -44,14 +44,13 @@ class Character extends FlxSprite
 	public var animations:Array<Animation>;
 	public var image:String;
 
-
 	public var singDuration:Float = 6;
-	
+
 	public var charthingy:Array<String> = CoolUtil.coolTextFile(Paths.bruhtxt('custom_characters/customCharacterList'));
 
 	public var holding:Bool = false;
 
-	public var holdTimer:Float = 0;	
+	public var holdTimer:Float = 0;
 
 	public var imagePNG:String = '';
 	public var animationsthing:Array<Animation> = [];
@@ -491,22 +490,22 @@ class Character extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		if (!curCharacter.startsWith('bf'))
+		{
+			if (animation.curAnim.name.startsWith('sing'))
 			{
-				if (animation.curAnim.name.startsWith('sing'))
-				{
-					holdTimer += elapsed;
-				}
-	
-				var dadVar:Float = 4;
-	
-				if (curCharacter == 'dad')
-					dadVar = 6.1;
-				if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
-				{
-					dance();
-					holdTimer = 0;
-				}
+				holdTimer += elapsed;
 			}
+
+			var dadVar:Float = 4;
+
+			if (curCharacter == 'dad')
+				dadVar = 6.1;
+			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
+			{
+				dance();
+				holdTimer = 0;
+			}
+		}
 
 		switch (curCharacter)
 		{

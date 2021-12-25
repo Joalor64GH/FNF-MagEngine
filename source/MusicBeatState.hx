@@ -22,10 +22,13 @@ class MusicBeatState extends FlxUIState
 
 	override function create()
 	{
-		if (transIn != null)
-			trace('reg ' + transIn.region);
-
+		var skip:Bool = FlxTransitionableState.skipNextTransOut;
 		super.create();
+
+		// Custom made Trans out
+		if (!skip)
+			openSubState(new CustomFadeTransition(1, true));
+		FlxTransitionableState.skipNextTransOut = false;
 	}
 
 	override function update(elapsed:Float)
@@ -54,7 +57,7 @@ class MusicBeatState extends FlxUIState
 			{
 				CustomFadeTransition.finishCallback = function()
 				{
-					FlxG.resetState();
+					MusicBeatState.resetState();
 				};
 				// trace('resetted');
 			}

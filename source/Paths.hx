@@ -144,16 +144,17 @@ class Paths
 	{
 		return sound(key + FlxG.random.int(min, max), library);
 	}
-	
+
 	static public function video(key:String)
+	{
+		var file:String = modvideo(key);
+		if (FileSystem.exists(file))
 		{
-			var file:String = modvideo(key);
-			if(FileSystem.exists(file)) {
-				return file;
-			}
-			else
-			return 'assets/videos/$key.$VIDEO_EXT';
+			return file;
 		}
+		else
+			return 'assets/videos/$key.$VIDEO_EXT';
+	}
 
 	inline static public function music(key:String, ?library:String)
 	{
@@ -296,7 +297,8 @@ class Paths
 		return modfold('images/' + key + '.xml');
 	}
 
-	inline static public function modvideo(key:String) {
+	inline static public function modvideo(key:String)
+	{
 		return modfold('videos/' + key + '.' + VIDEO_EXT);
 	}
 
@@ -344,19 +346,25 @@ class Paths
 			{
 				return fileToCheck;
 			}
-			if(!FileSystem.exists(fileToCheck)) {
+			if (!FileSystem.exists(fileToCheck))
+			{
 				return ModLoaderDirectory.dir;
 			}
 		}
 		return 'mods/' + key;
 	}
-	static public function modDirectory():Array<String> {
+
+	static public function modDirectory():Array<String>
+	{
 		var list:Array<String> = [];
 		var modsFolder:String = Paths.mods();
-		if(FileSystem.exists(modsFolder)) {
-			for (folder in FileSystem.readDirectory(modsFolder)) {
+		if (FileSystem.exists(modsFolder))
+		{
+			for (folder in FileSystem.readDirectory(modsFolder))
+			{
 				var path = haxe.io.Path.join([modsFolder, folder]);
-				if (sys.FileSystem.isDirectory(path) && !Paths.ignoredFolders.contains(folder) && !list.contains(folder)) {
+				if (sys.FileSystem.isDirectory(path) && !Paths.ignoredFolders.contains(folder) && !list.contains(folder))
+				{
 					list.push(folder);
 				}
 			}

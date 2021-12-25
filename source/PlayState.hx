@@ -75,13 +75,9 @@ class PlayState extends MusicBeatState
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
 
-	public var camNotes:FlxCamera;
-
 	public static var practiceAllowed:Bool = false;
 
-	public var camSus:FlxCamera;
 	public var pauseHUD:FlxCamera;
-	public var camRating:FlxCamera;
 	public var _swagstage:SwagStage;
 	public var stageKey:String;
 	public var rawJson:String;
@@ -961,9 +957,10 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('ANGRY'));
 					schoolIntro(doof);
 				case 'thorns':
-				    schoolIntro(doof);
+					schoolIntro(doof);
 				default:
-					if (SONG.dialoguetoggle != 'true'){
+					if (SONG.dialoguetoggle != 'true')
+					{
 						startCountdown();
 					}
 			}
@@ -1063,11 +1060,10 @@ class PlayState extends MusicBeatState
 					{
 						add(dialogueBox);
 					}
-				}	
+				}
 			}
-				remove(black);
-			}
-		);
+			remove(black);
+		});
 	}
 
 	function magengineIntro(?dialogueBox:DialogueBox):Void
@@ -1576,7 +1572,7 @@ class PlayState extends MusicBeatState
 			if (FlxG.random.bool(0.1))
 			{
 				// gitaroo man easter egg
-				FlxG.switchState(new GitarooPause());
+				MusicBeatState.switchState(new GitarooPause());
 			}
 			else
 				openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
@@ -1588,7 +1584,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			FlxG.switchState(new ChartingState());
+			MusicBeatState.switchState(new ChartingState());
 
 			#if desktop
 			DiscordClient.changePresence("Chart Editor", null, null, true);
@@ -1619,12 +1615,9 @@ class PlayState extends MusicBeatState
 		else
 			iconP2.animation.curAnim.curFrame = 0;
 
-		/* if (FlxG.keys.justPressed.NINE)
-			FlxG.switchState(new Charting()); */
-
 		#if debug
 		if (FlxG.keys.justPressed.EIGHT)
-			FlxG.switchState(new AnimationDebug(SONG.player2));
+			MusicBeatState.switchState(new AnimationDebug(SONG.player2));
 		#end
 
 		if (startingSong)
@@ -1740,7 +1733,7 @@ class PlayState extends MusicBeatState
 					gfSpeed = 1;
 				case 163:
 					// FlxG.sound.music.stop();
-					// FlxG.switchState(new TitleState());
+					// MusicBeatState.switchState(new TitleState());
 			}
 		}
 
@@ -1751,7 +1744,7 @@ class PlayState extends MusicBeatState
 				case 128, 129, 130:
 					vocals.volume = 0;
 					// FlxG.sound.music.stop();
-					// FlxG.switchState(new PlayState());
+					// MusicBeatState.switchState(new PlayState());
 			}
 		}
 		// better streaming of shit
@@ -1786,7 +1779,7 @@ class PlayState extends MusicBeatState
 
 			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
-			// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			// MusicBeatState.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
 			#if desktop
 			// Game Over doesn't get his own variable because it's only used here
@@ -1991,12 +1984,7 @@ class PlayState extends MusicBeatState
 			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
-				transIn = FlxTransitionableState.defaultTransIn;
-				transOut = FlxTransitionableState.defaultTransOut;
-
-				FlxG.switchState(new StoryMenuState());
-
-				// if ()
+				MusicBeatState.switchState(new StoryMenuState());
 
 				if (SONG.validScore)
 				{
@@ -2029,41 +2017,43 @@ class PlayState extends MusicBeatState
 
 					FlxG.sound.play(Paths.sound('Lights_Shut_off'));
 				}
-        
-				//FlxTransitionableState.skipNextTransIn = true;
-				//FlxTransitionableState.skipNextTransOut = true;
-				
-				if (SONG.videotoggle == 'true'){
+
+				if (SONG.videotoggle == 'true')
+				{
 					var video:MP4Handler = new MP4Handler();
 					video.playMP4(Paths.video(SONG.song.toLowerCase() + 'Video'));
 					video.finishCallback = function()
-					{ 
-	
-					prevCamFollow = camFollow;
-	
-					PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
-					FlxG.sound.music.stop();
-	
-					LoadingState.loadAndSwitchState(new PlayState());
+					{
+						switchSong(difficulty);
 					}
-				   }
-				   else
-				   {
-					prevCamFollow = camFollow;
-	
-					PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
-					FlxG.sound.music.stop();
-	
-					LoadingState.loadAndSwitchState(new PlayState());
-				   
-				   }
+				}
+				else
+					switchSong(difficulty);
 			}
 		}
 		else
 		{
 			trace('WENT BACK TO FREEPLAY??');
-			FlxG.switchState(new FreeplayState());
+			CustomFadeTransition.nextCamera = camHUD;
+			if (FlxTransitionableState.skipNextTransIn)
+			{
+				CustomFadeTransition.nextCamera = null;
+			}
+			MusicBeatState.switchState(new FreeplayState());
 		}
+	}
+
+	private function switchSong(difficulty:String)
+	{
+		FlxTransitionableState.skipNextTransIn = true;
+		FlxTransitionableState.skipNextTransOut = true;
+
+		prevCamFollow = camFollow;
+
+		PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
+		FlxG.sound.music.stop();
+
+		LoadingState.loadAndSwitchState(new PlayState());
 	}
 
 	var endingSong:Bool = false;
@@ -2491,16 +2481,16 @@ class PlayState extends MusicBeatState
 				health += 0.004;
 
 			switch (Std.int(Math.abs(note.noteData)))
-				{
-					case 0:
-						boyfriend.playAnim('singLEFT', true);
-					case 1:
-						boyfriend.playAnim('singDOWN', true);
-					case 2:
-						boyfriend.playAnim('singUP', true);
-					case 3:
-						boyfriend.playAnim('singRIGHT', true);
-				}
+			{
+				case 0:
+					boyfriend.playAnim('singLEFT', true);
+				case 1:
+					boyfriend.playAnim('singDOWN', true);
+				case 2:
+					boyfriend.playAnim('singUP', true);
+				case 3:
+					boyfriend.playAnim('singRIGHT', true);
+			}
 
 			playerStrums.forEach(function(spr:FlxSprite)
 			{

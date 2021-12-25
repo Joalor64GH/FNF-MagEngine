@@ -88,7 +88,7 @@ class ModsMenu extends MusicBeatState
 		if (controls.BACK)
 		{
 			PolymodHandler.loadMods();
-			FlxG.switchState(new MainMenuState());
+			MusicBeatState.switchState(new MainMenuState());
 		}
 
 		if (curSelected < 0)

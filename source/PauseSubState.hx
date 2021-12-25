@@ -4,7 +4,6 @@ import Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.system.FlxSound;
@@ -168,9 +167,9 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.practiceAllowed = !PlayState.practiceAllowed;
 					levelpractice.visible = PlayState.practiceAllowed;
 				case "Restart Song":
-					FlxG.resetState();
+					MusicBeatState.resetState();
 				case "Exit to menu":
-					FlxG.switchState(new MainMenuState());
+					MusicBeatState.switchState(new MainMenuState());
 				case 'BACK':
 					menuItems = menuItemswhyhaxe;
 					regenerateMenu();
