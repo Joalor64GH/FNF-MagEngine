@@ -24,19 +24,20 @@ class PolymodHandler
 		});
 	}
 
-    public static function loadModMetadata()
-        {
-            metadataArrays = [];
-    
-            var tempArray = Polymod.scan("mods/ModLoader/","*.*.*",function(error:PolymodError) {
-                trace(error.message);
-            });
-    
-                         for(metadata in tempArray)
-                         {
-                             metadataArrays.push(metadata.id);
-                             ModList.modMetadatas.set(metadata.id, metadata);
-                         }
-}
+	public static function loadModMetadata()
+	{
+		metadataArrays = [];
+
+		var tempArray = Polymod.scan("mods/ModLoader/", "*.*.*", function(error:PolymodError)
+		{
+			trace(error.message);
+		});
+
+		for (metadata in tempArray)
+		{
+			metadataArrays.push(metadata.id);
+			ModList.modMetadatas.set(metadata.id, metadata);
+		}
+	}
 }
 #end
