@@ -1596,8 +1596,10 @@ class PlayState extends MusicBeatState
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
-		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, 0.50)));
-		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, 0.50)));
+		var iconLerp:Int = Std.int(FlxMath.lerp(iconP1.width, 150, 0.09 / (openfl.Lib.current.stage.frameRate / 144)));
+
+		iconP1.setGraphicSize(iconLerp);
+		iconP2.setGraphicSize(iconLerp);
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
@@ -1617,10 +1619,8 @@ class PlayState extends MusicBeatState
 		else
 			iconP2.animation.curAnim.curFrame = 0;
 
-		#if debug
 		if (FlxG.keys.justPressed.EIGHT)
 			MusicBeatState.switchState(new AnimationDebug(SONG.player2));
-		#end
 
 		if (startingSong)
 		{
@@ -2040,6 +2040,7 @@ class PlayState extends MusicBeatState
 			{
 				CustomFadeTransition.nextCamera = null;
 			}
+			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			MusicBeatState.switchState(new FreeplayState());
 		}
 	}
@@ -2402,7 +2403,9 @@ class PlayState extends MusicBeatState
 				misses++;
 			updateAccuracy();
 
-			playMiss(direction);
+			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+
+			playMissAnim(direction);
 			vocals.volume = 0;
 		}
 	}
@@ -2417,13 +2420,11 @@ class PlayState extends MusicBeatState
 		misses++;
 		updateAccuracy();
 
-		playMiss(Math.abs(note.noteData));
+		playMissAnim(Math.abs(note.noteData));
 	}
 
-	function playMiss(direction:Float = 1)
+	function playMissAnim(direction:Float = 1)
 	{
-		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
-
 		switch (direction)
 		{
 			case 0:

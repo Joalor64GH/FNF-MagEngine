@@ -55,11 +55,24 @@ class HealthIcon extends FlxSprite
 			this.char = char;
 
 			antialiasing = true;
+
+			// TODO: unharcode icons shit
+			checkVariations("bf");
+			checkVariations("mom");
+			checkVariations("parents");
+			checkVariations("senpai");
+			checkVariations("monster");
+
 			if (char.endsWith('-pixel'))
-			{
 				antialiasing = false;
-			}
 		}
+	}
+
+	function checkVariations(daChar:String)
+	{
+		if (char.startsWith(daChar) && !char.endsWith("-old") && !char.endsWith('car') && !char.endsWith("-christmas") && !char.endsWith('-pixel')
+			&& !char.endsWith('angry'))
+			char = daChar;
 	}
 
 	public function getCharacter():String

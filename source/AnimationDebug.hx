@@ -9,9 +9,6 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
-/**
-	*DEBUG MODE
- */
 class AnimationDebug extends FlxState
 {
 	var bf:Boyfriend;
@@ -137,6 +134,11 @@ class AnimationDebug extends FlxState
 		else
 		{
 			camFollow.velocity.set();
+		}
+
+		if (FlxG.keys.justPressed.ESCAPE)
+		{
+			MusicBeatState.switchState(new PlayState());
 		}
 
 		if (FlxG.keys.justPressed.W)
