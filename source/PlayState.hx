@@ -647,7 +647,7 @@ class PlayState extends MusicBeatState
 			default:
 		    {	
 				curStage = SONG.song + 'Stage';
-				var custombg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.modspng('images/stages/' + SONG.song + 'Stage'));
+				var custombg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('images/stages/' + SONG.song + 'Stage'));
 				add(custombg);
 		    }
 		}
