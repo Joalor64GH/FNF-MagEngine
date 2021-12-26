@@ -61,6 +61,9 @@ class Character extends FlxSprite
 	{
 		super(x, y);
 
+		if (curCharacter == 'dad')
+			singDuration = 6.1;
+
 		animOffsets = new Map<String, Array<Dynamic>>();
 		curCharacter = character;
 		this.isPlayer = isPlayer;
@@ -72,7 +75,6 @@ class Character extends FlxSprite
 		{
 			// might unhardcode these in the future
 			case 'gf':
-				// GIRLFRIEND CODE
 				tex = Paths.getSparrowAtlas('GF_assets', 'shared');
 				frames = tex;
 				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
@@ -138,7 +140,6 @@ class Character extends FlxSprite
 				antialiasing = false;
 
 			case 'dad':
-				// DAD ANIMATION LOADING CODE
 				tex = Paths.getSparrowAtlas('DADDY_DEAREST', 'shared');
 				frames = tex;
 				animation.addByPrefix('idle', 'Dad idle dance', 24);
@@ -489,52 +490,23 @@ class Character extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		if (!debugMode && animation.curAnim != null)
+		if (!curCharacter.startsWith('bf'))
 		{
-			// if (heyTimer > 0)
-			// {
-			// 	heyTimer -= elapsed;
-			// 	if (heyTimer <= 0)
-			// 	{
-			// 		if (specialAnim && animation.curAnim.name == 'hey' || animation.curAnim.name == 'cheer')
-			// 		{
-			// 			specialAnim = false;
-			// 			dance();
-			// 		}
-			// 		heyTimer = 0;
-			// 	}
-			// }
-			// else if (animation.curAnim.finished)
-			// {
-			// 	specialAnim = false;
-			// 	dance();
-			// }
-
-			if (!isPlayer)
+			if (animation.curAnim.name.startsWith('sing'))
 			{
-				if (animation.curAnim.name.startsWith('sing'))
-				{
-					holdTimer += elapsed;
-				}
-
-				if (holdTimer >= Conductor.stepCrochet * 0.001 * singDuration)
-				{
-					dance();
-					holdTimer = 0;
-				}
+				holdTimer += elapsed;
 			}
 
-			if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
+			if (holdTimer >= Conductor.stepCrochet * singDuration * 0.001)
 			{
-				playAnim(animation.curAnim.name + '-loop');
+				dance();
+				holdTimer = 0;
 			}
 		}
-		switch (curCharacter)
-		{
-			case 'gf':
-				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
-					playAnim('danceRight');
-		}
+
+		if (curCharacter == 'gf' && animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+			playAnim('danceRight');
+
 		super.update(elapsed);
 	}
 

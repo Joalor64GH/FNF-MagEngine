@@ -1239,8 +1239,6 @@ class PlayState extends MusicBeatState
 		var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
 		for (section in noteData)
 		{
-			var coolSection:Int = Std.int(section.lengthInSteps / 4);
-
 			for (songNotes in section.sectionNotes)
 			{
 				var daStrumTime:Float = songNotes[0];
@@ -1836,15 +1834,12 @@ class PlayState extends MusicBeatState
 					daNote.y = (strumY + 0.45 * (Conductor.songPosition - daNote.strumTime) * roundedSpeed);
 					if (daNote.isSustainNote)
 					{
-						// Jesus fuck this took me so much mother fucking time AAAAAAAAAA
 						if (daNote.animation.curAnim.name.endsWith('end'))
 						{
 							daNote.y += 10.5 * (fakeCrochet / 400) * 1.5 * roundedSpeed + (46 * (roundedSpeed - 1));
 							daNote.y -= 46 * (1 - (fakeCrochet / 600)) * roundedSpeed;
 							if (isPixelStage)
 								daNote.y += 8;
-							// else
-							// 	daNote.y -= 39;
 						}
 						daNote.y += (Note.swagWidth / 2) - (60.5 * (roundedSpeed - 1));
 						daNote.y += 27.5 * ((SONG.bpm / 100) - 1) * (roundedSpeed - 1);
@@ -1960,12 +1955,6 @@ class PlayState extends MusicBeatState
 
 		if (!inCutscene)
 			keyShit();
-		if (boyfriend.holdTimer > Conductor.stepCrochet * 0.001 * boyfriend.singDuration
-			&& boyfriend.animation.curAnim.name.startsWith('sing')
-			&& !boyfriend.animation.curAnim.name.endsWith('miss'))
-		{
-			boyfriend.dance();
-		}
 
 		#if debug
 		if (FlxG.keys.justPressed.ONE)
@@ -2307,12 +2296,6 @@ class PlayState extends MusicBeatState
 
 			if (!endingSong)
 			{
-				if (controlHoldArray.contains(true)
-					&& boyfriend.holdTimer > Conductor.stepCrochet * 0.001 * boyfriend.singDuration
-					&& boyfriend.animation.curAnim.name.startsWith('sing')
-					&& !boyfriend.animation.curAnim.name.endsWith('miss'))
-					boyfriend.dance();
-
 				// more accurate hit time for the ratings?
 				var lastTime:Float = Conductor.songPosition;
 				Conductor.songPosition = FlxG.sound.music.time;
@@ -2373,6 +2356,13 @@ class PlayState extends MusicBeatState
 				// more accurate hit time for the ratings? part 2 (Now that the calculations are done, go back to the time it was before for not causing a note stutter)
 				Conductor.songPosition = lastTime;
 			}
+		}
+
+		if (boyfriend.holdTimer > Conductor.stepCrochet * boyfriend.singDuration * 0.001
+			&& !controlHoldArray.contains(true)
+			&& (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss')))
+		{
+			boyfriend.playAnim('idle');
 		}
 
 		playerStrums.forEach(function(spr:FlxSprite)
@@ -2610,7 +2600,7 @@ class PlayState extends MusicBeatState
 
 		if (generatedMusic)
 		{
-			notes.sort(FlxSort.byY, FlxSort.DESCENDING);
+			notes.sort(FlxSort.byY, FlxG.save.data.downscroll ? FlxSort.ASCENDING : FlxSort.DESCENDING);
 		}
 
 		if (SONG.notes[Math.floor(curStep / 16)] != null)
