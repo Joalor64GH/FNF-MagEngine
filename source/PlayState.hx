@@ -157,7 +157,6 @@ class PlayState extends MusicBeatState
 	var talking:Bool = true;
 	var songScore:Int = 0;
 	var scoreTxt:FlxText;
-	var stats:FlxSprite;
 	var infoTxt:FlxText;
 
 	public static var campaignScore:Int = 0;
@@ -878,24 +877,15 @@ class PlayState extends MusicBeatState
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
-		infoTxt = new FlxText(4, healthBarBG.y + 50, 0, SONG.song + " - " + CoolUtil.difficultyString(false), 16);
-		if (FlxG.save.data.downscroll)
-			infoTxt.setPosition(healthBarBG.y + -65, 700);
+		infoTxt = new FlxText(4, 0, 0, SONG.song + " - " + CoolUtil.difficultyString(false), 16);
+		infoTxt.y = FlxG.height - infoTxt.height;
 		infoTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		infoTxt.scrollFactor.set();
 		add(infoTxt);
 
-		stats = new FlxSprite(250, 682).loadGraphic(Paths.image('statsbg'));
-		if (FlxG.save.data.downscroll)
-			stats.setPosition(250, 106);
-		stats.scrollFactor.set();
-		stats.color = FlxColor.BLUE;
-		add(stats);
-
-		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2.40 - 81, healthBarBG.y + 50, 0, "", 14);
-		scoreTxt.font = 'VCR OSD Mono';
-		if (FlxG.save.data.accuracy)
-			scoreTxt.width = healthBarBG.x + healthBarBG.width / 1.94 - 81;
+		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
+		scoreTxt.setFormat('VCR OSD Mono', 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.scrollFactor.set();
 		add(scoreTxt);
 
 		strumLineNotes.cameras = [camHUD];
@@ -904,10 +894,9 @@ class PlayState extends MusicBeatState
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
+		infoTxt.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
-		stats.cameras = [camHUD];
-		infoTxt.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -1552,10 +1541,13 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		scoreTxt.text = "Score:" + songScore + " | Misses:" + misses + " | Accuracy:" + truncateFloat(accuracy, 2) + "% ";
 		if (FlxG.save.data.accuracy)
 		{
 			scoreTxt.text = "Score:" + songScore + " | Misses:" + misses;
+		}
+		else
+		{
+			scoreTxt.text = "Score:" + songScore + " | Misses:" + misses + " | Accuracy:" + truncateFloat(accuracy, 2) + "% ";
 		}
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
 		{
