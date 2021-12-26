@@ -42,11 +42,11 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-		var initSonglist = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
+		var songList = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
 
-		for (i in 0...initSonglist.length)
+		for (i in 0...songList.length)
 		{
-			var data:Array<String> = initSonglist[i].split(':');
+			var data:Array<String> = songList[i].split(':');
 			songs.push(new SongMetadata(data[0], Std.parseInt(data[2]), data[1], Std.parseInt(data[3])));
 		}
 
@@ -68,10 +68,6 @@ class FreeplayState extends MusicBeatState
 		#if debug
 		isDebug = true;
 		#end
-
-		// LOAD MUSIC
-
-		// LOAD CHARACTERS
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		add(bg);

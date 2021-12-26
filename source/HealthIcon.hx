@@ -39,40 +39,33 @@ class HealthIcon extends FlxSprite
 			changeIcon('bf');
 	}
 
-	public function changeIcon(char:String)
+	public function changeIcon(newChar:String)
 	{
-		if (this.char != char)
+		if (char != newChar)
 		{
-			var name:String = 'icons/icon-' + char;
+			var iconsList = CoolUtil.coolTextFile(Paths.txt('data/iconsList'));
+
+			for (i in 0...iconsList.length)
+			{
+				var data:Array<String> = iconsList[i].split(':');
+				if (data[1] != null && newChar == data[0])
+				{
+					newChar = data[1];
+					break;
+				}
+			}
+
+			var name:String = 'icons/icon-' + newChar;
 			if (!Paths.fileExists('images/' + name + '.png', IMAGE))
-				name = 'icons/icon-' + char;
+				name = 'icons/icon-face';
 
-			var file:Dynamic = Paths.image(name);
+			loadGraphic(Paths.image(name), true, 150, 150);
+			animation.add(newChar, [0, 1], 0, false, isPlayer);
+			animation.play(newChar);
+			char = newChar;
 
-			loadGraphic(file, true, 150, 150);
-			animation.add(char, [0, 1], 0, false, isPlayer);
-			animation.play(char);
-			this.char = char;
-
-			antialiasing = true;
-
-			// TODO: unharcode icons shit
-			checkVariations("bf");
-			checkVariations("mom");
-			checkVariations("parents");
-			checkVariations("senpai");
-			checkVariations("monster");
-
-			if (char.endsWith('-pixel'))
-				antialiasing = false;
+			antialiasing = newChar.endsWith('-pixel');
 		}
-	}
-
-	function checkVariations(daChar:String)
-	{
-		if (char.startsWith(daChar) && !char.endsWith("-old") && !char.endsWith('car') && !char.endsWith("-christmas") && !char.endsWith('-pixel')
-			&& !char.endsWith('angry'))
-			char = daChar;
 	}
 
 	public function getCharacter():String

@@ -870,29 +870,6 @@ class PlayState extends MusicBeatState
 		// healthBar
 		add(healthBar);
 
-		infoTxt = new FlxText(4, healthBarBG.y + 50, 0, SONG.song + " - " + CoolUtil.difficultyString(false), 16);
-		if (FlxG.save.data.downscroll)
-			infoTxt.setPosition(healthBarBG.y + -65, 700);
-		infoTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		infoTxt.scrollFactor.set();
-		add(infoTxt);
-
-		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2.40 - 81, healthBarBG.y + 50, 0, "", 14);
-		scoreTxt.font = 'VCR OSD Mono';
-		if (FlxG.save.data.accuracy)
-		{
-			scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 1.94 - 81, healthBarBG.y + 50, 0, "", 14);
-			scoreTxt.font = 'VCR OSD Mono';
-		}
-		stats = new FlxSprite(250, 682).loadGraphic(Paths.image('statsbg'));
-		if (FlxG.save.data.downscroll)
-			stats.setPosition(250, 106);
-		stats.scrollFactor.set();
-		add(stats);
-		add(scoreTxt);
-
-		stats.color = FlxColor.BLUE;
-
 		iconP1 = new HealthIcon(SONG.player1, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 		add(iconP1);
@@ -900,6 +877,26 @@ class PlayState extends MusicBeatState
 		iconP2 = new HealthIcon(SONG.player2, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
+
+		infoTxt = new FlxText(4, healthBarBG.y + 50, 0, SONG.song + " - " + CoolUtil.difficultyString(false), 16);
+		if (FlxG.save.data.downscroll)
+			infoTxt.setPosition(healthBarBG.y + -65, 700);
+		infoTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		infoTxt.scrollFactor.set();
+		add(infoTxt);
+
+		stats = new FlxSprite(250, 682).loadGraphic(Paths.image('statsbg'));
+		if (FlxG.save.data.downscroll)
+			stats.setPosition(250, 106);
+		stats.scrollFactor.set();
+		stats.color = FlxColor.BLUE;
+		add(stats);
+
+		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2.40 - 81, healthBarBG.y + 50, 0, "", 14);
+		scoreTxt.font = 'VCR OSD Mono';
+		if (FlxG.save.data.accuracy)
+			scoreTxt.width = healthBarBG.x + healthBarBG.width / 1.94 - 81;
+		add(scoreTxt);
 
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -2584,11 +2581,6 @@ class PlayState extends MusicBeatState
 		if (FlxG.sound.music.time > Conductor.songPosition + 20 || FlxG.sound.music.time < Conductor.songPosition - 20)
 		{
 			resyncVocals();
-		}
-
-		if (dad.curCharacter == 'spooky' && curStep % 4 == 2)
-		{
-			// dad.dance();
 		}
 	}
 
