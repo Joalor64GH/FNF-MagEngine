@@ -44,7 +44,7 @@ class Character extends FlxSprite
 	public var animations:Array<Animation>;
 	public var image:String;
 
-	public var singDuration:Float = 7;
+	public var singDuration:Float = 4;
 
 	public var charthingy:Array<String> = CoolUtil.coolTextFile(Paths.bruhtxt('custom_characters/customCharacterList'));
 
@@ -489,31 +489,52 @@ class Character extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		if (!curCharacter.startsWith('bf'))
+		if (!debugMode && animation.curAnim != null)
 		{
-			if (animation.curAnim.name.startsWith('sing'))
+			// if (heyTimer > 0)
+			// {
+			// 	heyTimer -= elapsed;
+			// 	if (heyTimer <= 0)
+			// 	{
+			// 		if (specialAnim && animation.curAnim.name == 'hey' || animation.curAnim.name == 'cheer')
+			// 		{
+			// 			specialAnim = false;
+			// 			dance();
+			// 		}
+			// 		heyTimer = 0;
+			// 	}
+			// }
+			// else if (animation.curAnim.finished)
+			// {
+			// 	specialAnim = false;
+			// 	dance();
+			// }
+
+			if (!isPlayer)
 			{
-				holdTimer += elapsed;
+				if (animation.curAnim.name.startsWith('sing'))
+				{
+					holdTimer += elapsed;
+				}
+
+				if (holdTimer >= Conductor.stepCrochet * 0.001 * singDuration)
+				{
+					dance();
+					holdTimer = 0;
+				}
 			}
 
-			var dadVar:Float = 4;
-
-			if (curCharacter == 'dad')
-				dadVar = 6.1;
-			if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001)
+			if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
 			{
-				dance();
-				holdTimer = 0;
+				playAnim(animation.curAnim.name + '-loop');
 			}
 		}
-
 		switch (curCharacter)
 		{
 			case 'gf':
 				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
 					playAnim('danceRight');
 		}
-
 		super.update(elapsed);
 	}
 
