@@ -6,6 +6,7 @@ import sys.thread.Thread;
 #end
 import flixel.FlxG;
 import modloader.PolymodHandler;
+import modloader.ModList;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.input.keyboard.FlxKey;
@@ -56,9 +57,15 @@ class TitleState extends MusicBeatState
 					folders.push(file);
 				}
 			}
-			PolymodHandler.loadMods();
 		}
 		#end
+		
+		// idk why i put these conditions mag is not available on mac anyway
+		#if desktop
+		PolymodHandler.loadMods();
+		#end
+
+		ModList.load();
 		
 		PlayerSettings.init();
 
@@ -78,6 +85,8 @@ class TitleState extends MusicBeatState
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		Highscore.load();
+
+		MagEngineDefaults.initSave();
 
 
 		#if FREEPLAY
@@ -404,6 +413,14 @@ class TitleState extends MusicBeatState
 
 			PlayerSettings.player1.controls.loadKeyBinds();
 			remove(ngSpr);
+
+			#if desktop
+			PolymodHandler.loadMods();
+			#end
+
+			MagEngineDefaults.initSave();
+
+			ModList.load();
 
 			FlxG.camera.flash(FlxColor.WHITE, 4);
 			remove(credGroup);

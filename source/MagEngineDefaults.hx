@@ -1,7 +1,7 @@
 import openfl.Lib;
 import flixel.FlxG;
 
-class CableEngineData
+class MagEngineDefaults
 {
     public static function initSave()
     {
@@ -31,9 +31,10 @@ class CableEngineData
 
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 60;
+		
+		if (FlxG.save.data.modList == null)
+			FlxG.save.data.modList = true;
 
-
-		Conductor.recalculateTimings();
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();
         
