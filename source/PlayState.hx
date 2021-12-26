@@ -2626,8 +2626,8 @@ class PlayState extends MusicBeatState
 			camHUD.zoom += 0.03;
 		}
 
-		iconP1.setGraphicSize(Std.int(iconP1.width + 30));
-		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
+		iconP1.setGraphicSize(Std.int(iconP1.width + 35));
+		iconP2.setGraphicSize(Std.int(iconP2.width + 35));
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();

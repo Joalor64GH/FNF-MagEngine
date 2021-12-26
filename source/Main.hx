@@ -84,6 +84,8 @@ class Main extends Sprite
 		display = new SimpleInfoDisplay(10, 3, 0xFFFFFF);
 		addChild(display);
 		#end
+
+		MagEngineDefaults.init();
 	}
 
 	public static var display:SimpleInfoDisplay;

@@ -1,18 +1,17 @@
-import openfl.Lib;
 import flixel.FlxG;
 
-class CableEngineData
+class MagEngineDefaults
 {
-	public static function initSave()
+	public static function init()
 	{
 		if (FlxG.save.data.downscroll == null)
 			FlxG.save.data.downscroll = false;
 
+		if (FlxG.save.data.ghostTapping == null)
+			FlxG.save.data.ghostTapping = false;
+
 		if (FlxG.save.data.dfjk == null)
 			FlxG.save.data.dfjk = false;
-
-		if (FlxG.save.data.newInput == null)
-			FlxG.save.data.newInput = false;
 
 		if (FlxG.save.data.accuracy == null)
 			FlxG.save.data.accuracy = false;
@@ -32,7 +31,6 @@ class CableEngineData
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 60;
 
-		Conductor.recalculateTimings();
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();
 	}
