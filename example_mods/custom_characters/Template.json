@@ -27,5 +27,9 @@
 		}
 	],
 	"image": "characters/DADDY_DEAREST",
-	"healthbarColor": 0xFFaf66ce
+	"healthbarColor": [
+		175,
+		102,
+		206
+	]
 }

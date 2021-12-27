@@ -21,7 +21,7 @@ using StringTools;
 typedef SwagCharacter = {
 	var animations:Array<Animation>;
 	var image:String;
-	var healthbarColor:Int;
+	var healthbarColor:Array<Int>;
 }
 
 typedef Animation = {
@@ -93,7 +93,8 @@ class Character extends FlxSprite
 				animation.addByPrefix('scared', 'GF FEAR', 24);
 
 				loadOffsetFromFile(curCharacter);
-				 
+				//bugfix moment
+				barColor = FlxColor.fromRGB(165, 0, 77);
 				playAnim('danceRight');
 
 			case 'gf-christmas':
@@ -112,7 +113,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('scared', 'GF FEAR', 24);
 				
 				loadOffsetFromFile(curCharacter);
-
+				barColor = 0xA5004D;
 				playAnim('danceRight');
 
 			case 'gf-car':
@@ -124,7 +125,7 @@ class Character extends FlxSprite
 					false);
 
 				loadOffsetFromFile(curCharacter);
-
+				barColor = FlxColor.fromRGB(165, 0, 77);
 				playAnim('danceRight');
 
 			case 'gf-pixel':
@@ -137,7 +138,7 @@ class Character extends FlxSprite
 				loadOffsetFromFile(curCharacter);
 
 				playAnim('danceRight');
-
+				barColor = FlxColor.fromRGB(165, 0, 77);
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 				updateHitbox();
 				antialiasing = false;
@@ -434,7 +435,7 @@ class Character extends FlxSprite
 				frames = Paths.getModsSparrowAtlas(parsedJson.image);
 				imagePNG = parsedJson.image;
 				animationsthing = parsedJson.animations;
-				barColor = parsedJson.healthbarColor;
+				barColor = FlxColor.fromRGB(parsedJson.healthbarColor[0], parsedJson.healthbarColor[1], parsedJson.healthbarColor[2]);
 		
      if(animationsthing != null && animationsthing.length > 0) {
 		for (anim in animationsthing) {
