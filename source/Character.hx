@@ -21,7 +21,7 @@ using StringTools;
 typedef SwagCharacter = {
 	var animations:Array<Animation>;
 	var image:String;
-	var healthbarColor:FlxColor;
+	var healthbarColor:Int;
 }
 
 typedef Animation = {
@@ -434,7 +434,7 @@ class Character extends FlxSprite
 				frames = Paths.getModsSparrowAtlas(parsedJson.image);
 				imagePNG = parsedJson.image;
 				animationsthing = parsedJson.animations;
-				barColor =  parsedJson.healthbarColor;
+				barColor = parsedJson.healthbarColor;
 		
      if(animationsthing != null && animationsthing.length > 0) {
 		for (anim in animationsthing) {
