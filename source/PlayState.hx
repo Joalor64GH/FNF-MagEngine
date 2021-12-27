@@ -646,8 +646,8 @@ class PlayState extends MusicBeatState
 			}
 			default:
 		    {	
-				curStage = SONG.song + 'Stage';
-				var custombg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('images/stages/' + SONG.song + 'Stage'));
+				curStage = SONG.song.toLowerCase() + 'Stage';
+				var custombg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('stages/' + SONG.song.toLowerCase() + 'Stage'));
 				add(custombg);
 		    }
 		}
@@ -802,7 +802,11 @@ class PlayState extends MusicBeatState
 				boyfriend.y += 220;
 				gf.x += 180;
 				gf.y += 300;
-	}
+			default:
+				if(curStage == SONG.song.toLowerCase() + 'Stage'){
+				boyfriend.x += 200;
+				}
+		}         
 
 		add(gf);
 
@@ -869,7 +873,7 @@ class PlayState extends MusicBeatState
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
+		healthBar.createFilledBar(dad.barColor, boyfriend.barColor);
 		// healthBar 
 		add(healthBar);
 
@@ -1726,12 +1730,14 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (camZooming)
-		{
-			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, 0.95);
-			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.95);
-		}
+		//smooth zooms like week 7
 
+		if (camZooming)
+			{
+				FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
+				camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
+			}
+	
 		FlxG.watch.addQuick("beatShit", curBeat);
 		FlxG.watch.addQuick("stepShit", curStep);
 

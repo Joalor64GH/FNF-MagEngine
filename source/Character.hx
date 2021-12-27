@@ -6,6 +6,7 @@ import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.Assets;
 import haxe.Json;
+import flixel.util.FlxColor;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
@@ -20,6 +21,7 @@ using StringTools;
 typedef SwagCharacter = {
 	var animations:Array<Animation>;
 	var image:String;
+	var healthbarColor:FlxColor;
 }
 
 typedef Animation = {
@@ -52,6 +54,7 @@ class Character extends FlxSprite
 	public var holdTimer:Float = 0;	
 
 	public var imagePNG:String = '';
+	public var barColor:FlxColor;
 	public var animationsthing:Array<Animation> = [];
 	
 	public var charArray:Array<String>;
@@ -150,6 +153,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('singLEFT', 'Dad Sing Note LEFT', 24);
 
 				loadOffsetFromFile(curCharacter);
+				barColor = 0xFFaf66ce;
 				playAnim('idle');
 			case 'spooky':
 				tex = Paths.getSparrowAtlas('characters/spooky_kids_assets','shared');
@@ -162,7 +166,7 @@ class Character extends FlxSprite
 				animation.addByIndices('danceRight', 'spooky dance idle', [8, 10, 12, 14], "", 12, false);
 
 				loadOffsetFromFile(curCharacter);
-
+				barColor = 0xFFd57e00;
 				playAnim('danceRight');
 			case 'mom':
 				tex = Paths.getSparrowAtlas('characters/Mom_Assets','shared');
@@ -177,7 +181,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('singRIGHT', 'Mom Pose Left', 24, false);
 
 				loadOffsetFromFile(curCharacter);
-
+				barColor = 0xFFd8558e;
 				playAnim('idle');
 
 			case 'mom-car':
@@ -193,6 +197,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('singRIGHT', 'Mom Pose Left', 24, false);
 
 				loadOffsetFromFile(curCharacter);
+				barColor = 0xFFd8558e;
 
 				playAnim('idle');
 			case 'monster':
@@ -205,7 +210,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('singRIGHT', 'Monster Right note', 24, false);
 				
 				loadOffsetFromFile(curCharacter);
-
+				barColor = 0xFFf3ff6e;
 				playAnim('idle');
 			case 'monster-christmas':
 				tex = Paths.getSparrowAtlas('characters/monsterChristmas','shared');
@@ -217,7 +222,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('singRIGHT', 'Monster Right note', 24, false);
 
 				loadOffsetFromFile(curCharacter);
-
+				barColor = 0xFFf3ff6e;
 				playAnim('idle');
 			case 'pico':
 				tex = Paths.getSparrowAtlas('characters/Pico_FNF_assetss','shared');
@@ -245,7 +250,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS', 24);
 
 			    loadOffsetFromFile(curCharacter);
-
+				barColor = 0xFFb7d855;
 				playAnim('idle');
 
 				flipX = true;
@@ -273,7 +278,7 @@ class Character extends FlxSprite
 				loadOffsetFromFile(curCharacter);
 
 				playAnim('idle');
-
+				barColor = 0xFF31b0d1;
 				flipX = true;
 
 			case 'bf-christmas':
@@ -291,7 +296,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('hey', 'BF HEY', 24, false);
 
 				loadOffsetFromFile(curCharacter);
-
+				barColor = 0xFF31b0d1;
 				playAnim('idle');
 
 				flipX = true;
@@ -309,7 +314,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
 
 				loadOffsetFromFile(curCharacter);
-
+				barColor = 0xFF31b0d1;
 				playAnim('idle');
 
 				flipX = true;
@@ -329,7 +334,7 @@ class Character extends FlxSprite
 
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
-
+				barColor = 0xFF31b0d1;
 				playAnim('idle');
 
 				width -= 100;
@@ -353,6 +358,7 @@ class Character extends FlxSprite
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
 				antialiasing = false;
+				barColor = 0xFF31b0d1;
 				flipX = true;
 
 			case 'senpai':
@@ -366,7 +372,7 @@ class Character extends FlxSprite
 				loadOffsetFromFile(curCharacter);
 
 				playAnim('idle');
-
+				barColor = 0xFFffaa6f;
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
 
@@ -380,7 +386,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('singDOWN', 'Angry Senpai DOWN NOTE', 24, false);
 
 			    loadOffsetFromFile(curCharacter);
-
+				barColor = 0xFFffaa6f;
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
 
@@ -398,7 +404,7 @@ class Character extends FlxSprite
 
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
-
+				barColor = 0xFFff3c6e;
 				playAnim('idle');
 
 				antialiasing = false;
@@ -418,7 +424,7 @@ class Character extends FlxSprite
 				animation.addByPrefix('singRIGHT-alt', 'Parent Right Note Mom', 24, false);
 
 				loadOffsetFromFile(curCharacter);
-
+				barColor = 0xFF9a00f8;
 				playAnim('idle');
 				
 			default:
@@ -428,6 +434,7 @@ class Character extends FlxSprite
 				frames = Paths.getModsSparrowAtlas(parsedJson.image);
 				imagePNG = parsedJson.image;
 				animationsthing = parsedJson.animations;
+				barColor =  parsedJson.healthbarColor;
 		
      if(animationsthing != null && animationsthing.length > 0) {
 		for (anim in animationsthing) {
