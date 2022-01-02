@@ -654,50 +654,6 @@ class PlayState extends MusicBeatState
 				}
 		}
 
-		/* 
-			var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolBG'));
-			bg.scale.set(6, 6);
-			// bg.setGraphicSize(Std.int(bg.width * 6));
-			// bg.updateHitbox();
-			add(bg);
-
-			var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolFG'));
-			fg.scale.set(6, 6);
-			// fg.setGraphicSize(Std.int(fg.width * 6));
-			// fg.updateHitbox();
-			add(fg);
-
-			wiggleShit.effectType = WiggleEffectType.DREAMY;
-			wiggleShit.waveAmplitude = 0.01;
-			wiggleShit.waveFrequency = 60;
-			wiggleShit.waveSpeed = 0.8;
-		 */
-
-		// bg.shader = wiggleShit.shader;
-		// fg.shader = wiggleShit.shader;
-
-		/* 
-			var waveSprite = new FlxEffectSprite(bg, [waveEffectBG]);
-			var waveSpriteFG = new FlxEffectSprite(fg, [waveEffectFG]);
-
-			// Using scale since setGraphicSize() doesnt work???
-			waveSprite.scale.set(6, 6);
-			waveSpriteFG.scale.set(6, 6);
-			waveSprite.setPosition(posX, posY);
-			waveSpriteFG.setPosition(posX, posY);
-
-			waveSprite.scrollFactor.set(0.7, 0.8);
-			waveSpriteFG.scrollFactor.set(0.9, 0.8);
-
-			// waveSprite.setGraphicSize(Std.int(waveSprite.width * 6));
-			// waveSprite.updateHitbox();
-			// waveSpriteFG.setGraphicSize(Std.int(fg.width * 6));
-			// waveSpriteFG.updateHitbox();
-
-			add(waveSprite);
-			add(waveSpriteFG);
-		 */
-
 		isPixelStage = curStage.startsWith('school');
 
 		var gfVersion:String = 'gf';
@@ -711,74 +667,7 @@ class PlayState extends MusicBeatState
 			case 'gf-pixel':
 				gfVersion = 'gf-pixel';
 		}
-		    {	
-				curStage = SONG.song.toLowerCase() + 'Stage';
-				var custombg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('stages/' + SONG.song.toLowerCase() + 'Stage'));
-				add(custombg);
-		    }
-		}
 
-		                  /* 
-		                           var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolBG'));
-		                           bg.scale.set(6, 6);
-		                           // bg.setGraphicSize(Std.int(bg.width * 6));
-		                           // bg.updateHitbox();
-		                           add(bg);
-
-		                           var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolFG'));
-		                           fg.scale.set(6, 6);
-		                           // fg.setGraphicSize(Std.int(fg.width * 6));
-		                           // fg.updateHitbox();
-		                           add(fg);
-
-		                           wiggleShit.effectType = WiggleEffectType.DREAMY;
-		                           wiggleShit.waveAmplitude = 0.01;
-		                           wiggleShit.waveFrequency = 60;
-		                           wiggleShit.waveSpeed = 0.8;
-		                    */
-
-		                  // bg.shader = wiggleShit.shader;
-		                  // fg.shader = wiggleShit.shader;
-
-		                  /* 
-		                            var waveSprite = new FlxEffectSprite(bg, [waveEffectBG]);
-		                            var waveSpriteFG = new FlxEffectSprite(fg, [waveEffectFG]);
-
-		                            // Using scale since setGraphicSize() doesnt work???
-		                            waveSprite.scale.set(6, 6);
-		                            waveSpriteFG.scale.set(6, 6);
-		                            waveSprite.setPosition(posX, posY);
-		                            waveSpriteFG.setPosition(posX, posY);
-
-		                            waveSprite.scrollFactor.set(0.7, 0.8);
-		                            waveSpriteFG.scrollFactor.set(0.9, 0.8);
-
-		                            // waveSprite.setGraphicSize(Std.int(waveSprite.width * 6));
-		                            // waveSprite.updateHitbox();
-		                            // waveSpriteFG.setGraphicSize(Std.int(fg.width * 6));
-		                            // waveSpriteFG.updateHitbox();
-
-		                            add(waveSprite);
-		                            add(waveSpriteFG);
-		                    */
-			
-
-			  var gfVersion:String = 'gf';
-
-			  var gfVersion:String = 'gf';
-
-			  switch (SONG.gfVersion)
-			  {
-				  case 'gf-car':
-					  gfVersion = 'gf-car';
-				  case 'gf-christmas':
-					  gfVersion = 'gf-christmas';
-				  case 'gf-pixel':
-					  gfVersion = 'gf-pixel';
-				  default:
-					  gfVersion = 'gf';
-			  }
-	  
 		gf = new Character(400, 130, gfVersion);
 		gf.scrollFactor.set(0.95, 0.95);
 
@@ -861,10 +750,9 @@ class PlayState extends MusicBeatState
 				gf.x += 180;
 				gf.y += 300;
 			default:
-				if(curStage == SONG.song.toLowerCase() + 'Stage'){
-				boyfriend.x += 200;
-				}
-		}         
+				if (curStage == SONG.song.toLowerCase() + 'Stage')
+					boyfriend.x += 200;
+		}
 
 		add(gf);
 
@@ -1765,14 +1653,14 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		//smooth zooms like week 7
+		// smooth zooms like week 7
 
 		if (camZooming)
-			{
-				FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
-				camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
-			}
-	
+		{
+			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
+			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
+		}
+
 		FlxG.watch.addQuick("beatShit", curBeat);
 		FlxG.watch.addQuick("stepShit", curStep);
 
@@ -1940,17 +1828,7 @@ class PlayState extends MusicBeatState
 							altAnim = '-alt';
 					}
 
-					switch (Math.abs(daNote.noteData))
-					{
-						case 0:
-							dad.playAnim('singLEFT' + altAnim, true);
-						case 1:
-							dad.playAnim('singDOWN' + altAnim, true);
-						case 2:
-							dad.playAnim('singUP' + altAnim, true);
-						case 3:
-							dad.playAnim('singRIGHT' + altAnim, true);
-					}
+					charSing(dad, Math.abs(daNote.noteData), altAnim);
 
 					cpuStrums.forEach(function(spr:FlxSprite)
 					{
@@ -2461,7 +2339,7 @@ class PlayState extends MusicBeatState
 
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 
-			playMissAnim(direction);
+			charSing(boyfriend, direction, "miss");
 			vocals.volume = 0;
 		}
 	}
@@ -2476,21 +2354,21 @@ class PlayState extends MusicBeatState
 		misses++;
 		updateAccuracy();
 
-		playMissAnim(Math.abs(note.noteData));
+		charSing(boyfriend, Math.abs(note.noteData), "miss");
 	}
 
-	function playMissAnim(direction:Float = 1)
+	function charSing(char:Character, direction:Float, alt:String = '')
 	{
 		switch (direction)
 		{
 			case 0:
-				boyfriend.playAnim('singLEFTmiss', true);
+				char.playAnim('singLEFT' + alt, true);
 			case 1:
-				boyfriend.playAnim('singDOWNmiss', true);
+				char.playAnim('singDOWN' + alt, true);
 			case 2:
-				boyfriend.playAnim('singUPmiss', true);
+				char.playAnim('singUP' + alt, true);
 			case 3:
-				boyfriend.playAnim('singRIGHTmiss', true);
+				char.playAnim('singRIGHT' + alt, true);
 		}
 	}
 
@@ -2517,23 +2395,15 @@ class PlayState extends MusicBeatState
 			else
 				health += 0.004;
 
-			switch (Math.abs(note.noteData))
-			{
-				case 0:
-					boyfriend.playAnim('singLEFT', true);
-				case 1:
-					boyfriend.playAnim('singDOWN', true);
-				case 2:
-					boyfriend.playAnim('singUP', true);
-				case 3:
-					boyfriend.playAnim('singRIGHT', true);
-			}
+			charSing(boyfriend, Math.abs(note.noteData));
 
 			playerStrums.forEach(function(spr:FlxSprite)
 			{
 				if (Math.abs(note.noteData) == spr.ID)
 					spr.animation.play('confirm', true);
 			});
+
+			boyfriend.holdTimer = 0;
 
 			note.wasGoodHit = true;
 

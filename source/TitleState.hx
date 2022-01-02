@@ -60,15 +60,17 @@ class TitleState extends MusicBeatState
 			}
 		}
 		#end
-		
+
 		// idk why i put these conditions mag is not available on mac anyway
 		#if desktop
 		PolymodHandler.loadMods();
 		#end
-
 		ModList.load();
-		
+
 		PlayerSettings.init();
+		PlayerSettings.player1.controls.loadKeyBinds();
+
+		remove(ngSpr);
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
@@ -86,8 +88,6 @@ class TitleState extends MusicBeatState
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		Highscore.load();
-
-		MagEngineDefaults.initSave();
 
 		#if FREEPLAY
 		MusicBeatState.switchState(new FreeplayState());
@@ -286,10 +286,8 @@ class TitleState extends MusicBeatState
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
 
-		if (pressedEnter && !skippedIntro)
-		{
+		if (pressedEnter)
 			skipIntro();
-		}
 
 		super.update(elapsed);
 	}
@@ -393,17 +391,6 @@ class TitleState extends MusicBeatState
 	{
 		if (!skippedIntro)
 		{
-			PlayerSettings.player1.controls.loadKeyBinds();
-			remove(ngSpr);
-
-			#if desktop
-			PolymodHandler.loadMods();
-			#end
-
-			MagEngineDefaults.initSave();
-
-			ModList.load();
-
 			FlxG.camera.flash(FlxColor.WHITE, 4);
 			remove(credGroup);
 			skippedIntro = true;

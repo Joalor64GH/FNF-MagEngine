@@ -13,5 +13,5 @@ gf-christmas:gf
 monster
 bf-pixel
 senpai
-senpai-angry
+senpai-angry:senpai
 spirit

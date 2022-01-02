@@ -46,7 +46,7 @@ class Character extends FlxSprite
 	public var animations:Array<Animation>;
 	public var image:String;
 
-	public var singDuration:Float = 7;
+	public var singDuration:Float = 4;
 
 	public var charthingy:Array<String> = CoolUtil.coolTextFile(Paths.bruhtxt('custom_characters/customCharacterList'));
 
@@ -64,9 +64,6 @@ class Character extends FlxSprite
 	{
 		super(x, y);
 
-		if (curCharacter == 'dad')
-			singDuration = 6.1;
-
 		animOffsets = new Map<String, Array<Dynamic>>();
 		curCharacter = character;
 		this.isPlayer = isPlayer;
@@ -78,6 +75,7 @@ class Character extends FlxSprite
 		{
 			// might unhardcode these in the future
 			case 'gf':
+				// GIRLFRIEND CODE
 				tex = Paths.getSparrowAtlas('GF_assets', 'shared');
 				frames = tex;
 				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
@@ -93,10 +91,8 @@ class Character extends FlxSprite
 				animation.addByPrefix('scared', 'GF FEAR', 24);
 
 				loadOffsetFromFile(curCharacter);
-
-				//bugfix moment
+				// bugfix moment
 				barColor = FlxColor.fromRGB(165, 0, 77);
-        
 				playAnim('danceRight');
 
 			case 'gf-christmas':
@@ -146,6 +142,7 @@ class Character extends FlxSprite
 				antialiasing = false;
 
 			case 'dad':
+				// DAD ANIMATION LOADING CODE
 				tex = Paths.getSparrowAtlas('DADDY_DEAREST', 'shared');
 				frames = tex;
 				animation.addByPrefix('idle', 'Dad idle dance', 24);
@@ -254,6 +251,7 @@ class Character extends FlxSprite
 				loadOffsetFromFile(curCharacter);
 				barColor = 0xFFb7d855;
 				playAnim('idle');
+
 				flipX = true;
 
 			case 'bf':
@@ -371,10 +369,9 @@ class Character extends FlxSprite
 				animation.addByPrefix('singDOWN', 'SENPAI DOWN NOTE', 24, false);
 
 				loadOffsetFromFile(curCharacter);
+
 				playAnim('idle');
-        
 				barColor = 0xFFffaa6f;
-        
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
 
@@ -389,7 +386,6 @@ class Character extends FlxSprite
 
 				loadOffsetFromFile(curCharacter);
 				barColor = 0xFFffaa6f;
-        
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
 
@@ -437,23 +433,9 @@ class Character extends FlxSprite
 				frames = Paths.getModsSparrowAtlas(parsedJson.image);
 				imagePNG = parsedJson.image;
 				animationsthing = parsedJson.animations;
-        
 				barColor = FlxColor.fromRGB(parsedJson.healthbarColor[0], parsedJson.healthbarColor[1], parsedJson.healthbarColor[2]);
-		
-     if(animationsthing != null && animationsthing.length > 0) {
-		for (anim in animationsthing) {
-			 var animAnim:String = '' + anim.anim;
-			  var animName:String = '' + anim.name;
-			   var animLoop:Bool = !!anim.loop;
-			     loadOffsetFromthecoolFile(curCharacter);
-		        	animation.addByPrefix(animAnim, animName, 24, animLoop);
-						}
 
-						 
-						}
-					}
-
-    if (animationsthing != null && animationsthing.length > 0)
+				if (animationsthing != null && animationsthing.length > 0)
 				{
 					for (anim in animationsthing)
 					{
@@ -515,23 +497,27 @@ class Character extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		if (!curCharacter.startsWith('bf'))
+		if (animation.curAnim != null)
 		{
-			if (animation.curAnim.name.startsWith('sing'))
+			if (!isPlayer)
 			{
-				holdTimer += elapsed;
+				if (animation.curAnim.name.startsWith('sing'))
+				{
+					holdTimer += elapsed;
+				}
+
+				if (holdTimer >= Conductor.stepCrochet * 0.001 * singDuration)
+				{
+					dance();
+					holdTimer = 0;
+				}
 			}
 
-			if (holdTimer >= Conductor.stepCrochet * singDuration * 0.001)
+			if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
 			{
-				dance();
-				holdTimer = 0;
+				playAnim(animation.curAnim.name + '-loop');
 			}
 		}
-
-		if (curCharacter == 'gf' && animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
-			playAnim('danceRight');
-
 		super.update(elapsed);
 	}
 
@@ -544,6 +530,7 @@ class Character extends FlxSprite
 	{
 		if (!debugMode && !disabledDance)
 		{
+			holding = false;
 			if (animation.getByName("idle") != null)
 				playAnim("idle");
 			else if (animation.getByName("danceRight") != null && animation.getByName("danceLeft") != null)
