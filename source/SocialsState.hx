@@ -23,14 +23,10 @@ class SocialsState extends MusicBeatState
 {
 	var curSelected:Int = 0;
 
-	var youtube:String = sys.io.File.getContent(Paths.txt('data/youtube'));
-	var twitter:String = sys.io.File.getContent(Paths.txt('data/twitter'));
-
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	var optionShit:Array<String> = ['youtube', 'twitter'];
 
-	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 
@@ -41,17 +37,10 @@ class SocialsState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		if (!FlxG.sound.music.playing)
-		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-		}
-
-		persistentUpdate = persistentDraw = true;
-
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.18;
-		bg.setGraphicSize(Std.int(bg.width * 1.1));
+		bg.setGraphicSize(Std.int(bg.width * 1.2));
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.antialiasing = true;
@@ -61,18 +50,6 @@ class SocialsState extends MusicBeatState
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 		add(camFollowPos);
-
-		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
-		magenta.scrollFactor.x = 0;
-		magenta.scrollFactor.y = 0.25;
-		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
-		magenta.updateHitbox();
-		magenta.screenCenter();
-		magenta.visible = false;
-		magenta.antialiasing = true;
-		magenta.color = 0xFFfd719b;
-		add(magenta);
-		// magenta.scrollFactor.set();
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
@@ -135,51 +112,12 @@ class SocialsState extends MusicBeatState
 
 			if (controls.ACCEPT)
 			{
-				if (optionShit[curSelected] == 'youtube')
-					CoolUtil.openURL(youtube);
-				else if (optionShit[curSelected] == 'twitter')
-					CoolUtil.openURL(twitter);
-				else
+				switch (optionShit[curSelected])
 				{
-					selectedSomethin = true;
-					FlxG.sound.play(Paths.sound('confirmMenu'));
-
-					menuItems.forEach(function(spr:FlxSprite)
-					{
-						if (curSelected != spr.ID)
-						{
-							FlxTween.tween(spr, {alpha: 0}, 0.4, {
-								ease: FlxEase.quadOut,
-								onComplete: function(twn:FlxTween)
-								{
-									spr.kill();
-								}
-							});
-						}
-						else
-						{
-							FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
-							{
-								var daChoice:String = optionShit[curSelected];
-
-								switch (daChoice)
-								{
-									case 'story mode':
-										MusicBeatState.switchState(new StoryMenuState());
-										trace("Story Menu Selected");
-									case 'freeplay':
-										MusicBeatState.switchState(new FreeplayState());
-
-										trace("Freeplay Menu Selected");
-									case 'credits':
-										MusicBeatState.switchState(new CreditsMenu());
-
-									case 'options':
-										MusicBeatState.switchState(new OptionsMenu());
-								}
-							});
-						}
-					});
+					case 'youtube':
+						CoolUtil.openURL(sys.io.File.getContent(Paths.txt('data/youtube')));
+					case 'twitter':
+						CoolUtil.openURL(sys.io.File.getContent(Paths.txt('data/twitter')));
 				}
 			}
 		}

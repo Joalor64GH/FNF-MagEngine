@@ -23,12 +23,8 @@ class ModsMenu extends MusicBeatState
 
 	public var page:FlxTypedGroup<ModsMenuOption> = new FlxTypedGroup<ModsMenuOption>();
 
-	public static var instance:ModsMenu;
-
 	override function create()
 	{
-		instance = this;
-
 		var menuBG:FlxSprite;
 
 		menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));

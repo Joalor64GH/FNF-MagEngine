@@ -89,6 +89,7 @@ class OptionsMenu extends MusicBeatState
 				MusicBeatState.switchState(new MainMenuState());
 			else if (controls.BACK)
 			{
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 				isCat = false;
 				grpControls.clear();
 				for (i in 0...options.length)
@@ -102,9 +103,15 @@ class OptionsMenu extends MusicBeatState
 				curSelected = 0;
 			}
 			if (controls.UP_P)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 				changeSelection(-1);
+			}
 			if (controls.DOWN_P)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 				changeSelection(1);
+			}
 
 			if (isCat)
 			{
@@ -160,6 +167,7 @@ class OptionsMenu extends MusicBeatState
 
 			if (controls.ACCEPT)
 			{
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 				if (isCat)
 				{
 					if (currentSelectedCat.getOptions()[curSelected].press())

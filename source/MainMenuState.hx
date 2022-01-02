@@ -52,11 +52,11 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		//
-		var psychScrolleffect:Float = Math.max(0.15 - (0.05 * (optionShit.length - 4)), 0.1);
+		var scrollEffect:Float = Math.max(0.15 - (0.05 * (optionShit.length - 4)), 0.1);
+
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
-		bg.scrollFactor.set(0, psychScrolleffect);
-		bg.setGraphicSize(Std.int(bg.width * 1.1));
+		bg.scrollFactor.set(0, scrollEffect);
+		bg.setGraphicSize(Std.int(bg.width * 1.2));
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.antialiasing = true;
@@ -68,8 +68,8 @@ class MainMenuState extends MusicBeatState
 		add(camFollowPos);
 
 		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
-		magenta.scrollFactor.set(0, psychScrolleffect);
-		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
+		magenta.scrollFactor.set(0, scrollEffect);
+		magenta.setGraphicSize(Std.int(magenta.width * 1.2));
 		magenta.updateHitbox();
 		magenta.screenCenter();
 		magenta.visible = false;
@@ -128,9 +128,7 @@ class MainMenuState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.8)
-		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
-		}
 
 		var lerpVal:Float = CoolUtil.boundTo(elapsed * 5.6, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
@@ -150,9 +148,7 @@ class MainMenuState extends MusicBeatState
 			}
 
 			if (controls.BACK)
-			{
 				MusicBeatState.switchState(new TitleState());
-			}
 
 			if (controls.ACCEPT)
 			{
@@ -187,20 +183,14 @@ class MainMenuState extends MusicBeatState
 								{
 									case 'story mode':
 										MusicBeatState.switchState(new StoryMenuState());
-										trace("Story Menu Selected");
 									case 'freeplay':
 										MusicBeatState.switchState(new FreeplayState());
-
-										trace("Freeplay Menu Selected");
 									case 'credits':
 										MusicBeatState.switchState(new CreditsMenu());
-
 									case 'mods':
 										MusicBeatState.switchState(new ModsMenu());
-
 									case 'social':
 										MusicBeatState.switchState(new SocialsState());
-
 									case 'options':
 										MusicBeatState.switchState(new OptionsMenu());
 								}

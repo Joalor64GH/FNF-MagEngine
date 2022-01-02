@@ -61,33 +61,44 @@ class TitleState extends MusicBeatState
 		}
 		#end
 
-		// idk why i put these conditions mag is not available on mac anyway
-		#if desktop
-		PolymodHandler.loadMods();
-		#end
-		ModList.load();
+		if (!initialized)
+		{
+			#if desktop
+			// idk why i put these conditions mag is not available on mac anyway
+			PolymodHandler.loadMods();
 
-		PlayerSettings.init();
-		PlayerSettings.player1.controls.loadKeyBinds();
+			DiscordClient.initialize();
+
+			Application.current.onExit.add(function(exitCode)
+			{
+				DiscordClient.shutdown();
+			});
+			#end
+
+			ModList.load();
+
+			PlayerSettings.init();
+			PlayerSettings.player1.controls.loadKeyBinds();
+
+			// DEBUG BULLSHIT
+
+			NGio.noLogin(APIStuff.API);
+
+			#if ng
+			var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
+			trace('NEWGROUNDS LOL');
+			#end
+
+			FlxG.save.bind('funkin', 'ninjamuffin99');
+
+			Highscore.load();
+		}
+
+		super.create();
 
 		remove(ngSpr);
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
-
-		// DEBUG BULLSHIT
-
-		super.create();
-
-		NGio.noLogin(APIStuff.API);
-
-		#if ng
-		var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
-		trace('NEWGROUNDS LOL');
-		#end
-
-		FlxG.save.bind('funkin', 'ninjamuffin99');
-
-		Highscore.load();
 
 		#if FREEPLAY
 		MusicBeatState.switchState(new FreeplayState());
@@ -97,15 +108,6 @@ class TitleState extends MusicBeatState
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
 			startIntro();
-		});
-		#end
-
-		#if desktop
-		DiscordClient.initialize();
-
-		Application.current.onExit.add(function(exitCode)
-		{
-			DiscordClient.shutdown();
 		});
 		#end
 	}
@@ -120,16 +122,7 @@ class TitleState extends MusicBeatState
 	{
 		if (!initialized)
 		{
-			// HAD TO MODIFY SOME BACKEND SHIT
-			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
-			// https://github.com/HaxeFlixel/flixel-addons/pull/348
-
-			// var music:FlxSound = new FlxSound();
-			// music.loadStream(Paths.music('freakyMenu'));
-			// FlxG.sound.list.add(music);
-			// music.play();
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 		}
 
