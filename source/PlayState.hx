@@ -710,13 +710,75 @@ class PlayState extends MusicBeatState
 				gfVersion = 'gf-christmas';
 			case 'gf-pixel':
 				gfVersion = 'gf-pixel';
-			default:
-				gfVersion = 'gf';
+		}
+		    {	
+				curStage = SONG.song.toLowerCase() + 'Stage';
+				var custombg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.image('stages/' + SONG.song.toLowerCase() + 'Stage'));
+				add(custombg);
+		    }
 		}
 
-		gf = new Character(400, 130, gfVersion);
-		gf.scrollFactor.set(0.95, 0.95);
+		                  /* 
+		                           var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolBG'));
+		                           bg.scale.set(6, 6);
+		                           // bg.setGraphicSize(Std.int(bg.width * 6));
+		                           // bg.updateHitbox();
+		                           add(bg);
 
+		                           var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolFG'));
+		                           fg.scale.set(6, 6);
+		                           // fg.setGraphicSize(Std.int(fg.width * 6));
+		                           // fg.updateHitbox();
+		                           add(fg);
+
+		                           wiggleShit.effectType = WiggleEffectType.DREAMY;
+		                           wiggleShit.waveAmplitude = 0.01;
+		                           wiggleShit.waveFrequency = 60;
+		                           wiggleShit.waveSpeed = 0.8;
+		                    */
+
+		                  // bg.shader = wiggleShit.shader;
+		                  // fg.shader = wiggleShit.shader;
+
+		                  /* 
+		                            var waveSprite = new FlxEffectSprite(bg, [waveEffectBG]);
+		                            var waveSpriteFG = new FlxEffectSprite(fg, [waveEffectFG]);
+
+		                            // Using scale since setGraphicSize() doesnt work???
+		                            waveSprite.scale.set(6, 6);
+		                            waveSpriteFG.scale.set(6, 6);
+		                            waveSprite.setPosition(posX, posY);
+		                            waveSpriteFG.setPosition(posX, posY);
+
+		                            waveSprite.scrollFactor.set(0.7, 0.8);
+		                            waveSpriteFG.scrollFactor.set(0.9, 0.8);
+
+		                            // waveSprite.setGraphicSize(Std.int(waveSprite.width * 6));
+		                            // waveSprite.updateHitbox();
+		                            // waveSpriteFG.setGraphicSize(Std.int(fg.width * 6));
+		                            // waveSpriteFG.updateHitbox();
+
+		                            add(waveSprite);
+		                            add(waveSpriteFG);
+		                    */
+			
+
+			  var gfVersion:String = 'gf';
+
+			  var gfVersion:String = 'gf';
+
+			  switch (SONG.gfVersion)
+			  {
+				  case 'gf-car':
+					  gfVersion = 'gf-car';
+				  case 'gf-christmas':
+					  gfVersion = 'gf-christmas';
+				  case 'gf-pixel':
+					  gfVersion = 'gf-pixel';
+				  default:
+					  gfVersion = 'gf';
+			  }
+	  
 		gf = new Character(400, 130, gfVersion);
 		gf.scrollFactor.set(0.95, 0.95);
 
@@ -798,7 +860,11 @@ class PlayState extends MusicBeatState
 				boyfriend.y += 220;
 				gf.x += 180;
 				gf.y += 300;
-		}
+			default:
+				if(curStage == SONG.song.toLowerCase() + 'Stage'){
+				boyfriend.x += 200;
+				}
+		}         
 
 		add(gf);
 
@@ -865,8 +931,7 @@ class PlayState extends MusicBeatState
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
-		// healthBar
+		healthBar.createFilledBar(dad.barColor, boyfriend.barColor);
 		add(healthBar);
 
 		iconP1 = new HealthIcon(SONG.player1, true);
@@ -1700,12 +1765,14 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (camZooming)
-		{
-			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, 0.95);
-			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.95);
-		}
+		//smooth zooms like week 7
 
+		if (camZooming)
+			{
+				FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
+				camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
+			}
+	
 		FlxG.watch.addQuick("beatShit", curBeat);
 		FlxG.watch.addQuick("stepShit", curStep);
 

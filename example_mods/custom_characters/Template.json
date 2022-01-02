@@ -26,5 +26,10 @@
 			"name": "Dad idle dance"
 		}
 	],
-	"image": "characters/DADDY_DEAREST"
+	"image": "characters/DADDY_DEAREST",
+	"healthbarColor": [
+		175,
+		102,
+		206
+	]
 }
