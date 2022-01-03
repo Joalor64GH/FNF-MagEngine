@@ -841,7 +841,7 @@ class PlayState extends MusicBeatState
 		}
 		add(camFollowPos);
 
-		FlxG.camera.follow(camFollowPos, LOCKON, 0.04);
+		FlxG.camera.follow(camFollowPos, LOCKON, 1);
 		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow);
@@ -1331,7 +1331,7 @@ class PlayState extends MusicBeatState
 		for (i in 0...4)
 		{
 			// FlxG.log.add(i);
-			babyArrow = new FlxSprite(0, strumLine.y);
+			babyArrow = new FlxSprite(STRUM_X, strumLine.y);
 
 			switch (curStage)
 			{
@@ -1450,7 +1450,7 @@ class PlayState extends MusicBeatState
 
 	public function moveCamera(isDad:Bool)
 	{
-		if (camFollow.x != dad.getMidpoint().x + 150 && isDad)
+		if (isDad)
 		{
 			camFollow.set(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 			switch (dad.curCharacter)
@@ -1470,7 +1470,7 @@ class PlayState extends MusicBeatState
 
 			tweenCam();
 		}
-		else if (camFollow.x != boyfriend.getMidpoint().x - 100)
+		else
 		{
 			camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 
@@ -1937,6 +1937,8 @@ class PlayState extends MusicBeatState
 							daNote.y -= 46 * (1 - (fakeCrochet / 600)) * roundedSpeed;
 							if (isPixelStage)
 								daNote.y += 8;
+							else
+								daNote.y += 5;
 						}
 						daNote.y += (Note.swagWidth / 2) - (60.5 * (roundedSpeed - 1));
 						daNote.y += 27.5 * ((SONG.bpm / 100) - 1) * (roundedSpeed - 1);
@@ -2845,9 +2847,7 @@ class PlayState extends MusicBeatState
 		wiggleShit.update(Conductor.crochet);
 
 		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null && !endingSong)
-		{
 			moveCameraSection(Std.int(curStep / 16));
-		}
 		// HARDCODING FOR MILF ZOOMS!
 		if (curSong.toLowerCase() == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
 		{

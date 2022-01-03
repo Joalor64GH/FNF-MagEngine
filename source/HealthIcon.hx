@@ -34,38 +34,29 @@ class HealthIcon extends FlxSprite
 			changeIcon('bf');
 	}
 
-	public function changeIcon(newChar:String)
+	public function changeIcon(char:String)
 	{
-		if (char != newChar)
+		var iconsList = CoolUtil.coolTextFile(Paths.txt('data/iconsList'));
+
+		for (i in 0...iconsList.length)
 		{
-			var iconsList = CoolUtil.coolTextFile(Paths.txt('data/iconsList'));
-
-			for (i in 0...iconsList.length)
+			var data:Array<String> = iconsList[i].split(':');
+			if (data[1] != null && char == data[0])
 			{
-				var data:Array<String> = iconsList[i].split(':');
-				if (data[1] != null && newChar == data[0])
-				{
-					newChar = data[1];
-					break;
-				}
+				char = data[1];
+				break;
 			}
-
-			var name:String = 'icons/icon-' + newChar;
-			if (!Paths.fileExists('images/' + name + '.png', IMAGE))
-				name = 'icons/icon-face';
-
-			loadGraphic(Paths.image(name), true, 150, 150);
-			animation.add(newChar, [0, 1], 0, false, isPlayer);
-			animation.play(newChar);
-			char = newChar;
-
-			antialiasing = !newChar.endsWith('-pixel');
 		}
-	}
 
-	public function getCharacter():String
-	{
-		return char;
+		if (!OpenFlAssets.exists(Paths.image('icons/icon-' + char)))
+			char = 'face';
+
+		loadGraphic(Paths.image('icons/icon-' + char), true, 150, 150);
+
+		antialiasing = (char.endsWith('-pixel') || char.startsWith('senpai') || char.startsWith('spirit'));
+
+		animation.add(char, [0, 1], 0, false, isPlayer);
+		animation.play(char);
 	}
 
 	override function update(elapsed:Float)
