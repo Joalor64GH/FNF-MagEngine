@@ -18,7 +18,8 @@ class MidSongEvent
 	public var valueTwo:String;
 	public var eventPos:Float;
 
-	public function new(events:String, eventPos:Float, valueTwo:String, valueOne:String){
+	public function new(events:String, eventPos:Float, valueTwo:String, valueOne:String)
+	{
 		this.events = events;
 		this.eventPos = eventPos;
 		this.valueTwo = valueTwo;
@@ -59,7 +60,6 @@ class Song
 	public var dialoguetoggle:String = 'false';
 	public var videotoggle:String = 'false';
 	public var events:Array<MidSongEvent>;
-
 
 	public function new(song, notes, bpm)
 	{

@@ -49,13 +49,14 @@ class Note extends FlxSprite
 		y -= 2000;
 		this.strumTime = strumTime;
 
-		if(isSustainNote && prevNote.noteType == 1) { 
+		if (isSustainNote && prevNote.noteType == 1)
+		{
 			noteType == 1;
 		}
-		if(isSustainNote && prevNote.noteType == 2) { 
+		if (isSustainNote && prevNote.noteType == 2)
+		{
 			noteType == 2;
 		}
-
 
 		this.noteData = noteData;
 
@@ -91,59 +92,60 @@ class Note extends FlxSprite
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 				updateHitbox();
 
-				default:
-					switch (noteType){
-				case 1:
-					{
-					frames = Paths.getSparrowAtlas('HURT_NOTE_assets');
-	
-					animation.addByPrefix('greenScroll', 'green0');
-					animation.addByPrefix('redScroll', 'red0');
-					animation.addByPrefix('blueScroll', 'blue0');
-					animation.addByPrefix('purpleScroll', 'purple0');
-					
-					setGraphicSize(Std.int(width * 0.7));
-					updateHitbox();
-					antialiasing = true;
-					}
-				case 2:
-					{
-					frames = Paths.getSparrowAtlas('KILL_NOTE_assets');
-		
-					animation.addByPrefix('greenScroll', 'green0');
-					animation.addByPrefix('redScroll', 'red0');
-					animation.addByPrefix('blueScroll', 'blue0');
-					animation.addByPrefix('purpleScroll', 'purple0');
-						
-					setGraphicSize(Std.int(width * 0.7));
-					updateHitbox();
-					antialiasing = true;
-					}
-				default:
-					{
-					frames = Paths.getSparrowAtlas('NOTE_assets');
-	
-					animation.addByPrefix('greenScroll', 'green0');
-					animation.addByPrefix('redScroll', 'red0');
-					animation.addByPrefix('blueScroll', 'blue0');
-					animation.addByPrefix('purpleScroll', 'purple0');
-	
-					animation.addByPrefix('purpleholdend', 'pruple end hold');
-					animation.addByPrefix('greenholdend', 'green hold end');
-					animation.addByPrefix('redholdend', 'red hold end');
-					animation.addByPrefix('blueholdend', 'blue hold end');
-	
-					animation.addByPrefix('purplehold', 'purple hold piece');
-					animation.addByPrefix('greenhold', 'green hold piece');
-					animation.addByPrefix('redhold', 'red hold piece');
-					animation.addByPrefix('bluehold', 'blue hold piece');
-	
-					setGraphicSize(Std.int(width * 0.7));
-					updateHitbox();
-					antialiasing = true;
-					}
+			default:
+				switch (noteType)
+				{
+					case 1:
+						{
+							frames = Paths.getSparrowAtlas('HURT_NOTE_assets');
+
+							animation.addByPrefix('greenScroll', 'green0');
+							animation.addByPrefix('redScroll', 'red0');
+							animation.addByPrefix('blueScroll', 'blue0');
+							animation.addByPrefix('purpleScroll', 'purple0');
+
+							setGraphicSize(Std.int(width * 0.7));
+							updateHitbox();
+							antialiasing = true;
+						}
+					case 2:
+						{
+							frames = Paths.getSparrowAtlas('KILL_NOTE_assets');
+
+							animation.addByPrefix('greenScroll', 'green0');
+							animation.addByPrefix('redScroll', 'red0');
+							animation.addByPrefix('blueScroll', 'blue0');
+							animation.addByPrefix('purpleScroll', 'purple0');
+
+							setGraphicSize(Std.int(width * 0.7));
+							updateHitbox();
+							antialiasing = true;
+						}
+					default:
+						{
+							frames = Paths.getSparrowAtlas('NOTE_assets');
+
+							animation.addByPrefix('greenScroll', 'green0');
+							animation.addByPrefix('redScroll', 'red0');
+							animation.addByPrefix('blueScroll', 'blue0');
+							animation.addByPrefix('purpleScroll', 'purple0');
+
+							animation.addByPrefix('purpleholdend', 'pruple end hold');
+							animation.addByPrefix('greenholdend', 'green hold end');
+							animation.addByPrefix('redholdend', 'red hold end');
+							animation.addByPrefix('blueholdend', 'blue hold end');
+
+							animation.addByPrefix('purplehold', 'purple hold piece');
+							animation.addByPrefix('greenhold', 'green hold piece');
+							animation.addByPrefix('redhold', 'red hold piece');
+							animation.addByPrefix('bluehold', 'blue hold piece');
+
+							setGraphicSize(Std.int(width * 0.7));
+							updateHitbox();
+							antialiasing = true;
+						}
 				}
-			}
+		}
 
 		switch (noteData)
 		{
@@ -216,33 +218,34 @@ class Note extends FlxSprite
 	{
 		super.update(elapsed);
 
-		if(isSustainNote && prevNote.noteType == 1) { 
-			this.kill(); 
+		if (isSustainNote && prevNote.noteType == 1)
+		{
+			this.kill();
 		}
 
-		if(isSustainNote && prevNote.noteType == 2) { 
-			this.kill(); 
+		if (isSustainNote && prevNote.noteType == 2)
+		{
+			this.kill();
 		}
 
 		if (mustPress)
 		{
 			if (noteType != 1 && noteType != 2)
-				{
-					if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
-						&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
-						canBeHit = true;
-					else
-						canBeHit = false;
-				}
+			{
+				if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
+					&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
+					canBeHit = true;
 				else
-				{
-					if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.6)
-						&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.4))
-						canBeHit = true;
-					else
-						canBeHit = false;
-					
-				}
+					canBeHit = false;
+			}
+			else
+			{
+				if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.6)
+					&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.4))
+					canBeHit = true;
+				else
+					canBeHit = false;
+			}
 		}
 		else
 		{

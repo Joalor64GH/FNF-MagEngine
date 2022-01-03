@@ -88,7 +88,7 @@ class PlayState extends MusicBeatState
 	public var parsedJson:SwagStage;
 
 	public var modchartTweens:Map<String, FlxTween> = new Map();
-	public var modchartSprites:Map<String, LuaSprite> = new Map();
+	public var modchartSprites:Map<String, FlxSprite> = new Map();
 	public var modchartTimers:Map<String, FlxTimer> = new Map();
 	public var modchartSounds:Map<String, FlxSound> = new Map();
 
@@ -2567,7 +2567,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function updateAccuracy()
+	public function updateAccuracy()
 	{
 		totalPlayed += 1;
 		accuracy = totalNotesHit / totalPlayed * 100;
@@ -2775,34 +2775,34 @@ class PlayState extends MusicBeatState
 					dad.playAnim(i.valueOne);
 				}
 				/*if (event.events == 'shake-screen'){
-							var coolCounter:Int = 0;
-							new FlxTimer().start(Std.parseFloat(event.valueOne), function(cool:FlxTimer)
-							{
-							FlxG.camera.shake(Std.parseFloat(event.valueTwo), (60 / Conductor.bpm));
-							coolCounter += 1;
+						var coolCounter:Int = 0;
+						new FlxTimer().start(Std.parseFloat(event.valueOne), function(cool:FlxTimer)
+						{
+						FlxG.camera.shake(Std.parseFloat(event.valueTwo), (60 / Conductor.bpm));
+						coolCounter += 1;
 
-							if (coolCounter == 1){
-							  cool.active = false;
-							  coolCounter = 0;
-						  }
-						  });
-							
-						}
+						if (coolCounter == 1){
+						  cool.active = false;
+						  coolCounter = 0;
+					  }
+					  });
+						
+					}
 
-						if (event.events == 'shake-hud'){
-							var coolCounter:Int = 0;
-							new FlxTimer().start(Std.parseFloat(event.valueOne), function(cool:FlxTimer)
-							{
-							camHUD.shake(Std.parseFloat(event.valueTwo), (60 / Conductor.bpm));
-							coolCounter += 1;
+					if (event.events == 'shake-hud'){
+						var coolCounter:Int = 0;
+						new FlxTimer().start(Std.parseFloat(event.valueOne), function(cool:FlxTimer)
+						{
+						camHUD.shake(Std.parseFloat(event.valueTwo), (60 / Conductor.bpm));
+						coolCounter += 1;
 
-							if (coolCounter == 1){
-							  cool.active = false;
-							  coolCounter = 0;
-						  }
-						  });
-							
-						}
+						if (coolCounter == 1){
+						  cool.active = false;
+						  coolCounter = 0;
+					  }
+					  });
+						
+					}
 				 */
 			}
 		}

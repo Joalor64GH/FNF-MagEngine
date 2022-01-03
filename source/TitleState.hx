@@ -61,11 +61,14 @@ class TitleState extends MusicBeatState
 				}
 			}
 		}
-		if (sys.FileSystem.exists('mods/' + ModsMenu.coolId + '/')) {
+		if (sys.FileSystem.exists('mods/' + ModsMenu.coolId + '/'))
+		{
 			var folders:Array<String> = [];
-			for (file in sys.FileSystem.readDirectory('mods/' + ModsMenu.coolId + '/')) {
+			for (file in sys.FileSystem.readDirectory('mods/' + ModsMenu.coolId + '/'))
+			{
 				var path = haxe.io.Path.join(['mods/' + ModsMenu.coolId + '/', file]);
-				if (sys.FileSystem.isDirectory(path)) {
+				if (sys.FileSystem.isDirectory(path))
+				{
 					folders.push(file);
 				}
 			}

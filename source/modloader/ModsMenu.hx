@@ -43,7 +43,7 @@ class ModsMenu extends MusicBeatState
 		super.create();
 
 		PolymodHandler.loadModMetadata();
-		
+
 		add(page);
 
 		loadMods();
@@ -61,14 +61,14 @@ class ModsMenu extends MusicBeatState
 
 		var optionLoopNum:Int = 0;
 
-		for(modId in PolymodHandler.metadataArrays)
-			{
-				var modOption = new ModsMenuOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
-				page.add(modOption);
-				optionLoopNum++;
+		for (modId in PolymodHandler.metadataArrays)
+		{
+			var modOption = new ModsMenuOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
+			page.add(modOption);
+			optionLoopNum++;
 
-				coolId = modId;
-			}
+			coolId = modId;
+		}
 	}
 
 	override function update(elapsed:Float)

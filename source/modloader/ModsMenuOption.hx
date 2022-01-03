@@ -24,8 +24,9 @@ class ModsMenuOption extends FlxTypedGroup<FlxSprite>
 
 	public var Option_Name:String = "-";
 	public var Option_Value:String = "Template Mod";
+
 	public static var enabledMods:Array<String> = [];
-	
+
 	public function new(_Option_Name:String = "-", _Option_Value:String = "Template Mod", _Option_Row:Int = 0)
 	{
 		super();
@@ -55,7 +56,7 @@ class ModsMenuOption extends FlxTypedGroup<FlxSprite>
 		var enableButton:FlxButton = new FlxButton(920, 620, "Enable Mod", function()
 		{
 			Mod_Enabled = true;
-            enabledMods.push(Option_Value);
+			enabledMods.push(Option_Value);
 			ModList.setModEnabled(Option_Value, Mod_Enabled);
 		});
 
