@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import openfl.utils.Assets as OpenFlAssets;
 
@@ -7,33 +8,27 @@ using StringTools;
 
 class HealthIcon extends FlxSprite
 {
+	public var char:String = 'bf';
+	public var isPlayer:Bool = false;
+	public var isOldIcon:Bool = false;
 	public var sprTracker:FlxSprite;
 
-	private var isOldIcon:Bool = false;
-	private var isPlayer:Bool = false;
-
-	public var char:String = '';
-
-	public function new(char:String = 'bf', isPlayer:Bool = false)
+	public function new(?char:String = "bf", ?isPlayer:Bool = false)
 	{
 		super();
-		isOldIcon = (char == 'bf-old');
+
+		this.char = char;
 		this.isPlayer = isPlayer;
+
+		isPlayer = isOldIcon = false;
+
 		changeIcon(char);
 		scrollFactor.set();
 	}
 
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-
-		if (sprTracker != null)
-			setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y - 30);
-	}
-
 	public function swapOldIcon()
 	{
-		if (isOldIcon = !isOldIcon)
+		if (isOldIcon)
 			changeIcon('bf-old');
 		else
 			changeIcon('bf');
@@ -71,5 +66,13 @@ class HealthIcon extends FlxSprite
 	public function getCharacter():String
 	{
 		return char;
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		if (sprTracker != null)
+			setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y - 30);
 	}
 }

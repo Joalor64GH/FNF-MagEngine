@@ -18,6 +18,7 @@ class Note extends FlxSprite
 	public var mustPress:Bool = false;
 	public var noteData:Int = 0;
 	public var canBeHit:Bool = false;
+	public var noteType:Int = 0;
 	public var tooLate:Bool = false;
 	public var wasGoodHit:Bool = false;
 	public var prevNote:Note;
@@ -33,7 +34,7 @@ class Note extends FlxSprite
 	public static var BLUE_NOTE:Int = 1;
 	public static var RED_NOTE:Int = 3;
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, noteType:Int = 0)
 	{
 		super();
 
@@ -48,7 +49,18 @@ class Note extends FlxSprite
 		y -= 2000;
 		this.strumTime = strumTime;
 
+		if (isSustainNote && prevNote.noteType == 1)
+		{
+			noteType == 1;
+		}
+		if (isSustainNote && prevNote.noteType == 2)
+		{
+			noteType == 2;
+		}
+
 		this.noteData = noteData;
+
+		this.noteType = noteType;
 
 		var daStage:String = PlayState.curStage;
 
@@ -81,26 +93,58 @@ class Note extends FlxSprite
 				updateHitbox();
 
 			default:
-				frames = Paths.getSparrowAtlas('NOTE_assets');
+				switch (noteType)
+				{
+					case 1:
+						{
+							frames = Paths.getSparrowAtlas('HURT_NOTE_assets');
 
-				animation.addByPrefix('greenScroll', 'green0');
-				animation.addByPrefix('redScroll', 'red0');
-				animation.addByPrefix('blueScroll', 'blue0');
-				animation.addByPrefix('purpleScroll', 'purple0');
+							animation.addByPrefix('greenScroll', 'green0');
+							animation.addByPrefix('redScroll', 'red0');
+							animation.addByPrefix('blueScroll', 'blue0');
+							animation.addByPrefix('purpleScroll', 'purple0');
 
-				animation.addByPrefix('purpleholdend', 'pruple end hold');
-				animation.addByPrefix('greenholdend', 'green hold end');
-				animation.addByPrefix('redholdend', 'red hold end');
-				animation.addByPrefix('blueholdend', 'blue hold end');
+							setGraphicSize(Std.int(width * 0.7));
+							updateHitbox();
+							antialiasing = true;
+						}
+					case 2:
+						{
+							frames = Paths.getSparrowAtlas('KILL_NOTE_assets');
 
-				animation.addByPrefix('purplehold', 'purple hold piece');
-				animation.addByPrefix('greenhold', 'green hold piece');
-				animation.addByPrefix('redhold', 'red hold piece');
-				animation.addByPrefix('bluehold', 'blue hold piece');
+							animation.addByPrefix('greenScroll', 'green0');
+							animation.addByPrefix('redScroll', 'red0');
+							animation.addByPrefix('blueScroll', 'blue0');
+							animation.addByPrefix('purpleScroll', 'purple0');
 
-				setGraphicSize(Std.int(width * 0.7));
-				updateHitbox();
-				antialiasing = true;
+							setGraphicSize(Std.int(width * 0.7));
+							updateHitbox();
+							antialiasing = true;
+						}
+					default:
+						{
+							frames = Paths.getSparrowAtlas('NOTE_assets');
+
+							animation.addByPrefix('greenScroll', 'green0');
+							animation.addByPrefix('redScroll', 'red0');
+							animation.addByPrefix('blueScroll', 'blue0');
+							animation.addByPrefix('purpleScroll', 'purple0');
+
+							animation.addByPrefix('purpleholdend', 'pruple end hold');
+							animation.addByPrefix('greenholdend', 'green hold end');
+							animation.addByPrefix('redholdend', 'red hold end');
+							animation.addByPrefix('blueholdend', 'blue hold end');
+
+							animation.addByPrefix('purplehold', 'purple hold piece');
+							animation.addByPrefix('greenhold', 'green hold piece');
+							animation.addByPrefix('redhold', 'red hold piece');
+							animation.addByPrefix('bluehold', 'blue hold piece');
+
+							setGraphicSize(Std.int(width * 0.7));
+							updateHitbox();
+							antialiasing = true;
+						}
+				}
 		}
 
 		switch (noteData)
@@ -174,17 +218,34 @@ class Note extends FlxSprite
 	{
 		super.update(elapsed);
 
+		if (isSustainNote && prevNote.noteType == 1)
+		{
+			this.kill();
+		}
+
+		if (isSustainNote && prevNote.noteType == 2)
+		{
+			this.kill();
+		}
+
 		if (mustPress)
 		{
-			// The * 0.5 is so that it's easier to hit them too late, instead of too early
-			if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
-				&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
-				canBeHit = true;
+			if (noteType != 1 && noteType != 2)
+			{
+				if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
+					&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
+					canBeHit = true;
+				else
+					canBeHit = false;
+			}
 			else
-				canBeHit = false;
-
-			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit)
-				tooLate = true;
+			{
+				if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * 0.6)
+					&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.4))
+					canBeHit = true;
+				else
+					canBeHit = false;
+			}
 		}
 		else
 		{

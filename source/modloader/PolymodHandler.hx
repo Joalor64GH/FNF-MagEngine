@@ -1,10 +1,12 @@
 package modloader;
 
+// this is here so the game doesnt crash because of no framework params
 #if polymod
 import polymod.Polymod;
 
 class PolymodHandler
 {
+	public static var swagMeta:String;
 	public static var metadataArrays:Array<String> = [];
 
 	public static function loadMods()
@@ -12,7 +14,7 @@ class PolymodHandler
 		loadModMetadata();
 
 		Polymod.init({
-			modRoot: "mods/ModLoader/",
+			modRoot: "mods/",
 			dirs: ModList.getActiveMods(metadataArrays),
 			errorCallback: function(error:PolymodError)
 			{
@@ -28,13 +30,14 @@ class PolymodHandler
 	{
 		metadataArrays = [];
 
-		var tempArray = Polymod.scan("mods/ModLoader/", "*.*.*", function(error:PolymodError)
+		var tempArray = Polymod.scan("mods/", "*.*.*", function(error:PolymodError)
 		{
 			trace(error.message);
 		});
 
 		for (metadata in tempArray)
 		{
+			swagMeta = metadata.id;
 			metadataArrays.push(metadata.id);
 			ModList.modMetadatas.set(metadata.id, metadata);
 		}

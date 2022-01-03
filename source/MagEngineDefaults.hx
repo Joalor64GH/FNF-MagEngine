@@ -30,7 +30,7 @@ class MagEngineDefaults
 
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 60;
-		
+
 		if (FlxG.save.data.modList == null)
 			FlxG.save.data.modList = true;
 

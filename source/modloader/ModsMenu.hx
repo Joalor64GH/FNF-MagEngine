@@ -23,13 +23,17 @@ class ModsMenu extends MusicBeatState
 
 	public var page:FlxTypedGroup<ModsMenuOption> = new FlxTypedGroup<ModsMenuOption>();
 
+	public static var instance:ModsMenu;
+
+	public static var coolId:String;
+
 	override function create()
 	{
 		var menuBG:FlxSprite;
 
 		menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 
-		menuBG.color = FlxColor.LIME;
+		menuBG.color = FlxColor.PURPLE;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
@@ -38,9 +42,9 @@ class ModsMenu extends MusicBeatState
 
 		super.create();
 
-		add(page);
-
 		PolymodHandler.loadModMetadata();
+
+		add(page);
 
 		loadMods();
 		FlxG.mouse.visible = true;
@@ -59,9 +63,11 @@ class ModsMenu extends MusicBeatState
 
 		for (modId in PolymodHandler.metadataArrays)
 		{
-			var ModsMenuOption = new ModsMenuOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
-			page.add(ModsMenuOption);
+			var modOption = new ModsMenuOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
+			page.add(modOption);
 			optionLoopNum++;
+
+			coolId = modId;
 		}
 	}
 
