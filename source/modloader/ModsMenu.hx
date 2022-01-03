@@ -25,6 +25,8 @@ class ModsMenu extends MusicBeatState
 
 	public static var instance:ModsMenu;
 
+	public static var coolId:String;
+
 	override function create()
 	{
 		instance = this;
@@ -33,7 +35,7 @@ class ModsMenu extends MusicBeatState
 
 		menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 
-		menuBG.color = FlxColor.LIME;
+		menuBG.color = FlxColor.PURPLE;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
@@ -42,9 +44,9 @@ class ModsMenu extends MusicBeatState
 
 		super.create();
 
-		add(page);
-
 		PolymodHandler.loadModMetadata();
+		
+		add(page);
 
 		loadMods();
 		FlxG.mouse.visible = true;
@@ -62,11 +64,13 @@ class ModsMenu extends MusicBeatState
 		var optionLoopNum:Int = 0;
 
 		for(modId in PolymodHandler.metadataArrays)
-		{
-			var ModsMenuOption = new ModsMenuOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
-			page.add(ModsMenuOption);
-			optionLoopNum++;
-		}
+			{
+				var modOption = new ModsMenuOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
+				page.add(modOption);
+				optionLoopNum++;
+
+				coolId = modId;
+			}
 	}
 
 	override function update(elapsed:Float)

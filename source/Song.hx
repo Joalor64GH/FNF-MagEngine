@@ -12,6 +12,21 @@ import sys.FileSystem;
 
 using StringTools;
 
+class MidSongEvent
+{
+	public var events:String;
+	public var valueOne:String;
+	public var valueTwo:String;
+	public var eventPos:Float;
+
+	public function new(events:String, eventPos:Float, valueTwo:String, valueOne:String){
+		this.events = events;
+		this.eventPos = eventPos;
+		this.valueTwo = valueTwo;
+		this.valueOne = valueOne;
+	}
+}
+
 typedef SwagSong =
 {
 	var song:String;
@@ -22,6 +37,7 @@ typedef SwagSong =
 
 	var player1:String;
 	var player2:String;
+	public var events:Array<MidSongEvent>;
 	var validScore:Bool;
 	var stage:String;
 	var gfVersion:String;
@@ -43,6 +59,8 @@ class Song
 	public var gfVersion:String = 'gf';
 	public var dialoguetoggle:String = 'false';
 	public var videotoggle:String = 'false';
+	public var events:Array<MidSongEvent>;
+
 
 	public function new(song, notes, bpm)
 	{
