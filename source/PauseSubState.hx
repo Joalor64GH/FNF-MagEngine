@@ -176,6 +176,7 @@ class PauseSubState extends MusicBeatSubstate
 						MusicBeatState.switchState(new StoryMenuState());
 					else
 						MusicBeatState.switchState(new FreeplayState());
+					FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				case "BACK":
 					menuItems = menuItemswhyhaxe;
 					regenerateMenu();
