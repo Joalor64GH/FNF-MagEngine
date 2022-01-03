@@ -11,7 +11,10 @@ import sys.FileSystem;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
 import modloader.PolymodHandler;
-import modloader.ModLoaderDirectory;
+import modloader.ModsMenu;
+import modloader.ModList;
+import modloader.ModsMenuOption;
+
 import flash.media.Sound;
 
 using StringTools;
@@ -120,6 +123,11 @@ class Paths
 		return getPath('$key.txt', TEXT, library);
 	}
 
+		inline static public function lua(key:String, ?library:String)
+			{
+				return getPath('$key.lua', TEXT, library);
+			}
+			
 	inline static public function xml(key:String, ?library:String)
 	{
 		return getPath('data/$key.xml', TEXT, library);
@@ -256,9 +264,10 @@ class Paths
 	{
 		return 'mods/' + key;
 	}
-
-	inline static public function jsonCool(key:String = '')
-	{
+	inline static public function txtCool(key:String = '') {
+		return 'mods/' + key + '.txt';
+	}
+	inline static public function jsonCool(key:String = '') {
 		return 'weeks/' + key;
 	}
 
@@ -311,7 +320,10 @@ class Paths
 	{
 		return modfold(key + '.png');
 	}
-
+	inline static public function modlua(key:String)
+	{
+		return modfold('$key.lua');
+	}
 	inline static public function getSparrowAtlas(key:String, ?library:String)
 	{
 		return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
@@ -346,11 +358,12 @@ class Paths
 			{
 				return fileToCheck;
 			}
-			if (!FileSystem.exists(fileToCheck))
-			{
-				return ModLoaderDirectory.dir;
-			}
+			
 		}
+		if(FileSystem.exists('mods/' + PolymodHandler.swagMeta + '/' + key) && ModsMenuOption.enabledMods.contains(PolymodHandler.swagMeta)) {
+		return 'mods/' + PolymodHandler.swagMeta + '/' + key;
+		}
+
 		return 'mods/' + key;
 	}
 

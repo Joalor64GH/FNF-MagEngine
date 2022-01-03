@@ -7,6 +7,7 @@ import sys.thread.Thread;
 import flixel.FlxG;
 import modloader.PolymodHandler;
 import modloader.ModList;
+import modloader.ModsMenu;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.input.keyboard.FlxKey;
@@ -20,6 +21,7 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.system.FlxSound;
 import flixel.system.ui.FlxSoundTray;
+import modloader.ModsMenuOption;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -55,6 +57,15 @@ class TitleState extends MusicBeatState
 				var path = haxe.io.Path.join(['mods/', file]);
 				if (sys.FileSystem.isDirectory(path))
 				{
+					folders.push(file);
+				}
+			}
+		}
+		if (sys.FileSystem.exists('mods/' + ModsMenu.coolId + '/')) {
+			var folders:Array<String> = [];
+			for (file in sys.FileSystem.readDirectory('mods/' + ModsMenu.coolId + '/')) {
+				var path = haxe.io.Path.join(['mods/' + ModsMenu.coolId + '/', file]);
+				if (sys.FileSystem.isDirectory(path)) {
 					folders.push(file);
 				}
 			}
