@@ -1704,7 +1704,7 @@ class PlayState extends MusicBeatState
 		else
 			scoreTxt.text = "Score:" + songScore + " | Misses:" + misses + " | Accuracy:" + truncateFloat(accuracy, 2) + "% ";
 
-		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
+		if (controls.PAUSE && startedCountdown && canPause)
 		{
 			var ret:Dynamic = callOnLuas('pause', []);
 			if (ret != MagModChart.functionStop)
