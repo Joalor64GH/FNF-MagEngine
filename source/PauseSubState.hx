@@ -25,7 +25,7 @@ class PauseSubState extends MusicBeatSubstate
 		'Toggle Practice Mode',
 		'Exit to menu'
 	];
-	var levelpractice:FlxText;
+	var practiceTxt:FlxText;
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
@@ -81,27 +81,29 @@ class PauseSubState extends MusicBeatSubstate
 		blueballedTxt.updateHitbox();
 		add(blueballedTxt);
 
-		levelpractice = new FlxText(20, 15 + 101, 0, "", 32);
-		levelpractice.text += 'PRACTICE MODE';
-		levelpractice.scrollFactor.set();
-		levelpractice.setFormat(Paths.font('vcr.ttf'), 32);
-		levelpractice.updateHitbox();
-		levelpractice.visible = PlayState.practiceAllowed;
-		add(levelpractice);
+		practiceTxt = new FlxText(20, 15 + 101, 0, "", 32);
+		practiceTxt.text += 'PRACTICE MODE';
+		practiceTxt.scrollFactor.set();
+		practiceTxt.setFormat(Paths.font('vcr.ttf'), 32);
+		practiceTxt.updateHitbox();
+		practiceTxt.visible = PlayState.practiceAllowed;
+		add(practiceTxt);
 
-		blueballedTxt.alpha = 0;
-		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;
+		levelDifficulty.alpha = 0;
+		blueballedTxt.alpha = 0;
+		practiceTxt.alpha = 0;
 
 		levelInfo.x = FlxG.width - (levelInfo.width + 20);
 		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 20);
 		blueballedTxt.x = FlxG.width - (blueballedTxt.width + 20);
-		levelpractice.x = FlxG.width - (levelpractice.width + 20);
+		practiceTxt.x = FlxG.width - (practiceTxt.width + 20);
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
 		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
-		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
-		FlxTween.tween(blueballedTxt, {alpha: 1, y: blueballedTxt.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
+		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 4}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
+		FlxTween.tween(blueballedTxt, {alpha: 1, y: blueballedTxt.y + 4}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
+		FlxTween.tween(practiceTxt, {alpha: 1, y: practiceTxt.y + 2}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
@@ -131,13 +133,9 @@ class PauseSubState extends MusicBeatSubstate
 		var accepted = controls.ACCEPT;
 
 		if (upP)
-		{
 			changeSelection(-1);
-		}
 		if (downP)
-		{
 			changeSelection(1);
-		}
 
 		if (accepted)
 		{
@@ -166,8 +164,9 @@ class PauseSubState extends MusicBeatSubstate
 					menuItems = difficultyChoices;
 					regenerateMenu();
 				case "Toggle Practice Mode":
+					FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 					PlayState.practiceAllowed = !PlayState.practiceAllowed;
-					levelpractice.visible = PlayState.practiceAllowed;
+					practiceTxt.visible = PlayState.practiceAllowed;
 				case "Restart Song":
 					CustomFadeTransition.nextCamera = transCamera;
 					MusicBeatState.resetState();
@@ -177,7 +176,6 @@ class PauseSubState extends MusicBeatSubstate
 						MusicBeatState.switchState(new StoryMenuState());
 					else
 						MusicBeatState.switchState(new FreeplayState());
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				case "BACK":
 					menuItems = menuItemswhyhaxe;
 					regenerateMenu();
@@ -200,6 +198,8 @@ class PauseSubState extends MusicBeatSubstate
 
 	function changeSelection(change:Int = 0):Void
 	{
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
 		curSelected += change;
 
 		if (curSelected < 0)

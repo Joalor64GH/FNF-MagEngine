@@ -74,6 +74,8 @@ class OptionsMenu extends MusicBeatState
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 		}
 
+		changeSelection();
+
 		super.create();
 	}
 
@@ -85,22 +87,26 @@ class OptionsMenu extends MusicBeatState
 
 		if (acceptInput)
 		{
-			if (controls.BACK && !isCat)
-				MusicBeatState.switchState(new MainMenuState());
-			else if (controls.BACK)
+			if (controls.BACK)
 			{
-				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-				isCat = false;
-				grpControls.clear();
-				for (i in 0...options.length)
+				if (isCat)
 				{
-					var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, options[i].getName(), true, false);
-					controlLabel.isMenuItem = true;
-					controlLabel.targetY = i;
-					grpControls.add(controlLabel);
-					// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
+					FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+					isCat = false;
+					grpControls.clear();
+					for (i in 0...options.length)
+					{
+						var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, options[i].getName(), true, false);
+						controlLabel.isMenuItem = true;
+						controlLabel.targetY = i;
+						grpControls.add(controlLabel);
+						// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
+					}
+					curSelected = 0;
+					changeSelection();
 				}
-				curSelected = 0;
+				else
+					MusicBeatState.switchState(new MainMenuState());
 			}
 			if (controls.UP_P)
 			{
@@ -168,15 +174,12 @@ class OptionsMenu extends MusicBeatState
 			if (controls.ACCEPT)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-				if (isCat)
+				if (isCat && currentSelectedCat.getOptions()[curSelected].press())
 				{
-					if (currentSelectedCat.getOptions()[curSelected].press())
-					{
-						grpControls.remove(grpControls.members[curSelected]);
-						var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, currentSelectedCat.getOptions()[curSelected].getDisplay(), true, false);
-						ctrl.isMenuItem = true;
-						grpControls.add(ctrl);
-					}
+					grpControls.remove(grpControls.members[curSelected]);
+					var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, currentSelectedCat.getOptions()[curSelected].getDisplay(), true, false);
+					ctrl.isMenuItem = true;
+					grpControls.add(ctrl);
 				}
 				else
 				{
@@ -192,6 +195,7 @@ class OptionsMenu extends MusicBeatState
 						// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 					}
 					curSelected = 0;
+					changeSelection();
 				}
 			}
 		}
@@ -205,8 +209,6 @@ class OptionsMenu extends MusicBeatState
 		#if !switch
 		// NGio.logEvent("Fresh");
 		#end
-
-		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
 
 		curSelected += change;
 
