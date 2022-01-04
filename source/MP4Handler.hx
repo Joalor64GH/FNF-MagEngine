@@ -21,7 +21,7 @@ class MP4Handler
 
 	public function new()
 	{
-		// FlxG.autoPause = false;
+		// bugfix moment deluxe
 	}
 
 	public function playMP4(path:String, ?repeat:Bool = false, ?outputTo:FlxSprite = null, ?isWindow:Bool = false, ?isFullscreen:Bool = false,

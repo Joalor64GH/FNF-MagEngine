@@ -22,7 +22,7 @@ class CreditsMenu extends MusicBeatState
 {
 	var credits:Array<CreditsMetadata> = [];
 
-	var curSelected:Int = 0;
+	static var curSelected:Int = 0;
 
 	private var grpCredits:FlxTypedGroup<Alphabet>;
 

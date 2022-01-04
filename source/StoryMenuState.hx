@@ -30,7 +30,7 @@ class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
-	var curDifficulty:Int = 1;
+	static var curDifficulty:Int = 1;
 
 	var weeksArray:Array<String> = [];
 
@@ -42,7 +42,7 @@ class StoryMenuState extends MusicBeatState
 
 	var txtWeekTitle:FlxText;
 
-	var curWeek:Int = 0;
+	static var curWeek:Int = 0;
 
 	var getPreloadPath:Array<String> = [Paths.getPreloadPath('')];
 

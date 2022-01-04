@@ -25,7 +25,7 @@ class OptionsMenu extends MusicBeatState
 	public static var instance:OptionsMenu;
 
 	var selector:FlxText;
-	var curSelected:Int = 0;
+	static var curSelected:Int = 0;
 
 	var options:Array<OptionCategory> = [
 		new OptionCategory("Preferences", [

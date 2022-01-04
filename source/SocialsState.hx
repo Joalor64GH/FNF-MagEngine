@@ -21,7 +21,7 @@ using StringTools;
 
 class SocialsState extends MusicBeatState
 {
-	var curSelected:Int = 0;
+	static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
@@ -36,6 +36,8 @@ class SocialsState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
+
+		persistentUpdate = persistentDraw = true;
 
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
 		bg.scrollFactor.x = 0;
