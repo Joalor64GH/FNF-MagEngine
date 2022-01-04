@@ -171,6 +171,7 @@ class PauseSubState extends MusicBeatSubstate
 					CustomFadeTransition.nextCamera = transCamera;
 					MusicBeatState.resetState();
 				case "Exit to menu":
+          PlayState.bbCounter = 0;
 					CustomFadeTransition.nextCamera = transCamera;
 					if (PlayState.isStoryMode)
 						MusicBeatState.switchState(new StoryMenuState());

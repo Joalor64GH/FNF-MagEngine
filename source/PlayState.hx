@@ -2769,8 +2769,8 @@ class PlayState extends MusicBeatState
 				if (i.events == 'character-change')
 				{
 					remove(dad);
-					dad = new Character(100, 100, i.valueOne);
-					add(dad);
+					dad = new Character(100, Std.parseFloat(i.valueTwo), i.valueOne);
+					add(dad);	
 				}
 				if (i.events == 'play-animation')
 				{
