@@ -234,6 +234,8 @@ class StoryMenuState extends MusicBeatState
 		add(txtWeekTitle);
 
 		updateText();
+		changeWeek();
+		changeDifficulty();
 
 		super.create();
 	}
@@ -262,11 +264,13 @@ class StoryMenuState extends MusicBeatState
 			{
 				if (controls.UP_P)
 				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
 					changeWeek(-1);
 				}
 
 				if (controls.DOWN_P)
 				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
 					changeWeek(1);
 				}
 
@@ -436,8 +440,6 @@ class StoryMenuState extends MusicBeatState
 				item.alpha = 0.6;
 			bullShit++;
 		}
-
-		FlxG.sound.play(Paths.sound('scrollMenu'));
 
 		updateText();
 	}
