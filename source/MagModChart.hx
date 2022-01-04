@@ -35,7 +35,6 @@ class MagModChart{
     #end
     
 	var daName:String = '';
-    var SONG:SwagSong;
 	var daClose:Bool = false;
     var currentPlaystate:PlayState = null;
     var aboutToClose:Bool = false;
@@ -91,14 +90,14 @@ class MagModChart{
                                     set('defaultPlayer2StrumXAxis' + i, 0);
                                     set('defaultPlayer2StrumYAxis' + i, 0);
                                 }
-            set('player1', SONG.player1);
-            set('player2', SONG.player2);
+            set('player1', PlayState.SONG.player1);
+            set('player2', PlayState.SONG.player2);
             set('crochet', Conductor.crochet);
             set('stepCrochet', Conductor.stepCrochet);
             set('currentBPM', Conductor.bpm);
-            set('bpm', SONG.bpm);
-            set('scrollSpeed', SONG.speed);
-            set('songName', SONG.song);
+            set('bpm', PlayState.SONG.bpm);
+            set('scrollSpeed', PlayState.SONG.speed);
+            set('songName', PlayState.SONG.song);
             set('songPosition', Conductor.songPosition);
             set('songLength', FlxG.sound.music.length);
             set('startedCountdown', false);
