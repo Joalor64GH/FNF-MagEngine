@@ -1938,7 +1938,7 @@ class PlayState extends MusicBeatState
 							if (isPixelStage)
 								daNote.y += 8;
 							else
-								daNote.y += 5;
+								daNote.y += 1;
 						}
 						daNote.y += (Note.swagWidth / 2) - (60.5 * (roundedSpeed - 1));
 						daNote.y += 27.5 * ((SONG.bpm / 100) - 1) * (roundedSpeed - 1);
