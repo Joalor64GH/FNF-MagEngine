@@ -708,9 +708,7 @@ class PlayState extends MusicBeatState
 				if (isStoryMode)
 				{
 					camPos.x += 600;
-					tweenCam();
 				}
-
 			case "spooky":
 				dad.y += 200;
 			case "monster":
