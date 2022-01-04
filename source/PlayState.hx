@@ -2044,24 +2044,14 @@ class PlayState extends MusicBeatState
 				if (practiceAllowed){
 					health -= 0;
 				} else {
-					if (daNote.noteType == 1){
-					
-					}
-					else{
-					health -= 0.0475;
-					misses += 1;
-					vocals.volume = 0;
-				}
-				if (daNote.noteType == 2){
-					
-				}
-				else{
+				if (daNote.noteType != 1 && daNote.noteType != 2){
 				health -= 0.0475;
 				misses += 1;
 				vocals.volume = 0;
 			}
+			}
 			}	
-		}
+
 
 			daNote.active = false;
 			daNote.visible = false;
@@ -3066,7 +3056,7 @@ for (i in SONG.events){
 				}
 				if (i.events == 'character-change'){
 					remove(dad);
-					dad = new Character(100, 100, i.valueOne);
+					dad = new Character(100, Std.parseFloat(i.valueTwo), i.valueOne);
 					add(dad);	
 				}
 				if (i.events == 'play-animation'){
