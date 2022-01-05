@@ -46,7 +46,7 @@ class Character extends FlxSprite
 	public var animations:Array<Animation>;
 	public var image:String;
 
-	public var singDuration:Float = 7;
+	public var singDuration:Float = 5;
 
 	public var charthingy:Array<String> = CoolUtil.evenCoolerTextFile(Paths.bruhtxt('custom_characters/customCharacterList'));
 
@@ -73,9 +73,7 @@ class Character extends FlxSprite
 
 		switch (curCharacter)
 		{
-			// might unhardcode these in the future
 			case 'gf':
-				// GIRLFRIEND CODE
 				tex = Paths.getSparrowAtlas('GF_assets', 'shared');
 				frames = tex;
 				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
@@ -91,7 +89,6 @@ class Character extends FlxSprite
 				animation.addByPrefix('scared', 'GF FEAR', 24);
 
 				loadOffsetFromFile(curCharacter);
-				// bugfix moment
 				barColor = FlxColor.fromRGB(165, 0, 77);
 				playAnim('danceRight');
 
@@ -191,8 +188,6 @@ class Character extends FlxSprite
 				animation.addByPrefix('singUP', "Mom Up Pose", 24, false);
 				animation.addByPrefix('singDOWN', "MOM DOWN POSE", 24, false);
 				animation.addByPrefix('singLEFT', 'Mom Left Pose', 24, false);
-				// ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
-				// CUZ DAVE IS DUMB!
 				animation.addByPrefix('singRIGHT', 'Mom Pose Left', 24, false);
 
 				loadOffsetFromFile(curCharacter);
@@ -353,7 +348,6 @@ class Character extends FlxSprite
 				loadOffsetFromFile(curCharacter);
 
 				playAnim('firstDeath');
-				// pixel bullshit
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
 				antialiasing = false;
@@ -523,9 +517,6 @@ class Character extends FlxSprite
 
 	private var danced:Bool = false;
 
-	/**
-	 * FOR GF DANCING SHIT
-	 */
 	public function dance()
 	{
 		if (!debugMode && !disabledDance)

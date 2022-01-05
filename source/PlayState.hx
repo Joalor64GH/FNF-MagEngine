@@ -1109,7 +1109,7 @@ class PlayState extends MusicBeatState
 			{
 				dad.dance();
 				gf.dance();
-				boyfriend.playAnim('idle');
+				boyfriend.dance();
 
 				var introAlts:Array<String> = ['ready', "set", "go"];
 				var altSuffix:String = "";
@@ -2454,7 +2454,7 @@ class PlayState extends MusicBeatState
 			&& !controlHoldArray.contains(true)
 			&& (boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss')))
 		{
-			boyfriend.playAnim('idle');
+			boyfriend.dance();
 		}
 
 		playerStrums.forEach(function(spr:FlxSprite)
@@ -2834,7 +2834,7 @@ class PlayState extends MusicBeatState
 			gf.dance();
 
 		if (!boyfriend.animation.curAnim.name.startsWith("sing"))
-			boyfriend.playAnim('idle');
+			boyfriend.dance();
 
 		if (curBeat % 8 == 7 && curSong == 'Bopeebo')
 			boyfriend.playAnim('hey', true);
