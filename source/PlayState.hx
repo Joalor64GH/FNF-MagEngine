@@ -2189,29 +2189,21 @@ class PlayState extends MusicBeatState
 		var rating:FlxSprite = new FlxSprite();
 		var score:Int = 350;
 
-		var daRating:String = "sick";
+		var daRating:String = Conductor.judgeNote(note, noteDiff);
 
-		if (noteDiff > Conductor.safeZoneOffset * 0.75)
+		switch (daRating)
 		{
-			daRating = 'shit';
-			totalNotesHit -= 2;
-			score = 50;
+			case "shit":
+				score = 50;
+			case "bad":
+				totalNotesHit += 0.5;
+				score = 100;
+			case "good":
+				totalNotesHit += 0.75;
+				score = 200;
+			case "sick":
+				totalNotesHit += 1;
 		}
-		else if (noteDiff > Conductor.safeZoneOffset * 0.5)
-		{
-			daRating = 'bad';
-			totalNotesHit += 0.2;
-			score = 100;
-		}
-		else if (noteDiff > Conductor.safeZoneOffset * 0.25)
-		{
-			daRating = 'good';
-			totalNotesHit += 0.65;
-			score = 200;
-		}
-
-		if (daRating == 'sick')
-			totalNotesHit += 1;
 
 		songScore += score;
 
