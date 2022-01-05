@@ -29,8 +29,6 @@ class PauseSubState extends MusicBeatSubstate
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
-	var funne = false;
-
 	public static var transCamera:FlxCamera;
 
 	var pauseMusic:FlxSound;
@@ -39,8 +37,6 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		super();
 		menuItems = menuItemswhyhaxe;
-
-		funne = FlxG.save.data.accuracyyay;
 
 		for (i in 0...CoolUtil.difficultyStuff.length)
 		{
@@ -94,13 +90,13 @@ class PauseSubState extends MusicBeatSubstate
 		blueballedTxt.alpha = 0;
 		practiceTxt.alpha = 0;
 
-		levelInfo.x = FlxG.width - (levelInfo.width + 20);
-		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 20);
-		blueballedTxt.x = FlxG.width - (blueballedTxt.width + 20);
-		practiceTxt.x = FlxG.width - (practiceTxt.width + 20);
+		levelInfo.x = FlxG.width - (levelInfo.width + 10);
+		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 10);
+		blueballedTxt.x = FlxG.width - (blueballedTxt.width + 10);
+		practiceTxt.x = FlxG.width - (practiceTxt.width + 10);
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
-		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
+		FlxTween.tween(levelInfo, {alpha: 1, y: 10}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
 		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 4}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
 		FlxTween.tween(blueballedTxt, {alpha: 1, y: blueballedTxt.y + 4}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 		FlxTween.tween(practiceTxt, {alpha: 1, y: practiceTxt.y + 2}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});

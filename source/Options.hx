@@ -181,7 +181,7 @@ class AccuracyOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return FlxG.save.data.accuracy ? "Accuracy Off" : "Accuracy On";
+		return FlxG.save.data.accuracy ? "Accuracy On" : "Accuracy Off";
 	}
 }
 

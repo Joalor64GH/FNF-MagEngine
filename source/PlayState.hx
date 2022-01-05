@@ -877,7 +877,8 @@ class PlayState extends MusicBeatState
 		add(infoTxt);
 
 		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
-		scoreTxt.setFormat('VCR OSD Mono', 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.borderSize = 2.25;
 		scoreTxt.scrollFactor.set();
 		add(scoreTxt);
 
@@ -1689,10 +1690,11 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 		callOnLuas('update', [elapsed]);
 
-		if (FlxG.save.data.accuracy)
-			scoreTxt.text = "Score:" + songScore + " | Misses:" + misses;
-		else
-			scoreTxt.text = "Score:" + songScore + " | Misses:" + misses + " | Accuracy:" + truncateFloat(accuracy, 2) + "% ";
+		scoreTxt.text = "Score: "
+			+ songScore
+			+ " | Misses: "
+			+ misses
+			+ (FlxG.save.data.accuracy ? " | Accuracy: " + truncateFloat(accuracy, 2) + "%" : "");
 
 		if (controls.PAUSE && startedCountdown && canPause)
 		{

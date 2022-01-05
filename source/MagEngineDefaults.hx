@@ -14,7 +14,7 @@ class MagEngineDefaults
 			FlxG.save.data.dfjk = false;
 
 		if (FlxG.save.data.accuracy == null)
-			FlxG.save.data.accuracy = false;
+			FlxG.save.data.accuracy = true;
 
 		if (FlxG.save.data.splooshes == null)
 			FlxG.save.data.splooshes = true;
