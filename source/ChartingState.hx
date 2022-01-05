@@ -1012,7 +1012,7 @@ class ChartingState extends MusicBeatState
 			var daSus = i[2];
 			var daType = i[3];
 
-			var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, daType);
+			var note:Note = new Note(daStrumTime, daNoteInfo % 4, false, null, false, daType);
 			note.sustainLength = daSus;
 			note.setGraphicSize(GRID_SIZE, GRID_SIZE);
 			note.updateHitbox();
@@ -1038,7 +1038,7 @@ class ChartingState extends MusicBeatState
 				var daSus = i[2];
 				var daType = i[3];
 
-				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, daType);
+				var note:Note = new Note(daStrumTime, daNoteInfo % 4, false, null, false, daType);
 				note.sustainLength = daSus;
 				note.setGraphicSize(GRID_SIZE, GRID_SIZE);
 				note.updateHitbox();
