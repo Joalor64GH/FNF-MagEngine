@@ -874,12 +874,14 @@ class PlayState extends MusicBeatState
 		infoTxt.y = FlxG.height - infoTxt.height;
 		infoTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		infoTxt.scrollFactor.set();
+		infoTxt.antialiasing = true;
 		add(infoTxt);
 
 		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.borderSize = 2.25;
 		scoreTxt.scrollFactor.set();
+		scoreTxt.antialiasing = true;
 		add(scoreTxt);
 
 		strumLineNotes.cameras = [camHUD];
