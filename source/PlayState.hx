@@ -190,7 +190,7 @@ class PlayState extends MusicBeatState
 	// modify this if you are hardcoding your song
 	var hardCodedSongsList:Bool = SONG.song.toLowerCase() != 'bopeebo'
 		&& SONG.song.toLowerCase() != 'fresh'
-		&& SONG.song.toLowerCase() != 'dadbattle'
+		&& SONG.song.toLowerCase() != 'dad-battle'
 		&& SONG.song.toLowerCase() != 'spookeez'
 		&& SONG.song.toLowerCase() != 'south'
 		&& SONG.song.toLowerCase() != 'monster'
@@ -257,7 +257,7 @@ class PlayState extends MusicBeatState
 				];
 			case 'fresh':
 				dialogue = ["Not too shabby boy.", ""];
-			case 'dadbattle':
+			case 'dad-battle':
 				dialogue = [
 					"gah you think you're hot stuff?",
 					"If you can beat me here...",
@@ -1114,8 +1114,9 @@ class PlayState extends MusicBeatState
 				var introAlts:Array<String> = ['ready', "set", "go"];
 				var altSuffix:String = "";
 
-				if (isPixelStage) {
-					introAlts =  ['weeb/pixelUI/ready-pixel', 'weeb/pixelUI/set-pixel', 'weeb/pixelUI/date-pixel'];
+				if (isPixelStage)
+				{
+					introAlts = ['weeb/pixelUI/ready-pixel', 'weeb/pixelUI/set-pixel', 'weeb/pixelUI/date-pixel'];
 					altSuffix = '-pixel';
 				}
 
@@ -2150,9 +2151,7 @@ class PlayState extends MusicBeatState
 			trace('WENT BACK TO FREEPLAY??');
 			CustomFadeTransition.nextCamera = camHUD;
 			if (FlxTransitionableState.skipNextTransIn)
-			{
 				CustomFadeTransition.nextCamera = null;
-			}
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			MusicBeatState.switchState(new FreeplayState());
 		}
@@ -2747,7 +2746,7 @@ class PlayState extends MusicBeatState
 				{
 					remove(dad);
 					dad = new Character(100, Std.parseFloat(i.valueTwo), i.valueOne);
-					add(dad);	
+					add(dad);
 				}
 				if (i.events == 'play-animation')
 				{
