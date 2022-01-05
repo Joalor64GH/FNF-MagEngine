@@ -2184,28 +2184,25 @@ class PlayState extends MusicBeatState
 		var coolText:FlxText = new FlxText(0, 0, 0, placement, 32);
 		coolText.screenCenter();
 		coolText.x = FlxG.width * 0.55;
-		//
 
 		var rating:FlxSprite = new FlxSprite();
-		var score:Int = 350;
 
 		var daRating:String = Conductor.judgeNote(note, noteDiff);
 
 		switch (daRating)
 		{
 			case "shit":
-				score = 50;
+				songScore += 50;
 			case "bad":
 				totalNotesHit += 0.5;
-				score = 100;
+				songScore += 100;
 			case "good":
 				totalNotesHit += 0.75;
-				score = 200;
+				songScore += 200;
 			case "sick":
 				totalNotesHit += 1;
+				songScore += 350;
 		}
-
-		songScore += score;
 
 		/* if (combo > 60)
 				daRating = 'sick';
