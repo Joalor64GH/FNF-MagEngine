@@ -263,12 +263,8 @@ class PlayState extends MusicBeatState
 					"If you can beat me here...",
 					"Only then I will even CONSIDER letting you\ndate my daughter!"
 				];
-			case 'senpai':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('data/senpai/senpaiDialogue'));
-			case 'roses':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('data/roses/rosesDialogue'));
-			case 'thorns':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('data/thorns/thornsDialogue'));
+			case 'senpai' | 'roses' | 'thorns':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('data/' + SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase() + '-Dialogue'));
 
 			default:
 				if (isStoryMode)
@@ -285,8 +281,11 @@ class PlayState extends MusicBeatState
 							swagGoodArray.push(i.split(':'));
 						}
 					}
-					else
-						dialogue = CoolUtil.coolTextFile(Paths.txt('data/' + SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase() + '-Dialogue'));
+					else {
+						var daPath:String = Paths.txt('data/' + SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase() + '-Dialogue');
+						if (FileSystem.exists(daPath))
+							dialogue = CoolUtil.coolTextFile(daPath);
+					}
 				}
 		}
 

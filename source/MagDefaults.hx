@@ -1,6 +1,6 @@
 import flixel.FlxG;
 
-class MagEngineDefaults
+class MagDefaults
 {
 	public static function init()
 	{

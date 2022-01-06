@@ -17,7 +17,7 @@ IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN 
 
 ## Credits / shoutouts
 
--   [Magnumsrt](https://twitter.com/MagnumsrtYT) - Mag Engine owner, coder, artist, and developer
+-   [Magnumsrt](https://twitter.com/MagnumsrtYT) - Owner, coder, artist, and developer
 
 ## Original Credits / shoutouts
 
@@ -31,7 +31,7 @@ This game was made with love to Newgrounds and its community. Extra love to Tom 
 
 THESE INSTRUCTIONS ARE FOR COMPILING THE ENGINE'S SOURCE CODE!!!
 
-IF YOU WANT TO JUST DOWNLOAD AND INSTALL AND PLAY THE GAME NORMALLY, GO TO ITCH.IO TO DOWNLOAD THE ENGINE FOR PC, MAC, AND LINUX!!
+IF YOU WANT TO JUST DOWNLOAD AND INSTALL AND PLAY THE GAME NORMALLY, GO TO GAMEBANANA TO DOWNLOAD THE ENGINE!!
 
 https://gamebanana.com/mods/336500
 

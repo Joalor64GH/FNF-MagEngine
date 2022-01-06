@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxSprite;
 
+// STOLEN FROM PSYCH CUZ ITS GOOD!!
 class CheckboxThingie extends FlxSprite
 {
 	public var sprTracker:FlxSprite;

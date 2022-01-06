@@ -8,6 +8,7 @@ import flixel.util.FlxGradient;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
 
+// transition code from psych cuz the original one is buggy
 class CustomFadeTransition extends MusicBeatSubstate
 {
 	public static var finishCallback:Void->Void;
@@ -99,12 +100,6 @@ class CustomFadeTransition extends MusicBeatSubstate
 	{
 		if (leTween != null)
 		{
-			#if MODS_ALLOWED
-			if (isTransIn)
-			{
-				Paths.destroyLoadedImages();
-			}
-			#end
 			finishCallback();
 			leTween.cancel();
 		}
