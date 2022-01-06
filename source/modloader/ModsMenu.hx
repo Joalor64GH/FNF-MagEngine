@@ -1,6 +1,6 @@
 package modloader;
 
-#if sys
+#if MODS
 import modloader.ModList;
 import modloader.PolymodHandler;
 import modloader.ModsMenuOption;
@@ -21,11 +21,13 @@ class ModsMenu extends MusicBeatState
 {
 	var curSelected:Int = 0;
 
-	public var page:FlxTypedGroup<ModsMenuOption> = new FlxTypedGroup<ModsMenuOption>();
+	var page:FlxTypedGroup<ModsMenuOption> = new FlxTypedGroup<ModsMenuOption>();
 
 	public static var instance:ModsMenu;
 
 	public static var coolId:String;
+
+	var infoText:FlxText;
 
 	override function create()
 	{
@@ -39,6 +41,15 @@ class ModsMenu extends MusicBeatState
 		menuBG.screenCenter();
 		menuBG.antialiasing = true;
 		add(menuBG);
+
+		infoText = new FlxText(0, 0, 0, "NOT MODS INSTALLED!", 12);
+		infoText.scrollFactor.set();
+		infoText.setFormat("VCR OSD Mono", 35, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		infoText.borderSize = 2;
+		infoText.screenCenter();
+		infoText.visible = false;
+		infoText.antialiasing = true;
+		add(infoText);
 
 		super.create();
 
@@ -69,27 +80,33 @@ class ModsMenu extends MusicBeatState
 
 			coolId = modId;
 		}
+
+		infoText.visible = (page.length == 0);
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		if (controls.UP_P)
+		if (page.length > 0)
 		{
-			curSelected -= 1;
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		}
+			if (controls.UP_P)
+			{
+				curSelected -= 1;
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			}
 
-		if (controls.DOWN_P)
-		{
-			curSelected += 1;
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			if (controls.DOWN_P)
+			{
+				curSelected += 1;
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			}
 		}
 
 		if (controls.BACK)
 		{
 			PolymodHandler.loadMods();
+			FlxG.mouse.visible = false;
 			MusicBeatState.switchState(new MainMenuState());
 		}
 

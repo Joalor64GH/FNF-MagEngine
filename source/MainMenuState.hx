@@ -31,7 +31,8 @@ class MainMenuState extends MusicBeatState
 	var optionShit:Array<String> = [
 		'story mode',
 		'freeplay',
-		#if polymod 'mods', #end
+		#if MODS 'mods',
+		#end
 		'credits',
 		'social',
 		'donate',
@@ -47,7 +48,6 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-		FlxG.mouse.visible = false;
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -103,7 +103,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.screenCenter(X);
 			menuItems.add(menuItem);
 			var scr:Float = (optionShit.length - 4) * 0.135;
-			if (optionShit.length < 7)
+			if (optionShit.length < optionShit.length - 1)
 				scr = 0;
 			menuItem.scrollFactor.set(0, scr);
 			menuItem.antialiasing = true;
@@ -192,8 +192,10 @@ class MainMenuState extends MusicBeatState
 										MusicBeatState.switchState(new FreeplayState());
 									case 'credits':
 										MusicBeatState.switchState(new CreditsMenu());
+									#if MODS
 									case 'mods':
 										MusicBeatState.switchState(new ModsMenu());
+									#end
 									case 'social':
 										MusicBeatState.switchState(new SocialsState());
 									case 'options':

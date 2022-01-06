@@ -78,42 +78,6 @@ class StoryMenuState extends MusicBeatState
 			return null;
 		}
 
-		function parseJSONshit(rawJson:String):SwagWeek
-		{
-			var swagShit:SwagWeek = cast Json.parse(rawJson);
-			return swagShit;
-		}
-
-		// LMAO STOLEN FROM SONG
-		function loadFromWEEKJson(jsonInput:String):SwagWeek
-		{
-			var rawJson = null;
-			var moddyFile:String = Paths.modsong('weeks/' + jsonInput);
-			if (FileSystem.exists(moddyFile))
-			{
-				rawJson = File.getContent(moddyFile).trim();
-			}
-
-			if (rawJson == null)
-			{
-				// why the fuck did i do this lmao
-				#if sys
-				rawJson = File.getContent(Paths.cooljson('weeks/' + jsonInput)).trim();
-				#else
-				rawJson = Assets.getText(Paths.cooljson('weeks/' + jsonInput)).trim();
-				#end
-			}
-
-			while (!rawJson.endsWith("}"))
-			{
-				rawJson = rawJson.substr(0, rawJson.length - 1);
-				// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
-			}
-
-			var weekJson:SwagWeek = parseJSONshit(rawJson);
-			return weekJson;
-		}
-
 		weeksArray = [];
 		for (i in 0...weekthingy.length)
 		{
@@ -321,7 +285,7 @@ class StoryMenuState extends MusicBeatState
 			stopspamming = true;
 		}
 
-		PlayState.storyPlaylist = loadFromWEEKJson(weeksArray[curWeek]).songs;
+		PlayState.storyPlaylist = loadFromWeekJson(weeksArray[curWeek]).songs;
 		PlayState.isStoryMode = true;
 		selectedWeek = true;
 
@@ -382,10 +346,10 @@ class StoryMenuState extends MusicBeatState
 		FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07);
 	}
 
-	function loadFromWEEKJson(jsonInput:String):SwagWeek
+	function loadFromWeekJson(jsonInput:String):SwagWeek
 	{
 		var rawJson = null;
-		var moddyFile:String = Paths.modsong('weeks/' + jsonInput);
+		var moddyFile:String = Paths.modSong('weeks/' + jsonInput);
 		if (FileSystem.exists(moddyFile))
 		{
 			rawJson = File.getContent(moddyFile).trim();
@@ -407,12 +371,6 @@ class StoryMenuState extends MusicBeatState
 			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
 		}
 
-		var weekJson:SwagWeek = parseJSONshit(rawJson);
-		return weekJson;
-	}
-
-	function parseJSONshit(rawJson:String):SwagWeek
-	{
 		var swagShit:SwagWeek = cast Json.parse(rawJson);
 		return swagShit;
 	}
@@ -448,7 +406,7 @@ class StoryMenuState extends MusicBeatState
 	{
 		txtTracklist.text = '';
 
-		var stringThing:Array<String> = loadFromWEEKJson(weeksArray[curWeek]).songs;
+		var stringThing:Array<String> = loadFromWeekJson(weeksArray[curWeek]).songs;
 
 		for (i in stringThing)
 		{

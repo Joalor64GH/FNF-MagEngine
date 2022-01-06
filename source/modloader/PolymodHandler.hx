@@ -1,7 +1,7 @@
 package modloader;
 
 // this is here so the game doesnt crash because of no framework params
-#if polymod
+#if MODS
 import polymod.Polymod;
 
 class PolymodHandler

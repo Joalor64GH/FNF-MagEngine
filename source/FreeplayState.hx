@@ -101,6 +101,17 @@ class FreeplayState extends MusicBeatState
 
 		add(scoreText);
 
+		var infoBG:FlxSprite = new FlxSprite(0, FlxG.height - 25).makeGraphic(FlxG.width, 25, FlxColor.BLACK);
+		infoBG.scrollFactor.set();
+		infoBG.alpha = 0.5;
+		add(infoBG);
+
+		var infoText:FlxText = new FlxText(5, FlxG.height - 22, 0, "Press P for play the song", 12);
+		infoText.scrollFactor.set();
+		infoText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT);
+		infoText.antialiasing = true;
+		add(infoText);
+
 		bg.color = songs[curSelected].color;
 		intendedColor = bg.color;
 		changeSelection();
@@ -169,7 +180,7 @@ class FreeplayState extends MusicBeatState
 		var upP = controls.UP_P;
 		var downP = controls.DOWN_P;
 		var accepted = controls.ACCEPT;
-		var space = FlxG.keys.justPressed.SPACE;
+		var playSong = FlxG.keys.justPressed.P;
 
 		var shiftMult:Int = 1;
 		if (FlxG.keys.pressed.SHIFT)
@@ -185,6 +196,9 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			changeSelection(shiftMult);
 		}
+
+		if (playSong)
+			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName));
 
 		if (controls.BACK)
 		{

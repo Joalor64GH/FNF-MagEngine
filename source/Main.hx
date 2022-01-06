@@ -84,6 +84,17 @@ class Main extends Sprite
 		display = new SimpleInfoDisplay(10, 3, 0xFFFFFF);
 		addChild(display);
 		#end
+
+		if (FlxG.save.data.fps != null)
+			toggleFPS(FlxG.save.data.fps);
+
+		if (FlxG.save.data.mem != null)
+			toggleMem(FlxG.save.data.mem);
+
+		if (FlxG.save.data.v != null)
+			toggleVers(FlxG.save.data.v);
+
+		FlxG.mouse.visible = false;
 	}
 
 	public static var display:SimpleInfoDisplay;

@@ -96,30 +96,6 @@ class Option
 	}
 }
 
-class DFJKOption extends Option
-{
-	private var controls:Controls;
-
-	public function new(controls:Controls)
-	{
-		super();
-		this.controls = controls;
-		this.isBool = false;
-	}
-
-	public override function press():Bool
-	{
-		OptionsMenu.instance.openSubState(new KeyBindMenu());
-		return false;
-	}
-
-	private override function updateDisplay():String
-	{
-		return "Key Bindings";
-		FlxG.save.data.flush();
-	}
-}
-
 class DownscrollOption extends Option
 {
 	public function new(desc:String)

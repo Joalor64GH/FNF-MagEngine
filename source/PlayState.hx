@@ -187,26 +187,6 @@ class PlayState extends MusicBeatState
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
 
-	// modify this if you are hardcoding your song
-	var hardCodedSongsList:Bool = SONG.song.toLowerCase() != 'bopeebo'
-		&& SONG.song.toLowerCase() != 'fresh'
-		&& SONG.song.toLowerCase() != 'dad-battle'
-		&& SONG.song.toLowerCase() != 'spookeez'
-		&& SONG.song.toLowerCase() != 'south'
-		&& SONG.song.toLowerCase() != 'monster'
-		&& SONG.song.toLowerCase() != 'pico'
-		&& SONG.song.toLowerCase() != 'philly'
-		&& SONG.song.toLowerCase() != 'blammed'
-		&& SONG.song.toLowerCase() != 'satin-panties'
-		&& SONG.song.toLowerCase() != 'high'
-		&& SONG.song.toLowerCase() != 'milf'
-		&& SONG.song.toLowerCase() != 'cocoa'
-		&& SONG.song.toLowerCase() != 'eggnog'
-		&& SONG.song.toLowerCase() != 'winter-horrorland'
-		&& SONG.song.toLowerCase() != 'senpai'
-		&& SONG.song.toLowerCase() != 'roses'
-		&& SONG.song.toLowerCase() != 'thorns';
-	// please
 	var inCutscene:Bool = false;
 
 	#if desktop
@@ -263,30 +243,24 @@ class PlayState extends MusicBeatState
 					"If you can beat me here...",
 					"Only then I will even CONSIDER letting you\ndate my daughter!"
 				];
-			case 'senpai' | 'roses' | 'thorns':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('data/' + SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase() + '-Dialogue'));
-
 			default:
-				if (isStoryMode)
+				var path:String = 'data/' + SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase() + '-Dialogue';
+				var daPath:String;
+				#if MODS
+				daPath = Paths.modTxt(path);
+				if (FileSystem.exists(daPath))
+					dialogue = CoolUtil.coolTextFile(daPath);
+				else
 				{
-					if (hardCodedSongsList)
-					{
-						var content:String = sys.io.File.getContent(Paths.bruhtxt('data/' + SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase()
-							+ '-Dialogue'));
-						var firstArray:Array<String> = content.split('\n');
-						var swagGoodArray:Array<Array<String>> = [];
-						dialogue = firstArray;
-						for (i in firstArray)
-						{
-							swagGoodArray.push(i.split(':'));
-						}
-					}
-					else {
-						var daPath:String = Paths.txt('data/' + SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase() + '-Dialogue');
-						if (FileSystem.exists(daPath))
-							dialogue = CoolUtil.coolTextFile(daPath);
-					}
+					daPath = Paths.txt(path);
+					if (FileSystem.exists(daPath))
+						dialogue = CoolUtil.coolTextFile(daPath);
 				}
+				#else
+				daPath = Paths.txt(path);
+				if (FileSystem.exists(daPath))
+					dialogue = CoolUtil.coolTextFile(daPath);
+				#end
 		}
 
 		#if desktop
@@ -670,12 +644,14 @@ class PlayState extends MusicBeatState
 
 					add(stageCurtains);
 				}
-			default:
-				{
-					curStage = SONG.song + 'Stage';
-					var custombg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.modspng('images/stages/' + SONG.song + 'Stage'));
-					add(custombg);
-				}
+				#if MODS
+				default:
+					{
+						curStage = SONG.song + 'Stage';
+						var custombg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.modsPng('images/stages/' + SONG.song + 'Stage'));
+						add(custombg);
+					}
+				#end
 		}
 
 		isPixelStage = curStage.startsWith('school');
@@ -876,9 +852,9 @@ class PlayState extends MusicBeatState
 		infoTxt.antialiasing = true;
 		add(infoTxt);
 
-		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		scoreTxt.borderSize = 2.25;
+		scoreTxt = new FlxText(0, healthBarBG.y + 40, FlxG.width, "", 18);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.borderSize = 2;
 		scoreTxt.scrollFactor.set();
 		scoreTxt.antialiasing = true;
 		add(scoreTxt);
@@ -895,6 +871,7 @@ class PlayState extends MusicBeatState
 
 		setOnLuas('startingSong', startingSong);
 
+		#if MODS
 		var luaFile:String = 'data/' + PlayState.SONG.song.toLowerCase() + '/modchart';
 
 		if (Assets.exists(Paths.lua(luaFile, 'preload')))
@@ -902,11 +879,12 @@ class PlayState extends MusicBeatState
 			luaFile = Paths.lua(luaFile, 'preload');
 			luaArray.push(new MagModChart(luaFile));
 		}
-		else if (FileSystem.exists(Paths.modlua(luaFile)))
+		else if (FileSystem.exists(Paths.modLua(luaFile)))
 		{
-			luaFile = Paths.modlua(luaFile);
+			luaFile = Paths.modLua(luaFile);
 			luaArray.push(new MagModChart(luaFile));
 		}
+		#end
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
 		// UI_camera.zoom = 1;
@@ -2900,7 +2878,7 @@ class PlayState extends MusicBeatState
 	{
 		var returnedValue:Dynamic = MagModChart.functionContinue;
 
-		#if windows
+		#if (MODS && windows)
 		for (i in 0...luaArray.length)
 		{
 			var ret:Dynamic = luaArray[i].call(event, args);
@@ -2915,7 +2893,7 @@ class PlayState extends MusicBeatState
 
 	public function setOnLuas(variable:String, arg:Dynamic)
 	{
-		#if windows
+		#if (MODS && windows)
 		for (i in 0...luaArray.length)
 		{
 			luaArray[i].set(variable, arg);

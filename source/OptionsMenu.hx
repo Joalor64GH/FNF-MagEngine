@@ -37,7 +37,7 @@ class OptionsMenu extends MusicBeatState
 			new MEMOption(''),
 			new VerOption('')
 		]),
-		new OptionCategory("Controls", [new DFJKOption(controls)]),
+		new OptionCategory("Controls", []),
 		new OptionCategory("Notes", [new SplooshOption('')])
 	];
 
@@ -141,38 +141,7 @@ class OptionsMenu extends MusicBeatState
 							currentSelectedCat.getOptions()[curSelected].left();
 					}
 				}
-				else
-				{
-					if (FlxG.keys.pressed.SHIFT)
-					{
-						if (FlxG.keys.justPressed.RIGHT)
-							FlxG.save.data.offset += 0.1;
-						else if (FlxG.keys.justPressed.LEFT)
-							FlxG.save.data.offset -= 0.1;
-					}
-					else if (FlxG.keys.pressed.RIGHT)
-						FlxG.save.data.offset += 0.1;
-					else if (FlxG.keys.pressed.LEFT)
-						FlxG.save.data.offset -= 0.1;
-				}
 			}
-			else
-			{
-				if (FlxG.keys.pressed.SHIFT)
-				{
-					if (FlxG.keys.justPressed.RIGHT)
-						FlxG.save.data.offset += 0.1;
-					else if (FlxG.keys.justPressed.LEFT)
-						FlxG.save.data.offset -= 0.1;
-				}
-				else if (FlxG.keys.pressed.RIGHT)
-					FlxG.save.data.offset += 0.1;
-				else if (FlxG.keys.pressed.LEFT)
-					FlxG.save.data.offset -= 0.1;
-			}
-
-			if (controls.RESET)
-				FlxG.save.data.offset = 0;
 
 			if (controls.ACCEPT)
 			{
@@ -181,6 +150,10 @@ class OptionsMenu extends MusicBeatState
 				{
 					grpCheckboxes.members[curSelected].daValue = currentSelectedCat.getOptions()[curSelected].daValue;
 					grpControls.members[curSelected].changeText(currentSelectedCat.getOptions()[curSelected].getDisplay());
+				}
+				else if (options[curSelected].getName() == "Controls")
+				{
+					openSubState(new KeyBindMenu());
 				}
 				else
 				{
@@ -193,8 +166,8 @@ class OptionsMenu extends MusicBeatState
 						var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, currentSelectedCat.getOptions()[i].getDisplay(), true, false);
 						controlLabel.isMenuItem = true;
 						controlLabel.targetY = i;
-						grpControls.add(controlLabel);
 						controlLabel.forceX = 150;
+						grpControls.add(controlLabel);
 
 						if (currentSelectedCat.getOptions()[i].isBool)
 						{

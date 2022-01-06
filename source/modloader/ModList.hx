@@ -1,6 +1,6 @@
 package modloader;
 
-#if polymod
+#if MODS
 import polymod.Polymod;
 import flixel.FlxG;
 

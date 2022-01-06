@@ -154,7 +154,7 @@ class Paths
 
 	static public function video(key:String)
 	{
-		var file:String = modvideo(key);
+		var file:String = modVideo(key);
 		if (FileSystem.exists(file))
 		{
 			return file;
@@ -203,22 +203,6 @@ class Paths
 		return null;
 	}
 
-	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String)
-	{
-		#if mods
-		if (FileSystem.exists(mods(currentModDirectory + '/' + key)) || FileSystem.exists(mods(key)))
-		{
-			return true;
-		}
-		#end
-
-		if (OpenFlAssets.exists(Paths.getPath(key, type, library)))
-		{
-			return true;
-		}
-		return false;
-	}
-
 	static public function addCustomGraphic(key:String):FlxGraphic
 	{
 		if (FileSystem.exists(modsImages(key)))
@@ -244,19 +228,14 @@ class Paths
 		return getPath('images/$key.png', IMAGE, library);
 	}
 
-	inline static public function coolimage(key:String, ?library:String):Dynamic
-	{
-		return getModPath('images/$key.png', IMAGE, library);
-	}
-
 	inline static public function font(key:String)
 	{
 		return 'assets/fonts/$key';
 	}
 
-	inline static public function bruhtxt(key:String)
+	inline static public function modTxt(key:String)
 	{
-		return modfold('$key.txt');
+		return modFolder('$key.txt');
 	}
 
 	inline static public function mods(key:String = '')
@@ -264,69 +243,54 @@ class Paths
 		return 'mods/' + key;
 	}
 
-	inline static public function txtCool(key:String = '')
-	{
-		return 'mods/' + key + '.txt';
-	}
-
-	inline static public function jsonCool(key:String = '')
-	{
-		return 'weeks/' + key;
-	}
-
 	inline static public function modsSongs(key:String)
 	{
-		return modfold('songs/' + key + '.' + SOUND_EXT);
+		return modFolder('songs/' + key + '.' + SOUND_EXT);
 	}
 
-	inline static public function modsong(key:String)
+	inline static public function modSong(key:String)
 	{
-		return modfold(key + '.json');
+		return modFolder(key + '.json');
 	}
 
 	inline static public function modsJson(key:String)
 	{
-		return modfold('data/' + key + '.json');
+		return modFolder('data/' + key + '.json');
 	}
 
-	inline static public function modimage(key:String)
+	inline static public function modImage(key:String)
 	{
-		return modfold('stages/' + key + '.png');
+		return modFolder('stages/' + key + '.png');
 	}
 
-	inline static public function modicon(key:String)
+	inline static public function modIcon(key:String)
 	{
-		return modfold('images/' + key + '.png');
-	}
-
-	inline static public function swagmodicon(key:String)
-	{
-		return modfold('shared/images/' + key + '.png');
+		return modFolder('images/' + key + '.png');
 	}
 
 	inline static public function modsXml(key:String)
 	{
-		return modfold('images/' + key + '.xml');
+		return modFolder('images/' + key + '.xml');
 	}
 
-	inline static public function modvideo(key:String)
+	inline static public function modVideo(key:String)
 	{
-		return modfold('videos/' + key + '.' + VIDEO_EXT);
+		return modFolder('videos/' + key + '.' + VIDEO_EXT);
 	}
 
 	inline static public function modsImages(key:String)
 	{
-		return modfold('images/' + key + '.png');
+		return modFolder('images/' + key + '.png');
 	}
 
-	inline static public function modspng(key:String)
+	inline static public function modsPng(key:String)
 	{
-		return modfold(key + '.png');
+		return modFolder(key + '.png');
 	}
 
-	inline static public function modlua(key:String)
+	inline static public function modLua(key:String)
 	{
-		return modfold('$key.lua');
+		return modFolder('$key.lua');
 	}
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)
@@ -353,8 +317,9 @@ class Paths
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
 	}
 
-	static public function modfold(key:String)
+	static public function modFolder(key:String)
 	{
+		#if MODS
 		if (modDir != null && modDir.length > 0)
 		{
 			// psych engine for the win
@@ -371,6 +336,9 @@ class Paths
 		}
 
 		return 'mods/' + key;
+		#else
+		return key;
+		#end
 	}
 
 	static public function modDirectory():Array<String>

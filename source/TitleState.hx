@@ -48,7 +48,7 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		#if (polymod && !html5)
+		#if MODS
 		if (sys.FileSystem.exists('mods/'))
 		{
 			var folders:Array<String> = [];
@@ -77,10 +77,13 @@ class TitleState extends MusicBeatState
 
 		if (!initialized)
 		{
-			#if desktop
+			#if MODS
 			// idk why i put these conditions mag is not available on mac anyway
 			PolymodHandler.loadMods();
+			ModList.load();
+			#end
 
+			#if desktop
 			DiscordClient.initialize();
 
 			Application.current.onExit.add(function(exitCode)
@@ -89,10 +92,8 @@ class TitleState extends MusicBeatState
 			});
 			#end
 
-			ModList.load();
-
 			PlayerSettings.init();
-			PlayerSettings.player1.controls.loadKeyBinds();
+			MagDefaults.init();
 
 			// DEBUG BULLSHIT
 
@@ -204,8 +205,6 @@ class TitleState extends MusicBeatState
 		ngSpr.antialiasing = true;
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
-
-		FlxG.mouse.visible = false;
 
 		if (initialized)
 			skipIntro();

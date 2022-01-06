@@ -1,6 +1,6 @@
 package modloader;
 
-#if sys
+#if MODS
 import flixel.FlxSubState;
 import polymod.Polymod.ModMetadata;
 import modloader.ModList;
