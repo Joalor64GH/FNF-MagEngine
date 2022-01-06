@@ -177,7 +177,6 @@ class PlayState extends MusicBeatState
 
 	public var songScore:Int = 0;
 
-	var scoreBG:FlxSprite;
 	var scoreTxt:FlxText;
 	var infoTxt:FlxText;
 
@@ -854,19 +853,11 @@ class PlayState extends MusicBeatState
 		add(infoTxt);
 
 		scoreTxt = new FlxText(0, healthBarBG.y + 40, FlxG.width, "", 18);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.borderSize = 2;
 		scoreTxt.scrollFactor.set();
 		scoreTxt.antialiasing = true;
 
-		scoreBG = new FlxSprite(0,
-			scoreTxt.y - 12.5).makeGraphic(Std.int(scoreTxt.width / 2.75), Std.int(scoreTxt.height + 25), FlxColor.fromRGB(149, 150, 153));
-		scoreBG.scrollFactor.set();
-		scoreBG.screenCenter(X);
-		scoreBG.alpha = 0.5;
-		scoreBG.antialiasing = true;
-
-		add(scoreBG);
 		add(scoreTxt);
 
 		strumLineNotes.cameras = [camHUD];
@@ -875,7 +866,6 @@ class PlayState extends MusicBeatState
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
-		scoreBG.cameras = [camHUD];
 		infoTxt.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
