@@ -18,6 +18,7 @@ IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN 
 ## Credits / shoutouts
 
 -   [Magnumsrt](https://twitter.com/MagnumsrtYT) - Owner, coder, artist, and developer
+-   [ShadowMario](https://twitter.com/Shadow_Mario_) - Some code from Psych Engine
 
 ## Original Credits / shoutouts
 
