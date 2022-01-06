@@ -179,7 +179,6 @@ class OptionsMenu extends MusicBeatState
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 				if (isCat && currentSelectedCat.getOptions()[curSelected].press())
 				{
-					
 					grpCheckboxes.members[curSelected].daValue = currentSelectedCat.getOptions()[curSelected].daValue;
 					grpControls.members[curSelected].changeText(currentSelectedCat.getOptions()[curSelected].getDisplay());
 				}
@@ -193,13 +192,14 @@ class OptionsMenu extends MusicBeatState
 					{
 						var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, currentSelectedCat.getOptions()[i].getDisplay(), true, false);
 						controlLabel.isMenuItem = true;
-						controlLabel.forceX = 150;
 						controlLabel.targetY = i;
 						grpControls.add(controlLabel);
+						controlLabel.forceX = 150;
 
 						if (currentSelectedCat.getOptions()[i].isBool)
 						{
-							var checkbox:CheckboxThingie = new CheckboxThingie(controlLabel.x - 105, controlLabel.y, currentSelectedCat.getOptions()[i].daValue);
+							var checkbox:CheckboxThingie = new CheckboxThingie(controlLabel.x - 105, controlLabel.y,
+								currentSelectedCat.getOptions()[i].daValue);
 							checkbox.sprTracker = controlLabel;
 							checkbox.ID = i;
 							grpCheckboxes.add(checkbox);
