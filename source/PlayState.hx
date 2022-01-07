@@ -99,6 +99,7 @@ class PlayState extends MusicBeatState
 	private var notes:FlxTypedGroup<Note>;
 	private var unspawnNotes:Array<Note> = [];
 
+	private var cameraSpeed:Float = 1;
 	public var strumLine:FlxSprite;
 	private var curSection:Int = 0;
 
@@ -914,7 +915,7 @@ class PlayState extends MusicBeatState
 
 		scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 2.40 - 81, healthBarBG.y + 50, 0, "", 14);
 		scoreTxt.font = 'VCR OSD Mono';
-		if (FlxG.save.data.accuracy){
+		if (!FlxG.save.data.accuracy){
 			scoreTxt = new FlxText(healthBarBG.x + healthBarBG.width / 1.94 - 81, healthBarBG.y + 50, 0, "", 14);
 			scoreTxt.font = 'VCR OSD Mono';
 		}
@@ -1683,13 +1684,20 @@ class PlayState extends MusicBeatState
 					}
 				}
 				// phillyCityLights.members[curLight].alpha -= (Conductor.crochet / 1000) * FlxG.elapsed;
+
+				
 		}
+		if (!inCutscene)
+			{
+				var lerpVal:Float = CoolUtil.boundTo(elapsed * 2.4 * cameraSpeed, 0, 1);
+				camFollow.setPosition(FlxMath.lerp(camFollow.x, camFollow.x, lerpVal), FlxMath.lerp(camFollow.y, camFollow.y, lerpVal));
+			}
 
 		super.update(elapsed);
 		callOnLuas('update', [elapsed]);
 	
 		scoreTxt.text = "Score:" + songScore + " | Misses:" + misses + " | Accuracy:" + truncateFloat(accuracy, 2) + "% ";
-		if (FlxG.save.data.accuracy){
+		if (!FlxG.save.data.accuracy){
 			scoreTxt.text = "Score:" + songScore + " | Misses:" + misses;
 			}
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
@@ -1727,12 +1735,14 @@ class PlayState extends MusicBeatState
 
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
-
-		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, 0.50)));
-		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, 0.50)));
-
+		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
+		iconP1.scale.set(mult, mult);
 		iconP1.updateHitbox();
+
+		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
+		iconP2.scale.set(mult, mult);
 		iconP2.updateHitbox();
+		
 
 		var iconOffset:Int = 26;
 
@@ -2347,15 +2357,13 @@ class PlayState extends MusicBeatState
 				var tex:flixel.graphics.frames.FlxAtlasFrames = Paths.getSparrowAtlas('noteSplashes', 'shared');
 				sploosh.frames = tex;
 				sploosh.animation.addByPrefix('splash 0 0', 'note impact 1 purple', 24, false);
-				sploosh.animation.addByPrefix('splash 0 1', 'note impact 1 blue', 24, false);
+				sploosh.animation.addByPrefix('splash 0 1', 'note impact 1  blue', 24, false);
 				sploosh.animation.addByPrefix('splash 0 2', 'note impact 1 green', 24, false);
 				sploosh.animation.addByPrefix('splash 0 3', 'note impact 1 red', 24, false);
-				sploosh.animation.addByPrefix('splash 0 4', 'note impact 1 yellow', 24, false);
 				sploosh.animation.addByPrefix('splash 1 0', 'note impact 2 purple', 24, false);
 				sploosh.animation.addByPrefix('splash 1 1', 'note impact 2 blue', 24, false);
 				sploosh.animation.addByPrefix('splash 1 2', 'note impact 2 green', 24, false);
 				sploosh.animation.addByPrefix('splash 1 3', 'note impact 2 red', 24, false);
-				sploosh.animation.addByPrefix('splash 1 4', 'note impact 2 yellow', 24, false);
 				if (daRating == 'sick')
 				{
 					add(sploosh);
@@ -3152,8 +3160,8 @@ for (i in SONG.events){
 			camHUD.zoom += 0.03;
 		}
 
-		iconP1.setGraphicSize(Std.int(iconP1.width + 30));
-		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
+		iconP1.setGraphicSize(Std.int(iconP1.width + 35));
+		iconP2.setGraphicSize(Std.int(iconP2.width + 35));
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();

@@ -16,6 +16,7 @@ import flixel.input.actions.FlxAction;
 class OptionCategory
 {
 	private var _options:Array<Option> = new Array<Option>();
+
 	public final function getOptions():Array<Option>
 	{
 		return _options;
@@ -26,18 +27,19 @@ class OptionCategory
 		_options.push(opt);
 	}
 
-	
 	public final function removeOption(opt:Option)
 	{
 		_options.remove(opt);
 	}
 
 	private var _name:String = "New Category";
-	public final function getName() {
+
+	public final function getName()
+	{
 		return _name;
 	}
 
-	public function new (catName:String, options:Array<Option>)
+	public function new(catName:String, options:Array<Option>)
 	{
 		_name = catName;
 		_options = options;
@@ -50,9 +52,13 @@ class Option
 	{
 		display = updateDisplay();
 	}
+
 	private var description:String = "";
 	private var display:String;
 	private var acceptValues:Bool = false;
+	public var isBool:Bool = true;
+	public var daValue:Bool = false;
+
 	public final function getDisplay():String
 	{
 		return display;
@@ -68,31 +74,27 @@ class Option
 		return description;
 	}
 
-	public function getValue():String { return throw "stub!"; };
-	
 	// Returns whether the label is to be updated.
 	public function press():Bool
-		{
-			return true;
-		}
-	
-		private function updateDisplay():String
-		{
-			return "";
-		}
-	
-		public function left():Bool
-		{
-			return false;
-		}
-	
-		public function right():Bool
-		{
-			return false;
-		}
+	{
+		return true;
+	}
+
+	private function updateDisplay():String
+	{
+		return "";
+	}
+
+	public function left():Bool
+	{
+		return false;
+	}
+
+	public function right():Bool
+	{
+		return false;
+	}
 }
-
-
 
 class DFJKOption extends Option
 {
@@ -102,11 +104,14 @@ class DFJKOption extends Option
 	{
 		super();
 		this.controls = controls;
+		this.isBool = false;
+		daValue = FlxG.save.data.dfjk;
 	}
 
 	public override function press():Bool
 	{
-		OptionsMenu.instance.openSubState(new KeyBindMenu());
+		daValue = FlxG.save.data.dfjk;
+		display = updateDisplay();
 		return false;
 	}
 
@@ -115,106 +120,97 @@ class DFJKOption extends Option
 		return "Key Bindings";
 		FlxG.save.data.flush();
 	}
-	
 }
+
 class DownscrollOption extends Option
 {
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+		daValue = FlxG.save.data.downscroll;
 	}
 
 	public override function press():Bool
 	{
 		FlxG.save.data.downscroll = !FlxG.save.data.downscroll;
+		daValue = FlxG.save.data.downscroll;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		return FlxG.save.data.downscroll ? "Downscroll" : "Upscroll";
+		return "Downscroll";
 	}
 }
+
 class PhotoSensitivityOption extends Option
 {
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+		daValue = FlxG.save.data.PhotoSensitivity;
 	}
 
 	public override function press():Bool
 	{
 		FlxG.save.data.PhotoSensitivity = !FlxG.save.data.PhotoSensitivity;
+		daValue = FlxG.save.data.PhotoSensitivity;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		return FlxG.save.data.PhotoSensitivity ? "PhotoSensitivity Mode On" : "PhotoSensitivity Mode Off";
+		return "PhotoSensitivity Mode";
 	}
 }
-class NewInputOption extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
 
-	public override function press():Bool
-	{
-		FlxG.save.data.newInput = !FlxG.save.data.newInput;
-		display = updateDisplay();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		return FlxG.save.data.newInput ? "New Input" : "Old Input";
-	}
-}
 class AccuracyOption extends Option
 {
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+		daValue = FlxG.save.data.accuracy;
 	}
 
 	public override function press():Bool
 	{
 		FlxG.save.data.accuracy = !FlxG.save.data.accuracy;
+		daValue = FlxG.save.data.accuracy;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		return FlxG.save.data.accuracy ? "Accuracy Off" : "Accuracy On";
+		return "Accuracy";
 	}
 }
+
 class SplooshOption extends Option
 {
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+		daValue = FlxG.save.data.splooshes;
 	}
 
 	public override function press():Bool
 	{
 		FlxG.save.data.splooshes = !FlxG.save.data.splooshes;
+		daValue = FlxG.save.data.splooshes;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		return FlxG.save.data.splooshes ? "Note Splashes On" : "Note Splashes Off";
+		return "Note Splashes";
 	}
 }
 
@@ -224,82 +220,90 @@ class ModChartOption extends Option
 	{
 		super();
 		description = desc;
+		daValue = FlxG.save.data.modchart;
 	}
 
 	public override function press():Bool
 	{
 		FlxG.save.data.modchart = !FlxG.save.data.modchart;
+		daValue = FlxG.save.data.modchart;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		return FlxG.save.data.modchart ? "ModCharts Off" : "ModCharts On";
+		return "ModCharts";
 	}
 }
-
 class FPSOption extends Option
 {
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+		daValue = FlxG.save.data.fps;
 	}
 
 	public override function press():Bool
 	{
 		FlxG.save.data.fps = !FlxG.save.data.fps;
-		(cast (Lib.current.getChildAt(0), Main)).toggleFPS(FlxG.save.data.fps);
+		(cast(Lib.current.getChildAt(0), Main)).toggleFPS(FlxG.save.data.fps);
+		daValue = FlxG.save.data.fps;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		return "FPS Counter " + (!FlxG.save.data.fps ? "off" : "on");
+		return "FPS Counter";
 	}
 }
+
 class MEMOption extends Option
 {
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+		daValue = FlxG.save.data.mem;
 	}
 
 	public override function press():Bool
 	{
 		FlxG.save.data.mem = !FlxG.save.data.mem;
-		(cast (Lib.current.getChildAt(0), Main)).toggleMem(FlxG.save.data.mem);
+		(cast(Lib.current.getChildAt(0), Main)).toggleMem(FlxG.save.data.mem);
+		daValue = FlxG.save.data.mem;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		return "Memory Info " + (!FlxG.save.data.mem ? "off" : "on");
+		return "Memory Info";
 	}
 }
+
 class VerOption extends Option
 {
 	public function new(desc:String)
 	{
 		super();
 		description = desc;
+		daValue = FlxG.save.data.v;
 	}
 
 	public override function press():Bool
 	{
 		FlxG.save.data.v = !FlxG.save.data.v;
-		(cast (Lib.current.getChildAt(0), Main)).toggleVers(FlxG.save.data.v);
+		(cast(Lib.current.getChildAt(0), Main)).toggleVers(FlxG.save.data.v);
+		daValue = FlxG.save.data.v;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		return "Version Display " + (!FlxG.save.data.v ? "off" : "on");
+		return "Version Display";
 	}
 }
-

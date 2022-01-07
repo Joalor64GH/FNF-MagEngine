@@ -35,6 +35,9 @@ class MagEngineDefaults
 		if (FlxG.save.data.modList == null)
 			FlxG.save.data.modList = true;
 
+		if (FlxG.save.data.fpsCap == null)
+			FlxG.save.data.fpsCap = false;
+
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();
         

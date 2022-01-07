@@ -31,7 +31,6 @@ using StringTools;
 
 class KeyBindMenu extends FlxSubState
 {
-
     var keyTextDisplay:FlxText;
     var keyWarning:FlxText;
     var warningTween:FlxTween;

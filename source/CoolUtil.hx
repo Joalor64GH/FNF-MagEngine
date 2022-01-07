@@ -39,6 +39,7 @@ class CoolUtil
 
 	public static function evenCoolerTextFile(path:String):Array<String>
 		{
+			#if sys
 			var daList:Array<String> = sys.io.File.getContent(path).trim().split('\n');
 	
 			for (i in 0...daList.length)
@@ -46,6 +47,7 @@ class CoolUtil
 				daList[i] = daList[i].trim();
 			}
 	
+			#end
 			return daList;
 		}
 		
