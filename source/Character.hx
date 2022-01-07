@@ -36,6 +36,7 @@ class Character extends FlxSprite
 	public var animOffsets:Map<String, Array<Dynamic>>;
 	public var debugMode:Bool = false;
 
+	public var danceIdle:Bool = false;
 	public var disabledDance:Bool = false;
 	public var isPlayer:Bool = false;
 	public var curCharacter:String = 'bf';
@@ -46,10 +47,10 @@ class Character extends FlxSprite
 	public var animations:Array<Animation>;
 	public var image:String;
 
-	public var singDuration:Float = 6;
+	public var stunned:Bool = false;
 
+	public var singDuration:Float = 4.1;
 	public var holding:Bool = false;
-
 	public var holdTimer:Float = 0;
 
 	public var imagePNG:String = '';
@@ -440,6 +441,7 @@ class Character extends FlxSprite
 				}
 		}
 
+		recalculateDanceIdle();
 		dance();
 
 		if (isPlayer)
@@ -494,9 +496,7 @@ class Character extends FlxSprite
 			if (!isPlayer)
 			{
 				if (animation.curAnim.name.startsWith('sing'))
-				{
 					holdTimer += elapsed;
-				}
 
 				if (holdTimer >= Conductor.stepCrochet * 0.001 * singDuration)
 				{
@@ -506,9 +506,7 @@ class Character extends FlxSprite
 			}
 
 			if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
-			{
 				playAnim(animation.curAnim.name + '-loop');
-			}
 		}
 		super.update(elapsed);
 	}
@@ -520,9 +518,7 @@ class Character extends FlxSprite
 		if (!debugMode && !disabledDance)
 		{
 			holding = false;
-			if (animation.getByName("idle") != null)
-				playAnim("idle");
-			else if (animation.getByName("danceRight") != null && animation.getByName("danceLeft") != null)
+			if (danceIdle)
 			{
 				if (!animation.curAnim.name.startsWith('hair'))
 				{
@@ -534,6 +530,8 @@ class Character extends FlxSprite
 						playAnim('danceLeft');
 				}
 			}
+			else if (animation.getByName("idle") != null)
+				playAnim("idle");
 		}
 	}
 
@@ -565,6 +563,10 @@ class Character extends FlxSprite
 				danced = !danced;
 			}
 		}
+	}
+
+	public function recalculateDanceIdle() {
+		danceIdle = (animation.getByName('danceLeft') != null && animation.getByName('danceRight') != null);
 	}
 
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)

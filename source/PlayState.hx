@@ -1049,6 +1049,29 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	public function idleCharShit(beat:Int)
+	{
+		if (beat % gfSpeed == 0 && !gf.stunned && gf.animation.curAnim.name != null && !gf.animation.curAnim.name.startsWith("sing"))
+			gf.dance();
+
+		if (beat % 2 == 0)
+		{
+			if (boyfriend.animation.curAnim.name != null && !boyfriend.animation.curAnim.name.startsWith("sing"))
+				boyfriend.dance();
+
+			if (dad.animation.curAnim.name != null && !dad.animation.curAnim.name.startsWith("sing") && !dad.stunned)
+				dad.dance();
+		}
+		else if (dad.danceIdle
+			&& dad.animation.curAnim.name != null
+			&& !dad.curCharacter.startsWith('gf')
+			&& !dad.animation.curAnim.name.startsWith("sing")
+			&& !dad.stunned)
+		{
+			dad.dance();
+		}
+	}
+
 	var startTimer:FlxTimer;
 	var perfectMode:Bool = false;
 
@@ -1088,9 +1111,7 @@ class PlayState extends MusicBeatState
 
 			startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 			{
-				dad.dance();
-				gf.dance();
-				boyfriend.dance();
+				idleCharShit(tmr.loopsLeft);
 
 				var introAlts:Array<String> = ['ready', "set", "go"];
 				var altSuffix:String = "";
@@ -2358,7 +2379,6 @@ class PlayState extends MusicBeatState
 		// FlxG.watch.addQuick('asdfa', upP);
 		if (!boyfriend.stunned && generatedMusic)
 		{
-			// new input (wip)
 			notes.forEachAlive(function(daNote:Note)
 			{
 				// hold note functions
@@ -2370,6 +2390,12 @@ class PlayState extends MusicBeatState
 
 			if (!endingSong)
 			{
+				if (!controlHoldArray.contains(true)
+					&& boyfriend.holdTimer > Conductor.stepCrochet * 0.001 * boyfriend.singDuration
+					&& boyfriend.animation.curAnim.name.startsWith('sing')
+					&& !boyfriend.animation.curAnim.name.endsWith('miss'))
+					boyfriend.dance();
+
 				// more accurate hit time for the ratings?
 				var lastTime:Float = Conductor.songPosition;
 				Conductor.songPosition = FlxG.sound.music.time;
@@ -2771,22 +2797,13 @@ class PlayState extends MusicBeatState
 		if (generatedMusic)
 			notes.sort(FlxSort.byY, FlxG.save.data.downscroll ? FlxSort.ASCENDING : FlxSort.DESCENDING);
 
-		if (SONG.notes[Math.floor(curStep / 16)] != null)
+		if (SONG.notes[Math.floor(curStep / 16)] != null && SONG.notes[Math.floor(curStep / 16)].changeBPM)
 		{
-			if (SONG.notes[Math.floor(curStep / 16)].changeBPM)
-			{
-				Conductor.changeBPM(SONG.notes[Math.floor(curStep / 16)].bpm);
-				FlxG.log.add('CHANGED BPM!');
-				setOnLuas('curBPM', Conductor.bpm);
-				setOnLuas('crochet', Conductor.crochet);
-				setOnLuas('stepCrochet', Conductor.stepCrochet);
-			}
-			// else
-			// Conductor.changeBPM(SONG.bpm);
-
-			// Dad doesnt interupt his own notes
-			if (SONG.notes[Math.floor(curStep / 16)].mustHitSection)
-				dad.dance();
+			Conductor.changeBPM(SONG.notes[Math.floor(curStep / 16)].bpm);
+			FlxG.log.add('CHANGED BPM!');
+			setOnLuas('curBPM', Conductor.bpm);
+			setOnLuas('crochet', Conductor.crochet);
+			setOnLuas('stepCrochet', Conductor.stepCrochet);
 		}
 		// FlxG.log.add('change bpm' + SONG.notes[Std.int(curStep / 16)].changeBPM);
 		wiggleShit.update(Conductor.crochet);
@@ -2812,11 +2829,7 @@ class PlayState extends MusicBeatState
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
 
-		if (curBeat % gfSpeed == 0)
-			gf.dance();
-
-		if (!boyfriend.animation.curAnim.name.startsWith("sing"))
-			boyfriend.dance();
+		idleCharShit(curBeat);
 
 		if (curBeat % 8 == 7 && curSong == 'Bopeebo')
 			boyfriend.playAnim('hey', true);
