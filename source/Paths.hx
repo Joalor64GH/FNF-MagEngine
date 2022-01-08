@@ -1,13 +1,15 @@
 package;
 
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#end
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import lime.utils.Assets;
 import flixel.FlxSprite;
-import sys.io.File;
-import sys.FileSystem;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
 import modloader.PolymodHandler;
@@ -343,6 +345,7 @@ class Paths
 
 	static public function modDirectory():Array<String>
 	{
+		#if MODS
 		var list:Array<String> = [];
 		var modsFolder:String = Paths.mods();
 		if (FileSystem.exists(modsFolder))
@@ -357,5 +360,6 @@ class Paths
 			}
 		}
 		return list;
+		#end
 	}
 }
