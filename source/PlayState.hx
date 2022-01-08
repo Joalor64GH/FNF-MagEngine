@@ -77,9 +77,9 @@ class PlayState extends MusicBeatState
 	public static var originalStoryPlaylistLength:Int = 0;
 	public static var storyDifficulty:Int = 1;
 
-	public static var usedPlayFeatures:Bool = false;
-	public static var cpuControlled:Bool = false;
-	public static var practiceAllowed:Bool = false;
+	public var usedPlayFeatures:Bool = false;
+	public var cpuControlled:Bool = false;
+	public var practiceAllowed:Bool = false;
 
 	public var pauseHUD:FlxCamera;
 	public var _swagstage:SwagStage;
