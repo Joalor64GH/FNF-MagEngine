@@ -182,7 +182,7 @@ class Note extends FlxSprite
 
 			x -= width / 2;
 
-			if (PlayState.curStage.startsWith('school'))
+			if (PlayState.isPixelStage)
 				x += 30;
 
 			if (prevNote.isSustainNote)
