@@ -117,7 +117,7 @@ class PlayState extends MusicBeatState
 
 	public static var babyArrow:FlxSprite;
 
-	public static var noteTransparencyLevel:Float = 0.75;
+	public static var noteTransparencyLevel:Float = 0.6;
 
 	public var strumLineNotes:FlxTypedGroup<FlxSprite>;
 	public var playerStrums:FlxTypedGroup<FlxSprite> = null;
