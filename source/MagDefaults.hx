@@ -1,4 +1,3 @@
-import openfl.Lib;
 import flixel.FlxG;
 
 class MagDefaults
