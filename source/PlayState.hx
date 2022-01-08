@@ -115,6 +115,8 @@ class PlayState extends MusicBeatState
 	private static var prevCamFollow:FlxPoint;
 	private static var prevCamFollowPos:FlxObject;
 
+	public static var babyArrow:FlxSprite;
+
 	public var strumLineNotes:FlxTypedGroup<FlxSprite>;
 	public var playerStrums:FlxTypedGroup<FlxSprite> = null;
 	public var cpuStrums:FlxTypedGroup<FlxSprite> = null;
@@ -1321,7 +1323,7 @@ class PlayState extends MusicBeatState
 		for (i in 0...4)
 		{
 			// FlxG.log.add(i);
-			var babyArrow:FlxSprite = new FlxSprite(STRUM_X, strumLine.y);
+			babyArrow = new FlxSprite(STRUM_X, strumLine.y);
 
 			switch (curStage)
 			{
