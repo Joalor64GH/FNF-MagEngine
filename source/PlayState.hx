@@ -156,7 +156,6 @@ class PlayState extends MusicBeatState
 	var phillyCityLights:FlxTypedGroup<FlxSprite>;
 	var phillyTrain:FlxSprite;
 	var trainSound:FlxSound;
-	var charter:ChartingState;
 
 	var hihellothere = false;
 	var chromeShit:ChromaticAberration;
@@ -1727,6 +1726,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
+			CustomFadeTransition.nextCamera = camHUB;
 			MusicBeatState.switchState(new ChartingState());
 
 			#if desktop
@@ -1736,11 +1736,13 @@ class PlayState extends MusicBeatState
 
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
-		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
+		var mult:Float;
+
+		mult = FlxMath.lerp(1, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
 		iconP1.scale.set(mult, mult);
 		iconP1.updateHitbox();
 
-		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
+		mult = FlxMath.lerp(1, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
 		iconP2.scale.set(mult, mult);
 		iconP2.updateHitbox();
 
@@ -2209,26 +2211,6 @@ class PlayState extends MusicBeatState
 					var sploosh:FlxSprite = new FlxSprite(note.x, playerStrums.members[note.noteData].y);
 					if (isPixelStage)
 					{
-						var tex:flixel.graphics.frames.FlxAtlasFrames = Paths.getSparrowAtlas('noteSplashes', 'shared');
-						sploosh.frames = tex;
-						sploosh.animation.addByPrefix('splash 0 0', 'note impact 1 purple', 24, false);
-						sploosh.animation.addByPrefix('splash 0 1', 'note impact 1  blue', 24, false);
-						sploosh.animation.addByPrefix('splash 0 2', 'note impact 1 green', 24, false);
-						sploosh.animation.addByPrefix('splash 0 3', 'note impact 1 red', 24, false);
-						sploosh.animation.addByPrefix('splash 1 0', 'note impact 2 purple', 24, false);
-						sploosh.animation.addByPrefix('splash 1 1', 'note impact 2 blue', 24, false);
-						sploosh.animation.addByPrefix('splash 1 2', 'note impact 2 green', 24, false);
-						sploosh.animation.addByPrefix('splash 1 3', 'note impact 2 red', 24, false);
-						add(sploosh);
-						sploosh.cameras = [camHUD];
-						sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + note.noteData);
-						sploosh.alpha = 0.6;
-						sploosh.offset.x += 90;
-						sploosh.offset.y += 80;
-						sploosh.animation.finishCallback = function(name) sploosh.kill();
-					}
-					else
-					{
 						sploosh.loadGraphic(Paths.image('weeb/pixelUI/noteSplashes-pixels', 'week6'), true, 50, 50);
 						sploosh.animation.add('splash 0 0', [0, 1, 2, 3], 24, false);
 						sploosh.animation.add('splash 1 0', [4, 5, 6, 7], 24, false);
@@ -2243,14 +2225,26 @@ class PlayState extends MusicBeatState
 
 						sploosh.setGraphicSize(Std.int(sploosh.width * daPixelZoom));
 						sploosh.updateHitbox();
-						add(sploosh);
-						sploosh.cameras = [camHUD];
-						sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + note.noteData);
-						sploosh.alpha = 0.6;
-						sploosh.offset.x += 90;
-						sploosh.offset.y += 80;
-						sploosh.animation.finishCallback = function(name) sploosh.kill();
 					}
+					else
+					{
+						sploosh.frames = Paths.getSparrowAtlas('noteSplashes', 'shared');
+						sploosh.animation.addByPrefix('splash 0 0', 'note impact 1 purple', 24, false);
+						sploosh.animation.addByPrefix('splash 0 1', 'note impact 1  blue', 24, false);
+						sploosh.animation.addByPrefix('splash 0 2', 'note impact 1 green', 24, false);
+						sploosh.animation.addByPrefix('splash 0 3', 'note impact 1 red', 24, false);
+						sploosh.animation.addByPrefix('splash 1 0', 'note impact 2 purple', 24, false);
+						sploosh.animation.addByPrefix('splash 1 1', 'note impact 2 blue', 24, false);
+						sploosh.animation.addByPrefix('splash 1 2', 'note impact 2 green', 24, false);
+						sploosh.animation.addByPrefix('splash 1 3', 'note impact 2 red', 24, false);
+					}
+					add(sploosh);
+					sploosh.cameras = [camHUD];
+					sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + note.noteData);
+					sploosh.alpha = 0.6;
+					sploosh.offset.x += 90;
+					sploosh.offset.y += 80;
+					sploosh.animation.finishCallback = function(name) sploosh.kill();
 				}
 		}
 
@@ -2825,8 +2819,9 @@ class PlayState extends MusicBeatState
 			camHUD.zoom += 0.03;
 		}
 
-		iconP1.setGraphicSize(Std.int(iconP1.width + 35));
-		iconP2.setGraphicSize(Std.int(iconP2.width + 35));
+		var daNum:Int = 35;
+		iconP1.setGraphicSize(Std.int(iconP1.width + daNum));
+		iconP2.setGraphicSize(Std.int(iconP2.width + daNum));
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
