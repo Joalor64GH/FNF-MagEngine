@@ -34,6 +34,11 @@ class Cache extends MusicBeatState
 	var images = [];
 	var music = [];
 
+	var logoBg:FlxSprite;
+	var logo:FlxSprite;
+
+	var daText:Alphabet;
+
 	var shitz:FlxText;
 
 	override function create()
@@ -45,11 +50,11 @@ class Cache extends MusicBeatState
 		bitmapData = new Map<String, FlxGraphic>();
 		bitmapData2 = new Map<String, FlxGraphic>();
 
-		var logoBg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('bg', 'MagEngine'));
+		logoBg = new FlxSprite().loadGraphic(Paths.image('bg', 'MagEngine'));
 		logoBg.screenCenter();
 		add(logoBg);
 
-		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('melogo', 'MagEngine'));
+		logo = new FlxSprite().loadGraphic(Paths.image('melogo', 'MagEngine'));
 		logo.screenCenter();
 		logo.antialiasing = true;
 		add(logo);
