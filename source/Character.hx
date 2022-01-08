@@ -565,7 +565,8 @@ class Character extends FlxSprite
 		}
 	}
 
-	public function recalculateDanceIdle() {
+	public function recalculateDanceIdle()
+	{
 		danceIdle = (animation.getByName('danceLeft') != null && animation.getByName('danceRight') != null);
 	}
 

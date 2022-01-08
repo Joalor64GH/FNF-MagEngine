@@ -813,7 +813,7 @@ class ChartingState extends MusicBeatState
 			+ "\nSection: "
 			+ curSection
 			+ "\nCurBeat: "
-			+ HelperFunctions.truncateFloat(curBeat, 3)
+			+ CoolUtil.truncateFloat(curBeat, 3)
 			+ "\nCurStep: "
 			+ curStep;
 		super.update(elapsed);
