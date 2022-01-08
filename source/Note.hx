@@ -29,6 +29,95 @@ class Note extends FlxSprite
 
 	public var noteScore:Float = 1;
 
+	var gfxLetter:Array<String> = [
+		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+		'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'
+	];
+
+	public static var scales:Array<Float> = [0.9, 0.85, 0.8, 0.7, 0.66, 0.6, 0.55, 0.50, 0.46, 0.39, 0.3];
+	public static var lessX:Array<Int> = [0, 0, 0, 0, 0, 8, 7, 8, 8, 7, 6];
+	public static var separator:Array<Int> = [0, 0, 1, 1, 2, 2, 2, 3, 3, 4, 4];
+	public static var xtra:Array<Int> = [150, 89, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	public static var posRest:Array<Int> = [0, 0, 0, 0, 25, 32, 46, 52, 60, 40, 30];
+	public static var gridSizes:Array<Int> = [40, 40, 40, 40, 40, 40, 40, 40, 40, 35, 30];
+	public static var offsets:Array<Dynamic> = [
+		[20, 10], [10, 10], [10, 10], [10, 10], [10, 10], [10, 10], [10, 10], [10, 10], [10, 10], [10, 20], [10, 10], [10, 10]];
+
+	public static var minMania:Int = 0;
+	public static var maxMania:Int = 10;
+	public static var defaultMania:Int = 3;
+
+	public static var keysShit:Map<Int, Map<String, Dynamic>> = [
+		0 => [
+			"letters" => ["E"],
+			"anims" => ["UP"],
+			"strumAnims" => ["SPACE"],
+			"pixelAnimIndex" => [4]
+		],
+		1 => [
+			"letters" => ["A", "D"],
+			"anims" => ["LEFT", "RIGHT"],
+			"strumAnims" => ["LEFT", "RIGHT"],
+			"pixelAnimIndex" => [0, 3]
+		],
+		2 => [
+			"letters" => ["A", "E", "D"],
+			"anims" => ["LEFT", "UP", "RIGHT"],
+			"strumAnims" => ["LEFT", "SPACE", "RIGHT"],
+			"pixelAnimIndex" => [0, 4, 3]
+		],
+		3 => [
+			"letters" => ["A", "B", "C", "D"],
+			"anims" => ["LEFT", "DOWN", "UP", "RIGHT"],
+			"strumAnims" => ["LEFT", "DOWN", "UP", "RIGHT"],
+			"pixelAnimIndex" => [0, 1, 2, 3]
+		],
+		4 => [
+			                  "letters" => ["A", "B", "E", "C", "D"], "anims" => ["LEFT", "DOWN", "UP", "UP", "RIGHT"],
+			"strumAnims" => ["LEFT", "DOWN", "SPACE", "UP", "RIGHT"],              "pixelAnimIndex" => [0, 1, 4, 2, 3]
+		],
+		5 => [
+			                     "letters" => ["A", "C", "D", "F", "B", "I"], "anims" => ["LEFT", "UP", "RIGHT", "LEFT", "DOWN", "RIGHT"],
+			"strumAnims" => ["LEFT", "UP", "RIGHT", "LEFT", "DOWN", "RIGHT"],                      "pixelAnimIndex" => [0, 2, 3, 5, 1, 8]
+		],
+		6 => [
+			                         "letters" => ["A", "C", "D", "E", "F", "B", "I"], "anims" => ["LEFT", "UP", "RIGHT", "UP", "LEFT", "DOWN", "RIGHT"],
+			"strumAnims" => ["LEFT", "UP", "RIGHT", "SPACE", "LEFT", "DOWN", "RIGHT"],                         "pixelAnimIndex" => [0, 2, 3, 4, 5, 1, 8]
+		],
+		7 => [
+			                         "letters" => ["A", "B", "C", "D", "F", "G", "H", "I"], "anims" =>
+			["LEFT", "UP", "DOWN", "RIGHT", "LEFT", "DOWN", "UP", "RIGHT"],
+			"strumAnims" => ["LEFT", "DOWN", "UP", "RIGHT", "LEFT", "DOWN", "UP", "RIGHT"],                              "pixelAnimIndex" =>
+			[0, 1, 2, 3, 5, 6, 7, 8]
+		],
+		8 => [
+			                             "letters" => ["A", "B", "C", "D", "E", "F", "G", "H", "I"], "anims" =>
+			["LEFT", "DOWN", "UP", "RIGHT", "UP", "LEFT", "DOWN", "UP", "RIGHT"],
+			"strumAnims" => ["LEFT", "DOWN", "UP", "RIGHT", "SPACE", "LEFT", "DOWN", "UP", "RIGHT"],                                 "pixelAnimIndex" =>
+			[0, 1, 2, 3, 4, 5, 6, 7, 8]
+		],
+		9 => [
+			"letters" => ["A", "B", "C", "D", "E", "N", "F", "G", "H", "I"],
+			"anims" => ["LEFT", "DOWN", "UP", "RIGHT", "UP", "UP", "LEFT", "DOWN", "UP", "RIGHT"],
+			"strumAnims" => ["LEFT", "DOWN", "UP", "RIGHT", "SPACE", "CIRCLE", "LEFT", "DOWN", "UP", "RIGHT"],
+			"pixelAnimIndex" => [0, 1, 2, 3, 4, 13, 5, 6, 7, 8]
+		],
+		10 => [
+			"letters" => ["A", "B", "C", "D", "J", "N", "M", "F", "G", "H", "I"],
+			"anims" => [
+				"LEFT", "DOWN", "UP", "RIGHT", "LEFT", "UP", "RIGHT", "LEFT", "DOWN", "UP", "RIGHT"
+			],
+			"strumAnims" => [
+				"LEFT", "DOWN", "UP", "RIGHT", "CIRCLE", "CIRCLE", "CIRCLE", "LEFT", "DOWN", "UP", "RIGHT"
+			],
+			"pixelAnimIndex" => [0, 1, 2, 3, 9, 13, 12, 5, 6, 7, 8]
+		]
+	];
+
+	public static var ammo:Array<Int> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+	public static var pixelScales:Array<Float> = [1.2, 1.15, 1.1, 1, 0.9, 0.83, 0.8, 0.74, 0.7, 0.6, 0.55];
+
 	public static var swagWidth:Float = 160 * 0.7;
 	public static var PURP_NOTE:Int = 0;
 	public static var GREEN_NOTE:Int = 2;
@@ -159,7 +248,6 @@ class Note extends FlxSprite
 
 		if (isSustainNote && prevNote != null)
 		{
-			noteScore * 0.2;
 			alpha = 0.6;
 			if (FlxG.save.data.downscroll)
 				flipY = true;
