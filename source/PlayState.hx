@@ -2096,7 +2096,7 @@ class PlayState extends MusicBeatState
 		#if SCRIPTS
 		var ret:Dynamic = callOnLuas('endSong', []);
 		#else
-		var ret:Dynamic = Modchart.Function_Continue;
+		var ret:Dynamic = MagModChart.Function_Continue;
 		#end
 
 		canPause = false;
