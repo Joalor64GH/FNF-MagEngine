@@ -56,6 +56,7 @@ class Option
 	private var description:String = "";
 	private var display:String;
 	private var acceptValues:Bool = false;
+
 	public var isBool:Bool = true;
 	public var daValue:Bool = false;
 

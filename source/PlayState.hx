@@ -9,7 +9,7 @@ import WiggleEffect.WiggleEffectType;
 import flixel.FlxBasic;
 import Song.MidSongEvent;
 import flixel.FlxCamera;
-import shaders.ChromaticAberrationShader;
+import shaders.ChromaticAberration;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxObject;
@@ -159,7 +159,7 @@ class PlayState extends MusicBeatState
 	var charter:ChartingState;
 
 	var hihellothere = false;
-	var chromeShit:ChromaticAberrationShader;
+	var chromeShit:ChromaticAberration;
 	var chromeEnabled:Bool = false;
 
 	var limo:FlxSprite;
@@ -769,7 +769,7 @@ class PlayState extends MusicBeatState
 
 		if (chromeEnabled)
 		{
-			chromeShit = new ChromaticAberrationShader();
+			chromeShit = new ChromaticAberration();
 			iconP1.shader = chromeShit;
 			iconP2.shader = chromeShit;
 			healthBar.shader = chromeShit;
