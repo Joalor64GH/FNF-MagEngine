@@ -56,6 +56,8 @@ class OptionsMenu extends MusicBeatState
 
 	var currentSelectedCat:OptionCategory;
 
+	var confirming:Bool = false;
+
 	override function create()
 	{
 		instance = this;
@@ -97,7 +99,7 @@ class OptionsMenu extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (acceptInput)
+		if (acceptInput && !confirming)
 		{
 			if (controls.BACK)
 			{
@@ -112,10 +114,7 @@ class OptionsMenu extends MusicBeatState
 					changeSelection();
 				}
 				else
-				{
-					FlxG.save.flush();
-					MusicBeatState.switchState(new MainMenuState());
-				}
+					quit();
 			}
 			if (controls.UP_P)
 			{
@@ -159,6 +158,7 @@ class OptionsMenu extends MusicBeatState
 			if (controls.ACCEPT)
 			{
 				FlxG.sound.play(Paths.sound('confirmMenu'));
+				confirming = true;
 				FlxFlicker.flicker(grpControls.members[curSelected], 1, 0.06, true, false, function(flick:FlxFlicker)
 				{
 					if (isCat && currentSelectedCat.getOptions()[curSelected].press())
@@ -171,10 +171,7 @@ class OptionsMenu extends MusicBeatState
 						openSubState(new KeyBindMenu());
 					}
 					else if (options[curSelected].getName() == "Exit")
-					{
-						FlxG.save.flush();
-						MusicBeatState.switchState(new MainMenuState());
-					}
+						quit();
 					else
 					{
 						currentSelectedCat = options[curSelected];
@@ -200,12 +197,19 @@ class OptionsMenu extends MusicBeatState
 						curSelected = 0;
 						changeSelection();
 					}
+					confirming = false;
 				});
 			}
 		}
 	}
 
 	var isSettingControl:Bool = false;
+
+	function quit()
+	{
+		FlxG.save.flush();
+		MusicBeatState.switchState(new MainMenuState());
+	}
 
 	function changeSelection(change:Int = 0)
 	{
