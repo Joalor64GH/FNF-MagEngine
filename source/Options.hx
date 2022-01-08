@@ -96,31 +96,6 @@ class Option
 	}
 }
 
-class DFJKOption extends Option
-{
-	private var controls:Controls;
-
-	private function updateDisplay():String
-	{
-		super();
-		this.controls = controls;
-		this.isBool = false;
-		daValue = FlxG.save.data.dfjk;
-	}
-
-	public function left():Bool
-	{
-		daValue = FlxG.save.data.dfjk;
-		display = updateDisplay();
-		return false;
-	}
-
-	public function right():Bool
-	{
-		return false;
-	}
-}
-
 class DownscrollOption extends Option
 {
 	public function new(desc:String)

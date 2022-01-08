@@ -3,7 +3,7 @@ import flixel.FlxG;
 
 class MagDefaults
 {
-	public static function initSave()
+	public static function init()
 	{
 		if (FlxG.save.data.downscroll == null)
 			FlxG.save.data.downscroll = false;

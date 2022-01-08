@@ -105,6 +105,7 @@ class PlayState extends MusicBeatState
 	private var unspawnNotes:Array<Note> = [];
 
 	private var cameraSpeed:Float = 1;
+
 	public var strumLine:FlxSprite;
 
 	private var curSection:Int = 0;
@@ -1679,14 +1680,7 @@ class PlayState extends MusicBeatState
 					}
 				}
 				// phillyCityLights.members[curLight].alpha -= (Conductor.crochet / 1000) * FlxG.elapsed;
-
-				
 		}
-		if (!inCutscene)
-			{
-				var lerpVal:Float = CoolUtil.boundTo(elapsed * 2.4 * cameraSpeed, 0, 1);
-				camFollow.setPosition(FlxMath.lerp(camFollow.x, camFollow.x, lerpVal), FlxMath.lerp(camFollow.y, camFollow.y, lerpVal));
-			}
 
 		if (!inCutscene)
 		{
@@ -1749,7 +1743,6 @@ class PlayState extends MusicBeatState
 		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
 		iconP2.scale.set(mult, mult);
 		iconP2.updateHitbox();
-		
 
 		var iconOffset:Int = 26;
 
@@ -2211,50 +2204,53 @@ class PlayState extends MusicBeatState
 			case "sick":
 				totalNotesHit += 1;
 				songScore += 350;
-				if (note.noteType == 0)
+				if (FlxG.save.data.splooshes && note.noteType == 0)
 				{
 					var sploosh:FlxSprite = new FlxSprite(note.x, playerStrums.members[note.noteData].y);
-					if (FlxG.save.data.splooshes)
+					if (isPixelStage)
 					{
-						if (!isPixelStage)
-						{
-							sploosh.frames = Paths.getSparrowAtlas('noteSplashes', 'shared');
-							sploosh.animation.addByPrefix('splash 0 0', 'note impact 1 purple', 24, false);
-							sploosh.animation.addByPrefix('splash 0 1', 'note impact 1 blue', 24, false);
-							sploosh.animation.addByPrefix('splash 0 2', 'note impact 1 green', 24, false);
-							sploosh.animation.addByPrefix('splash 0 3', 'note impact 1 red', 24, false);
-							sploosh.animation.addByPrefix('splash 0 4', 'note impact 1 yellow', 24, false);
-							sploosh.animation.addByPrefix('splash 1 0', 'note impact 2 purple', 24, false);
-							sploosh.animation.addByPrefix('splash 1 1', 'note impact 2 blue', 24, false);
-							sploosh.animation.addByPrefix('splash 1 2', 'note impact 2 green', 24, false);
-							sploosh.animation.addByPrefix('splash 1 3', 'note impact 2 red', 24, false);
-							sploosh.animation.addByPrefix('splash 1 4', 'note impact 2 yellow', 24, false);
-						}
-						else
-						{
-							sploosh.loadGraphic(Paths.image('weeb/pixelUI/noteSplashes-pixels', 'week6'), true, 50, 50);
-							sploosh.animation.add('splash 0 0', [0, 1, 2, 3], 24, false);
-							sploosh.animation.add('splash 1 0', [4, 5, 6, 7], 24, false);
-							sploosh.animation.add('splash 0 1', [8, 9, 10, 11], 24, false);
-							sploosh.animation.add('splash 1 1', [12, 13, 14, 15], 24, false);
-							sploosh.animation.add('splash 0 2', [16, 17, 18, 19], 24, false);
-							sploosh.animation.add('splash 1 2', [20, 21, 22, 23], 24, false);
-							sploosh.animation.add('splash 0 3', [24, 25, 26, 27], 24, false);
-							sploosh.animation.add('splash 1 3', [28, 29, 30, 31], 24, false);
-							sploosh.animation.add('splash 0 4', [32, 33, 34, 35], 24, false);
-							sploosh.animation.add('splash 1 4', [36, 37, 38, 39], 24, false);
-
-							sploosh.setGraphicSize(Std.int(sploosh.width * daPixelZoom));
-							sploosh.updateHitbox();
-						}
+						var tex:flixel.graphics.frames.FlxAtlasFrames = Paths.getSparrowAtlas('noteSplashes', 'shared');
+						sploosh.frames = tex;
+						sploosh.animation.addByPrefix('splash 0 0', 'note impact 1 purple', 24, false);
+						sploosh.animation.addByPrefix('splash 0 1', 'note impact 1  blue', 24, false);
+						sploosh.animation.addByPrefix('splash 0 2', 'note impact 1 green', 24, false);
+						sploosh.animation.addByPrefix('splash 0 3', 'note impact 1 red', 24, false);
+						sploosh.animation.addByPrefix('splash 1 0', 'note impact 2 purple', 24, false);
+						sploosh.animation.addByPrefix('splash 1 1', 'note impact 2 blue', 24, false);
+						sploosh.animation.addByPrefix('splash 1 2', 'note impact 2 green', 24, false);
+						sploosh.animation.addByPrefix('splash 1 3', 'note impact 2 red', 24, false);
+						add(sploosh);
+						sploosh.cameras = [camHUD];
+						sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + note.noteData);
+						sploosh.alpha = 0.6;
+						sploosh.offset.x += 90;
+						sploosh.offset.y += 80;
+						sploosh.animation.finishCallback = function(name) sploosh.kill();
 					}
-					add(sploosh);
-					sploosh.cameras = [camHUD];
-					sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + note.noteData);
-					sploosh.alpha = 0.6;
-					sploosh.offset.x += 90;
-					sploosh.offset.y += 80;
-					sploosh.animation.finishCallback = function(name) sploosh.kill();
+					else
+					{
+						sploosh.loadGraphic(Paths.image('weeb/pixelUI/noteSplashes-pixels', 'week6'), true, 50, 50);
+						sploosh.animation.add('splash 0 0', [0, 1, 2, 3], 24, false);
+						sploosh.animation.add('splash 1 0', [4, 5, 6, 7], 24, false);
+						sploosh.animation.add('splash 0 1', [8, 9, 10, 11], 24, false);
+						sploosh.animation.add('splash 1 1', [12, 13, 14, 15], 24, false);
+						sploosh.animation.add('splash 0 2', [16, 17, 18, 19], 24, false);
+						sploosh.animation.add('splash 1 2', [20, 21, 22, 23], 24, false);
+						sploosh.animation.add('splash 0 3', [24, 25, 26, 27], 24, false);
+						sploosh.animation.add('splash 1 3', [28, 29, 30, 31], 24, false);
+						sploosh.animation.add('splash 0 4', [32, 33, 34, 35], 24, false);
+						sploosh.animation.add('splash 1 4', [36, 37, 38, 39], 24, false);
+
+						sploosh.setGraphicSize(Std.int(sploosh.width * daPixelZoom));
+						sploosh.updateHitbox();
+						add(sploosh);
+						sploosh.cameras = [camHUD];
+						sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + note.noteData);
+						sploosh.alpha = 0.6;
+						sploosh.offset.x += 90;
+						sploosh.offset.y += 80;
+						sploosh.animation.finishCallback = function(name) sploosh.kill();
+					}
 				}
 		}
 
@@ -2307,67 +2303,6 @@ class PlayState extends MusicBeatState
 
 		comboSpr.updateHitbox();
 		rating.updateHitbox();
-		
-		if (note.noteType != 1 && note.noteType != 2)
-			{
-		var sploosh:FlxSprite = new FlxSprite(note.x, playerStrums.members[note.noteData].y);
-		if (FlxG.save.data.splooshes)
-		{
-			if (!curStage.startsWith('school'))
-			{
-				var babyArrow:FlxSprite = new FlxSprite(0, strumLine.y);
-				var daNote:Note;
-				var tex:flixel.graphics.frames.FlxAtlasFrames = Paths.getSparrowAtlas('noteSplashes', 'shared');
-				sploosh.frames = tex;
-				sploosh.animation.addByPrefix('splash 0 0', 'note impact 1 purple', 24, false);
-				sploosh.animation.addByPrefix('splash 0 1', 'note impact 1  blue', 24, false);
-				sploosh.animation.addByPrefix('splash 0 2', 'note impact 1 green', 24, false);
-				sploosh.animation.addByPrefix('splash 0 3', 'note impact 1 red', 24, false);
-				sploosh.animation.addByPrefix('splash 1 0', 'note impact 2 purple', 24, false);
-				sploosh.animation.addByPrefix('splash 1 1', 'note impact 2 blue', 24, false);
-				sploosh.animation.addByPrefix('splash 1 2', 'note impact 2 green', 24, false);
-				sploosh.animation.addByPrefix('splash 1 3', 'note impact 2 red', 24, false);
-				if (daRating == 'sick')
-				{
-					add(sploosh);
-					sploosh.cameras = [camHUD];
-					sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + note.noteData);
-					sploosh.alpha = 0.6;
-					sploosh.offset.x += 90;
-					sploosh.offset.y += 80;
-					sploosh.animation.finishCallback = function(name) sploosh.kill();
-				}
-			}
-			else
-			{
-				var daNote:Note;
-				var babyArrow:FlxSprite = new FlxSprite(0, strumLine.y);
-				sploosh.loadGraphic(Paths.image('weeb/pixelUI/noteSplashes-pixels', 'week6'), true, 50, 50);
-				sploosh.animation.add('splash 0 0', [0, 1, 2, 3], 24, false);
-				sploosh.animation.add('splash 1 0', [4, 5, 6, 7], 24, false);
-				sploosh.animation.add('splash 0 1', [8, 9, 10, 11], 24, false);
-				sploosh.animation.add('splash 1 1', [12, 13, 14, 15], 24, false);
-				sploosh.animation.add('splash 0 2', [16, 17, 18, 19], 24, false);
-				sploosh.animation.add('splash 1 2', [20, 21, 22, 23], 24, false);
-				sploosh.animation.add('splash 0 3', [24, 25, 26, 27], 24, false);
-				sploosh.animation.add('splash 1 3', [28, 29, 30, 31], 24, false);
-				sploosh.animation.add('splash 0 4', [32, 33, 34, 35], 24, false);
-				sploosh.animation.add('splash 1 4', [36, 37, 38, 39], 24, false);
-				if (daRating == 'sick')
-				{
-					sploosh.setGraphicSize(Std.int(sploosh.width * daPixelZoom));
-					sploosh.updateHitbox();
-					add(sploosh);
-					sploosh.cameras = [camHUD];
-					sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + note.noteData);
-					sploosh.alpha = 0.6;
-					sploosh.offset.x += 90;
-					sploosh.offset.y += 80;
-					sploosh.animation.finishCallback = function(name) sploosh.kill();
-				}
-			}
-		}
-	}
 
 		var seperatedScore:Array<Int> = [];
 
