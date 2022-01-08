@@ -321,7 +321,7 @@ class Paths
 
 	static public function modFolder(key:String)
 	{
-		#if MODS
+		#if sys
 		if (modDir != null && modDir.length > 0)
 		{
 			// psych engine for the win
