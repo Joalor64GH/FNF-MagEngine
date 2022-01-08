@@ -1,5 +1,6 @@
 #if sys
 package;
+
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
@@ -30,8 +31,8 @@ using StringTools;
 
 class Cache extends MusicBeatState
 {
-	public static var bitmapData:Map<String,FlxGraphic>;
-	public static var bitmapData2:Map<String,FlxGraphic>;
+	public static var bitmapData:Map<String, FlxGraphic>;
+	public static var bitmapData2:Map<String, FlxGraphic>;
 
 	var images = [];
 	var music = [];
@@ -42,27 +43,26 @@ class Cache extends MusicBeatState
 	{
 		FlxG.mouse.visible = false;
 
-		FlxG.worldBounds.set(0,0);
+		FlxG.worldBounds.set(0, 0);
 
-		bitmapData = new Map<String,FlxGraphic>();
-		bitmapData2 = new Map<String,FlxGraphic>();
+		bitmapData = new Map<String, FlxGraphic>();
+		bitmapData2 = new Map<String, FlxGraphic>();
 
 		var shit:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image("illusionbaby"));
 		shit.updateHitbox();
 		shit.screenCenter();
 		add(shit);
 
-        var loadit:FlxSprite = new FlxSprite();
-        loadit.frames = Paths.getSparrowAtlas('preloading_screen');
-        loadit.animation.addByPrefix('loadit', 'load', 8, true);
-        loadit.animation.play('loadit');
-        loadit.updateHitbox();
+		var loadit:FlxSprite = new FlxSprite();
+		loadit.frames = Paths.getSparrowAtlas('preloading_screen');
+		loadit.animation.addByPrefix('loadit', 'load', 8, true);
+		loadit.animation.play('loadit');
+		loadit.updateHitbox();
 		loadit.screenCenter();
 		loadit.x -= 38;
 		loadit.setGraphicSize(1280, 740);
 		loadit.antialiasing = false;
 		add(loadit);
-
 
 		#if cpp
 		for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images/characters")))
@@ -78,14 +78,15 @@ class Cache extends MusicBeatState
 		}
 		#end
 
-		sys.thread.Thread.create(() -> {
+		sys.thread.Thread.create(() ->
+		{
 			cache();
 		});
 
 		super.create();
 	}
 
-	override function update(elapsed) 
+	override function update(elapsed)
 	{
 		super.update(elapsed);
 	}
@@ -93,29 +94,27 @@ class Cache extends MusicBeatState
 	function cache()
 	{
 		#if !linux
-			var sound1:FlxSound;
-			sound1 = new FlxSound().loadEmbedded(Paths.voices('fresh'));
-			sound1.play();
-			sound1.volume = 0.00001;
-			FlxG.sound.list.add(sound1);
+		var sound1:FlxSound;
+		sound1 = new FlxSound().loadEmbedded(Paths.voices('fresh'));
+		sound1.play();
+		sound1.volume = 0.00001;
+		FlxG.sound.list.add(sound1);
 
-			var sound2:FlxSound;
-			sound2 = new FlxSound().loadEmbedded(Paths.inst('fresh'));
-			sound2.play();
-			sound2.volume = 0.00001;
-			FlxG.sound.list.add(sound2);
+		var sound2:FlxSound;
+		sound2 = new FlxSound().loadEmbedded(Paths.inst('fresh'));
+		sound2.play();
+		sound2.volume = 0.00001;
+		FlxG.sound.list.add(sound2);
 		for (i in images)
 		{
-			var replaced = i.replace(".png","");
+			var replaced = i.replace(".png", "");
 			var data:BitmapData = BitmapData.fromFile("assets/shared/images/characters/" + i);
 			var graph = FlxGraphic.fromBitmapData(data);
 			graph.persist = true;
 			graph.destroyOnNoUse = false;
-			bitmapData.set(replaced,graph);
+			bitmapData.set(replaced, graph);
 			trace(i);
 		}
-
-
 
 		for (i in music)
 		{
@@ -123,11 +122,8 @@ class Cache extends MusicBeatState
 			FlxG.sound.cache(Paths.inst(i));
 			FlxG.sound.cache(Paths.voices(i));
 		}
-
-
 		#end
 		FlxG.switchState(new TitleState());
 	}
-
 }
 #end

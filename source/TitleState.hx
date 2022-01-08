@@ -92,9 +92,6 @@ class TitleState extends MusicBeatState
 			});
 			#end
 
-			PlayerSettings.init();
-			MagDefaults.init();
-
 			// DEBUG BULLSHIT
 
 			NGio.noLogin(APIStuff.API);
@@ -103,8 +100,6 @@ class TitleState extends MusicBeatState
 			var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
 			trace('NEWGROUNDS LOL');
 			#end
-
-			FlxG.save.bind('funkin', 'ninjamuffin99');
 
 			Highscore.load();
 		}

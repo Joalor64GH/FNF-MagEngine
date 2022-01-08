@@ -85,6 +85,10 @@ class Main extends Sprite
 		addChild(display);
 		#end
 
+		PlayerSettings.init();
+		MagDefaults.init();
+		FlxG.save.bind('funkin', 'ninjamuffin99');
+
 		if (FlxG.save.data.fps != null)
 			toggleFPS(FlxG.save.data.fps);
 
