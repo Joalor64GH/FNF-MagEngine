@@ -11,9 +11,6 @@ class MagDefaults
 		if (FlxG.save.data.dfjk == null)
 			FlxG.save.data.dfjk = false;
 
-		if (FlxG.save.data.newInput == null)
-			FlxG.save.data.newInput = false;
-
 		if (FlxG.save.data.accuracy == null)
 			FlxG.save.data.accuracy = false;
 
@@ -32,11 +29,8 @@ class MagDefaults
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 60;
 
-		if (FlxG.save.data.modList == null)
-			FlxG.save.data.modList = true;
-
-		if (FlxG.save.data.fpsCap == null)
-			FlxG.save.data.fpsCap = false;
+		if (FlxG.save.data.cache == null)
+			FlxG.save.data.cache = true;
 
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();

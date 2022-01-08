@@ -33,16 +33,17 @@ class OptionsMenu extends MusicBeatState
 
 	var options:Array<OptionCategory> = [
 		new OptionCategory("Preferences", [
-			new DownscrollOption(''),
-			new AccuracyOption(''),
-			new GhostTappingOption(''),
-			new FPSOption(''),
-			new MEMOption(''),
-			new VerOption('')
+			new DownscrollOption(),
+			new AccuracyOption(),
+			new GhostTappingOption(),
+			new CacheOption(),
+			new FPSOption(),
+			new MEMOption(),
+			new VerOption()
 		]),
-		new OptionCategory("Controls", []),
-		new OptionCategory("Notes", [new SplooshOption('')]),
-		new OptionCategory("Exit", [])
+		new OptionCategory("Controls"),
+		new OptionCategory("Notes", [new SplooshOption()]),
+		new OptionCategory("Exit")
 	];
 
 	private var grpCheckboxes:FlxTypedGroup<CheckboxThingie>;
@@ -50,8 +51,6 @@ class OptionsMenu extends MusicBeatState
 	var fpsthing:FlxText;
 
 	public var acceptInput:Bool = true;
-
-	public var currentDescription:String = "";
 
 	public var grpControls:FlxTypedGroup<Alphabet>;
 
@@ -220,11 +219,6 @@ class OptionsMenu extends MusicBeatState
 			curSelected = grpControls.length - 1;
 		if (curSelected >= grpControls.length)
 			curSelected = 0;
-
-		if (isCat)
-			currentDescription = currentSelectedCat.getOptions()[curSelected].getDescription();
-		else
-			currentDescription = "Please select a category";
 
 		// selector.y = (70 * curSelected) + 30;
 

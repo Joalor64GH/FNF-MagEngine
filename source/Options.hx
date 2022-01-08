@@ -15,7 +15,13 @@ import flixel.input.actions.FlxAction;
 
 class OptionCategory
 {
-	private var _options:Array<Option> = new Array<Option>();
+	private var _options:Array<Option> = [];
+
+	public function new(catName:String, ?options:Array<Option>)
+	{
+		_name = catName;
+		_options = options;
+	}
 
 	public final function getOptions():Array<Option>
 	{
@@ -38,26 +44,20 @@ class OptionCategory
 	{
 		return _name;
 	}
-
-	public function new(catName:String, options:Array<Option>)
-	{
-		_name = catName;
-		_options = options;
-	}
 }
 
 class Option
 {
+	private var display:String;
+	private var acceptValues:Bool = false;
+
+	public var isBool:Bool = true;
+	public var daValue:Bool = false;
+
 	public function new()
 	{
 		display = updateDisplay();
 	}
-
-	private var description:String = "";
-	private var display:String;
-	private var acceptValues:Bool = false;
-	public var isBool:Bool = true;
-	public var daValue:Bool = false;
 
 	public final function getDisplay():String
 	{
@@ -67,11 +67,6 @@ class Option
 	public final function getAccept():Bool
 	{
 		return acceptValues;
-	}
-
-	public final function getDescription():String
-	{
-		return description;
 	}
 
 	// Returns whether the label is to be updated.
@@ -98,10 +93,9 @@ class Option
 
 class DownscrollOption extends Option
 {
-	public function new(desc:String)
+	public function new()
 	{
 		super();
-		description = desc;
 		daValue = FlxG.save.data.downscroll;
 	}
 
@@ -121,10 +115,9 @@ class DownscrollOption extends Option
 
 class PhotoSensitivityOption extends Option
 {
-	public function new(desc:String)
+	public function new()
 	{
 		super();
-		description = desc;
 		daValue = FlxG.save.data.PhotoSensitivity;
 	}
 
@@ -144,10 +137,9 @@ class PhotoSensitivityOption extends Option
 
 class GhostTappingOption extends Option
 {
-	public function new(desc:String)
+	public function new()
 	{
 		super();
-		description = desc;
 		daValue = FlxG.save.data.ghostTapping;
 	}
 
@@ -167,10 +159,9 @@ class GhostTappingOption extends Option
 
 class AccuracyOption extends Option
 {
-	public function new(desc:String)
+	public function new()
 	{
 		super();
-		description = desc;
 		daValue = FlxG.save.data.accuracy;
 	}
 
@@ -184,16 +175,15 @@ class AccuracyOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Accuracy";
+		return "Accuracy Display";
 	}
 }
 
 class SplooshOption extends Option
 {
-	public function new(desc:String)
+	public function new()
 	{
 		super();
-		description = desc;
 		daValue = FlxG.save.data.splooshes;
 	}
 
@@ -213,10 +203,9 @@ class SplooshOption extends Option
 
 class ModChartOption extends Option
 {
-	public function new(desc:String)
+	public function new()
 	{
 		super();
-		description = desc;
 		daValue = FlxG.save.data.modchart;
 	}
 
@@ -233,12 +222,34 @@ class ModChartOption extends Option
 		return "ModCharts";
 	}
 }
-class FPSOption extends Option
+
+class CacheOption extends Option
 {
-	public function new(desc:String)
+	public function new()
 	{
 		super();
-		description = desc;
+		daValue = FlxG.save.data.cache;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.cache = !FlxG.save.data.cache;
+		daValue = FlxG.save.data.cache;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Cache At Start";
+	}
+}
+
+class FPSOption extends Option
+{
+	public function new()
+	{
+		super();
 		daValue = FlxG.save.data.fps;
 	}
 
@@ -259,10 +270,9 @@ class FPSOption extends Option
 
 class MEMOption extends Option
 {
-	public function new(desc:String)
+	public function new()
 	{
 		super();
-		description = desc;
 		daValue = FlxG.save.data.mem;
 	}
 
@@ -283,10 +293,9 @@ class MEMOption extends Option
 
 class VerOption extends Option
 {
-	public function new(desc:String)
+	public function new()
 	{
 		super();
-		description = desc;
 		daValue = FlxG.save.data.v;
 	}
 

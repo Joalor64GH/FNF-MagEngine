@@ -1,15 +1,10 @@
 package;
 
-import openfl.display.BlendMode;
 import openfl.text.TextFormat;
-import openfl.display.Application;
-import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
-import openfl.Assets;
 import openfl.Lib;
-import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 
@@ -17,7 +12,7 @@ class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with.
+	var initialState:Class<FlxState> = StartState; // The FlxState the game starts with.
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	var framerate:Int = 120; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
@@ -74,14 +69,6 @@ class Main extends Sprite
 		framerate = 120;
 		#end
 
-		FlxG.save.bind('funkin', 'ninjamuffin99');
-
-		#if (!debug || CACHE)
-		initialState = Cache;
-		#else
-		initialState = TitleState;
-		#end
-
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
@@ -89,36 +76,33 @@ class Main extends Sprite
 		addChild(display);
 		#end
 
-		PlayerSettings.init();
-		MagDefaults.init();
-
 		if (FlxG.save.data.fps != null)
-			toggleFPS(FlxG.save.data.fps);
+			(cast(Lib.current.getChildAt(0), Main)).toggleFPS(FlxG.save.data.fps);
 
 		if (FlxG.save.data.mem != null)
-			toggleMem(FlxG.save.data.mem);
+			(cast(Lib.current.getChildAt(0), Main)).toggleMem(FlxG.save.data.mem);
 
 		if (FlxG.save.data.v != null)
-			toggleVers(FlxG.save.data.v);
+			(cast(Lib.current.getChildAt(0), Main)).toggleVers(FlxG.save.data.v);
 
 		FlxG.mouse.visible = false;
 	}
 
 	public static var display:SimpleInfoDisplay;
 
-	public function toggleFPS(fpsEnabled:Bool):Void
+	public function toggleFPS(enabled:Bool):Void
 	{
-		display.infoDisplayed[0] = fpsEnabled;
+		display.infoDisplayed[0] = enabled;
 	}
 
-	public function toggleMem(memEnabled:Bool):Void
+	public function toggleMem(enabled:Bool):Void
 	{
-		display.infoDisplayed[1] = memEnabled;
+		display.infoDisplayed[1] = enabled;
 	}
 
-	public function toggleVers(versEnabled:Bool):Void
+	public function toggleVers(enabled:Bool):Void
 	{
-		display.infoDisplayed[2] = versEnabled;
+		display.infoDisplayed[2] = enabled;
 	}
 
 	public static function changeFont(font:String):Void

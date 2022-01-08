@@ -1,4 +1,3 @@
-#if (!debug || CACHE)
 package;
 
 import flixel.FlxG;
@@ -26,20 +25,19 @@ import sys.io.File;
 
 using StringTools;
 
-class Cache extends MusicBeatState
+class CachingState extends MusicBeatState
 {
 	public static var bitmapData:Map<String, FlxGraphic>;
 	public static var bitmapData2:Map<String, FlxGraphic>;
 
-	var images = [];
-	var music = [];
+	var images:Array<String> = [];
+	var music:Array<String> = [];
+	var filesLoaded:Int = 0;
 
 	var logoBg:FlxSprite;
 	var logo:FlxSprite;
 
-	var daText:Alphabet;
-
-	var shitz:FlxText;
+	var daText:FlxText;
 
 	override function create()
 	{
@@ -58,6 +56,11 @@ class Cache extends MusicBeatState
 		logo.screenCenter();
 		logo.antialiasing = true;
 		add(logo);
+
+		daText = new FlxText(0, FlxG.height - 80, FlxG.width, 'Loading...', 12);
+		daText.setFormat("VCR OSD Mono", 30, FlxColor.WHITE, CENTER);
+		daText.antialiasing = true;
+		add(daText);
 
 		#if cpp
 		for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images/characters")))
@@ -81,9 +84,9 @@ class Cache extends MusicBeatState
 		super.create();
 	}
 
-	override function update(elapsed)
+	function updateText()
 	{
-		super.update(elapsed);
+		daText.text = "Loading... (" + filesLoaded + "/" + (images.length + music.length) + ")";
 	}
 
 	function cache()
@@ -108,6 +111,8 @@ class Cache extends MusicBeatState
 			graph.persist = true;
 			graph.destroyOnNoUse = false;
 			bitmapData.set(replaced, graph);
+			filesLoaded++;
+			updateText();
 			trace(i);
 		}
 
@@ -116,9 +121,11 @@ class Cache extends MusicBeatState
 			trace(i);
 			FlxG.sound.cache(Paths.inst(i));
 			FlxG.sound.cache(Paths.voices(i));
+			filesLoaded++;
+			updateText();
 		}
+		daText.text = 'Done!';
 		#end
-		FlxG.switchState(new TitleState());
+		MusicBeatState.switchState(new TitleState());
 	}
 }
-#end

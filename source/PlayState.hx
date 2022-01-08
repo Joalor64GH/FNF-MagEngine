@@ -1726,7 +1726,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			CustomFadeTransition.nextCamera = camHUB;
+			CustomFadeTransition.nextCamera = camHUD;
 			MusicBeatState.switchState(new ChartingState());
 
 			#if desktop
@@ -1765,7 +1765,10 @@ class PlayState extends MusicBeatState
 			iconP2.animation.curAnim.curFrame = 0;
 
 		if (FlxG.keys.justPressed.EIGHT)
+		{
+			CustomFadeTransition.nextCamera = camHUD;
 			MusicBeatState.switchState(new AnimationDebug(SONG.player2));
+		}
 
 		if (startingSong)
 		{
@@ -2104,6 +2107,7 @@ class PlayState extends MusicBeatState
 			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
+				CustomFadeTransition.nextCamera = camHUD;
 				MusicBeatState.switchState(new StoryMenuState());
 
 				if (SONG.validScore)
@@ -2172,6 +2176,7 @@ class PlayState extends MusicBeatState
 		PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 		FlxG.sound.music.stop();
 
+		CustomFadeTransition.nextCamera = camHUD;
 		LoadingState.loadAndSwitchState(new PlayState());
 	}
 
