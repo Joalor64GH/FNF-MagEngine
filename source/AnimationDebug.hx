@@ -143,12 +143,12 @@ class AnimationDebug extends MusicBeatState
 
 		if (FlxG.keys.justPressed.W)
 		{
-			curAnim -= 1;
+			curAnim--;
 		}
 
 		if (FlxG.keys.justPressed.S)
 		{
-			curAnim += 1;
+			curAnim++;
 		}
 
 		if (curAnim < 0)

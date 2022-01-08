@@ -195,7 +195,7 @@ class Alphabet extends FlxSpriteGroup
 				lastSprite = letter;
 			}
 
-			// loopNum += 1;
+			// loopNum++;
 		}
 	}
 
@@ -255,7 +255,7 @@ class Alphabet extends FlxSpriteGroup
 			{
 				if (tmr != null)
 					tmr.loops -= 1;
-				loopNum += 1;
+				loopNum++;
 			}
 			else
 			{
@@ -263,10 +263,10 @@ class Alphabet extends FlxSpriteGroup
 					tmr.loops -= 2;
 				loopNum += 2;
 			}
-			yMulti += 1;
+			yMulti++;
 			xPosResetted = true;
 			xPos = 0;
-			curRow += 1;
+			curRow++;
 			if (curRow == 2)
 				y += LONG_TEXT_ADD;
 		}

@@ -92,13 +92,13 @@ class ModsMenu extends MusicBeatState
 		{
 			if (controls.UP_P)
 			{
-				curSelected -= 1;
+				curSelected--;
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			}
 
 			if (controls.DOWN_P)
 			{
-				curSelected += 1;
+				curSelected++;
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			}
 		}

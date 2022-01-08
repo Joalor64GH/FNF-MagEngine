@@ -22,10 +22,12 @@ class PauseSubState extends MusicBeatSubstate
 		'Resume',
 		'Restart Song',
 		'Change Difficulty',
+		'Toggle Botplay',
 		'Toggle Practice Mode',
 		'Exit to menu'
 	];
 	var practiceTxt:FlxText;
+	var botplayTxt:FlxText;
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
@@ -56,50 +58,56 @@ class PauseSubState extends MusicBeatSubstate
 		bg.scrollFactor.set();
 		add(bg);
 
-		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
-		levelInfo.text += PlayState.SONG.song;
+		var levelInfo:FlxText = new FlxText(20, 15, 0, PlayState.SONG.song, 32);
 		levelInfo.scrollFactor.set();
 		levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
-		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
-		levelDifficulty.text += CoolUtil.difficultyString();
+		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, CoolUtil.difficultyString(), 32);
 		levelDifficulty.scrollFactor.set();
 		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
-		var blueballedTxt:FlxText = new FlxText(20, 15 + 64, 0, "", 32);
-		blueballedTxt.text = "Blueballed: " + PlayState.bbCounter;
+		var blueballedTxt:FlxText = new FlxText(20, 15 + 64, 0, "Blueballed: " + PlayState.bbCounter, 32);
 		blueballedTxt.scrollFactor.set();
 		blueballedTxt.setFormat(Paths.font('vcr.ttf'), 32);
 		blueballedTxt.updateHitbox();
 		add(blueballedTxt);
 
-		practiceTxt = new FlxText(20, 15 + 101, 0, "", 32);
-		practiceTxt.text += 'PRACTICE MODE';
+		practiceTxt = new FlxText(20, 15 + 101, 0, "PRACTICE MODE", 32);
 		practiceTxt.scrollFactor.set();
 		practiceTxt.setFormat(Paths.font('vcr.ttf'), 32);
 		practiceTxt.updateHitbox();
 		practiceTxt.visible = PlayState.practiceAllowed;
 		add(practiceTxt);
 
+		botplayTxt = new FlxText(20, FlxG.height - 35, 0, "BOTPLAY", 32);
+		botplayTxt.scrollFactor.set();
+		botplayTxt.setFormat(Paths.font('vcr.ttf'), 32);
+		botplayTxt.updateHitbox();
+		botplayTxt.visible = PlayState.cpuControlled;
+		add(botplayTxt);
+
 		levelInfo.alpha = 0;
 		levelDifficulty.alpha = 0;
 		blueballedTxt.alpha = 0;
 		practiceTxt.alpha = 0;
+		botplayTxt.alpha = 0;
 
 		levelInfo.x = FlxG.width - (levelInfo.width + 10);
 		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 10);
 		blueballedTxt.x = FlxG.width - (blueballedTxt.width + 10);
 		practiceTxt.x = FlxG.width - (practiceTxt.width + 10);
+		botplayTxt.x = FlxG.width - (botplayTxt.width + 10);
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
 		FlxTween.tween(levelInfo, {alpha: 1, y: 10}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
 		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y - 4}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
 		FlxTween.tween(blueballedTxt, {alpha: 1, y: blueballedTxt.y - 4}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 		FlxTween.tween(practiceTxt, {alpha: 1, y: practiceTxt.y - 8}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});
+		FlxTween.tween(botplayTxt, {alpha: 1, y: botplayTxt.y - 8}, 0.4, {ease: FlxEase.quartInOut, startDelay: 1.1});
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
@@ -163,6 +171,10 @@ class PauseSubState extends MusicBeatSubstate
 					FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 					PlayState.practiceAllowed = !PlayState.practiceAllowed;
 					practiceTxt.visible = PlayState.practiceAllowed;
+				case "Toggle Botplay":
+					FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+					PlayState.cpuControlled = !PlayState.cpuControlled;
+					botplayTxt.visible = PlayState.cpuControlled;
 				case "Restart Song":
 					CustomFadeTransition.nextCamera = transCamera;
 					MusicBeatState.resetState();
@@ -190,6 +202,9 @@ class PauseSubState extends MusicBeatSubstate
 	override function destroy()
 	{
 		pauseMusic.destroy();
+
+		if (PlayState.cpuControlled || PlayState.practiceAllowed)
+			PlayState.usedPlayFeatures = true;
 
 		super.destroy();
 	}

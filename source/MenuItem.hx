@@ -40,7 +40,7 @@ class MenuItem extends FlxSpriteGroup
 		y = FlxMath.lerp(y, (targetY * 120) + 480, 0.17);
 
 		if (isFlashing)
-			flashingInt += 1;
+			flashingInt++;
 
 		if (flashingInt % fakeFramerate >= Math.floor(fakeFramerate / 2))
 			week.color = FlxColor.GREEN;

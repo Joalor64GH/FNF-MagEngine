@@ -22,6 +22,7 @@ class Note extends FlxSprite
 	public var tooLate:Bool = false;
 	public var wasGoodHit:Bool = false;
 	public var prevNote:Note;
+	public var isDangerousNote:Bool = false;
 
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
@@ -50,17 +51,15 @@ class Note extends FlxSprite
 		this.strumTime = strumTime;
 
 		if (isSustainNote && prevNote.noteType == 1)
-		{
 			noteType == 1;
-		}
-		if (isSustainNote && prevNote.noteType == 2)
-		{
+		else if (isSustainNote && prevNote.noteType == 2)
 			noteType == 2;
-		}
 
 		this.noteData = noteData;
 
 		this.noteType = noteType;
+
+		this.isDangerousNote = (this.noteType == 1 || this.noteType == 2);
 
 		if (pixelNote)
 		{
