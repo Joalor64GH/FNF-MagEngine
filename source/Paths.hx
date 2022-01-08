@@ -321,7 +321,7 @@ class Paths
 
 	static public function modFolder(key:String)
 	{
-		#if sys
+		#if MODS
 		if (modDir != null && modDir.length > 0)
 		{
 			// psych engine for the win
@@ -345,7 +345,7 @@ class Paths
 
 	static public function modDirectory():Array<String>
 	{
-		#if MODS
+		#if sys
 		var list:Array<String> = [];
 		var modsFolder:String = Paths.mods();
 		if (FileSystem.exists(modsFolder))
