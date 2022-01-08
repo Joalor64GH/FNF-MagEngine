@@ -1,4 +1,4 @@
-#if windows
+#if SCRIPTS
 import llua.Lua;
 import llua.LuaL;
 import llua.State;
@@ -22,7 +22,7 @@ class MagModChart
 	public static var functionContinue = 0;
 	public static var functionStop = 1;
 
-	#if windows
+	#if SCRIPTS
 	public var lua:State = null;
 	#end
 
@@ -36,7 +36,7 @@ class MagModChart
 
 	public function new(luaScript:String)
 	{
-		#if windows
+		#if SCRIPTS
 		lua = LuaL.newstate();
 
 		LuaL.openlibs(lua);
@@ -743,7 +743,7 @@ class MagModChart
 
 	public function luaTrace(text:String = 'placeholder', ignoreCheck:Bool = false, deprecated:Bool = false)
 	{
-		#if windows
+		#if SCRIPTS
 		if (ignoreCheck || getBool('luaDebugMode'))
 		{
 			if (deprecated && !getBool('luaDeprecatedWarnings'))
@@ -757,7 +757,7 @@ class MagModChart
 
 	public function call(event:String, args:Array<Dynamic>):Dynamic
 	{
-		#if windows
+		#if SCRIPTS
 		if (lua == null)
 			return functionContinue;
 
@@ -791,7 +791,7 @@ class MagModChart
 		return functionContinue;
 	}
 
-	#if windows
+	#if SCRIPTS
 	function debugResultIsAllowed(daLua:State, dadebugResult:Null<Int>)
 	{
 		switch (Lua.type(daLua, dadebugResult))
@@ -804,7 +804,7 @@ class MagModChart
 	}
 	#end
 
-	#if windows
+	#if SCRIPTS
 	public function getBool(variable:String)
 	{
 		var debugResult:String = null;
@@ -822,7 +822,7 @@ class MagModChart
 
 	public function set(variable:String, data:Dynamic)
 	{
-		#if windows
+		#if SCRIPTS
 		if (lua == null)
 			return;
 
@@ -833,7 +833,7 @@ class MagModChart
 
 	public function stop()
 	{
-		#if windows
+		#if SCRIPTS
 		if (lua == null)
 			return;
 

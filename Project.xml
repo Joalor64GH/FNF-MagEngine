@@ -44,6 +44,7 @@
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web" />
 
 	<define name="MODS" if="desktop" />
+	<define name="SCRIPTS" if="windows" />
 	<define name="CACHE" if="sys" />
 	<define name="PRELOAD_ALL" unless="web" />
 

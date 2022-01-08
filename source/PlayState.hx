@@ -2093,7 +2093,7 @@ class PlayState extends MusicBeatState
 
 	public function endSong():Void
 	{
-		#if windows
+		#if SCRIPTS
 		var ret:Dynamic = callOnLuas('endSong', []);
 		#else
 		var ret:Dynamic = Modchart.Function_Continue;
