@@ -1,5 +1,6 @@
 package;
 
+#if desktop
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
@@ -76,10 +77,12 @@ class CachingState extends MusicBeatState
 		}
 		#end
 
+		#if sys
 		sys.thread.Thread.create(() ->
 		{
 			cache();
 		});
+		#end
 
 		super.create();
 	}
@@ -129,3 +132,4 @@ class CachingState extends MusicBeatState
 		MusicBeatState.switchState(new TitleState());
 	}
 }
+#end

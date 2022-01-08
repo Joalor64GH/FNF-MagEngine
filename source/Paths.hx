@@ -156,6 +156,7 @@ class Paths
 
 	static public function video(key:String)
 	{
+		#if MODS
 		var file:String = modVideo(key);
 		if (FileSystem.exists(file))
 		{
@@ -163,6 +164,9 @@ class Paths
 		}
 		else
 			return 'assets/videos/$key.$VIDEO_EXT';
+		#else
+		return 'assets/videos/$key.$VIDEO_EXT';
+		#end
 	}
 
 	inline static public function music(key:String, ?library:String)
@@ -172,28 +176,33 @@ class Paths
 
 	inline static public function voices(song:String):Any
 	{
+		#if MODS
 		var file:Sound = returnSongFile(modsSongs(song.toLowerCase().replace(' ', '-') + '/Voices'));
 		if (file != null)
 		{
 			return file;
 		}
+		#end
 
 		return 'songs:assets/songs/${song.toLowerCase().replace(' ', '-')}/Voices.$SOUND_EXT';
 	}
 
 	inline static public function inst(song:String):Any
 	{
+		#if MODS
 		var file:Sound = returnSongFile(modsSongs(song.toLowerCase().replace(' ', '-') + '/Inst'));
 		if (file != null)
 		{
 			return file;
 		}
+		#end
 
 		return 'songs:assets/songs/${song.toLowerCase().replace(' ', '-')}/Inst.$SOUND_EXT';
 	}
 
 	inline static private function returnSongFile(file:String):Sound
 	{
+		#if MODS
 		if (FileSystem.exists(file))
 		{
 			if (!customSoundsLoaded.exists(file))
@@ -202,11 +211,13 @@ class Paths
 			}
 			return customSoundsLoaded.get(file);
 		}
+		#end
 		return null;
 	}
 
 	static public function addCustomGraphic(key:String):FlxGraphic
-	{
+		{
+		#if MODS
 		if (FileSystem.exists(modsImages(key)))
 		{
 			if (!customImagesLoaded.exists(key))
@@ -219,14 +230,18 @@ class Paths
 			}
 			return FlxG.bitmap.get(key);
 		}
+		#end
 		return null;
 	}
 
 	inline static public function image(key:String, ?library:String):Dynamic
 	{
+		#if MODS
 		var imageToReturn:FlxGraphic = addCustomGraphic(key);
 		if (imageToReturn != null)
 			return imageToReturn;
+		#end
+
 		return getPath('images/$key.png', IMAGE, library);
 	}
 
@@ -302,6 +317,7 @@ class Paths
 
 	inline static public function getModsSparrowAtlas(key:String, ?library:String)
 	{
+		#if MODS
 		var imageLoaded:FlxGraphic = addCustomGraphic(key);
 		var xmlExists:Bool = false;
 		if (FileSystem.exists(modsXml(key)))
@@ -311,6 +327,7 @@ class Paths
 
 		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
 			(xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
+		#end
 	}
 
 	// why, spirit?
@@ -340,26 +357,6 @@ class Paths
 		return 'mods/' + key;
 		#else
 		return key;
-		#end
-	}
-
-	static public function modDirectory():Array<String>
-	{
-		#if sys
-		var list:Array<String> = [];
-		var modsFolder:String = Paths.mods();
-		if (FileSystem.exists(modsFolder))
-		{
-			for (folder in FileSystem.readDirectory(modsFolder))
-			{
-				var path = haxe.io.Path.join([modsFolder, folder]);
-				if (sys.FileSystem.isDirectory(path) && !Paths.ignoredFolders.contains(folder) && !list.contains(folder))
-				{
-					list.push(folder);
-				}
-			}
-		}
-		return list;
 		#end
 	}
 }

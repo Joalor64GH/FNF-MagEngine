@@ -7,6 +7,9 @@ class MagDefaults
 		if (FlxG.save.data.downscroll == null)
 			FlxG.save.data.downscroll = false;
 
+		if (FlxG.save.data.ghostTapping == null)
+			FlxG.save.data.ghostTapping = true;
+
 		if (FlxG.save.data.accuracy == null)
 			FlxG.save.data.accuracy = true;
 

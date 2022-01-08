@@ -17,6 +17,7 @@ import lime.net.curl.CURLCode;
 import openfl.Assets;
 import haxe.Json;
 import haxe.format.JsonParser;
+import openfl.utils.Assets as OpenFlAssets;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
@@ -66,15 +67,16 @@ class StoryMenuState extends MusicBeatState
 		function getJSON(path:String):SwagWeek
 		{
 			var rawJson:String = null;
+			#if sys
 			// we use file.getcontent so it reads from the mods folder
 			if (FileSystem.exists(path))
-			{
 				rawJson = File.getContent(path);
-			}
+			#else
+			if (OpenFlAssets.exists(path))
+				rawJson = OpenFlAssets.getText(path);
+			#end
 			if (rawJson != null && rawJson.length > 0)
-			{
 				return cast Json.parse(rawJson);
-			}
 			return null;
 		}
 
@@ -348,11 +350,14 @@ class StoryMenuState extends MusicBeatState
 	function loadFromWeekJson(jsonInput:String):SwagWeek
 	{
 		var rawJson = null;
+		
+		#if MODS
 		var moddyFile:String = Paths.modSong('weeks/' + jsonInput);
 		if (FileSystem.exists(moddyFile))
 		{
 			rawJson = File.getContent(moddyFile).trim();
 		}
+		#end
 
 		if (rawJson == null)
 		{

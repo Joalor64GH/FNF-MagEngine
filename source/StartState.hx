@@ -11,7 +11,7 @@ class StartState extends FlxState
 		PlayerSettings.init();
 		MagDefaults.init();
 
-		#if (!debug || CACHE)
+		#if (CACHE && !debug)
 		if (FlxG.save.data.cache)
 			FlxG.switchState(new CachingState());
 		else

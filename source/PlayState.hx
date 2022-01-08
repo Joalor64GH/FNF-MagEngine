@@ -44,7 +44,7 @@ import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
 import haxe.Exception;
-import openfl.Assets;
+import openfl.utils.Assets as OpenFlAssets;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
@@ -262,7 +262,7 @@ class PlayState extends MusicBeatState
 				}
 				#else
 				daPath = Paths.txt(path);
-				if (FileSystem.exists(daPath))
+				if (OpenFlAssets.exists(daPath))
 					dialogue = CoolUtil.coolTextFile(daPath);
 				#end
 		}
@@ -962,7 +962,8 @@ class PlayState extends MusicBeatState
 		super.create();
 	}
 
-	override public function destroy() {
+	override public function destroy()
+	{
 		usedPlayFeatures = false;
 		practiceAllowed = false;
 		cpuControlled = false;
@@ -2094,8 +2095,6 @@ class PlayState extends MusicBeatState
 	{
 		#if SCRIPTS
 		var ret:Dynamic = callOnLuas('endSong', []);
-		#else
-		var ret:Dynamic = MagModChart.Function_Continue;
 		#end
 
 		canPause = false;
@@ -2155,6 +2154,7 @@ class PlayState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('Lights_Shut_off'));
 				}
 
+				#if sys
 				if (SONG.videotoggle == 'true')
 				{
 					var video:MP4Handler = new MP4Handler();
@@ -2166,6 +2166,9 @@ class PlayState extends MusicBeatState
 				}
 				else
 					switchSong(difficulty);
+				#else
+				switchSong(difficulty);
+				#end
 			}
 		}
 		else
@@ -2587,7 +2590,8 @@ class PlayState extends MusicBeatState
 	{
 		if (!note.wasGoodHit)
 		{
-			if (cpuControlled && note.isDangerousNote) return;
+			if (cpuControlled && note.isDangerousNote)
+				return;
 
 			vocals.volume = 1;
 
@@ -2744,6 +2748,7 @@ class PlayState extends MusicBeatState
 		{
 			if (curStep == i.eventPos)
 			{
+				#if sys
 				if (i.events == 'video')
 				{
 					var sprite:FlxSprite = new FlxSprite(Std.parseFloat(i.valueOne), Std.parseFloat(i.valueTwo));
@@ -2753,6 +2758,7 @@ class PlayState extends MusicBeatState
 
 					add(sprite);
 				}
+				#end
 				if (i.events == 'image')
 				{
 					var coolCounter:Int = 0;
@@ -2814,7 +2820,9 @@ class PlayState extends MusicBeatState
 		if (FlxG.sound.music.time > Conductor.songPosition + 20 || FlxG.sound.music.time < Conductor.songPosition - 20)
 			resyncVocals();
 
+		#if desktop
 		setOnLuas('songLength', songLength);
+		#end
 		setOnLuas('curStep', curStep);
 		callOnLuas('stepHit', []);
 	}
@@ -2925,7 +2933,7 @@ class PlayState extends MusicBeatState
 	{
 		var returnedValue:Dynamic = MagModChart.functionContinue;
 
-		#if (MODS && windows)
+		#if MODS
 		for (i in 0...luaArray.length)
 		{
 			var ret:Dynamic = luaArray[i].call(event, args);
@@ -2940,7 +2948,7 @@ class PlayState extends MusicBeatState
 
 	public function setOnLuas(variable:String, arg:Dynamic)
 	{
-		#if (MODS && windows)
+		#if MODS
 		for (i in 0...luaArray.length)
 		{
 			luaArray[i].set(variable, arg);
