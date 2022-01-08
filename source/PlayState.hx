@@ -117,6 +117,8 @@ class PlayState extends MusicBeatState
 
 	public static var babyArrow:FlxSprite;
 
+	public static var noteTransparencyLevel:Float = 0.75;
+
 	public var strumLineNotes:FlxTypedGroup<FlxSprite>;
 	public var playerStrums:FlxTypedGroup<FlxSprite> = null;
 	public var cpuStrums:FlxTypedGroup<FlxSprite> = null;
@@ -1401,13 +1403,13 @@ class PlayState extends MusicBeatState
 			babyArrow.scrollFactor.set();
 
 			if (FlxG.save.data.transparentNotes)
-				babyArrow.alpha = 0.5;
+				babyArrow.alpha = noteTransparencyLevel;
 
 			if (storyPlaylist.length == originalStoryPlaylistLength)
 			{
 				babyArrow.y -= 10;
 				babyArrow.alpha = 0;
-				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, (FlxG.save.data.transparentNotes ? 0.5 : 1),
+				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: (FlxG.save.data.transparentNotes ? noteTransparencyLevel : 1)}, 1,
 					{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 
@@ -2045,7 +2047,7 @@ class PlayState extends MusicBeatState
 			if (spr.animation.finished)
 			{
 				if (FlxG.save.data.transparentNotes)
-					spr.alpha = 0.5;
+					spr.alpha = noteTransparencyLevel;
 
 				spr.animation.play('static');
 				spr.centerOffsets();
@@ -2457,7 +2459,7 @@ class PlayState extends MusicBeatState
 			if (controlReleaseArray[spr.ID])
 			{
 				if (FlxG.save.data.transparentNotes)
-					spr.alpha = 0.5;
+					spr.alpha = noteTransparencyLevel;
 
 				spr.animation.play('static', true);
 			}
