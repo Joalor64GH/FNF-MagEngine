@@ -74,8 +74,12 @@ class Main extends Sprite
 		framerate = 120;
 		#end
 
-		#if !debug
+		FlxG.save.bind('funkin', 'ninjamuffin99');
+
+		#if (!debug || CACHE)
 		initialState = Cache;
+		#else
+		initialState = TitleState;
 		#end
 
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
@@ -87,7 +91,6 @@ class Main extends Sprite
 
 		PlayerSettings.init();
 		MagDefaults.init();
-		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		if (FlxG.save.data.fps != null)
 			toggleFPS(FlxG.save.data.fps);

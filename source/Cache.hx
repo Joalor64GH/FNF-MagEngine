@@ -1,4 +1,4 @@
-#if sys
+#if (!debug || CACHE)
 package;
 
 import flixel.FlxG;
@@ -13,9 +13,6 @@ import flixel.util.FlxTimer;
 import flixel.text.FlxText;
 import flixel.system.FlxSound;
 import lime.app.Application;
-#if windows
-import Discord.DiscordClient;
-#end
 import openfl.display.BitmapData;
 import openfl.utils.Assets;
 import haxe.Exception;
@@ -48,21 +45,14 @@ class Cache extends MusicBeatState
 		bitmapData = new Map<String, FlxGraphic>();
 		bitmapData2 = new Map<String, FlxGraphic>();
 
-		var shit:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image("illusionbaby"));
-		shit.updateHitbox();
-		shit.screenCenter();
-		add(shit);
+		var logoBg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('bg', 'MagEngine'));
+		logoBg.screenCenter();
+		add(logoBg);
 
-		var loadit:FlxSprite = new FlxSprite();
-		loadit.frames = Paths.getSparrowAtlas('preloading_screen');
-		loadit.animation.addByPrefix('loadit', 'load', 8, true);
-		loadit.animation.play('loadit');
-		loadit.updateHitbox();
-		loadit.screenCenter();
-		loadit.x -= 38;
-		loadit.setGraphicSize(1280, 740);
-		loadit.antialiasing = false;
-		add(loadit);
+		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('melogo', 'MagEngine'));
+		logo.screenCenter();
+		logo.antialiasing = true;
+		add(logo);
 
 		#if cpp
 		for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images/characters")))
