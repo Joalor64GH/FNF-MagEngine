@@ -29,19 +29,12 @@ using StringTools;
 
 class KeyBindMenu extends FlxSubState
 {
-	var keyTextDisplay:FlxText;
-	var keyWarning:FlxText;
-	var warningTween:FlxTween;
-	var keyText:Array<String> = ["LEFT", "DOWN", "UP", "RIGHT"];
-	var defaultKeys:Array<String> = ["A", "S", "W", "D", "R"];
-	var curSelected:Int = 0;
-
-	var keys:Array<String> = [
-		FlxG.save.data.leftBind,
-		FlxG.save.data.downBind,
-		FlxG.save.data.upBind,
-		FlxG.save.data.rightBind
-	];
+    var keyTextDisplay:FlxText;
+    var keyWarning:FlxText;
+    var warningTween:FlxTween;
+    var keyText:Array<String> = ["LEFT", "DOWN", "UP", "RIGHT"];
+    var defaultKeys:Array<String> = ["A", "S", "W", "D", "R"];
+    var curSelected:Int = 0;
 
 	var tempKey:String = "";
 	var blacklist:Array<String> = ["ESCAPE", "ENTER", "BACKSPACE", "SPACE"];

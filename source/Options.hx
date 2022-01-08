@@ -56,7 +56,6 @@ class Option
 	private var description:String = "";
 	private var display:String;
 	private var acceptValues:Bool = false;
-
 	public var isBool:Bool = true;
 	public var daValue:Bool = false;
 
@@ -88,6 +87,31 @@ class Option
 
 	public function left():Bool
 	{
+		return false;
+	}
+
+	public function right():Bool
+	{
+		return false;
+	}
+}
+
+class DFJKOption extends Option
+{
+	private var controls:Controls;
+
+	private function updateDisplay():String
+	{
+		super();
+		this.controls = controls;
+		this.isBool = false;
+		daValue = FlxG.save.data.dfjk;
+	}
+
+	public function left():Bool
+	{
+		daValue = FlxG.save.data.dfjk;
+		display = updateDisplay();
 		return false;
 	}
 
@@ -143,29 +167,6 @@ class PhotoSensitivityOption extends Option
 	}
 }
 
-class AccuracyOption extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-		daValue = FlxG.save.data.accuracy;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.accuracy = !FlxG.save.data.accuracy;
-		daValue = FlxG.save.data.accuracy;
-		display = updateDisplay();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		return "Accuracy";
-	}
-}
-
 class GhostTappingOption extends Option
 {
 	public function new(desc:String)
@@ -186,6 +187,29 @@ class GhostTappingOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Ghost Tapping";
+	}
+}
+
+class AccuracyOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		daValue = FlxG.save.data.accuracy;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.accuracy = !FlxG.save.data.accuracy;
+		daValue = FlxG.save.data.accuracy;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Accuracy";
 	}
 }
 
@@ -234,7 +258,6 @@ class ModChartOption extends Option
 		return "ModCharts";
 	}
 }
-
 class FPSOption extends Option
 {
 	public function new(desc:String)

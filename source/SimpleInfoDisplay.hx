@@ -21,7 +21,7 @@ class SimpleInfoDisplay extends TextField
 	public var memPeak:Float = 0;
 	public var currentFPS:Int = 0;
 
-	var fpsCounter:FPS;
+    public static var fpsCounter:FPS;
 
 	public function new(inX:Float = 10.0, inY:Float = 10.0, inCol:Int = 0x000000, ?font:String)
 	{
