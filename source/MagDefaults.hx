@@ -8,11 +8,8 @@ class MagDefaults
 		if (FlxG.save.data.downscroll == null)
 			FlxG.save.data.downscroll = false;
 
-		if (FlxG.save.data.dfjk == null)
-			FlxG.save.data.dfjk = false;
-
 		if (FlxG.save.data.accuracy == null)
-			FlxG.save.data.accuracy = false;
+			FlxG.save.data.accuracy = true;
 
 		if (FlxG.save.data.splooshes == null)
 			FlxG.save.data.splooshes = true;
