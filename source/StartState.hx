@@ -2,7 +2,6 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxState;
-import openfl.Lib;
 
 class StartState extends FlxState
 {

@@ -257,7 +257,38 @@ class StoryMenuState extends MusicBeatState
 			if (controls.ACCEPT)
 			{
 				swagbf.animation.play('hey');
-				selectWeek();
+
+				if (stopspamming == false)
+				{
+					FlxG.sound.play(Paths.sound('titleShoot'));
+
+					grpWeekText.members[curWeek].startFlashing();
+					stopspamming = true;
+				}
+
+				PlayState.storyPlaylist = loadFromWeekJson(weeksArray[curWeek]).songs;
+				PlayState.originalStoryPlaylistLength = PlayState.storyPlaylist.length;
+				PlayState.isStoryMode = true;
+				selectedWeek = true;
+
+				var diffic = "";
+
+				switch (curDifficulty)
+				{
+					case 0:
+						diffic = '-easy';
+					case 2:
+						diffic = '-hard';
+				}
+				PlayState.storyDifficulty = curDifficulty;
+
+				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
+				PlayState.storyWeek = curWeek;
+				PlayState.campaignScore = 0;
+				new FlxTimer().start(1, function(tmr:FlxTimer)
+				{
+					LoadingState.loadAndSwitchState(new PlayState(), true);
+				});
 			}
 		}
 
@@ -274,40 +305,6 @@ class StoryMenuState extends MusicBeatState
 	var movedBack:Bool = false;
 	var selectedWeek:Bool = false;
 	var stopspamming:Bool = false;
-
-	function selectWeek()
-	{
-		if (stopspamming == false)
-		{
-			FlxG.sound.play(Paths.sound('titleShoot'));
-
-			grpWeekText.members[curWeek].startFlashing();
-			stopspamming = true;
-		}
-
-		PlayState.storyPlaylist = loadFromWeekJson(weeksArray[curWeek]).songs;
-		PlayState.isStoryMode = true;
-		selectedWeek = true;
-
-		var diffic = "";
-
-		switch (curDifficulty)
-		{
-			case 0:
-				diffic = '-easy';
-			case 2:
-				diffic = '-hard';
-		}
-		PlayState.storyDifficulty = curDifficulty;
-
-		PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
-		PlayState.storyWeek = curWeek;
-		PlayState.campaignScore = 0;
-		new FlxTimer().start(1, function(tmr:FlxTimer)
-		{
-			LoadingState.loadAndSwitchState(new PlayState(), true);
-		});
-	}
 
 	function changeDifficulty(change:Int = 0):Void
 	{

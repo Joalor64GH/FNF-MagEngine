@@ -42,7 +42,7 @@ class OptionsMenu extends MusicBeatState
 			new VerOption()
 		]),
 		new OptionCategory("Controls"),
-		new OptionCategory("Notes", [new SplooshOption()]),
+		new OptionCategory("Notes", [new SplooshOption(), new TransparentNotesOption()]),
 		new OptionCategory("Exit")
 	];
 

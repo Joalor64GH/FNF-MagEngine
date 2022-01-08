@@ -313,3 +313,25 @@ class VerOption extends Option
 		return "Version Display";
 	}
 }
+
+class TransparentNotesOption extends Option
+{
+	public function new()
+	{
+		super();
+		daValue = FlxG.save.data.transparentNotes;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.transparentNotes = !FlxG.save.data.transparentNotes;
+		daValue = FlxG.save.data.transparentNotes;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Transparent Notes";
+	}
+}

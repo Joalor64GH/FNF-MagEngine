@@ -17,6 +17,12 @@ class MagDefaults
 		if (FlxG.save.data.splooshes == null)
 			FlxG.save.data.splooshes = true;
 
+		if (FlxG.save.data.transparentNotes == null)
+			FlxG.save.data.transparentNotes = false;
+
+		if (FlxG.save.data.cache == null)
+			FlxG.save.data.cache = true;
+
 		if (FlxG.save.data.fps == null)
 			FlxG.save.data.fps = true;
 
@@ -28,9 +34,6 @@ class MagDefaults
 
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = 60;
-
-		if (FlxG.save.data.cache == null)
-			FlxG.save.data.cache = true;
 
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();

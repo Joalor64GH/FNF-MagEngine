@@ -74,14 +74,13 @@ class PlayState extends MusicBeatState
 	public static var isPixelStage:Bool = false;
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
+	public static var originalStoryPlaylistLength:Int = 0;
 	public static var storyDifficulty:Int = 1;
 
 	public static var practiceAllowed:Bool = false;
 
 	public var pauseHUD:FlxCamera;
 	public var _swagstage:SwagStage;
-
-	public static var babyArrow:FlxSprite;
 
 	public var stageKey:String;
 	public var rawJson:String;
@@ -1322,7 +1321,7 @@ class PlayState extends MusicBeatState
 		for (i in 0...4)
 		{
 			// FlxG.log.add(i);
-			babyArrow = new FlxSprite(STRUM_X, strumLine.y);
+			var babyArrow:FlxSprite = new FlxSprite(STRUM_X, strumLine.y);
 
 			switch (curStage)
 			{
@@ -1399,11 +1398,15 @@ class PlayState extends MusicBeatState
 			babyArrow.updateHitbox();
 			babyArrow.scrollFactor.set();
 
-			if (!isStoryMode)
+			if (FlxG.save.data.transparentNotes)
+				babyArrow.alpha = 0.5;
+
+			if (storyPlaylist.length == originalStoryPlaylistLength)
 			{
 				babyArrow.y -= 10;
 				babyArrow.alpha = 0;
-				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, (FlxG.save.data.transparentNotes ? 0.5 : 1),
+					{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 
 			babyArrow.ID = i;
@@ -1988,6 +1991,9 @@ class PlayState extends MusicBeatState
 					{
 						if (Math.abs(daNote.noteData) == spr.ID)
 						{
+							if (FlxG.save.data.transparentNotes)
+								spr.alpha = 1;
+
 							spr.animation.play('confirm', true);
 						}
 						if (spr.animation.curAnim.name == 'confirm' && !isPixelStage)
@@ -2036,6 +2042,9 @@ class PlayState extends MusicBeatState
 		{
 			if (spr.animation.finished)
 			{
+				if (FlxG.save.data.transparentNotes)
+					spr.alpha = 0.5;
+
 				spr.animation.play('static');
 				spr.centerOffsets();
 			}
@@ -2213,43 +2222,11 @@ class PlayState extends MusicBeatState
 				songScore += 350;
 				if (FlxG.save.data.splooshes && note.noteType == 0)
 				{
-					var sploosh:FlxSprite = new FlxSprite(note.x, playerStrums.members[note.noteData].y);
-					if (isPixelStage)
-					{
-						sploosh.loadGraphic(Paths.image('weeb/pixelUI/noteSplashes-pixels', 'week6'), true, 50, 50);
-						sploosh.animation.add('splash 0 0', [0, 1, 2, 3], 24, false);
-						sploosh.animation.add('splash 1 0', [4, 5, 6, 7], 24, false);
-						sploosh.animation.add('splash 0 1', [8, 9, 10, 11], 24, false);
-						sploosh.animation.add('splash 1 1', [12, 13, 14, 15], 24, false);
-						sploosh.animation.add('splash 0 2', [16, 17, 18, 19], 24, false);
-						sploosh.animation.add('splash 1 2', [20, 21, 22, 23], 24, false);
-						sploosh.animation.add('splash 0 3', [24, 25, 26, 27], 24, false);
-						sploosh.animation.add('splash 1 3', [28, 29, 30, 31], 24, false);
-						sploosh.animation.add('splash 0 4', [32, 33, 34, 35], 24, false);
-						sploosh.animation.add('splash 1 4', [36, 37, 38, 39], 24, false);
-
-						sploosh.setGraphicSize(Std.int(sploosh.width * daPixelZoom));
-						sploosh.updateHitbox();
-					}
-					else
-					{
-						sploosh.frames = Paths.getSparrowAtlas('noteSplashes', 'shared');
-						sploosh.animation.addByPrefix('splash 0 0', 'note impact 1 purple', 24, false);
-						sploosh.animation.addByPrefix('splash 0 1', 'note impact 1  blue', 24, false);
-						sploosh.animation.addByPrefix('splash 0 2', 'note impact 1 green', 24, false);
-						sploosh.animation.addByPrefix('splash 0 3', 'note impact 1 red', 24, false);
-						sploosh.animation.addByPrefix('splash 1 0', 'note impact 2 purple', 24, false);
-						sploosh.animation.addByPrefix('splash 1 1', 'note impact 2 blue', 24, false);
-						sploosh.animation.addByPrefix('splash 1 2', 'note impact 2 green', 24, false);
-						sploosh.animation.addByPrefix('splash 1 3', 'note impact 2 red', 24, false);
-					}
-					add(sploosh);
+					var sploosh:NoteSplash = new NoteSplash(note.x, playerStrums.members[note.noteData].y, note.noteData, isPixelStage);
 					sploosh.cameras = [camHUD];
 					sploosh.animation.play('splash ' + FlxG.random.int(0, 1) + " " + note.noteData);
-					sploosh.alpha = 0.6;
-					sploosh.offset.x += 90;
-					sploosh.offset.y += 80;
 					sploosh.animation.finishCallback = function(name) sploosh.kill();
+					add(sploosh);
 				}
 		}
 
@@ -2469,9 +2446,19 @@ class PlayState extends MusicBeatState
 		playerStrums.forEach(function(spr:FlxSprite)
 		{
 			if (controlArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
+			{
+				if (FlxG.save.data.transparentNotes)
+					spr.alpha = 1;
+
 				spr.animation.play('pressed', true);
+			}
 			if (controlReleaseArray[spr.ID])
+			{
+				if (FlxG.save.data.transparentNotes)
+					spr.alpha = 0.5;
+
 				spr.animation.play('static', true);
+			}
 			if (spr.animation.curAnim.name == 'confirm' && !isPixelStage)
 			{
 				spr.centerOffsets();
@@ -2591,7 +2578,12 @@ class PlayState extends MusicBeatState
 			playerStrums.forEach(function(spr:FlxSprite)
 			{
 				if (Math.abs(note.noteData) == spr.ID)
+				{
+					if (FlxG.save.data.transparentNotes)
+						spr.alpha = 1;
+
 					spr.animation.play('confirm', true);
+				}
 			});
 
 			boyfriend.holdTimer = 0;
