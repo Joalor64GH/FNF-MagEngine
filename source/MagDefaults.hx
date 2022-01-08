@@ -31,9 +31,6 @@ class MagDefaults
 		if (FlxG.save.data.v == null)
 			FlxG.save.data.v = true;
 
-		if (FlxG.save.data.fpsCap == null)
-			FlxG.save.data.fpsCap = 60;
-
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();
 	}
