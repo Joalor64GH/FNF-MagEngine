@@ -5,7 +5,6 @@ import Discord.DiscordClient;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxGroup;
@@ -31,24 +30,20 @@ class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
-	var curDifficulty:Int = 1;
-
+	static var curDifficulty:Int = 1;
 
 	var weeksArray:Array<String> = [];
 
-
 	var swagbf:FlxSprite;
 
-	
 	var weekthingy:Array<String> = CoolUtil.coolTextFile(Paths.txt('weeks/weekList'));
-
 
 	var weekNames:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/weekNames'));
 
 	var txtWeekTitle:FlxText;
 
-	var curWeek:Int = 0;
-	
+	static var curWeek:Int = 0;
+
 	var getPreloadPath:Array<String> = [Paths.getPreloadPath('')];
 
 	var txtTracklist:FlxText;
@@ -65,68 +60,31 @@ class StoryMenuState extends MusicBeatState
 	var rightArrow:FlxSprite;
 	var _swagweek:SwagWeek;
 	var swagger:Array<SwagWeek>;
-	
-	
 
 	override function create()
 	{
-		function getJSON(path:String):SwagWeek {
+		function getJSON(path:String):SwagWeek
+		{
 			var rawJson:String = null;
-			//we use file.getcontent so it reads from the mods folder
-			if(FileSystem.exists(path)) {
+			// we use file.getcontent so it reads from the mods folder
+			if (FileSystem.exists(path))
+			{
 				rawJson = File.getContent(path);
 			}
-			if(rawJson != null && rawJson.length > 0) {
+			if (rawJson != null && rawJson.length > 0)
+			{
 				return cast Json.parse(rawJson);
 			}
 			return null;
 		}
 
-
-		function parseJSONshit(rawJson:String):SwagWeek
-			{
-				var swagShit:SwagWeek = cast Json.parse(rawJson);
-				return swagShit;
-			}
-
-        //LMAO STOLEN FROM SONG
-		function loadFromWEEKJson(jsonInput:String):SwagWeek
-			{
-				var rawJson = null;
-				var moddyFile:String = Paths.modsong('weeks/' + jsonInput);
-				if(FileSystem.exists(moddyFile)) {
-					rawJson = File.getContent(moddyFile).trim();
-				}
-		
-				if(rawJson == null) {
-					//why the fuck did i do this lmao
-					#if sys
-					rawJson = File.getContent(Paths.cooljson('weeks/' + jsonInput)).trim();
-					#else
-					rawJson = Assets.getText(Paths.cooljson('weeks/' + jsonInput)).trim();
-					#end
-				}
-		
-				while (!rawJson.endsWith("}"))
-				{
-					rawJson = rawJson.substr(0, rawJson.length - 1);
-					// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
-				}
-
-				var weekJson:SwagWeek = parseJSONshit(rawJson);
-				return weekJson;
-			}
-
-			weeksArray = [];
-			for (i in 0...weekthingy.length) {
-				weeksArray.push(weekthingy[i]);
-				var filethingy:String = 'weeks/' + weeksArray[i] + '.json';
-				var swagshit:SwagWeek = getJSON(filethingy);
-			}
-	
-
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut; 
+		weeksArray = [];
+		for (i in 0...weekthingy.length)
+		{
+			weeksArray.push(weekthingy[i]);
+			var filethingy:String = 'weeks/' + weeksArray[i] + '.json';
+			var swagshit:SwagWeek = getJSON(filethingy);
+		}
 
 		if (FlxG.sound.music != null)
 		{
@@ -153,9 +111,8 @@ class StoryMenuState extends MusicBeatState
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
 
-		
 		var bg:FlxSprite = new FlxSprite(FlxG.width * 0.07, yellowBG.y + 420).loadGraphic(Paths.image('storybg', 'MagEngine'));
-        bg.antialiasing = true;
+		bg.antialiasing = true;
 		bg.screenCenter(X);
 		bg.screenCenter(Y);
 		add(bg);
@@ -163,19 +120,17 @@ class StoryMenuState extends MusicBeatState
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
 
-
 		var itsanillusionn:FlxSprite = new FlxSprite().loadGraphic(Paths.image('illusion', 'MagEngine'));
 		itsanillusionn.antialiasing = true;
 		add(itsanillusionn);
 
-		
 		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 470, 0xFFF9CF51);
 		blackBarThingie.alpha = 0.5;
 		add(blackBarThingie);
-		
+
 		swagbf = new FlxSprite(420, 30);
 		swagbf.antialiasing = true;
-		swagbf.frames = Paths.getSparrowAtlas('BOYFRIEND'); 
+		swagbf.frames = Paths.getSparrowAtlas('BOYFRIEND');
 		swagbf.animation.addByPrefix('idle', 'BF idle dance', 24, true);
 		swagbf.animation.addByPrefix('hey', 'BF HEY', 24, false);
 		swagbf.animation.play('idle');
@@ -184,8 +139,6 @@ class StoryMenuState extends MusicBeatState
 		grpLocks = new FlxTypedGroup<FlxSprite>();
 		add(grpLocks);
 
-		trace("Line 70");
-		
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -194,26 +147,19 @@ class StoryMenuState extends MusicBeatState
 		for (i in 0...weekthingy.length)
 		{
 			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i);
+			weekThing.antialiasing = true;
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
 			weekThing.screenCenter(X);
 			grpWeekText.add(weekThing);
-
-			weekThing.antialiasing = true;
 			// weekThing.updateHitbox();
-
-
 		}
 
-		trace("Line 96");
-
-		
 		difficultySelectors = new FlxGroup();
 		add(difficultySelectors);
 
-		trace("Line 124");
-
 		leftArrow = new FlxSprite(grpWeekText.members[0].x + grpWeekText.members[0].width + 10, grpWeekText.members[0].y + 10);
+		leftArrow.antialiasing = true;
 		leftArrow.frames = ui_tex;
 		leftArrow.animation.addByPrefix('idle', "arrow left");
 		leftArrow.animation.addByPrefix('press', "arrow push left");
@@ -221,6 +167,7 @@ class StoryMenuState extends MusicBeatState
 		difficultySelectors.add(leftArrow);
 
 		sprDifficulty = new FlxSprite(leftArrow.x + 130, leftArrow.y);
+		sprDifficulty.antialiasing = true;
 		sprDifficulty.frames = ui_tex;
 		sprDifficulty.animation.addByPrefix('easy', 'EASY');
 		sprDifficulty.animation.addByPrefix('normal', 'NORMAL');
@@ -231,19 +178,16 @@ class StoryMenuState extends MusicBeatState
 		difficultySelectors.add(sprDifficulty);
 
 		rightArrow = new FlxSprite(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
+		rightArrow.antialiasing = true;
 		rightArrow.frames = ui_tex;
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
 		rightArrow.animation.play('idle');
 		difficultySelectors.add(rightArrow);
 
-		trace("Line 150");
-
 		var tracksarelookinggood:FlxSprite = new FlxSprite(FlxG.width * 0.07, yellowBG.y + 425).loadGraphic(Paths.image('ThefunneMenuTracks'));
 		tracksarelookinggood.antialiasing = true;
 		add(tracksarelookinggood);
-
-	
 
 		txtTracklist = new FlxText(FlxG.width * 0.05, yellowBG.x + yellowBG.height + 200, 0, "", 32);
 		txtTracklist = new FlxText(FlxG.width * 0.05, tracksarelookinggood.y + 40, 0, "", 32);
@@ -256,8 +200,8 @@ class StoryMenuState extends MusicBeatState
 		add(txtWeekTitle);
 
 		updateText();
-
-		trace("Line 165");
+		changeWeek();
+		changeDifficulty();
 
 		super.create();
 	}
@@ -275,7 +219,6 @@ class StoryMenuState extends MusicBeatState
 
 		// FlxG.watch.addQuick('font', scoreText.font);
 
-
 		grpLocks.forEach(function(lock:FlxSprite)
 		{
 			lock.y = grpWeekText.members[lock.ID].y;
@@ -287,11 +230,13 @@ class StoryMenuState extends MusicBeatState
 			{
 				if (controls.UP_P)
 				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
 					changeWeek(-1);
 				}
 
 				if (controls.DOWN_P)
 				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
 					changeWeek(1);
 				}
 
@@ -314,7 +259,38 @@ class StoryMenuState extends MusicBeatState
 			if (controls.ACCEPT)
 			{
 				swagbf.animation.play('hey');
-				selectWeek();
+
+				if (stopspamming == false)
+				{
+					FlxG.sound.play(Paths.sound('titleShoot'));
+
+					grpWeekText.members[curWeek].startFlashing();
+					stopspamming = true;
+				}
+
+				PlayState.storyPlaylist = loadFromWeekJson(weeksArray[curWeek]).songs;
+				PlayState.originalStoryPlaylistLength = PlayState.storyPlaylist.length;
+				PlayState.isStoryMode = true;
+				selectedWeek = true;
+
+				var diffic = "";
+
+				switch (curDifficulty)
+				{
+					case 0:
+						diffic = '-easy';
+					case 2:
+						diffic = '-hard';
+				}
+				PlayState.storyDifficulty = curDifficulty;
+
+				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
+				PlayState.storyWeek = curWeek;
+				PlayState.campaignScore = 0;
+				new FlxTimer().start(1, function(tmr:FlxTimer)
+				{
+					LoadingState.loadAndSwitchState(new PlayState(), true);
+				});
 			}
 		}
 
@@ -322,7 +298,7 @@ class StoryMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
-			FlxG.switchState(new MainMenuState());
+			MusicBeatState.switchState(new MainMenuState());
 		}
 
 		super.update(elapsed);
@@ -332,40 +308,6 @@ class StoryMenuState extends MusicBeatState
 	var selectedWeek:Bool = false;
 	var stopspamming:Bool = false;
 
-	function selectWeek()
-	{
-			if (stopspamming == false)
-			{
-				FlxG.sound.play(Paths.sound('titleShoot'));
-
-				grpWeekText.members[curWeek].startFlashing();
-				stopspamming = true;
-			}
-
-			PlayState.storyPlaylist = loadFromWEEKJson(weeksArray[curWeek]).songs;
-			PlayState.isStoryMode = true;
-			selectedWeek = true;
-
-			var diffic = "";
-
-			switch (curDifficulty)
-			{
-				case 0:
-					diffic = '-easy';
-				case 2:
-					diffic = '-hard';
-			}
-			PlayState.storyDifficulty = curDifficulty;
-
-			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
-			PlayState.storyWeek = curWeek;
-			PlayState.campaignScore = 0;
-			new FlxTimer().start(1, function(tmr:FlxTimer)
-			{
-				LoadingState.loadAndSwitchState(new PlayState(), true);
-			});
-		
-	}
 	function changeDifficulty(change:Int = 0):Void
 	{
 		curDifficulty += change;
@@ -403,37 +345,34 @@ class StoryMenuState extends MusicBeatState
 		FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07);
 	}
 
-	function loadFromWEEKJson(jsonInput:String):SwagWeek
+	function loadFromWeekJson(jsonInput:String):SwagWeek
+	{
+		var rawJson = null;
+		var moddyFile:String = Paths.modSong('weeks/' + jsonInput);
+		if (FileSystem.exists(moddyFile))
 		{
-			var rawJson = null;
-			var moddyFile:String = Paths.modsong('weeks/' + jsonInput);
-			if(FileSystem.exists(moddyFile)) {
-				rawJson = File.getContent(moddyFile).trim();
-			}
-	
-			if(rawJson == null) {
-				//why the fuck did i do this lmao
-				#if sys
-				rawJson = File.getContent(Paths.cooljson('weeks/' + jsonInput)).trim();
-				#else
-				rawJson = Assets.getText(Paths.cooljson('weeks/' + jsonInput)).trim();
-				#end
-			}
-	
-			while (!rawJson.endsWith("}"))
-			{
-				rawJson = rawJson.substr(0, rawJson.length - 1);
-				// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
-			}
-
-			var weekJson:SwagWeek = parseJSONshit(rawJson);
-			return weekJson;
+			rawJson = File.getContent(moddyFile).trim();
 		}
-			function parseJSONshit(rawJson:String):SwagWeek
-			{
-				var swagShit:SwagWeek = cast Json.parse(rawJson);
-				return swagShit;
-			}
+
+		if (rawJson == null)
+		{
+			// why the fuck did i do this lmao
+			#if sys
+			rawJson = File.getContent(Paths.cooljson('weeks/' + jsonInput)).trim();
+			#else
+			rawJson = Assets.getText(Paths.cooljson('weeks/' + jsonInput)).trim();
+			#end
+		}
+
+		while (!rawJson.endsWith("}"))
+		{
+			rawJson = rawJson.substr(0, rawJson.length - 1);
+			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
+		}
+
+		var swagShit:SwagWeek = cast Json.parse(rawJson);
+		return swagShit;
+	}
 
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
@@ -459,23 +398,20 @@ class StoryMenuState extends MusicBeatState
 			bullShit++;
 		}
 
-		FlxG.sound.play(Paths.sound('scrollMenu'));
-
-
 		updateText();
 	}
 
 	function updateText()
 	{
 		txtTracklist.text = '';
-		
-		var stringThing:Array<String> = loadFromWEEKJson(weeksArray[curWeek]).songs;
+
+		var stringThing:Array<String> = loadFromWeekJson(weeksArray[curWeek]).songs;
 
 		for (i in stringThing)
 		{
 			txtTracklist.text += "\n" + i;
 		}
-	
+
 		txtTracklist.text += "\n";
 		txtTracklist.text = txtTracklist.text.toUpperCase();
 
@@ -487,15 +423,18 @@ class StoryMenuState extends MusicBeatState
 		#end
 	}
 }
+
 typedef SwagWeek =
 {
 	var songs:Array<String>;
 }
+
 class Week
 {
 	public var songs:Array<String>;
 
-	public function new(swagWeek:SwagWeek) {
+	public function new(swagWeek:SwagWeek)
+	{
 		songs = swagWeek.songs;
 	}
 }

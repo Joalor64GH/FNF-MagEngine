@@ -296,7 +296,6 @@ class VlcBitmap extends Bitmap
 			set_width(FlxG.stage.stageWidth);
 			set_height(FlxG.stage.stageWidth / (16 / 9));
 		}
-		
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////

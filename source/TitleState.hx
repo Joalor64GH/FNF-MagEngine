@@ -12,8 +12,6 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.input.keyboard.FlxKey;
 import flixel.addons.display.FlxGridOverlay;
-import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -50,50 +48,67 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		#if (polymod && !html5)
-		if (sys.FileSystem.exists('mods/')) {
+		#if MODS
+		if (sys.FileSystem.exists('mods/'))
+		{
 			var folders:Array<String> = [];
-			for (file in sys.FileSystem.readDirectory('mods/')) {
+			for (file in sys.FileSystem.readDirectory('mods/'))
+			{
 				var path = haxe.io.Path.join(['mods/', file]);
-				if (sys.FileSystem.isDirectory(path)) {
+				if (sys.FileSystem.isDirectory(path))
+				{
 					folders.push(file);
 				}
 			}
 		}
-		if (sys.FileSystem.exists('mods/' + ModsMenu.coolId + '/')) {
+		if (sys.FileSystem.exists('mods/' + ModsMenu.coolId + '/'))
+		{
 			var folders:Array<String> = [];
-			for (file in sys.FileSystem.readDirectory('mods/' + ModsMenu.coolId + '/')) {
+			for (file in sys.FileSystem.readDirectory('mods/' + ModsMenu.coolId + '/'))
+			{
 				var path = haxe.io.Path.join(['mods/' + ModsMenu.coolId + '/', file]);
-				if (sys.FileSystem.isDirectory(path)) {
+				if (sys.FileSystem.isDirectory(path))
+				{
 					folders.push(file);
 				}
 			}
 		}
 		#end
-		// idk why i put these conditions mag is not available on mac anyway
-		ModList.load();
-		
-		PlayerSettings.init();
 
-		curWacky = FlxG.random.getObject(getIntroTextShit());
+		if (!initialized)
+		{
+			#if MODS
+			// idk why i put these conditions mag is not available on mac anyway
+			PolymodHandler.loadMods();
+			ModList.load();
+			#end
 
-		// DEBUG BULLSHIT
+			#if desktop
+			DiscordClient.initialize();
+
+			Application.current.onExit.add(function(exitCode)
+			{
+				DiscordClient.shutdown();
+			});
+			#end
+
+			// DEBUG BULLSHIT
+
+			NGio.noLogin(APIStuff.API);
+
+			#if ng
+			var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
+			trace('NEWGROUNDS LOL');
+			#end
+
+			Highscore.load();
+		}
 
 		super.create();
 
-		NGio.noLogin(APIStuff.API);
+		remove(ngSpr);
 
-		#if ng
-		var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
-		trace('NEWGROUNDS LOL');
-		#end
-
-		FlxG.save.bind('funkin', 'ninjamuffin99');
-
-		Highscore.load();
-
-		MagEngineDefaults.initSave();
-
+		curWacky = FlxG.random.getObject(getIntroTextShit());
 
 		#if FREEPLAY
 		MusicBeatState.switchState(new FreeplayState());
@@ -104,14 +119,6 @@ class TitleState extends MusicBeatState
 		{
 			startIntro();
 		});
-		#end
-
-		#if desktop
-		DiscordClient.initialize();
-		
-		Application.current.onExit.add (function (exitCode) {
-			DiscordClient.shutdown();
-		 });
 		#end
 	}
 
@@ -125,33 +132,12 @@ class TitleState extends MusicBeatState
 	{
 		if (!initialized)
 		{
-			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
-			diamond.persist = true;
-			diamond.destroyOnNoUse = false;
-			
-			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},
-			new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
-		    FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1),
-			{asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
-
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
-			// HAD TO MODIFY SOME BACKEND SHIT
-			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
-			// https://github.com/HaxeFlixel/flixel-addons/pull/348
-
-			// var music:FlxSound = new FlxSound();
-			// music.loadStream(Paths.music('freakyMenu'));
-			// FlxG.sound.list.add(music);
-			// music.play();
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 		}
 
 		Conductor.changeBPM(102);
 		persistentUpdate = true;
-
 
 		logoBl = new FlxSprite(-150, -100);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
@@ -164,7 +150,6 @@ class TitleState extends MusicBeatState
 		logoBg = new FlxSprite().loadGraphic(Paths.image('bg', 'MagEngine'));
 		logoBg.screenCenter();
 		add(logoBg);
-		
 
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
@@ -188,8 +173,6 @@ class TitleState extends MusicBeatState
 		logo.screenCenter();
 		logo.antialiasing = true;
 		// add(logo);
-
-	
 
 		// FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
 		// FlxTween.tween(logo, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.1});
@@ -217,8 +200,6 @@ class TitleState extends MusicBeatState
 		ngSpr.antialiasing = true;
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
-
-		FlxG.mouse.visible = false;
 
 		if (initialized)
 			skipIntro();
@@ -299,18 +280,15 @@ class TitleState extends MusicBeatState
 			transitioning = true;
 			// FlxG.sound.music.stop();
 
-			new FlxTimer().start(0.2, function(tmr:FlxTimer)
+			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				MusicBeatState.switchState(new MainMenuState());
-				
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
 
-		if (pressedEnter && !skippedIntro)
-		{
+		if (pressedEnter)
 			skipIntro();
-		}
 
 		super.update(elapsed);
 	}
@@ -396,15 +374,13 @@ class TitleState extends MusicBeatState
 			// credTextShit.text = "Friday";
 			// credTextShit.screenCenter();
 			case 13:
-				addMoreText('Friday');
+				addMoreText('Friday Night');
 			// credTextShit.visible = true;
 			case 14:
-				addMoreText('Night');
+				addMoreText('Funkin');
 			// credTextShit.text += '\nNight';
 			case 15:
-				addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
-				addMoreText('Mag Engine');
-
+				addMoreText('Mag Engine'); // credTextShit.text += '\nFunkin';
 			case 16:
 				skipIntro();
 		}
@@ -416,14 +392,6 @@ class TitleState extends MusicBeatState
 	{
 		if (!skippedIntro)
 		{
-
-			PlayerSettings.player1.controls.loadKeyBinds();
-			remove(ngSpr);
-
-			MagEngineDefaults.initSave();
-
-			ModList.load();
-
 			FlxG.camera.flash(FlxColor.WHITE, 4);
 			remove(credGroup);
 			skippedIntro = true;

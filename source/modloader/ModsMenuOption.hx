@@ -1,6 +1,6 @@
 package modloader;
 
-#if sys
+#if MODS
 import flixel.FlxSubState;
 import polymod.Polymod.ModMetadata;
 import modloader.ModList;
@@ -13,8 +13,8 @@ import flixel.util.FlxColor;
 import flixel.ui.FlxButton;
 import flixel.ui.FlxSpriteButton;
 
- class ModsMenuOption extends FlxTypedGroup<FlxSprite>
- {
+class ModsMenuOption extends FlxTypedGroup<FlxSprite>
+{
 	public var Alphabet_Text:Alphabet;
 	public var Mod_Icon:ModIcon;
 
@@ -24,8 +24,9 @@ import flixel.ui.FlxSpriteButton;
 
 	public var Option_Name:String = "-";
 	public var Option_Value:String = "Template Mod";
+
 	public static var enabledMods:Array<String> = [];
-	
+
 	public function new(_Option_Name:String = "-", _Option_Value:String = "Template Mod", _Option_Row:Int = 0)
 	{
 		super();
@@ -50,13 +51,12 @@ import flixel.ui.FlxSpriteButton;
 
 	override function update(elapsed:Float)
 	{
-
 		super.update(elapsed);
 
 		var enableButton:FlxButton = new FlxButton(920, 620, "Enable Mod", function()
 		{
 			Mod_Enabled = true;
-            enabledMods.push(Option_Value);
+			enabledMods.push(Option_Value);
 			ModList.setModEnabled(Option_Value, Mod_Enabled);
 		});
 
@@ -67,14 +67,14 @@ import flixel.ui.FlxSpriteButton;
 		enableButton.label.y += 22;
 		enableButton.label.fieldWidth = 135;
 		add(enableButton);
-		
+
 		var disableButton:FlxButton = new FlxButton(1100, 620, "Disable Mod", function()
 		{
 			Mod_Enabled = false;
 			enabledMods.remove(Option_Value);
 			ModList.setModEnabled(Option_Value, Mod_Enabled);
 		});
-		
+
 		disableButton.setGraphicSize(150, 70);
 		disableButton.updateHitbox();
 		disableButton.color = FlxColor.RED;
@@ -82,8 +82,8 @@ import flixel.ui.FlxSpriteButton;
 		disableButton.label.y += 22;
 		disableButton.label.fieldWidth = 135;
 		add(disableButton);
-	
-		if(Mod_Enabled)
+
+		if (Mod_Enabled)
 		{
 			Alphabet_Text.color = FlxColor.GREEN;
 		}

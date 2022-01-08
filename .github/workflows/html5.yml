@@ -35,7 +35,6 @@ jobs:
           haxelib install flixel-tools
           haxelib install flixel-addons
           haxelib install flixel-ui
-          haxelib install hscript
           haxelib install flixel-addons
           haxelib install newgrounds
           haxelib git faxe https://github.com/uhrobots/faxe

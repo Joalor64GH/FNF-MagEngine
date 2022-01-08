@@ -26,22 +26,24 @@ class OptionsMenu extends MusicBeatState
 	public static var instance:OptionsMenu;
 
 	var selector:FlxText;
-	
+
 	static var curSelected:Int = 0;
 
 	var opt:Option;
 
 	var options:Array<OptionCategory> = [
 		new OptionCategory("Preferences", [
-			new DownscrollOption(''),
-			new AccuracyOption(''),
-			new FPSOption(''),
-			new MEMOption(''),
-			new VerOption('')
+			new DownscrollOption(),
+			new AccuracyOption(),
+			new GhostTappingOption(),
+			new CacheOption(),
+			new FPSOption(),
+			new MEMOption(),
+			new VerOption()
 		]),
-		new OptionCategory("Controls", [new DFJKOption(controls)]),
-		new OptionCategory("Notes", [new SplooshOption('')]),
-		new OptionCategory("Exit", [new SplooshOption('')])
+		new OptionCategory("Controls"),
+		new OptionCategory("Notes", [new SplooshOption(), new TransparentNotesOption()]),
+		new OptionCategory("Exit")
 	];
 
 	private var grpCheckboxes:FlxTypedGroup<CheckboxThingie>;
@@ -50,11 +52,11 @@ class OptionsMenu extends MusicBeatState
 
 	public var acceptInput:Bool = true;
 
-	public var currentDescription:String = "";
-    
 	public var grpControls:FlxTypedGroup<Alphabet>;
 
 	var currentSelectedCat:OptionCategory;
+
+	var confirming:Bool = false;
 
 	override function create()
 	{
@@ -82,15 +84,14 @@ class OptionsMenu extends MusicBeatState
 	}
 
 	function generateMainMenu()
+	{
+		for (i in 0...options.length)
 		{
-			for (i in 0...options.length)
-			{
-				var controlLabel:Alphabet = new Alphabet(0, FlxG.height / 5 + 70 * i + 25 * i, options[i].getName(), true);
-				controlLabel.screenCenter(X);
-				grpControls.add(controlLabel);
-			}
+			var controlLabel:Alphabet = new Alphabet(0, FlxG.height / 5 + 70 * i + 25 * i, options[i].getName(), true);
+			controlLabel.screenCenter(X);
+			grpControls.add(controlLabel);
 		}
-	
+	}
 
 	public var isCat:Bool = false;
 
@@ -98,7 +99,7 @@ class OptionsMenu extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (acceptInput)
+		if (acceptInput && !confirming)
 		{
 			if (controls.BACK)
 			{
@@ -113,7 +114,7 @@ class OptionsMenu extends MusicBeatState
 					changeSelection();
 				}
 				else
-					MusicBeatState.switchState(new MainMenuState());
+					quit();
 			}
 			if (controls.UP_P)
 			{
@@ -137,92 +138,78 @@ class OptionsMenu extends MusicBeatState
 						if (FlxG.keys.pressed.LEFT)
 							currentSelectedCat.getOptions()[curSelected].left();
 					}
-					else
-					{
-						if (FlxG.keys.justPressed.RIGHT)
-							currentSelectedCat.getOptions()[curSelected].right();
-						if (FlxG.keys.justPressed.LEFT)
-							currentSelectedCat.getOptions()[curSelected].left();
-					}
 				}
-				else
-				{
-					if (FlxG.keys.pressed.SHIFT)
-					{
-						if (FlxG.keys.justPressed.RIGHT)
-							FlxG.save.data.offset += 0.1;
-						else if (FlxG.keys.justPressed.LEFT)
-							FlxG.save.data.offset -= 0.1;
-					}
-					else if (FlxG.keys.pressed.RIGHT)
-						FlxG.save.data.offset += 0.1;
-					else if (FlxG.keys.pressed.LEFT)
-						FlxG.save.data.offset -= 0.1;
-				}
-			}
-			else
-			{
-				if (FlxG.keys.pressed.SHIFT)
+				else if (FlxG.keys.pressed.SHIFT)
 				{
 					if (FlxG.keys.justPressed.RIGHT)
-						FlxG.save.data.offset += 0.1;
-					else if (FlxG.keys.justPressed.LEFT)
-						FlxG.save.data.offset -= 0.1;
+						currentSelectedCat.getOptions()[curSelected].right();
+					if (FlxG.keys.justPressed.LEFT)
+						currentSelectedCat.getOptions()[curSelected].left();
 				}
-				else if (FlxG.keys.pressed.RIGHT)
+			}
+			else if (FlxG.keys.pressed.SHIFT)
+			{
+				if (FlxG.keys.justPressed.RIGHT)
 					FlxG.save.data.offset += 0.1;
-				else if (FlxG.keys.pressed.LEFT)
+				else if (FlxG.keys.justPressed.LEFT)
 					FlxG.save.data.offset -= 0.1;
 			}
 
 			if (controls.ACCEPT)
 			{
 				FlxG.sound.play(Paths.sound('confirmMenu'));
-				FlxFlicker.flicker(grpControls.members[curSelected], 1, 0.06, true, false, function(flick:FlxFlicker){
-				if (isCat && currentSelectedCat.getOptions()[curSelected].press())
+				confirming = true;
+				FlxFlicker.flicker(grpControls.members[curSelected], 1, 0.06, true, false, function(flick:FlxFlicker)
 				{
-					grpCheckboxes.members[curSelected].daValue = currentSelectedCat.getOptions()[curSelected].daValue;
-					grpControls.members[curSelected].changeText(currentSelectedCat.getOptions()[curSelected].getDisplay());
-				}
-				else if (options[curSelected].getName() == "Controls")
-				{
-					openSubState(new KeyBindMenu());
-				}
-				else if (options[curSelected].getName() == "Exit")
-				{
-					MusicBeatState.switchState(new MainMenuState());
-				}
-				else
-				{
-					currentSelectedCat = options[curSelected];
-					isCat = true;
-					grpControls.clear();
-					grpCheckboxes.clear();
-					for (i in 0...currentSelectedCat.getOptions().length)
+					if (isCat && currentSelectedCat.getOptions()[curSelected].press())
 					{
-						var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, currentSelectedCat.getOptions()[i].getDisplay(), true, false);
-						controlLabel.isMenuItem = true;
-						controlLabel.targetY = i;
-						grpControls.add(controlLabel);
-						controlLabel.forceX = 150;
-						if (currentSelectedCat.getOptions()[i].isBool)
-						{
-							var checkbox:CheckboxThingie = new CheckboxThingie(controlLabel.x - 105, controlLabel.y,
-							currentSelectedCat.getOptions()[i].daValue);
-							checkbox.sprTracker = controlLabel;
-							checkbox.ID = i;
-							grpCheckboxes.add(checkbox);
-						}
+						grpCheckboxes.members[curSelected].daValue = currentSelectedCat.getOptions()[curSelected].daValue;
+						grpControls.members[curSelected].changeText(currentSelectedCat.getOptions()[curSelected].getDisplay());
 					}
-					curSelected = 0;
-					changeSelection();
-				}
-			});
+					else if (options[curSelected].getName() == "Controls")
+					{
+						openSubState(new KeyBindMenu());
+					}
+					else if (options[curSelected].getName() == "Exit")
+						quit();
+					else
+					{
+						currentSelectedCat = options[curSelected];
+						isCat = true;
+						grpControls.clear();
+						grpCheckboxes.clear();
+						for (i in 0...currentSelectedCat.getOptions().length)
+						{
+							var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, currentSelectedCat.getOptions()[i].getDisplay(), true, false);
+							controlLabel.isMenuItem = true;
+							controlLabel.targetY = i;
+							grpControls.add(controlLabel);
+							controlLabel.forceX = 150;
+							if (currentSelectedCat.getOptions()[i].isBool)
+							{
+								var checkbox:CheckboxThingie = new CheckboxThingie(controlLabel.x - 105, controlLabel.y,
+									currentSelectedCat.getOptions()[i].daValue);
+								checkbox.sprTracker = controlLabel;
+								checkbox.ID = i;
+								grpCheckboxes.add(checkbox);
+							}
+						}
+						curSelected = 0;
+						changeSelection();
+					}
+					confirming = false;
+				});
+			}
 		}
-		FlxG.save.flush();
 	}
-}
+
 	var isSettingControl:Bool = false;
+
+	function quit()
+	{
+		FlxG.save.flush();
+		MusicBeatState.switchState(new MainMenuState());
+	}
 
 	function changeSelection(change:Int = 0)
 	{
@@ -236,11 +223,6 @@ class OptionsMenu extends MusicBeatState
 			curSelected = grpControls.length - 1;
 		if (curSelected >= grpControls.length)
 			curSelected = 0;
-
-		if (isCat)
-			currentDescription = currentSelectedCat.getOptions()[curSelected].getDescription();
-		else
-			currentDescription = "Please select a category";
 
 		// selector.y = (70 * curSelected) + 30;
 
