@@ -77,9 +77,9 @@ class PlayState extends MusicBeatState
 	public static var originalStoryPlaylistLength:Int = 0;
 	public static var storyDifficulty:Int = 1;
 
-	public var usedPlayFeatures:Bool = false;
-	public var cpuControlled:Bool = false;
-	public var practiceAllowed:Bool = false;
+	public static var usedPlayFeatures:Bool = false;
+	public static var cpuControlled:Bool = false;
+	public static var practiceAllowed:Bool = false;
 
 	public var pauseHUD:FlxCamera;
 	public var _swagstage:SwagStage;
@@ -964,6 +964,8 @@ class PlayState extends MusicBeatState
 
 	override public function destroy() {
 		usedPlayFeatures = false;
+		practiceAllowed = false;
+		cpuControlled = false;
 		super.destroy();
 	}
 
