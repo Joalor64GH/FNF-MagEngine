@@ -2004,7 +2004,7 @@ class PlayState extends MusicBeatState
 					}
 
 					charSing(dad, Math.abs(daNote.noteData), altAnim);
-					strumPlay(cpuStrums, Math.abs(daNote.noteData));
+					strumsPlay(cpuStrums, Math.abs(daNote.noteData));
 
 					if (SONG.needsVoices)
 						vocals.volume = 1;
@@ -2037,9 +2037,9 @@ class PlayState extends MusicBeatState
 		}
 
 		if (cpuControlled)
-			strumPlay(playerStrums, null, true);
+			strumsPlay(playerStrums, null, true, true);
 
-		strumPlay(cpuStrums, null, true);
+		strumsPlay(cpuStrums, null, true);
 
 		if (!inCutscene)
 		{
@@ -2361,7 +2361,6 @@ class PlayState extends MusicBeatState
 	private function keyShit():Void
 	{
 		var controlArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
-		var controlReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
 		var controlHoldArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
 
 		// FlxG.watch.addQuick('asdfa', upP);
@@ -2452,7 +2451,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (!cpuControlled)
-			strumPlay(playerStrums, null, false, true);
+			strumsPlay(playerStrums, null, true, true);
 	}
 
 	function noteMissPress(direction:Float = 1):Void
@@ -2499,65 +2498,55 @@ class PlayState extends MusicBeatState
 		charSing(boyfriend, Math.abs(note.noteData), "miss");
 	}
 
-	function strumPlay(strums:FlxTypedGroup<FlxSprite>, ?direction:Float = 1, ?staticAnim:Bool = false, ?isPlayer:Bool = false)
+	function strumsPlay(strums:FlxTypedGroup<FlxSprite>, ?direction:Float = 1, ?staticAnim:Bool = false, ?isPlayer:Bool = false)
 	{
-		if (!isPlayer && staticAnim)
+		var controlArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
+		var controlReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
+		strums.forEach(function(spr:FlxSprite)
 		{
-			strums.forEach(function(spr:FlxSprite)
+			if (!isPlayer && staticAnim && spr.animation.finished)
 			{
-				if (spr.animation.finished)
+				if (FlxG.save.data.transparentNotes)
+					spr.alpha = noteTransparencyLevel;
+
+				spr.animation.play('static');
+				spr.centerOffsets();
+			}
+
+			if (isPlayer && staticAnim)
+			{
+				if (controlArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
+				{
+					if (FlxG.save.data.transparentNotes)
+						spr.alpha = 1;
+
+					spr.animation.play('pressed', true);
+				}
+				if (controlReleaseArray[spr.ID])
 				{
 					if (FlxG.save.data.transparentNotes)
 						spr.alpha = noteTransparencyLevel;
 
-					spr.animation.play('static');
-					spr.centerOffsets();
+					spr.animation.play('static', true);
 				}
-			});
-		}
-		else
-		{
-			var controlArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
-			var controlReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
-			strums.forEach(function(spr:FlxSprite)
+			}
+			else if ((isPlayer || (!isPlayer && FlxG.save.data.cpuNotesGlow)) && !staticAnim && direction == spr.ID)
 			{
-				if (isPlayer)
-				{
-					if (controlArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
-					{
-						if (FlxG.save.data.transparentNotes)
-							spr.alpha = 1;
+				if (FlxG.save.data.transparentNotes)
+					spr.alpha = 1;
 
-						spr.animation.play('pressed', true);
-					}
-					if (controlReleaseArray[spr.ID])
-					{
-						if (FlxG.save.data.transparentNotes)
-							spr.alpha = noteTransparencyLevel;
+				spr.animation.play('confirm', true);
+			}
 
-						spr.animation.play('static', true);
-					}
-				}
-				else if (!FlxG.save.data.cpuNotesGlow)
-				{
-					if (direction == spr.ID)
-					{
-						if (FlxG.save.data.transparentNotes)
-							spr.alpha = 1;
-
-						spr.animation.play('confirm', true);
-					}
-				}
-				if (spr.animation.curAnim.name == 'confirm' && !isPixelStage)
-				{
-					spr.centerOffsets();
-					spr.offset.x -= 13;
-					spr.offset.y -= 13;
-				}
-				else
-					spr.centerOffsets();
-			});
-		}
+			if (spr.animation.curAnim.name == 'confirm' && !isPixelStage)
+			{
+				spr.centerOffsets();
+				spr.offset.x -= 13;
+				spr.offset.y -= 13;
+			}
+			else
+				spr.centerOffsets();
+		});
 	}
 
 	function charSing(char:Character, direction:Float, alt:String = '')
@@ -2628,7 +2617,7 @@ class PlayState extends MusicBeatState
 				note.destroy();
 			}
 
-			strumPlay(playerStrums, Math.abs(note.noteData));
+			strumsPlay(playerStrums, Math.abs(note.noteData), false, true);
 
 			note.wasGoodHit = true;
 
