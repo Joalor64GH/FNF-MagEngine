@@ -1412,7 +1412,7 @@ class PlayState extends MusicBeatState
 			if (FlxG.save.data.transparentNotes)
 				babyArrow.alpha = noteTransparencyLevel;
 
-			if (storyPlaylist.length == originalStoryPlaylistLength)
+			if (!isStoryMode || storyPlaylist.length == originalStoryPlaylistLength)
 			{
 				babyArrow.y -= 10;
 				babyArrow.alpha = 0;
