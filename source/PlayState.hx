@@ -2518,7 +2518,7 @@ class PlayState extends MusicBeatState
 					spr.animation.play('static', true);
 				}
 			}
-			else if ((isPlayer || (!isPlayer && FlxG.save.data.cpuNotesGlow)) && !staticAnim && direction == spr.ID)
+			else if ((isPlayer || FlxG.save.data.cpuNotesGlow) && !staticAnim && direction == spr.ID)
 			{
 				if (FlxG.save.data.transparentNotes)
 					spr.alpha = 1;
