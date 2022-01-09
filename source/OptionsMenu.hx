@@ -32,17 +32,19 @@ class OptionsMenu extends MusicBeatState
 	var opt:Option;
 
 	var options:Array<OptionCategory> = [
-		new OptionCategory("Preferences", [
-			new DownscrollOption(),
-			new AccuracyOption(),
-			new GhostTappingOption(),
-			new CacheOption(),
-			new FPSOption(),
-			new MEMOption(),
-			new VerOption()
-		]),
+		new OptionCategory("Preferences",
+			[
+				new DownscrollOption(),
+				new MiddlescrollOption(),
+				new AccuracyOption(),
+				new GhostTappingOption(),
+				new CacheOption(),
+				new FPSOption(),
+				new MEMOption(),
+				new VerOption()
+			]),
 		new OptionCategory("Controls"),
-		new OptionCategory("Notes", [new SplooshOption(), new TransparentNotesOption()]),
+		new OptionCategory("Notes", [new OpponentNotesGlowOption(), new SplooshOption(), new TransparentNotesOption()]),
 		new OptionCategory("Exit")
 	];
 

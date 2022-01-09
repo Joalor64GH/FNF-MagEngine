@@ -216,7 +216,7 @@ class Paths
 	}
 
 	static public function addCustomGraphic(key:String):FlxGraphic
-		{
+	{
 		#if MODS
 		if (FileSystem.exists(modsImages(key)))
 		{

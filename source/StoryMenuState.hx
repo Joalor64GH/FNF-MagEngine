@@ -350,7 +350,7 @@ class StoryMenuState extends MusicBeatState
 	function loadFromWeekJson(jsonInput:String):SwagWeek
 	{
 		var rawJson = null;
-		
+
 		#if MODS
 		var moddyFile:String = Paths.modSong('weeks/' + jsonInput);
 		if (FileSystem.exists(moddyFile))

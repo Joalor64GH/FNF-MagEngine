@@ -113,6 +113,28 @@ class DownscrollOption extends Option
 	}
 }
 
+class MiddlescrollOption extends Option
+{
+	public function new()
+	{
+		super();
+		daValue = FlxG.save.data.middlescroll;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.middlescroll = !FlxG.save.data.middlescroll;
+		daValue = FlxG.save.data.middlescroll;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Middlescroll";
+	}
+}
+
 class PhotoSensitivityOption extends Option
 {
 	public function new()
@@ -176,6 +198,28 @@ class AccuracyOption extends Option
 	private override function updateDisplay():String
 	{
 		return "Accuracy Display";
+	}
+}
+
+class OpponentNotesGlowOption extends Option
+{
+	public function new()
+	{
+		super();
+		daValue = FlxG.save.data.cpuNotesGlow;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.cpuNotesGlow = !FlxG.save.data.cpuNotesGlow;
+		daValue = FlxG.save.data.cpuNotesGlow;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Opponent Notes Glow";
 	}
 }
 

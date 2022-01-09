@@ -64,9 +64,10 @@ typedef SwagStage =
 
 class PlayState extends MusicBeatState
 {
-	public static var STRUM_X = 42;
-
 	public static var instance:PlayState = null;
+
+	public static var STRUM_X = 42;
+	public static var STRUM_X_MIDDLESCROLL = -278;
 
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
@@ -785,9 +786,8 @@ class PlayState extends MusicBeatState
 		}
 		Conductor.songPosition = -5000;
 
-		strumLine = new FlxSprite(0, 50).makeGraphic(STRUM_X, 10);
-		if (FlxG.save.data.downscroll)
-			strumLine.y = FlxG.height - 150;
+		strumLine = new FlxSprite(0,
+			50).makeGraphic(FlxG.save.data.middlescroll ? STRUM_X_MIDDLESCROLL : STRUM_X, FlxG.save.data.downscroll ? FlxG.height - 150 : 10);
 		strumLine.scrollFactor.set();
 
 		strumLineNotes = new FlxTypedGroup<FlxSprite>();
@@ -819,7 +819,6 @@ class PlayState extends MusicBeatState
 		add(camFollowPos);
 
 		FlxG.camera.follow(camFollowPos, LOCKON, 1);
-		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow);
 
@@ -828,9 +827,7 @@ class PlayState extends MusicBeatState
 		FlxG.fixedTimestep = false;
 		moveCameraSection(0);
 
-		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.image('healthBar'));
-		if (FlxG.save.data.downscroll)
-			healthBarBG.setPosition(0, FlxG.height * 0.1);
+		healthBarBG = new FlxSprite(0, FlxG.height * (FlxG.save.data.downscroll ? 0.1 : 0.9)).loadGraphic(Paths.image('healthBar'));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
 		add(healthBarBG);
@@ -1335,7 +1332,7 @@ class PlayState extends MusicBeatState
 		for (i in 0...4)
 		{
 			// FlxG.log.add(i);
-			babyArrow = new FlxSprite(STRUM_X, strumLine.y);
+			babyArrow = new FlxSprite(FlxG.save.data.middlescroll ? STRUM_X_MIDDLESCROLL : STRUM_X, strumLine.y);
 
 			switch (curStage)
 			{
@@ -1428,7 +1425,11 @@ class PlayState extends MusicBeatState
 			if (player == 1)
 				playerStrums.add(babyArrow);
 			else
+			{
+				if (FlxG.save.data.middlescroll)
+					babyArrow.visible = false;
 				cpuStrums.add(babyArrow);
+			}
 
 			strumLineNotes.add(babyArrow);
 
@@ -1611,14 +1612,6 @@ class PlayState extends MusicBeatState
 	var startedCountdown:Bool = false;
 	var canPause:Bool = true;
 
-	function truncateFloat(number:Float, precision:Int):Float
-	{
-		var num = number;
-		num = num * Math.pow(10, precision);
-		num = Math.round(num) / Math.pow(10, precision);
-		return num;
-	}
-
 	override public function update(elapsed:Float)
 	{
 		#if !debug
@@ -1712,7 +1705,7 @@ class PlayState extends MusicBeatState
 				+ songScore
 				+ " | Misses: "
 				+ misses
-				+ (FlxG.save.data.accuracy ? " | Accuracy: " + truncateFloat(accuracy, 2) + "%" : "");
+				+ (FlxG.save.data.accuracy ? " | Accuracy: " + CoolUtil.truncateFloat(accuracy, 2) + "%" : "");
 
 		if (controls.PAUSE && startedCountdown && canPause)
 		{
@@ -1911,6 +1904,8 @@ class PlayState extends MusicBeatState
 			while (unspawnNotes.length > 0 && unspawnNotes[0].strumTime - Conductor.songPosition < time)
 			{
 				var dunceNote:Note = unspawnNotes[0];
+				if (FlxG.save.data.middlescroll && !dunceNote.mustPress)
+					dunceNote.visible = false;
 				notes.insert(0, dunceNote);
 
 				var index:Int = unspawnNotes.indexOf(dunceNote);
@@ -2058,6 +2053,9 @@ class PlayState extends MusicBeatState
 			}
 
 			setOnLuas('health', health);
+			setOnLuas('botplayEnabled', cpuControlled);
+			setOnLuas('downscrollEnabled', FlxG.save.data.downscroll);
+			setOnLuas('middlescrollEnabled', FlxG.save.data.middlescroll);
 			setOnLuas('accuracyEnabled', FlxG.save.data.accuracy);
 			setOnLuas('noteSplashesEnabled', FlxG.save.data.splooshes);
 			for (i in 0...playerStrums.length)
@@ -2540,7 +2538,7 @@ class PlayState extends MusicBeatState
 						spr.animation.play('static', true);
 					}
 				}
-				else
+				else if (!FlxG.save.data.cpuNotesGlow)
 				{
 					if (direction == spr.ID)
 					{

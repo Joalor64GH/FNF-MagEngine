@@ -73,12 +73,11 @@ class CoolUtil
 		{
 			#if sys
 			var daList:Array<String> = sys.io.File.getContent(path).trim().split('\n');
-	
+
 			for (i in 0...daList.length)
 			{
 				daList[i] = daList[i].trim();
 			}
-	
 			#end
 			return daList;
 		}

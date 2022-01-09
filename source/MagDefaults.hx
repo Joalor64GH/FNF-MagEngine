@@ -7,11 +7,17 @@ class MagDefaults
 		if (FlxG.save.data.downscroll == null)
 			FlxG.save.data.downscroll = false;
 
+		if (FlxG.save.data.middlescroll == null)
+			FlxG.save.data.middlescroll = false;
+
 		if (FlxG.save.data.ghostTapping == null)
 			FlxG.save.data.ghostTapping = true;
 
 		if (FlxG.save.data.accuracy == null)
 			FlxG.save.data.accuracy = true;
+
+		if (FlxG.save.data.cpuNotesGlow == null)
+			FlxG.save.data.cpuNotesGlow = true;
 
 		if (FlxG.save.data.splooshes == null)
 			FlxG.save.data.splooshes = true;
