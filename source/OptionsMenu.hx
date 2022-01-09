@@ -36,8 +36,8 @@ class OptionsMenu extends MusicBeatState
 			[
 				new DownscrollOption(),
 				new MiddlescrollOption(),
-				new AccuracyOption(),
 				new GhostTappingOption(),
+				new AccuracyOption(),
 				new CacheOption(),
 				new FPSOption(),
 				new MEMOption(),
