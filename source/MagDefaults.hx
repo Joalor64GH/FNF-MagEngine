@@ -1,4 +1,3 @@
-import openfl.Lib;
 import flixel.FlxG;
 
 class MagDefaults
@@ -8,17 +7,26 @@ class MagDefaults
 		if (FlxG.save.data.downscroll == null)
 			FlxG.save.data.downscroll = false;
 
-		if (FlxG.save.data.dfjk == null)
-			FlxG.save.data.dfjk = false;
+		if (FlxG.save.data.middlescroll == null)
+			FlxG.save.data.middlescroll = false;
+
+		if (FlxG.save.data.ghostTapping == null)
+			FlxG.save.data.ghostTapping = true;
 
 		if (FlxG.save.data.accuracy == null)
-			FlxG.save.data.accuracy = false;
+			FlxG.save.data.accuracy = true;
+
+		if (FlxG.save.data.cpuNotesGlow == null)
+			FlxG.save.data.cpuNotesGlow = true;
 
 		if (FlxG.save.data.splooshes == null)
 			FlxG.save.data.splooshes = true;
 
 		if (FlxG.save.data.transparentNotes == null)
 			FlxG.save.data.transparentNotes = false;
+
+		if (FlxG.save.data.comboOffset == null)
+			FlxG.save.data.comboOffset = [0, 0, 0, 0];
 
 		if (FlxG.save.data.cache == null)
 			FlxG.save.data.cache = true;
@@ -31,9 +39,6 @@ class MagDefaults
 
 		if (FlxG.save.data.v == null)
 			FlxG.save.data.v = true;
-
-		if (FlxG.save.data.fpsCap == null)
-			FlxG.save.data.fpsCap = 60;
 
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();

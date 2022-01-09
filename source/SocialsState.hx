@@ -16,6 +16,7 @@ import flixel.util.FlxColor;
 import io.newgrounds.NG;
 import lime.app.Application;
 import flixel.math.FlxMath;
+import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
@@ -117,9 +118,9 @@ class SocialsState extends MusicBeatState
 				switch (optionShit[curSelected])
 				{
 					case 'youtube':
-						CoolUtil.openURL(sys.io.File.getContent(Paths.txt('data/youtube')));
+						CoolUtil.openURL(OpenFlAssets.getText(Paths.txt('data/youtube')));
 					case 'twitter':
-						CoolUtil.openURL(sys.io.File.getContent(Paths.txt('data/twitter')));
+						CoolUtil.openURL(OpenFlAssets.getText(Paths.txt('data/twitter')));
 				}
 			}
 		}

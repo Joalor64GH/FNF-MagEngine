@@ -53,6 +53,8 @@ class PauseSubState extends MusicBeatSubstate
 
 		FlxG.sound.list.add(pauseMusic);
 
+		CustomFadeTransition.nextCamera = transCamera;
+
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.alpha = 0;
 		bg.scrollFactor.set();
@@ -152,7 +154,6 @@ class PauseSubState extends MusicBeatSubstate
 					var poop = Highscore.formatSong(name, curSelected);
 					PlayState.SONG = Song.loadFromJson(poop, name);
 					PlayState.storyDifficulty = curSelected;
-					CustomFadeTransition.nextCamera = transCamera;
 					MusicBeatState.resetState();
 					FlxG.sound.music.volume = 0;
 					return;
@@ -176,11 +177,9 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.cpuControlled = !PlayState.cpuControlled;
 					botplayTxt.visible = PlayState.cpuControlled;
 				case "Restart Song":
-					CustomFadeTransition.nextCamera = transCamera;
 					MusicBeatState.resetState();
 				case "Exit to menu":
 					PlayState.bbCounter = 0;
-					CustomFadeTransition.nextCamera = transCamera;
 					if (PlayState.isStoryMode)
 						MusicBeatState.switchState(new StoryMenuState());
 					else

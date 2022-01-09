@@ -1,6 +1,4 @@
 // made by stilic (mag engine contributer)
-
-
 package;
 
 import flixel.FlxSprite;

@@ -32,17 +32,20 @@ class OptionsMenu extends MusicBeatState
 	var opt:Option;
 
 	var options:Array<OptionCategory> = [
-		new OptionCategory("Preferences", [
-			new DownscrollOption(),
-			new AccuracyOption(),
-			new GhostTappingOption(),
-			new CacheOption(),
-			new FPSOption(),
-			new MEMOption(),
-			new VerOption()
-		]),
+		new OptionCategory("Preferences",
+			[
+				new DownscrollOption(),
+				new MiddlescrollOption(),
+				new GhostTappingOption(),
+				new AccuracyOption(),
+				new CacheOption(),
+				new FPSOption(),
+				new MEMOption(),
+				new VerOption()
+			]),
+		new OptionCategory("Adjust Offsets"),
 		new OptionCategory("Controls"),
-		new OptionCategory("Notes", [new SplooshOption(), new TransparentNotesOption()]),
+		new OptionCategory("Notes", [new OpponentNotesGlowOption(), new SplooshOption(), new TransparentNotesOption()]),
 		new OptionCategory("Exit")
 	];
 
@@ -147,13 +150,6 @@ class OptionsMenu extends MusicBeatState
 						currentSelectedCat.getOptions()[curSelected].left();
 				}
 			}
-			else if (FlxG.keys.pressed.SHIFT)
-			{
-				if (FlxG.keys.justPressed.RIGHT)
-					FlxG.save.data.offset += 0.1;
-				else if (FlxG.keys.justPressed.LEFT)
-					FlxG.save.data.offset -= 0.1;
-			}
 
 			if (controls.ACCEPT)
 			{
@@ -166,10 +162,10 @@ class OptionsMenu extends MusicBeatState
 						grpCheckboxes.members[curSelected].daValue = currentSelectedCat.getOptions()[curSelected].daValue;
 						grpControls.members[curSelected].changeText(currentSelectedCat.getOptions()[curSelected].getDisplay());
 					}
+					else if (options[curSelected].getName() == "Adjust Offsets")
+						MusicBeatState.switchState(new OffsetsState());
 					else if (options[curSelected].getName() == "Controls")
-					{
 						openSubState(new KeyBindMenu());
-					}
 					else if (options[curSelected].getName() == "Exit")
 						quit();
 					else

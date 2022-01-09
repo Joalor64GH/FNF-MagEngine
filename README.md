@@ -7,7 +7,7 @@ It's the first FNF Engine to **support fully custom weeks and assets with no cod
 
 ## Friday Night Funkin
 
-This is the repository for Friday Night Funkin, a game originally made for Ludum Dare 47 "Stuck In a Loop".
+Friday Night Funkin is a game originally made for Ludum Dare 47 "Stuck In a Loop".
 
 Play the Ludum Dare prototype here: https://ninja-muffin24.itch.io/friday-night-funkin
 Play the Newgrounds one here: https://www.newgrounds.com/portal/view/770371
@@ -18,6 +18,7 @@ IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN 
 ## Credits / shoutouts
 
 -   [Magnumsrt](https://twitter.com/MagnumsrtYT) - Owner, coder, artist, and developer
+-   [Stilic](https://github.com/Stilic) - Options menu and a lot of fixes and improvements
 -   [ShadowMario](https://twitter.com/Shadow_Mario_) - Some code from Psych Engine
 
 ## Original Credits / shoutouts

@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin' Mag Engine" file="MagEngine" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="1.2" company="Magnumsrt" />
+	<app title="Friday Night Funkin' Mag Engine" file="MagEngine" packageName="com.magnumsrt.magengine" package="com.magnumsrt.magengine" main="Main" version="1.2" company="Magnumsrt" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -120,9 +120,9 @@
 
 	<haxelib name="flixel-ui" />
 	<haxelib name="newgrounds" />
-	<haxelib name="faxe" if='switch' />
-	<haxelib name="linc_luajit" />
-	<haxelib name="polymod" />
+	<haxelib name="faxe" if="switch" />
+	<haxelib name="linc_luajit" if="desktop" />
+	<haxelib name="polymod" if="desktop" />
 	<haxelib name="discord_rpc" if="desktop" />
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
