@@ -249,15 +249,18 @@ class TitleState extends MusicBeatState
 		}
 		#end
 
-		if (controls.ACCEPT)
-			pressedEnter = true;
-
-		#if switch
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
-		if (gamepad != null && gamepad.justPressed.B)
-			pressedEnter = true;
-		#end
+		if (gamepad != null)
+		{
+			if (gamepad.justPressed.START)
+				pressedEnter = true;
+
+			#if switch
+			if (gamepad.justPressed.B)
+				pressedEnter = true;
+			#end
+		}
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
