@@ -220,6 +220,9 @@ class PlayState extends MusicBeatState
 
 		FlxCamera.defaultCameras = [camGame];
 
+		CustomFadeTransition.nextCamera = camHUD;
+		PauseSubState.transCamera = camHUD;
+
 		persistentUpdate = true;
 		persistentDraw = true;
 
@@ -646,7 +649,6 @@ class PlayState extends MusicBeatState
 					stageCurtains.antialiasing = true;
 					stageCurtains.scrollFactor.set(1.3, 1.3);
 					stageCurtains.active = false;
-
 					add(stageCurtains);
 				}
 				#if MODS
@@ -1718,14 +1720,9 @@ class PlayState extends MusicBeatState
 
 				// 1 / 1000 chance for Gitaroo Man easter egg
 				if (FlxG.random.bool(0.1))
-				{
-					// gitaroo man easter egg
-					CustomFadeTransition.nextCamera = camHUD;
 					MusicBeatState.switchState(new GitarooPause());
-				}
 				else
 				{
-					PauseSubState.transCamera = camHUD;
 					openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 				}
 
@@ -1737,7 +1734,6 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			CustomFadeTransition.nextCamera = camHUD;
 			MusicBeatState.switchState(new ChartingState());
 
 			#if desktop
@@ -1776,10 +1772,7 @@ class PlayState extends MusicBeatState
 			iconP2.animation.curAnim.curFrame = 0;
 
 		if (FlxG.keys.justPressed.EIGHT)
-		{
-			CustomFadeTransition.nextCamera = camHUD;
 			MusicBeatState.switchState(new AnimationDebug(SONG.player2));
-		}
 
 		if (startingSong)
 		{
@@ -2106,7 +2099,6 @@ class PlayState extends MusicBeatState
 			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
-				CustomFadeTransition.nextCamera = camHUD;
 				MusicBeatState.switchState(new StoryMenuState());
 
 				if (!usedPlayFeatures && SONG.validScore)
@@ -2161,7 +2153,6 @@ class PlayState extends MusicBeatState
 		else
 		{
 			trace('WENT BACK TO FREEPLAY??');
-			CustomFadeTransition.nextCamera = camHUD;
 			if (FlxTransitionableState.skipNextTransIn)
 				CustomFadeTransition.nextCamera = null;
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
@@ -2179,7 +2170,6 @@ class PlayState extends MusicBeatState
 		PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 		FlxG.sound.music.stop();
 
-		CustomFadeTransition.nextCamera = camHUD;
 		LoadingState.loadAndSwitchState(new PlayState());
 	}
 

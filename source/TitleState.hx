@@ -233,9 +233,10 @@ class TitleState extends MusicBeatState
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
 
 		if (FlxG.keys.justPressed.F)
-		{
 			FlxG.fullscreen = !FlxG.fullscreen;
-		}
+
+		if (FlxG.keys.justPressed.E)
+			MusicBeatState.switchState(new OffsetsState());
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
 
@@ -243,9 +244,7 @@ class TitleState extends MusicBeatState
 		for (touch in FlxG.touches.list)
 		{
 			if (touch.justPressed)
-			{
 				pressedEnter = true;
-			}
 		}
 		#end
 
