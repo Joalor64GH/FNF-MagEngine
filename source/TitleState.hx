@@ -235,9 +235,6 @@ class TitleState extends MusicBeatState
 		if (FlxG.keys.justPressed.F)
 			FlxG.fullscreen = !FlxG.fullscreen;
 
-		if (FlxG.keys.justPressed.E)
-			MusicBeatState.switchState(new OffsetsState());
-
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
 
 		#if mobile

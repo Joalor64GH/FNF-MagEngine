@@ -25,6 +25,9 @@ class MagDefaults
 		if (FlxG.save.data.transparentNotes == null)
 			FlxG.save.data.transparentNotes = false;
 
+		if (FlxG.save.data.comboOffset == null)
+			FlxG.save.data.comboOffset = [0, 0, 0, 0];
+
 		if (FlxG.save.data.cache == null)
 			FlxG.save.data.cache = true;
 
