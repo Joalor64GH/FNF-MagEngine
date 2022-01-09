@@ -2474,8 +2474,6 @@ class PlayState extends MusicBeatState
 	function noteMiss(note:Note):Void
 	{
 		// miss when note is offscreen
-		vocals.volume = 0;
-
 		if (!practiceAllowed)
 			health -= 0.0475;
 		combo = 0;
@@ -2485,6 +2483,7 @@ class PlayState extends MusicBeatState
 		updateAccuracy();
 
 		charSing(boyfriend, Math.abs(note.noteData), "miss");
+		vocals.volume = 0;
 	}
 
 	function strumsPlay(strums:FlxTypedGroup<FlxSprite>, ?direction:Float = 1, ?staticAnim:Bool = false, ?isPlayer:Bool = false)
