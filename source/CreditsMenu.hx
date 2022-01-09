@@ -22,25 +22,21 @@ class CreditsMenu extends MusicBeatState
 {
 	var credits:Array<CreditsMetadata> = [];
 
-	var selector:FlxText;
-	var curSelected:Int = 0;
-	var curDifficulty:Int = 1;
+	static var curSelected:Int = 0;
 
-	private var grpSongs:FlxTypedGroup<Alphabet>;
-	private var curPlaying:Bool = false;
-	
-    var descText:FlxText;
+	private var grpCredits:FlxTypedGroup<Alphabet>;
+
+	var descText:FlxText;
 	var bg:FlxSprite;
-	var intendedColor:Int;
 	var colorTween:FlxTween;
 
 	override function create()
 	{
-		var initSonglist = CoolUtil.coolTextFile(Paths.txt('data/creditsList'));
+		var initCreditlist = CoolUtil.coolTextFile(Paths.txt('data/creditsList'));
 
-		for (i in 0...initSonglist.length)
+		for (i in 0...initCreditlist.length)
 		{
-			var data:Array<String> = initSonglist[i].split(':');
+			var data:Array<String> = initCreditlist[i].split(':');
 			credits.push(new CreditsMetadata(data[0], data[1]));
 		}
 
@@ -57,60 +53,45 @@ class CreditsMenu extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		var isDebug:Bool = false;
-
-		#if debug
-		isDebug = true;
-		#end
-
-
 		// LOAD MUSIC
 
 		// LOAD CHARACTERS
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-        bg.color = FlxColor.PINK;
+		bg.color = FlxColor.PINK;
 		add(bg);
 
-        descText = new FlxText(50, 600, 1180, "", 32);
-        descText.setFormat(Paths.font("funkin.otf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-        descText.scrollFactor.set();
-        descText.text = 'what';
-        descText.borderSize = 2.4;
-        add(descText);
+		descText = new FlxText(50, 600, 1180, "", 32);
+		descText.setFormat(Paths.font("funkin.otf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText.scrollFactor.set();
+		descText.text = 'what';
+		descText.borderSize = 2.4;
+		add(descText);
 
-		grpSongs = new FlxTypedGroup<Alphabet>();
-		add(grpSongs);
+		grpCredits = new FlxTypedGroup<Alphabet>();
+		add(grpCredits);
 
 		for (i in 0...credits.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, credits[i].modderName, true, false);
-			songText.isMenuItem = true;
-			songText.targetY = i;
-			grpSongs.add(songText);
-            
+			var creditText:Alphabet = new Alphabet(0, (70 * i) + 30, credits[i].modderName, true, false);
+			creditText.isMenuItem = true;
+			creditText.targetY = i;
+			grpCredits.add(creditText);
 
-			// songText.x += 40;
+			// creditText.x += 40;
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-			// songText.screenCenter(X);
+			// creditText.screenCenter(X);
 		}
 
 		changeSelection();
 		// FlxG.sound.playMusic(Paths.music('title'), 0);
 		// FlxG.sound.music.fadeIn(2, 0, 0.8);
-		selector = new FlxText();
 
-		selector.size = 40;
-		selector.text = ">";
-		// add(selector);
-
-        var descText:FlxText = new FlxText(50, 600, 1180, "", 32);
-        descText.setFormat(Paths.font("funkin.otf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-        descText.scrollFactor.set();
-        descText.borderSize = 2.4;
-        add(descText);
-        
-		var swag:Alphabet = new Alphabet(1, 0, "swag");
+		var descText:FlxText = new FlxText(50, 600, 1180, "", 32);
+		descText.setFormat(Paths.font("funkin.otf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText.scrollFactor.set();
+		descText.borderSize = 2.4;
+		add(descText);
 
 		// JUST DOIN THIS SHIT FOR TESTING!!!
 		/* 
@@ -131,6 +112,7 @@ class CreditsMenu extends MusicBeatState
 
 		super.create();
 	}
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -141,65 +123,63 @@ class CreditsMenu extends MusicBeatState
 		var space = FlxG.keys.justPressed.SPACE;
 
 		var shiftMult:Int = 1;
-		if(FlxG.keys.pressed.SHIFT) shiftMult = 3;
+		if (FlxG.keys.pressed.SHIFT)
+			shiftMult = 3;
 
 		if (upP)
 		{
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			changeSelection(-shiftMult);
 		}
 		if (downP)
 		{
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			changeSelection(shiftMult);
 		}
 
 		if (controls.BACK)
-		{
-
 			MusicBeatState.switchState(new MainMenuState());
-		}
 	}
 
 	function changeSelection(change:Int = 0)
-		{
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-	
-			curSelected += change;
-	
-			if (curSelected < 0)
-				curSelected = credits.length - 1;
-			if (curSelected >= credits.length)
-				curSelected = 0;
+	{
+		curSelected += change;
 
-            descText.text = credits[curSelected].desc;
-			
-	
-			// selector.y = (70 * curSelected) + 30;
-			var bullShit:Int = 0;
-	
-			for (item in grpSongs.members)
+		if (curSelected < 0)
+			curSelected = credits.length - 1;
+		if (curSelected >= credits.length)
+			curSelected = 0;
+
+		descText.text = credits[curSelected].desc;
+
+		// selector.y = (70 * curSelected) + 30;
+		var bullShit:Int = 0;
+
+		for (item in grpCredits.members)
+		{
+			item.targetY = bullShit - curSelected;
+			bullShit++;
+
+			item.alpha = 0.6;
+			// item.setGraphicSize(Std.int(item.width * 0.8));
+
+			if (item.targetY == 0)
 			{
-				item.targetY = bullShit - curSelected;
-				bullShit++;
-	
-				item.alpha = 0.6;
-				// item.setGraphicSize(Std.int(item.width * 0.8));
-	
-				if (item.targetY == 0)
-				{
-					item.alpha = 1;
-					// item.setGraphicSize(Std.int(item.width));
-				}
+				item.alpha = 1;
+				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
+	}
 }
+
 class CreditsMetadata
 {
 	public var modderName:String = "";
-    public var desc:String = "";
+	public var desc:String = "";
 
 	public function new(name:String, desc:String)
 	{
 		this.modderName = name;
-        this.desc = desc;
+		this.desc = desc;
 	}
 }

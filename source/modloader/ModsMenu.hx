@@ -1,6 +1,6 @@
 package modloader;
 
-#if sys
+#if MODS
 import modloader.ModList;
 import modloader.PolymodHandler;
 import modloader.ModsMenuOption;
@@ -21,16 +21,16 @@ class ModsMenu extends MusicBeatState
 {
 	var curSelected:Int = 0;
 
-	public var page:FlxTypedGroup<ModsMenuOption> = new FlxTypedGroup<ModsMenuOption>();
+	var page:FlxTypedGroup<ModsMenuOption> = new FlxTypedGroup<ModsMenuOption>();
 
 	public static var instance:ModsMenu;
 
 	public static var coolId:String;
 
+	var infoText:FlxText;
+
 	override function create()
 	{
-		instance = this;
-
 		var menuBG:FlxSprite;
 
 		menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
@@ -42,10 +42,19 @@ class ModsMenu extends MusicBeatState
 		menuBG.antialiasing = true;
 		add(menuBG);
 
+		infoText = new FlxText(0, 0, 0, "NOT MODS INSTALLED!", 12);
+		infoText.scrollFactor.set();
+		infoText.setFormat("VCR OSD Mono", 35, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		infoText.borderSize = 2;
+		infoText.screenCenter();
+		infoText.visible = false;
+		infoText.antialiasing = true;
+		add(infoText);
+
 		super.create();
 
 		PolymodHandler.loadModMetadata();
-		
+
 		add(page);
 
 		loadMods();
@@ -63,36 +72,42 @@ class ModsMenu extends MusicBeatState
 
 		var optionLoopNum:Int = 0;
 
-		for(modId in PolymodHandler.metadataArrays)
-			{
-				var modOption = new ModsMenuOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
-				page.add(modOption);
-				optionLoopNum++;
+		for (modId in PolymodHandler.metadataArrays)
+		{
+			var modOption = new ModsMenuOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
+			page.add(modOption);
+			optionLoopNum++;
 
-				coolId = modId;
-			}
+			coolId = modId;
+		}
+
+		infoText.visible = (page.length == 0);
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		if (controls.UP_P)
+		if (page.length > 0)
 		{
-			curSelected -= 1;
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		}
+			if (controls.UP_P)
+			{
+				curSelected--;
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			}
 
-		if (controls.DOWN_P)
-		{
-			curSelected += 1;
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			if (controls.DOWN_P)
+			{
+				curSelected++;
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			}
 		}
 
 		if (controls.BACK)
 		{
 			PolymodHandler.loadMods();
-			FlxG.switchState(new MainMenuState());
+			FlxG.mouse.visible = false;
+			MusicBeatState.switchState(new MainMenuState());
 		}
 
 		if (curSelected < 0)

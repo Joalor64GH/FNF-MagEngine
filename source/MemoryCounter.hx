@@ -9,13 +9,12 @@ import openfl.text.TextFormat;
  * FPS class extension to display memory usage.
  * @author Kirill Poletaev
  */
-
 class MemoryCounter extends TextField
 {
 	private var times:Array<Float>;
 	private var memPeak:Float = 0;
-	
-	public function new(inX:Float = 10.0, inY:Float = 10.0, inCol:Int = 0x000000) 
+
+	public function new(inX:Float = 10.0, inY:Float = 10.0, inCol:Int = 0x000000)
 	{
 		super();
 
@@ -30,14 +29,15 @@ class MemoryCounter extends TextField
 	}
 
 	private function onEnter(_)
-	{	
-		var mem:Float = Math.abs(Math.round(System.totalMemory / 1024 / 1024 * 100)/100);
-		
-		if (mem > memPeak) memPeak = mem;
+	{
+		var mem:Float = Math.abs(Math.round(System.totalMemory / 1024 / 1024 * 100) / 100);
+
+		if (mem > memPeak)
+			memPeak = mem;
 
 		if (visible)
-		{	
-			text = "\nMEM: " + mem + " MB\nMEM peak: " + memPeak + " MB";	
+		{
+			text = "\nMEM: " + mem + " MB\nMEM peak: " + memPeak + " MB";
 		}
 	}
 }

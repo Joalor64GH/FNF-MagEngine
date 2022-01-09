@@ -28,13 +28,25 @@ class HealthIcon extends FlxSprite
 
 	public function swapOldIcon()
 	{
-		(isOldIcon = !isOldIcon) ? changeIcon("bf-old") : changeIcon(char);
+		if (isOldIcon)
+			changeIcon('bf-old');
+		else
+			changeIcon('bf');
 	}
 
 	public function changeIcon(char:String)
 	{
-		if (char != 'bf-pixel' && char != 'bf-old')
-			char = char.split("-")[0];
+		var iconsList = CoolUtil.coolTextFile(Paths.txt('data/iconsList'));
+
+		for (i in 0...iconsList.length)
+		{
+			var data:Array<String> = iconsList[i].split(':');
+			if (data[1] != null && char == data[0])
+			{
+				char = data[1];
+				break;
+			}
+		}
 
 		if (!OpenFlAssets.exists(Paths.image('icons/icon-' + char)))
 			char = 'face';

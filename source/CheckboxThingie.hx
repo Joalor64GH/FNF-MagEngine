@@ -1,10 +1,9 @@
 // made by stilic (mag engine contributer)
-
-
 package;
 
 import flixel.FlxSprite;
 
+// STOLEN FROM PSYCH CUZ ITS GOOD!!
 class CheckboxThingie extends FlxSprite
 {
 	public var sprTracker:FlxSprite;
@@ -42,7 +41,7 @@ class CheckboxThingie extends FlxSprite
 		super.update(elapsed);
 	}
 
-	public function set_daValue(check:Bool):Bool
+	private function set_daValue(check:Bool):Bool
 	{
 		if (check)
 		{

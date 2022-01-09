@@ -16,7 +16,6 @@ class MenuCharacter extends FlxSprite
 
 		var tex = Paths.getSparrowAtlas('campaign_menu_UI_characters');
 		frames = tex;
-		
 
 		animation.addByPrefix(weekCharacters(), 24);
 		animation.addByPrefix(weekCharactersAccepted(), 24, false);
@@ -27,34 +26,32 @@ class MenuCharacter extends FlxSprite
 	}
 
 	function weekCharacters():String
+	{
+		var fullText:String = Assets.getText(Paths.txt('menuCharacters'));
+
+		var firstArray:Array<String> = fullText.split('\n');
+		var swagGoodArray:Array<Array<String>> = [];
+
+		for (i in firstArray)
 		{
-			var fullText:String = Assets.getText(Paths.txt('menuCharacters'));
-	
-			var firstArray:Array<String> = fullText.split('\n');
-			var swagGoodArray:Array<Array<String>> = [];
-	
-			for (i in firstArray)
-			{
-				swagGoodArray.push(i.split('--'));
-			}
-	
-			return swagGoodArray;
-			
+			swagGoodArray.push(i.split('--'));
 		}
 
-		function weekCharactersAccepted():String
-			{
-				var fullText:String = Assets.getText(Paths.txt('menuCharactersHEY'));
-		
-				var firstArray:Array<String> = fullText.split('\n');
-				var swagGoodArray:Array<Array<String>> = [];
-		
-				for (i in firstArray)
-				{
-					swagGoodArray.push(i.split('--'));
-				}
-		
-				return swagGoodArray;
-				
-			}
+		return swagGoodArray;
+	}
+
+	function weekCharactersAccepted():String
+	{
+		var fullText:String = Assets.getText(Paths.txt('menuCharactersHEY'));
+
+		var firstArray:Array<String> = fullText.split('\n');
+		var swagGoodArray:Array<Array<String>> = [];
+
+		for (i in firstArray)
+		{
+			swagGoodArray.push(i.split('--'));
+		}
+
+		return swagGoodArray;
+	}
 }

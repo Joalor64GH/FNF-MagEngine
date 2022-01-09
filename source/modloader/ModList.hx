@@ -1,6 +1,6 @@
 package modloader;
 
-#if polymod
+#if MODS
 import polymod.Polymod;
 import flixel.FlxG;
 
@@ -8,7 +8,7 @@ class ModList
 {
 	public static var modList:Map<String, Bool> = new Map<String, Bool>();
 
-    public static var modMetadatas:Map<String, ModMetadata> = new Map();
+	public static var modMetadatas:Map<String, ModMetadata> = new Map();
 
 	public static function setModEnabled(mod:String, enabled:Bool):Void
 	{
@@ -25,18 +25,18 @@ class ModList
 		return modList.get(mod);
 	}
 
-    public static function getActiveMods(modsToCheck:Array<String>):Array<String>
-    {
-        var activeMods:Array<String> = [];
+	public static function getActiveMods(modsToCheck:Array<String>):Array<String>
+	{
+		var activeMods:Array<String> = [];
 
-        for(modName in modsToCheck)
-        {
-            if(getModEnabled(modName))
-                activeMods.push(modName);
-        }
+		for (modName in modsToCheck)
+		{
+			if (getModEnabled(modName))
+				activeMods.push(modName);
+		}
 
-        return activeMods;
-    }
+		return activeMods;
+	}
 
 	public static function load():Void
 	{

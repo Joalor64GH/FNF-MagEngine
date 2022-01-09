@@ -2,7 +2,7 @@ package shaders;
 
 import flixel.system.FlxAssets.FlxShader;
 
-class ChromaticAberrationShader extends FlxShader
+class ChromaticAberration extends FlxShader
 {
 	@:glFragmentSource('
 		#pragma header
