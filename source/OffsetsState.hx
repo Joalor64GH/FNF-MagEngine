@@ -49,7 +49,7 @@ class OffsetsState extends MusicBeatState
 		if (controls.BACK)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-			MusicBeatState.switchState(new MainMenuState());
+			MusicBeatState.switchState(new OptionsMenu());
 		}
 
 		super.update(elapsed);
