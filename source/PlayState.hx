@@ -264,6 +264,12 @@ class PlayState extends MusicBeatState
 					"If you can beat me here...",
 					"Only then I will even CONSIDER letting you\ndate my daughter!"
 				];
+			case 'senpai':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('senpai/senpaiDialogue'));
+			case 'roses':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('roses/rosesDialogue'));
+			case 'thorns':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 			default:
 				var path:String = 'data/' + SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase() + '-Dialogue';
 				var daPath:String;
@@ -2532,56 +2538,66 @@ class PlayState extends MusicBeatState
 	}
 
 	function strumsPlay(strums:FlxTypedGroup<FlxSprite>, ?direction:Float = 1, ?staticAnim:Bool = false, ?isPlayer:Bool = false)
-	{
-		var controlArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
-		var controlReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
-		strums.forEach(function(spr:FlxSprite)
 		{
-			if (!isPlayer && staticAnim && spr.animation.finished)
+			var controlArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
+			var controlReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
+			strums.forEach(function(spr:FlxSprite)
 			{
-				if (FlxG.save.data.transparentNotes)
-					spr.alpha = noteTransparencyLevel;
-
-				spr.animation.play('static');
-				spr.centerOffsets();
-			}
-
-			if (isPlayer && staticAnim)
-			{
-				if (controlArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
-				{
-					if (FlxG.save.data.transparentNotes)
-						spr.alpha = 1;
-
-					spr.animation.play('pressed', true);
-				}
-				if (controlReleaseArray[spr.ID])
+				if (!isPlayer && staticAnim && spr.animation.finished)
 				{
 					if (FlxG.save.data.transparentNotes)
 						spr.alpha = noteTransparencyLevel;
-
-					spr.animation.play('static', true);
+	
+					spr.animation.play('static');
+					spr.centerOffsets();
 				}
-			}
-			else if ((isPlayer || FlxG.save.data.cpuNotesGlow) && !staticAnim && direction == spr.ID)
-			{
-				if (FlxG.save.data.transparentNotes)
-					spr.alpha = 1;
 
-				spr.animation.play('confirm', true);
-			}
-
-			if (spr.animation.curAnim.name == 'confirm' && !isPixelStage)
-			{
-				spr.centerOffsets();
-				spr.offset.x -= 13;
-				spr.offset.y -= 13;
-			}
-			else
-				spr.centerOffsets();
-		});
-	}
-
+				if (isPlayer && staticAnim && spr.animation.finished)
+					{
+						if (FlxG.save.data.transparentNotes)
+							spr.alpha = noteTransparencyLevel;
+		
+						spr.animation.play('static');
+						spr.centerOffsets();
+					}
+		
+	
+				if (isPlayer && staticAnim)
+				{
+					if (controlArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
+					{
+						if (FlxG.save.data.transparentNotes)
+							spr.alpha = 1;
+	
+						spr.animation.play('pressed', true);
+					}
+					if (controlReleaseArray[spr.ID])
+					{
+						if (FlxG.save.data.transparentNotes)
+							spr.alpha = noteTransparencyLevel;
+	
+						spr.animation.play('static', true);
+					}
+				}
+				else if ((isPlayer || FlxG.save.data.cpuNotesGlow) && !staticAnim && direction == spr.ID)
+				{
+					if (FlxG.save.data.transparentNotes)
+						spr.alpha = 1;
+	
+					spr.animation.play('confirm', true);
+				}
+	
+				if (spr.animation.curAnim.name == 'confirm' && !isPixelStage)
+				{
+					spr.centerOffsets();
+					spr.offset.x -= 13;
+					spr.offset.y -= 13;
+				}
+				else
+					spr.centerOffsets();
+			});
+		}
+	
 	function charSing(char:Character, direction:Float, alt:String = '')
 	{
 		switch (direction)
