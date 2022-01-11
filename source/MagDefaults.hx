@@ -40,6 +40,15 @@ class MagDefaults
 		if (FlxG.save.data.v == null)
 			FlxG.save.data.v = true;
 
+	  if (FlxG.save.data.ratingCntr == null)
+			FlxG.save.data.ratingCntr = true;
+		
+	  if (FlxG.save.data.ms == null)
+			FlxG.save.data.ms = true;
+
+		if (FlxG.save.data.fpsCap == null)
+			FlxG.save.data.fpsCap = true;
+
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();
 	}

@@ -42,7 +42,7 @@ class ModsMenu extends MusicBeatState
 		menuBG.antialiasing = true;
 		add(menuBG);
 
-		infoText = new FlxText(0, 0, 0, "NOT MODS INSTALLED!", 12);
+		infoText = new FlxText(0, 0, 0, "NO MODS INSTALLED!", 12);
 		infoText.scrollFactor.set();
 		infoText.setFormat("VCR OSD Mono", 35, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		infoText.borderSize = 2;

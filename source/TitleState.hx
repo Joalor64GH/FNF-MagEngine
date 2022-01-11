@@ -276,7 +276,7 @@ class TitleState extends MusicBeatState
 			transitioning = true;
 			// FlxG.sound.music.stop();
 
-			new FlxTimer().start(2, function(tmr:FlxTimer)
+			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
 				MusicBeatState.switchState(new MainMenuState());
 			});
@@ -348,9 +348,10 @@ class TitleState extends MusicBeatState
 			// credTextShit.text = 'In association \nwith';
 			// credTextShit.screenCenter();
 			case 5:
-				createCoolText(['mag engine', 'developed by']);
+				createCoolText(['mag engine', 'by']);
 			case 7:
 				addMoreText('magnumsrt');
+				addMoreText('stilic');
 			// credTextShit.text += '\nNewgrounds';
 			case 8:
 				deleteCoolText();

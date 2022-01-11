@@ -59,7 +59,8 @@ class CachingState extends MusicBeatState
 		add(logo);
 
 		daText = new FlxText(0, FlxG.height - 80, FlxG.width, 'Loading...', 12);
-		daText.setFormat("VCR OSD Mono", 30, FlxColor.WHITE, CENTER);
+		daText.setFormat("VCR OSD Mono", 30, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		daText.borderSize = 2;
 		daText.antialiasing = true;
 		add(daText);
 

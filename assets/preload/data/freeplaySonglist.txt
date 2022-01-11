@@ -6,7 +6,7 @@ Spookeez:spooky:2:0xFF223344
 South:spooky:2:0xFF223344
 Monster:monster:2:0xFF223344
 Pico:pico:3:0xFF941653
-Philly:pico:3:0xFF941653
+Philly-Nice:pico:3:0xFF941653
 Blammed:pico:3:0xFF941653
 Satin Panties:mom:4:0xFFFC96D7
 High:mom:4:0xFFFC96D7

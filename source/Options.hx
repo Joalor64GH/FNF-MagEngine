@@ -289,6 +289,50 @@ class CacheOption extends Option
 	}
 }
 
+class RatingOption extends Option
+{
+	public function new()
+	{
+		super();
+		daValue = FlxG.save.data.ratingCntr;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.ratingCntr = !FlxG.save.data.ratingCntr;
+		daValue = FlxG.save.data.ratingCntr;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Rating Counter";
+	}
+}
+
+class FPSCapOption extends Option
+{
+	public function new()
+	{
+		super();
+		daValue = FlxG.save.data.fpsCap;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.fpsCap = !FlxG.save.data.fpsCap;
+		daValue = FlxG.save.data.fpsCap;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "FPS Cap";
+	}
+}
+
 class FPSOption extends Option
 {
 	public function new()
@@ -376,6 +420,6 @@ class TransparentNotesOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Transparent Notes";
+		return "Transparent Strums";
 	}
 }

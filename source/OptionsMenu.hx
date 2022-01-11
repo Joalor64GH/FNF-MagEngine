@@ -41,7 +41,9 @@ class OptionsMenu extends MusicBeatState
 				new CacheOption(),
 				new FPSOption(),
 				new MEMOption(),
-				new VerOption()
+				new VerOption(),
+				new RatingOption(),
+				new FPSCapOption()
 			]),
 		new OptionCategory("Adjust Offsets"),
 		new OptionCategory("Controls"),

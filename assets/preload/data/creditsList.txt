@@ -1,5 +1,5 @@
 Magnumsrt:Main Developer
-Stilic:Week Seven Options Menu
+Stilic:Assistant Developer
 Shadow Mario:Mod Support
 RozeBud:KeyBinds Menu
 Yoshubs:New Inputs

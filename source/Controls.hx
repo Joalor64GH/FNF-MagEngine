@@ -505,7 +505,7 @@ class Controls extends FlxActionSet
 					inline bindKeys(Control.RIGHT, [FlxKey.fromString("D"), FlxKey.RIGHT]);
 					inline bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
 					inline bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
-					inline bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
+					inline bindKeys(Control.PAUSE, [ENTER, ESCAPE]);
 					inline bindKeys(Control.RESET, [FlxKey.fromString("R")]);
 				case Duo(true):
 					inline bindKeys(Control.UP, [W, K]);
@@ -538,7 +538,7 @@ class Controls extends FlxActionSet
 					bindKeys(Control.RIGHT, [D, L, FlxKey.RIGHT]);
 					bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
 					bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
-					bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
+					bindKeys(Control.PAUSE, [ENTER, ESCAPE]);
 					bindKeys(Control.RESET, [R]);
 				case Duo(true):
 					bindKeys(Control.UP, [W, K]);
@@ -577,7 +577,7 @@ class Controls extends FlxActionSet
 		inline bindKeys(Control.RIGHT, [FlxKey.fromString(FlxG.save.data.rightBind), FlxKey.RIGHT]);
 		inline bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
 		inline bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
-		inline bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
+		inline bindKeys(Control.PAUSE, [ENTER, ESCAPE]);
 		inline bindKeys(Control.RESET, [FlxKey.fromString(FlxG.save.data.killBind)]);
 	}
 
