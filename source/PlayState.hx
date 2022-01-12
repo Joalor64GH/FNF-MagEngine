@@ -864,7 +864,6 @@ class PlayState extends MusicBeatState
 		infoTxt.y = FlxG.height - infoTxt.height;
 		infoTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		infoTxt.scrollFactor.set();
-		infoTxt.borderSize = 2;
 		infoTxt.antialiasing = true;
 		add(infoTxt);
 
@@ -874,6 +873,7 @@ class PlayState extends MusicBeatState
 		scoreTxt.scrollFactor.set();
 		scoreTxt.antialiasing = true;
 		add(scoreTxt);
+
 		if (FlxG.save.data.ratingCntr)
 		{
 			ratingCntr = new FlxText(20, 0, 0, "", 20);
