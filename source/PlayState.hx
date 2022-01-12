@@ -874,15 +874,15 @@ class PlayState extends MusicBeatState
 		scoreTxt.scrollFactor.set();
 		scoreTxt.antialiasing = true;
 		add(scoreTxt);
-    if (FlxG.save.data.ratingCntr)
+		if (FlxG.save.data.ratingCntr)
 		{
-      ratingCntr = new FlxText(20, 0, 0, "", 20);
-      ratingCntr.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-      ratingCntr.borderSize = 2;
-      ratingCntr.borderQuality = 2;
-      ratingCntr.scrollFactor.set();
-      ratingCntr.cameras = [camHUD];
-      ratingCntr.screenCenter(Y);
+			ratingCntr = new FlxText(20, 0, 0, "", 20);
+			ratingCntr.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			ratingCntr.borderSize = 2;
+			ratingCntr.borderQuality = 2;
+			ratingCntr.scrollFactor.set();
+			ratingCntr.cameras = [camHUD];
+			ratingCntr.screenCenter(Y);
 			add(ratingCntr);
 		}
 
@@ -899,14 +899,13 @@ class PlayState extends MusicBeatState
 		setOnLuas('startingSong', startingSong);
 
 		#if MODS
-		var luaFile:String = 'data/' + PlayState.SONG.song.toLowerCase() + '/modchart';
+		var luaFile:String = 'data/' + PlayState.SONG.song.toLowerCase() + '/modchart';		
 
 		if (Assets.exists(Paths.lua(luaFile, 'preload')))
 		{
 			luaFile = Paths.lua(luaFile, 'preload');
 			luaArray.push(new MagModChart(luaFile));
 		}
-		#else
 		else if (FileSystem.exists(Paths.modLua(luaFile)))
 		{
 			luaFile = Paths.modLua(luaFile);
