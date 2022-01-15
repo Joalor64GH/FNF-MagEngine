@@ -106,7 +106,7 @@ class FreeplayState extends MusicBeatState
 		infoBG.alpha = 0.5;
 		add(infoBG);
 
-		var infoText:FlxText = new FlxText(5, FlxG.height - 22, 0, "Press P To Play The Song Instrumental, Press ACCEPT To Play The Song In Freeplay Mode", 12);
+		var infoText:FlxText = new FlxText(5, FlxG.height - 22, 0, "Press P to play the song instrumental, Press ACCEPT to play the song in freeplay mode.", 12);
 		infoText.scrollFactor.set();
 		infoText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT);
 		infoText.antialiasing = true;

@@ -293,7 +293,6 @@ class StoryMenuState extends MusicBeatState
 				{
 					LoadingState.loadAndSwitchState(new PlayState(), true);
 				});
-				
 			}
 		}
 

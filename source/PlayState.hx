@@ -105,11 +105,11 @@ class PlayState extends MusicBeatState
 	private var notes:FlxTypedGroup<Note>;
 	private var unspawnNotes:Array<Note> = [];
 
-	private var cameraSpeed:Float = 1;
-
 	public var strumLine:FlxSprite;
 
 	private var curSection:Int = 0;
+
+  private var cameraSpeed:Float = 1;
 
 	private var camFollow:FlxPoint;
 	private var camFollowPos:FlxObject;
@@ -142,7 +142,6 @@ class PlayState extends MusicBeatState
 	public var goods:Int = 0;
 	public var sicks:Int = 0;
 
-
 	public var accuracy:Float = 0;
 
 	private var totalNotesHit:Float = 0;
@@ -166,6 +165,7 @@ class PlayState extends MusicBeatState
 	var phillyCityLights:FlxTypedGroup<FlxSprite>;
 	var phillyTrain:FlxSprite;
 	var trainSound:FlxSound;
+  
 	var ratingCntr:FlxText;
 
 	var hihellothere = false;
@@ -264,19 +264,13 @@ class PlayState extends MusicBeatState
 					"If you can beat me here...",
 					"Only then I will even CONSIDER letting you\ndate my daughter!"
 				];
-			case 'senpai':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('data/senpai/senpaiDialogue'));
-			case 'roses':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('data/roses/rosesDialogue'));
-			case 'thorns':
-				dialogue = CoolUtil.coolTextFile(Paths.txt('data/thorns/thornsDialogue'));
 			default:
 				var path:String = 'data/' + SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase() + '-Dialogue';
 				var daPath:String;
 				#if MODS
 				daPath = Paths.modTxt(path);
 				if (FileSystem.exists(daPath))
-					dialogue = CoolUtil.coolTextFile(daPath);
+					dialogue = CoolUtil.evenCoolerTextFile(daPath);
 				else
 				{
 					daPath = Paths.txt(path);
@@ -384,7 +378,6 @@ class PlayState extends MusicBeatState
 					add(streetBehind);
 
 					phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.image('philly/train', 'week3'));
-
 					add(phillyTrain);
 
 					trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes', 'week3'));
@@ -882,18 +875,17 @@ class PlayState extends MusicBeatState
 		scoreTxt.antialiasing = true;
 		add(scoreTxt);
 
-		ratingCntr = new FlxText(20, 0, 0, "", 20);
-		ratingCntr.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		ratingCntr.borderSize = 2;
-		ratingCntr.borderQuality = 2;
-		ratingCntr.scrollFactor.set();
-		ratingCntr.cameras = [camHUD];
-		ratingCntr.screenCenter(Y);
 		if (FlxG.save.data.ratingCntr)
 		{
+			ratingCntr = new FlxText(20, 0, 0, "", 20);
+			ratingCntr.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			ratingCntr.borderSize = 2;
+			ratingCntr.borderQuality = 2;
+			ratingCntr.scrollFactor.set();
+			ratingCntr.cameras = [camHUD];
+			ratingCntr.screenCenter(Y);
 			add(ratingCntr);
 		}
-
 
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -908,7 +900,7 @@ class PlayState extends MusicBeatState
 		setOnLuas('startingSong', startingSong);
 
 		#if MODS
-		var luaFile:String = 'data/' + PlayState.SONG.song.toLowerCase() + '/modchart';
+		var luaFile:String = 'data/' + PlayState.SONG.song.toLowerCase() + '/modchart';		
 
 		if (Assets.exists(Paths.lua(luaFile, 'preload')))
 		{
@@ -1213,8 +1205,8 @@ class PlayState extends MusicBeatState
 							go.setGraphicSize(Std.int(go.width * daPixelZoom));
 
 						go.updateHitbox();
-
 						go.screenCenter();
+
 						add(go);
 						FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
 							ease: FlxEase.cubeInOut,
@@ -1661,7 +1653,6 @@ class PlayState extends MusicBeatState
 			openfl.Lib.current.stage.frameRate = 120;
 		}
 
-
 		if (chromeEnabled)
 		{
 			if (chromeShit.rOffset.value[1] > 0)
@@ -1744,14 +1735,11 @@ class PlayState extends MusicBeatState
 
 		ratingCntr.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
 
-		if (cpuControlled)
+    if (cpuControlled)
 			scoreTxt.text = "BOTPLAY";
 		else
-			scoreTxt.text = "Score: "
-				+ songScore
-				+ " | Misses: "
-				+ misses
-				+ (FlxG.save.data.accuracy ? " | Accuracy: " + CoolUtil.truncateFloat(accuracy, 2) + "%" : "");
+      scoreTxt.text = 'Score: ${songScore} | Misses: ${misses}'
+				+ (FlxG.save.data.accuracy ? ' | Accuracy: ' + CoolUtil.truncateFloat(accuracy, 2) + '%' : '');
 
 		if (controls.PAUSE && startedCountdown && canPause)
 		{
@@ -2233,7 +2221,7 @@ class PlayState extends MusicBeatState
 
 		var rating:FlxSprite = new FlxSprite();
 
-		var daRating:String = Conductor.judgeNote(note, noteDiff);
+    var daRating:String = Conductor.judgeNote(note, noteDiff);
 
 		var score:Int = 0;
 
@@ -2294,7 +2282,6 @@ class PlayState extends MusicBeatState
 		rating.velocity.x -= FlxG.random.int(0, 10);
 		rating.x += FlxG.save.data.comboOffset[0];
 		rating.y -= FlxG.save.data.comboOffset[1];
-		
 
 		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2));
 		comboSpr.cameras = [camHUD];
@@ -2396,7 +2383,7 @@ class PlayState extends MusicBeatState
 		curSection++;
 	}
 
-	//stilic fixed this (thanks stilic)
+	// stilic fixed this (thanks stilic)
 	private function keyShit():Void
 	{
 		var controlArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];

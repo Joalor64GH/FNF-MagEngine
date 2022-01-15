@@ -420,6 +420,6 @@ class TransparentNotesOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Transparent Notes";
+		return "Transparent Strums";
 	}
 }

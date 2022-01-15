@@ -22,8 +22,8 @@ class PauseSubState extends MusicBeatSubstate
 		'Resume',
 		'Restart Song',
 		'Change Difficulty',
+		'Toggle Botplay',
 		'Toggle Practice Mode',
-		'Botplay',
 		'Exit to menu'
 	];
 	var practiceTxt:FlxText;
@@ -105,9 +105,9 @@ class PauseSubState extends MusicBeatSubstate
 		botplayTxt.x = FlxG.width - (botplayTxt.width + 10);
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
-		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
-		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
-		FlxTween.tween(blueballedTxt, {alpha: 1, y: blueballedTxt.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
+		FlxTween.tween(levelInfo, {alpha: 1, y: 10}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
+		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y - 4}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
+		FlxTween.tween(blueballedTxt, {alpha: 1, y: blueballedTxt.y - 4}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 		FlxTween.tween(practiceTxt, {alpha: 1, y: practiceTxt.y - 8}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});
 		FlxTween.tween(botplayTxt, {alpha: 1, y: botplayTxt.y - 8}, 0.4, {ease: FlxEase.quartInOut, startDelay: 1.1});
 
@@ -172,7 +172,7 @@ class PauseSubState extends MusicBeatSubstate
 					FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 					PlayState.practiceAllowed = !PlayState.practiceAllowed;
 					practiceTxt.visible = PlayState.practiceAllowed;
-				case "Botplay":
+				case "Toggle Botplay":
 					FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 					PlayState.cpuControlled = !PlayState.cpuControlled;
 					botplayTxt.visible = PlayState.cpuControlled;

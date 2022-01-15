@@ -65,9 +65,9 @@ class Main extends Sprite
 		}
 
 		#if html5
-		framerate = 120;
+		framerate = 60;
 		#end
-		
+
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile

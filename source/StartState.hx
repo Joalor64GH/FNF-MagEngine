@@ -2,7 +2,6 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxState;
-import openfl.Lib;
 
 class StartState extends FlxState
 {
@@ -12,13 +11,14 @@ class StartState extends FlxState
 		PlayerSettings.init();
 		MagDefaults.init();
 
-		if (FlxG.save.data.cache){
+		#if (CACHE && !debug)
+		if (FlxG.save.data.cache)
 			FlxG.switchState(new CachingState());
-		}
 		else
-		{
+			FlxG.switchState(new TitleState());
+		#else
 		FlxG.switchState(new TitleState());
-		}
+		#end
 
 		super.create();
 	}

@@ -119,7 +119,7 @@ class OptionsMenu extends MusicBeatState
 					changeSelection();
 				}
 				else
-					MusicBeatState.switchState(new MainMenuState());
+					quit();
 			}
 			if (controls.UP_P)
 			{
@@ -169,7 +169,7 @@ class OptionsMenu extends MusicBeatState
 					else if (options[curSelected].getName() == "Controls")
 						openSubState(new KeyBindMenu());
 					else if (options[curSelected].getName() == "Exit")
-						MusicBeatState.switchState(new MainMenuState());
+						quit();
 					else
 					{
 						currentSelectedCat = options[curSelected];
@@ -202,6 +202,12 @@ class OptionsMenu extends MusicBeatState
 	}
 
 	var isSettingControl:Bool = false;
+
+	function quit()
+	{
+		FlxG.save.flush();
+		MusicBeatState.switchState(new MainMenuState());
+	}
 
 	function changeSelection(change:Int = 0)
 	{
