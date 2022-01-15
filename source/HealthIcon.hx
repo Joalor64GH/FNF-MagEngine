@@ -49,9 +49,12 @@ class HealthIcon extends FlxSprite
 			animation.play(char);
 			this.char = char;
 
-			antialiasing = true;
-			if(char.endsWith('-pixel')) {
+			if (char.endsWith('-pixel') || char.startsWith('senpai') || char.startsWith('spirit')){
 				antialiasing = false;
+			}
+			else
+			{
+				antialiasing = true;
 			}
 		}
 	}

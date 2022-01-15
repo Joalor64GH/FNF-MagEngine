@@ -1,4 +1,4 @@
-package;
+ package;
 
 #if desktop
 import Discord.DiscordClient;
@@ -52,6 +52,11 @@ import sys.FileSystem;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
 #end
+import hscript.Expr;
+import hscript.Parser;
+import hscript.Interp;
+import modloader.ModsMenu;
+
 
 using StringTools;
 
@@ -264,6 +269,12 @@ class PlayState extends MusicBeatState
 					"If you can beat me here...",
 					"Only then I will even CONSIDER letting you\ndate my daughter!"
 				];
+			case 'senpai':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('data/senpai/senpaiDialogue'));
+			case 'roses':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('data/roses/rosesDialogue'));
+			case 'thorns':
+				dialogue = CoolUtil.coolTextFile(Paths.txt('data/thorns/thornsDialogue'));
 			default:
 				var path:String = 'data/' + SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase() + '-Dialogue';
 				var daPath:String;
@@ -899,7 +910,6 @@ class PlayState extends MusicBeatState
 
 		setOnLuas('startingSong', startingSong);
 
-		#if MODS
 		var luaFile:String = 'data/' + PlayState.SONG.song.toLowerCase() + '/modchart';		
 
 		if (Assets.exists(Paths.lua(luaFile, 'preload')))
@@ -907,13 +917,41 @@ class PlayState extends MusicBeatState
 			luaFile = Paths.lua(luaFile, 'preload');
 			luaArray.push(new MagModChart(luaFile));
 		}
-		#else
+		#if MODS
 		else if (FileSystem.exists(Paths.modLua(luaFile)))
 		{
 			luaFile = Paths.modLua(luaFile);
 			luaArray.push(new MagModChart(luaFile));
 		}
 		#end
+	
+		#if (MODS && SCRIPTS)
+		var filesInserted:Array<String> = [];
+		var folders:Array<String> = [Paths.getPreloadPath('scripts/')];
+		folders.insert(0, Paths.mods('scripts/'));
+		folders.insert(0, Paths.mods(ModsMenu.coolId + '/scripts/'));
+		for (folder in folders)
+		{
+			if(FileSystem.exists(folder))
+			{
+				for (file in FileSystem.readDirectory(folder))
+				{
+					if (file.endsWith('.hx') && !filesInserted.contains(file))
+					{
+						var expr = Paths.hscript(file);
+						var parser = new hscript.Parser();
+						var ast = parser.parseString(expr);
+						var interp = new hscript.Interp();
+						trace(interp.execute(ast));
+
+						filesInserted.push(file);
+					}
+				}
+			}
+		}
+		#end
+		
+		
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
 		// UI_camera.zoom = 1;
