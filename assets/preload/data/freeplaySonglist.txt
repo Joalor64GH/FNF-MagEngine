@@ -1,7 +1,7 @@
 Tutorial:gf:0:0xFF9271FD
 Bopeebo:dad:1:0xFF9271FD
 Fresh:dad:1:0xFF9271FD
-Dad-Battle:dad:1:0xFF9271FD
+Dad Battle:dad:1:0xFF9271FD
 Spookeez:spooky:2:0xFF223344
 South:spooky:2:0xFF223344
 Monster:monster:2:0xFF223344

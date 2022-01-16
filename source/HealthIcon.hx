@@ -57,6 +57,16 @@ class HealthIcon extends FlxSprite
 				antialiasing = true;
 			}
 		}
+
+		if (!OpenFlAssets.exists(Paths.image('icons/icon-' + char)))
+			char = 'face';
+
+		loadGraphic(Paths.image('icons/icon-' + char), true, 150, 150);
+
+		antialiasing = true;
+
+		animation.add(char, [0, 1], 0, false, isPlayer);
+		animation.play(char);
 	}
 
 	public function getCharacter():String {
