@@ -1858,7 +1858,7 @@ class PlayState extends MusicBeatState
 
 		if (camZooming)
 		{
-			var calcShit:Float = CoolUtil.boundTo(1 - (elapsed * 4), 0, 1);
+			var calcShit:Float = CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1);
 			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, calcShit);
 			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, calcShit);
 		}
@@ -2860,6 +2860,12 @@ class PlayState extends MusicBeatState
 		callOnLuas('stepHit', []);
 	}
 
+	function camZoomAdd()
+	{
+		FlxG.camera.zoom += 0.017;
+		camHUD.zoom += 0.05;
+	}
+
 	var lightningStrikeBeat:Int = 0;
 	var lightningOffset:Int = 8;
 
@@ -2885,16 +2891,10 @@ class PlayState extends MusicBeatState
 			moveCameraSection(Std.int(curStep / 16));
 		// HARDCODING FOR MILF ZOOMS!
 		if (curSong.toLowerCase() == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
-		{
-			FlxG.camera.zoom += 0.015;
-			camHUD.zoom += 0.03;
-		}
+			camZoomAdd();
 
 		if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
-		{
-			FlxG.camera.zoom += 0.015;
-			camHUD.zoom += 0.03;
-		}
+			camZoomAdd();
 
 		var daNum:Int = 35;
 		iconP1.setGraphicSize(Std.int(iconP1.width + daNum));
