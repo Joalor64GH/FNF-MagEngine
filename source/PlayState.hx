@@ -2570,17 +2570,7 @@ class PlayState extends MusicBeatState
 				spr.animation.play('static');
 				spr.centerOffsets();
 			}
-
-			if (isPlayer && staticAnim && spr.animation.finished)
-			{
-				if (FlxG.save.data.transparentNotes)
-					spr.alpha = noteTransparencyLevel;
-
-				spr.animation.play('static');
-				spr.centerOffsets();
-			}
-
-			if (isPlayer && staticAnim)
+			else if (isPlayer && staticAnim)
 			{
 				if (controlArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
 				{
@@ -2589,7 +2579,7 @@ class PlayState extends MusicBeatState
 
 					spr.animation.play('pressed', true);
 				}
-				if (controlReleaseArray[spr.ID])
+				else if (controlReleaseArray[spr.ID])
 				{
 					if (FlxG.save.data.transparentNotes)
 						spr.alpha = noteTransparencyLevel;
