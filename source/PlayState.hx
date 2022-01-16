@@ -52,6 +52,10 @@ import sys.FileSystem;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
 #end
+import hscript.Expr;
+import hscript.Parser;
+import hscript.Interp;
+import modloader.ModsMenu;
 
 using StringTools;
 
@@ -109,7 +113,7 @@ class PlayState extends MusicBeatState
 
 	private var curSection:Int = 0;
 
-  private var cameraSpeed:Float = 1;
+	private var cameraSpeed:Float = 1;
 
 	private var camFollow:FlxPoint;
 	private var camFollowPos:FlxObject;
@@ -165,7 +169,7 @@ class PlayState extends MusicBeatState
 	var phillyCityLights:FlxTypedGroup<FlxSprite>;
 	var phillyTrain:FlxSprite;
 	var trainSound:FlxSound;
-  
+
 	var ratingCntr:FlxText;
 
 	var hihellothere = false;
@@ -223,7 +227,8 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD);
 
-		if(!FlxG.save.data.fpsCap){
+		if (!FlxG.save.data.fpsCap)
+		{
 			openfl.Lib.current.stage.frameRate = 999;
 		}
 		else
@@ -270,7 +275,7 @@ class PlayState extends MusicBeatState
 				#if MODS
 				daPath = Paths.modTxt(path);
 				if (FileSystem.exists(daPath))
-					dialogue = CoolUtil.coolTextFile(daPath);
+					dialogue = CoolUtil.evenCoolerTextFile(daPath);
 				else
 				{
 					daPath = Paths.txt(path);
@@ -898,20 +903,47 @@ class PlayState extends MusicBeatState
 
 		setOnLuas('startingSong', startingSong);
 
-		#if MODS
-		var luaFile:String = 'data/' + PlayState.SONG.song.toLowerCase() + '/modchart';		
+		var luaFile:String = 'data/' + PlayState.SONG.song.toLowerCase() + '/modchart';
 
 		if (Assets.exists(Paths.lua(luaFile, 'preload')))
 		{
 			luaFile = Paths.lua(luaFile, 'preload');
 			luaArray.push(new MagModChart(luaFile));
 		}
+		#if MODS
 		else if (FileSystem.exists(Paths.modLua(luaFile)))
 		{
 			luaFile = Paths.modLua(luaFile);
 			luaArray.push(new MagModChart(luaFile));
 		}
 		#end
+
+		#if (MODS && SCRIPTS)
+		var filesInserted:Array<String> = [];
+		var folders:Array<String> = [Paths.getPreloadPath('scripts/')];
+		folders.insert(0, Paths.mods('scripts/'));
+		folders.insert(0, Paths.mods(ModsMenu.coolId + '/scripts/'));
+		for (folder in folders)
+		{
+			if (FileSystem.exists(folder))
+			{
+				for (file in FileSystem.readDirectory(folder))
+				{
+					if (file.endsWith('.hx') && !filesInserted.contains(file))
+					{
+						var expr = Paths.hscript(file);
+						var parser = new hscript.Parser();
+						var ast = parser.parseString(expr);
+						var interp = new hscript.Interp();
+						trace(interp.execute(ast));
+
+						filesInserted.push(file);
+					}
+				}
+			}
+		}
+		#end
+
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
 		// UI_camera.zoom = 1;
@@ -1642,8 +1674,9 @@ class PlayState extends MusicBeatState
 		#if !debug
 		perfectMode = false;
 		#end
-		
-		if(!FlxG.save.data.fpsCap){
+
+		if (!FlxG.save.data.fpsCap)
+		{
 			openfl.Lib.current.stage.frameRate = 999;
 		}
 		else
@@ -1733,10 +1766,10 @@ class PlayState extends MusicBeatState
 
 		ratingCntr.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
 
-    if (cpuControlled)
+		if (cpuControlled)
 			scoreTxt.text = "BOTPLAY";
 		else
-      scoreTxt.text = 'Score: ${songScore} | Misses: ${misses}'
+			scoreTxt.text = 'Score: ${songScore} | Misses: ${misses}'
 				+ (FlxG.save.data.accuracy ? ' | Accuracy: ' + CoolUtil.truncateFloat(accuracy, 2) + '%' : '');
 
 		if (controls.PAUSE && startedCountdown && canPause)
@@ -2219,7 +2252,7 @@ class PlayState extends MusicBeatState
 
 		var rating:FlxSprite = new FlxSprite();
 
-    var daRating:String = Conductor.judgeNote(note, noteDiff);
+		var daRating:String = Conductor.judgeNote(note, noteDiff);
 
 		var score:Int = 0;
 
@@ -2509,80 +2542,80 @@ class PlayState extends MusicBeatState
 	function noteMiss(note:Note):Void
 	{
 		// miss when note is offscreen
-		if (!practiceAllowed && note.noteType != 1 && note.noteType != 2){
-		health -= 0.0475;
-		combo = 0;
+		if (!practiceAllowed && note.noteType != 1 && note.noteType != 2)
+		{
+			health -= 0.0475;
+			combo = 0;
 
-		songScore -= 10;
-		misses++;
-		updateAccuracy();
+			songScore -= 10;
+			misses++;
+			updateAccuracy();
 
-		charSing(boyfriend, Math.abs(note.noteData), "miss");
-		vocals.volume = 0;
+			charSing(boyfriend, Math.abs(note.noteData), "miss");
+			vocals.volume = 0;
 		}
 	}
 
 	function strumsPlay(strums:FlxTypedGroup<FlxSprite>, ?direction:Float = 1, ?staticAnim:Bool = false, ?isPlayer:Bool = false)
+	{
+		var controlArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
+		var controlReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
+		strums.forEach(function(spr:FlxSprite)
 		{
-			var controlArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
-			var controlReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
-			strums.forEach(function(spr:FlxSprite)
+			if (!isPlayer && staticAnim && spr.animation.finished)
 			{
-				if (!isPlayer && staticAnim && spr.animation.finished)
-				{
-					if (FlxG.save.data.transparentNotes)
-						spr.alpha = noteTransparencyLevel;
-	
-					spr.animation.play('static');
-					spr.centerOffsets();
-				}
+				if (FlxG.save.data.transparentNotes)
+					spr.alpha = noteTransparencyLevel;
 
-				if (isPlayer && staticAnim && spr.animation.finished)
-					{
-						if (FlxG.save.data.transparentNotes)
-							spr.alpha = noteTransparencyLevel;
-		
-						spr.animation.play('static');
-						spr.centerOffsets();
-					}
-		
-	
-				if (isPlayer && staticAnim)
-				{
-					if (controlArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
-					{
-						if (FlxG.save.data.transparentNotes)
-							spr.alpha = 1;
-	
-						spr.animation.play('pressed', true);
-					}
-					if (controlReleaseArray[spr.ID])
-					{
-						if (FlxG.save.data.transparentNotes)
-							spr.alpha = noteTransparencyLevel;
-	
-						spr.animation.play('static', true);
-					}
-				}
-				else if ((isPlayer || FlxG.save.data.cpuNotesGlow) && !staticAnim && direction == spr.ID)
+				spr.animation.play('static');
+				spr.centerOffsets();
+			}
+
+			if (isPlayer && staticAnim && spr.animation.finished)
+			{
+				if (FlxG.save.data.transparentNotes)
+					spr.alpha = noteTransparencyLevel;
+
+				spr.animation.play('static');
+				spr.centerOffsets();
+			}
+
+			if (isPlayer && staticAnim)
+			{
+				if (controlArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
 				{
 					if (FlxG.save.data.transparentNotes)
 						spr.alpha = 1;
-	
-					spr.animation.play('confirm', true);
+
+					spr.animation.play('pressed', true);
 				}
-	
-				if (spr.animation.curAnim.name == 'confirm' && !isPixelStage)
+				if (controlReleaseArray[spr.ID])
 				{
-					spr.centerOffsets();
-					spr.offset.x -= 13;
-					spr.offset.y -= 13;
+					if (FlxG.save.data.transparentNotes)
+						spr.alpha = noteTransparencyLevel;
+
+					spr.animation.play('static', true);
 				}
-				else
-					spr.centerOffsets();
-			});
-		}
-	
+			}
+			else if ((isPlayer || FlxG.save.data.cpuNotesGlow) && !staticAnim && direction == spr.ID)
+			{
+				if (FlxG.save.data.transparentNotes)
+					spr.alpha = 1;
+
+				spr.animation.play('confirm', true);
+			}
+
+			if (spr.animation.curAnim.name == 'confirm' && !isPixelStage)
+			{
+				spr.centerOffsets();
+				spr.offset.x -= 13;
+				spr.offset.y -= 13;
+			}
+			else
+				spr.centerOffsets();
+		});
+	}
+
 	function charSing(char:Character, direction:Float, alt:String = '')
 	{
 		switch (direction)

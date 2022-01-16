@@ -36,7 +36,8 @@ class Paths
 		'sounds',
 		'videos',
 		'images',
-		'weeks'
+		'weeks',
+		'scripts'
 	];
 
 	static var currentLevel:String;
@@ -308,6 +309,11 @@ class Paths
 	inline static public function modLua(key:String)
 	{
 		return modFolder('$key.lua');
+	}
+
+	inline static public function hscript(key:String)
+	{
+		return modFolder('scripts/$key.hx');
 	}
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)
