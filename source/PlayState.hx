@@ -85,7 +85,6 @@ class PlayState extends MusicBeatState
 	public static var cpuControlled:Bool = false;
 	public static var practiceAllowed:Bool = false;
 
-	public var pauseHUD:FlxCamera;
 	public var _swagstage:SwagStage;
 
 	public var stageKey:String;
@@ -159,6 +158,7 @@ class PlayState extends MusicBeatState
 
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
+	public var camOther:FlxCamera;
 
 	public static var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 	public static var bbCounter:Int = 0;
@@ -222,24 +222,20 @@ class PlayState extends MusicBeatState
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
+		camOther = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
+		camOther.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD);
+		FlxG.cameras.add(camOther);
 
 		if (!FlxG.save.data.fpsCap)
-		{
 			openfl.Lib.current.stage.frameRate = 999;
-		}
 		else
-		{
 			openfl.Lib.current.stage.frameRate = 120;
-		}
 
 		FlxCamera.defaultCameras = [camGame];
-
-		CustomFadeTransition.nextCamera = camHUD;
-		PauseSubState.transCamera = camHUD;
 
 		persistentUpdate = true;
 		persistentDraw = true;
@@ -1773,11 +1769,8 @@ class PlayState extends MusicBeatState
 				persistentDraw = true;
 				paused = true;
 
-				// 1 / 1000 chance for Gitaroo Man easter egg
-				if (FlxG.random.bool(0.1))
-					MusicBeatState.switchState(new GitarooPause());
-				else
-					openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+				PauseSubState.transCamera = camHUD;
+				openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
 				#if desktop
 				DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
@@ -1787,6 +1780,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
+			CustomFadeTransition.nextCamera = camOther;
 			MusicBeatState.switchState(new ChartingState());
 
 			#if desktop
@@ -1825,7 +1819,10 @@ class PlayState extends MusicBeatState
 			iconP2.animation.curAnim.curFrame = 0;
 
 		if (FlxG.keys.justPressed.EIGHT)
+		{
+			CustomFadeTransition.nextCamera = camOther;
 			MusicBeatState.switchState(new AnimationDebug(SONG.player2));
+		}
 
 		if (startingSong)
 		{
@@ -2150,6 +2147,7 @@ class PlayState extends MusicBeatState
 			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
+				CustomFadeTransition.nextCamera = camOther;
 				MusicBeatState.switchState(new StoryMenuState());
 
 				if (!usedPlayFeatures && SONG.validScore)
@@ -2207,6 +2205,7 @@ class PlayState extends MusicBeatState
 			if (FlxTransitionableState.skipNextTransIn)
 				CustomFadeTransition.nextCamera = null;
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			CustomFadeTransition.nextCamera = camOther;
 			MusicBeatState.switchState(new FreeplayState());
 		}
 
@@ -2225,6 +2224,7 @@ class PlayState extends MusicBeatState
 		PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 		FlxG.sound.music.stop();
 
+		CustomFadeTransition.nextCamera = camOther;
 		LoadingState.loadAndSwitchState(new PlayState());
 	}
 
@@ -2447,10 +2447,8 @@ class PlayState extends MusicBeatState
 					if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit && !daNote.isSustainNote)
 					{
 						if (controlArray[daNote.noteData])
-						{
-							trace('sex moment');
 							sortedNotesList.push(daNote);
-						}
+
 						canMiss = true;
 					}
 				});
