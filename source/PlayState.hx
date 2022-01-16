@@ -2861,9 +2861,9 @@ class PlayState extends MusicBeatState
 		callOnLuas('stepHit', []);
 	}
 
-	function camZoomAdd()
+	function addCamZoom()
 	{
-		FlxG.camera.zoom += 0.017;
+		FlxG.camera.zoom += 0.0165;
 		camHUD.zoom += 0.05;
 	}
 
@@ -2892,10 +2892,10 @@ class PlayState extends MusicBeatState
 			moveCameraSection(Std.int(curStep / 16));
 		// HARDCODING FOR MILF ZOOMS!
 		if (curSong.toLowerCase() == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
-			camZoomAdd();
+			addCamZoom();
 
 		if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
-			camZoomAdd();
+			addCamZoom();
 
 		var daNum:Int = 35;
 		iconP1.setGraphicSize(Std.int(iconP1.width + daNum));
