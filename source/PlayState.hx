@@ -871,6 +871,7 @@ class PlayState extends MusicBeatState
 		scoreTxt = new FlxText(0, healthBarBG.y + 40, FlxG.width, "", 18);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.borderSize = 2;
+		scoreTxt.borderQuality = 2;
 		scoreTxt.scrollFactor.set();
 		scoreTxt.antialiasing = true;
 		add(scoreTxt);
@@ -1752,13 +1753,14 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 		callOnLuas('update', [elapsed]);
 
-		ratingCntr.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
-
 		if (cpuControlled)
 			scoreTxt.text = "BOTPLAY";
 		else
 			scoreTxt.text = 'Score: ${songScore} | Misses: ${misses}'
 				+ (FlxG.save.data.accuracy ? ' | Accuracy: ' + CoolUtil.truncateFloat(accuracy, 2) + '%' : '');
+
+		if (ratingCntr != null)
+			ratingCntr.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
 
 		if (controls.PAUSE && startedCountdown && canPause)
 		{
@@ -2616,7 +2618,6 @@ class PlayState extends MusicBeatState
 		totalPlayed++;
 		accuracy = totalNotesHit / totalPlayed * 100;
 		setOnLuas('accuracy', accuracy);
-		ratingCntr.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${misses}';
 	}
 
 	function goodNoteHit(note:Note):Void
