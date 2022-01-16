@@ -3,7 +3,7 @@
 Ever wanted to make a **full week mod** with phases, custom characters, custom stages, and dialogues?
 I'm sure we all have, but not all of us know how to code. BUT! With Mag Engine, it fixes **literally** all of those problems.
 
-It's the first FNF Engine to **support fully custom weeks and assets with no coding and/or compiling whatsoever**.
+It's an FNF Engine to **support fully custom weeks and assets with no coding and/or compiling whatsoever**.
 
 ## Friday Night Funkin
 
