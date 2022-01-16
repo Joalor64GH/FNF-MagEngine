@@ -1016,14 +1016,6 @@ class PlayState extends MusicBeatState
 		super.create();
 	}
 
-	override public function destroy()
-	{
-		usedPlayFeatures = false;
-		practiceAllowed = false;
-		cpuControlled = false;
-		super.destroy();
-	}
-
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
@@ -1785,9 +1777,7 @@ class PlayState extends MusicBeatState
 				if (FlxG.random.bool(0.1))
 					MusicBeatState.switchState(new GitarooPause());
 				else
-				{
 					openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-				}
 
 				#if desktop
 				DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
@@ -2081,9 +2071,7 @@ class PlayState extends MusicBeatState
 			});
 		}
 
-		if (cpuControlled)
-			strumsPlay(playerStrums, null, true, true);
-
+		strumsPlay(playerStrums, null, true, !cpuControlled);
 		strumsPlay(cpuStrums, null, true);
 
 		if (!inCutscene)
@@ -2103,12 +2091,12 @@ class PlayState extends MusicBeatState
 			setOnLuas('middlescrollEnabled', FlxG.save.data.middlescroll);
 			setOnLuas('accuracyEnabled', FlxG.save.data.accuracy);
 			setOnLuas('noteSplashesEnabled', FlxG.save.data.splooshes);
+
 			for (i in 0...playerStrums.length)
 			{
 				setOnLuas('defaultPlayerStrumXAxis' + i, 0);
 				setOnLuas('defaultPlayerStrumYAxis' + i, 0);
 			}
-
 			for (i in 0...cpuStrums.length)
 			{
 				setOnLuas('defaultPlayer2StrumXAxis' + i, 0);
@@ -2221,6 +2209,10 @@ class PlayState extends MusicBeatState
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			MusicBeatState.switchState(new FreeplayState());
 		}
+
+		practiceAllowed = false;
+		cpuControlled = false;
+		usedPlayFeatures = false;
 	}
 
 	private function switchSong(difficulty:String)
@@ -2456,8 +2448,8 @@ class PlayState extends MusicBeatState
 					{
 						if (controlArray[daNote.noteData])
 						{
+							trace('sex moment');
 							sortedNotesList.push(daNote);
-							// notesDatas.push(daNote.noteData);
 						}
 						canMiss = true;
 					}
@@ -2506,9 +2498,6 @@ class PlayState extends MusicBeatState
 		{
 			boyfriend.dance();
 		}
-
-		if (!cpuControlled)
-			strumsPlay(playerStrums, null, true, true);
 	}
 
 	function noteMissPress(direction:Float = 1):Void
