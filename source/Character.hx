@@ -49,7 +49,7 @@ class Character extends FlxSprite
 
 	public var stunned:Bool = false;
 
-	public var singDuration:Float = 4;
+	public var singDuration:Float = 4.1;
 	public var holding:Bool = false;
 	public var holdTimer:Float = 0;
 
