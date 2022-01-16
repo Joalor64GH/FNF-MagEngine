@@ -419,8 +419,8 @@ class Character extends FlxSprite
 				barColor = 0xFF9a00f8;
 				playAnim('idle');
 
-				#if MODS
 				default:
+					#if MODS
 					var charKey:String = 'mods/custom_characters/' + curCharacter + '.json';
 					var rawJson = File.getContent(charKey);
 					var parsedJson:SwagCharacter = cast Json.parse(rawJson);
@@ -440,7 +440,7 @@ class Character extends FlxSprite
 							animation.addByPrefix(animAnim, animName, 24, animLoop);
 						}
 					}
-				#end
+					#end
 		}
 
 		recalculateDanceIdle();
