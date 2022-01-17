@@ -2293,7 +2293,7 @@ class PlayState extends MusicBeatState
 				daRating = 'bad';
 		 */
 
-		var pixelShitPart1:String = "";
+		var pixelShitPart1:String = '';
 		var pixelShitPart2:String = '';
 
 		if (isPixelStage)
@@ -2301,6 +2301,8 @@ class PlayState extends MusicBeatState
 			pixelShitPart1 = 'weeb/pixelUI/';
 			pixelShitPart2 = '-pixel';
 		}
+
+		var offsetY:Float = 40;
 
 		rating.loadGraphic(Paths.image(pixelShitPart1 + daRating + pixelShitPart2));
 		rating.cameras = [camHUD];
@@ -2312,6 +2314,7 @@ class PlayState extends MusicBeatState
 		rating.velocity.x -= FlxG.random.int(0, 10);
 		rating.x += FlxG.save.data.comboOffset[0];
 		rating.y -= FlxG.save.data.comboOffset[1];
+		rating.y += offsetY;
 
 		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2));
 		comboSpr.cameras = [camHUD];
@@ -2354,7 +2357,7 @@ class PlayState extends MusicBeatState
 			numScore.cameras = [camHUD];
 			numScore.screenCenter();
 			numScore.x = coolText.x + (43 * daLoop) - 90;
-			numScore.y += 80;
+			numScore.y += 80 + offsetY;
 
 			numScore.x += FlxG.save.data.comboOffset[2];
 			numScore.y -= FlxG.save.data.comboOffset[3];
