@@ -124,7 +124,7 @@ class PlayState extends MusicBeatState
 
 	public static var noteTransparencyLevel:Float = 0.6;
 
-	public var strumLineNotes:FlxTypedGroup<FlxSprite>;
+	public var strumLineNotes:FlxTypedGroup<FlxSprite> = null;
 	public var playerStrums:FlxTypedGroup<FlxSprite> = null;
 	public var cpuStrums:FlxTypedGroup<FlxSprite> = null;
 
@@ -987,28 +987,14 @@ class PlayState extends MusicBeatState
 				case 'thorns':
 					schoolIntro(doof);
 				default:
-					if (SONG.dialoguetoggle != 'true')
-					{
+					if (SONG.dialogue)
+						magIntro(doof);
+					else
 						startCountdown();
-					}
-			}
-			switch (SONG.dialoguetoggle)
-			{
-				case 'true':
-					magengineIntro(doof);
-
-				case 'false':
-					startCountdown();
 			}
 		}
 		else
-		{
-			switch (curSong.toLowerCase())
-			{
-				default:
-			}
 			startCountdown();
-		}
 
 		super.create();
 	}
@@ -1094,7 +1080,7 @@ class PlayState extends MusicBeatState
 		});
 	}
 
-	function magengineIntro(?dialogueBox:DialogueBox):Void
+	function magIntro(?dialogueBox:DialogueBox):Void
 	{
 		if (dialogueBox != null)
 		{
@@ -1239,7 +1225,6 @@ class PlayState extends MusicBeatState
 				}
 
 				swagCounter++;
-				// generateSong('fresh');
 			}, 5);
 		}
 	}
@@ -2186,7 +2171,7 @@ class PlayState extends MusicBeatState
 				}
 
 				#if sys
-				if (SONG.videotoggle == 'true')
+				if (SONG.video)
 				{
 					var video:MP4Handler = new MP4Handler();
 					video.playMP4(Paths.video(SONG.song.toLowerCase() + 'Video'));
@@ -2215,7 +2200,8 @@ class PlayState extends MusicBeatState
 		resetPlayFeatures();
 	}
 
-	public static function resetPlayFeatures() {
+	public static function resetPlayFeatures()
+	{
 		practiceAllowed = false;
 		cpuControlled = false;
 		usedPlayFeatures = false;
@@ -2557,6 +2543,7 @@ class PlayState extends MusicBeatState
 	{
 		var controlArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
 		var controlReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
+
 		strums.forEach(function(spr:FlxSprite)
 		{
 			if (!isPlayer && staticAnim && spr.animation.finished)

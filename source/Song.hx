@@ -41,8 +41,8 @@ typedef SwagSong =
 	var validScore:Bool;
 	var stage:String;
 	var gfVersion:String;
-	public var dialoguetoggle:String;
-	public var videotoggle:String;
+	public var dialogue:Bool;
+	public var video:Bool;
 }
 
 class Song
@@ -57,8 +57,8 @@ class Song
 	public var player2:String = 'dad';
 	public var stage:String = PlayState.curStage;
 	public var gfVersion:String = 'gf';
-	public var dialoguetoggle:String = 'false';
-	public var videotoggle:String = 'false';
+	public var dialogue:Bool = false;
+	public var video:Bool = false;
 	public var events:Array<MidSongEvent>;
 
 	public function new(song, notes, bpm)
