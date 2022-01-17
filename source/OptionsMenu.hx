@@ -32,22 +32,17 @@ class OptionsMenu extends MusicBeatState
 	var opt:Option;
 
 	var options:Array<OptionCategory> = [
-		new OptionCategory("Preferences",
-			[
-				new DownscrollOption(),
-				new MiddlescrollOption(),
-				new GhostTappingOption(),
-				new AccuracyOption(),
-				new CacheOption(),
-				new FPSOption(),
-				new MEMOption(),
-				new VerOption(),
-				new RatingOption(),
-				new FPSCapOption()
-			]),
+		new OptionCategory("Preferences", [
+			new DownscrollOption(), new MiddlescrollOption(), new GhostTappingOption(), new AccuracyOption(), new CacheOption(), new FPSOption(),
+			new MEMOption(),
+			new VerOption(), new RatingOption(), new FPSCapOption()]),
 		new OptionCategory("Adjust Offsets"),
 		new OptionCategory("Controls"),
-		new OptionCategory("Notes", [new OpponentNotesGlowOption(), new SplooshOption(), new TransparentNotesOption()]),
+		new OptionCategory("Notes", [
+			new OpponentNotesGlowOption(),
+			new SplooshOption(),
+			new TransparentStrumsOption()
+		]),
 		new OptionCategory("Exit")
 	];
 
@@ -205,7 +200,7 @@ class OptionsMenu extends MusicBeatState
 
 	function quit()
 	{
-		FlxG.save.flush();
+		Prefs.save();
 		MusicBeatState.switchState(new MainMenuState());
 	}
 

@@ -97,9 +97,6 @@ class MagModChart
 		set('endingSong', false);
 		set('mustHitSection', false);
 		set('downScroll', FlxG.save.data.downscroll);
-		// in case you wanna anger your friend
-		set('newInput', FlxG.save.data.newInput);
-		// lol
 		set('accuracyEnabled', FlxG.save.data.accuracy);
 		set('noteSplashesEnabled', FlxG.save.data.splooshes);
 		set('playerHealthBarColor', FlxG.save.data.downScroll);

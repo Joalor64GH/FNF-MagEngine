@@ -1455,14 +1455,14 @@ class PlayState extends MusicBeatState
 			babyArrow.updateHitbox();
 			babyArrow.scrollFactor.set();
 
-			if (FlxG.save.data.transparentNotes)
+			if (FlxG.save.data.transparentStrums)
 				babyArrow.alpha = noteTransparencyLevel;
 
 			if (!isStoryMode || storyPlaylist.length == originalStoryPlaylistLength)
 			{
 				babyArrow.y -= 10;
 				babyArrow.alpha = 0;
-				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: (FlxG.save.data.transparentNotes ? noteTransparencyLevel : 1)}, 1,
+				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: (FlxG.save.data.transparentStrums ? noteTransparencyLevel : 1)}, 1,
 					{ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 
@@ -2159,7 +2159,7 @@ class PlayState extends MusicBeatState
 					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 				}
 
-				FlxG.save.flush();
+				Prefs.save();
 			}
 			else
 			{
@@ -2212,6 +2212,10 @@ class PlayState extends MusicBeatState
 			MusicBeatState.switchState(new FreeplayState());
 		}
 
+		resetPlayFeatures();
+	}
+
+	public static function resetPlayFeatures() {
 		practiceAllowed = false;
 		cpuControlled = false;
 		usedPlayFeatures = false;
@@ -2554,7 +2558,7 @@ class PlayState extends MusicBeatState
 		{
 			if (!isPlayer && staticAnim && spr.animation.finished)
 			{
-				if (FlxG.save.data.transparentNotes)
+				if (FlxG.save.data.transparentStrums)
 					spr.alpha = noteTransparencyLevel;
 
 				spr.animation.play('static');
@@ -2564,14 +2568,14 @@ class PlayState extends MusicBeatState
 			{
 				if (controlArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
 				{
-					if (FlxG.save.data.transparentNotes)
+					if (FlxG.save.data.transparentStrums)
 						spr.alpha = 1;
 
 					spr.animation.play('pressed', true);
 				}
 				else if (controlReleaseArray[spr.ID])
 				{
-					if (FlxG.save.data.transparentNotes)
+					if (FlxG.save.data.transparentStrums)
 						spr.alpha = noteTransparencyLevel;
 
 					spr.animation.play('static', true);
@@ -2579,7 +2583,7 @@ class PlayState extends MusicBeatState
 			}
 			else if ((isPlayer || FlxG.save.data.cpuNotesGlow) && !staticAnim && direction == spr.ID)
 			{
-				if (FlxG.save.data.transparentNotes)
+				if (FlxG.save.data.transparentStrums)
 					spr.alpha = 1;
 
 				spr.animation.play('confirm', true);
