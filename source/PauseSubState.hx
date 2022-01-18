@@ -180,6 +180,7 @@ class PauseSubState extends MusicBeatSubstate
 					MusicBeatState.resetState();
 				case "Exit to menu":
 					PlayState.bbCounter = 0;
+					PlayState.resetPlayFeatures();
 					if (PlayState.isStoryMode)
 						MusicBeatState.switchState(new StoryMenuState());
 					else

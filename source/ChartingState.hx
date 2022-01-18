@@ -155,15 +155,14 @@ class ChartingState extends MusicBeatState
 				events: [],
 				gfVersion: 'gf',
 				stage: 'stage',
-				dialoguetoggle: 'false',
-				videotoggle: 'false',
+				dialogue: false,
+				video: false,
 				speed: 1,
 				validScore: false
 			};
 		}
 
 		FlxG.mouse.visible = true;
-		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		tempBpm = _song.bpm;
 
@@ -270,8 +269,6 @@ class ChartingState extends MusicBeatState
 		stepperBPM.name = 'song_bpm';
 
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/characterList'));
-		var dialogueintros:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/dialogueIntroToggle'));
-		var videointros:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/videoIntroToggle'));
 		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/gfVersionList'));
 		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/stageList'));
 		var events:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/eventList'));
@@ -310,22 +307,21 @@ class ChartingState extends MusicBeatState
 
 		var stageLabel = new FlxText(140, 180, 64, 'Stage');
 
-		var introdropdown = new FlxUIDropDownMenuCustom(10, 100, FlxUIDropDownMenuCustom.makeStrIdLabelArray(dialogueintros, true),
-			function(dialogueintro:String)
-			{
-				_song.dialoguetoggle = dialogueintros[Std.parseInt(dialogueintro)];
-			});
-		introdropdown.selectedLabel = _song.dialoguetoggle;
-
-		var dialoguelabel = new FlxText(10, 80, 64, 'Dialogues');
-
-		var viddropdown = new FlxUIDropDownMenuCustom(140, 100, FlxUIDropDownMenuCustom.makeStrIdLabelArray(videointros, true), function(videointro:String)
+		var dialogueCheckbox = new FlxUICheckBox(10, 10, null, null, "Dialogues", 100);
+		dialogueCheckbox.checked = _song.dialogue;
+		dialogueCheckbox.callback = function()
 		{
-			_song.videotoggle = videointros[Std.parseInt(videointro)];
-		});
-		viddropdown.selectedLabel = _song.videotoggle;
+			_song.dialogue = dialogueCheckbox.checked;
+			trace('CHECKED!');
+		};
 
-		var videolabel = new FlxText(140, 80, 64, 'Videos');
+		var videoCheckbox = new FlxUICheckBox(10, 80, null, null, "Video Outro", 100);
+		videoCheckbox.checked = _song.video;
+		videoCheckbox.callback = function()
+		{
+			_song.video = videoCheckbox.checked;
+			trace('CHECKED!');
+		};
 
 		if (_song.events == null)
 			_song.events = [new MidSongEvent("none", 0, "", "")];
@@ -417,10 +413,8 @@ class ChartingState extends MusicBeatState
 
 		var tab_group_intro = new FlxUI(null, UI_box);
 		tab_group_intro.name = "Intro";
-		tab_group_intro.add(introdropdown);
-		tab_group_intro.add(dialoguelabel);
-		tab_group_intro.add(viddropdown);
-		tab_group_intro.add(videolabel);
+		tab_group_intro.add(dialogueCheckbox);
+		tab_group_intro.add(videoCheckbox);
 
 		var tab_group_events = new FlxUI(null, UI_box);
 		tab_group_events.name = "Events";

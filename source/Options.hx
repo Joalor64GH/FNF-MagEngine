@@ -1,17 +1,6 @@
 package;
 
-import lime.app.Application;
-import lime.system.DisplayMode;
-import flixel.util.FlxColor;
-import Controls.KeyboardScheme;
-import flixel.FlxG;
-import openfl.display.FPS;
 import openfl.Lib;
-import flixel.input.gamepad.FlxGamepadButton;
-import flixel.input.gamepad.FlxGamepadInputID;
-import flixel.input.keyboard.FlxKey;
-import flixel.input.FlxInput;
-import flixel.input.actions.FlxAction;
 
 class OptionCategory
 {
@@ -53,10 +42,14 @@ class Option
 
 	public var isBool:Bool = true;
 	public var daValue:Bool = false;
+	public var pref:String = null;
 
-	public function new()
+	// YOU SHOULD SET THE PREF VARIABLE!!!!
+	public function new(pref:String)
 	{
 		display = updateDisplay();
+		daValue = Prefs.get(pref);
+		this.pref = pref;
 	}
 
 	public final function getDisplay():String
@@ -72,6 +65,11 @@ class Option
 	// Returns whether the label is to be updated.
 	public function press():Bool
 	{
+		if (isBool)
+			Prefs.set(pref, !Prefs.get(pref));
+
+		daValue = Prefs.get(pref);
+		display = updateDisplay();
 		return true;
 	}
 
@@ -95,16 +93,7 @@ class DownscrollOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.downscroll;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.downscroll = !FlxG.save.data.downscroll;
-		daValue = FlxG.save.data.downscroll;
-		display = updateDisplay();
-		return true;
+		super('downscroll');
 	}
 
 	private override function updateDisplay():String
@@ -117,16 +106,7 @@ class MiddlescrollOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.middlescroll;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.middlescroll = !FlxG.save.data.middlescroll;
-		daValue = FlxG.save.data.middlescroll;
-		display = updateDisplay();
-		return true;
+		super('middlescroll');
 	}
 
 	private override function updateDisplay():String
@@ -139,21 +119,12 @@ class PhotoSensitivityOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.PhotoSensitivity;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.PhotoSensitivity = !FlxG.save.data.PhotoSensitivity;
-		daValue = FlxG.save.data.PhotoSensitivity;
-		display = updateDisplay();
-		return true;
+		super('photoSensitivity');
 	}
 
 	private override function updateDisplay():String
 	{
-		return "PhotoSensitivity Mode";
+		return "Photo Sensitivity";
 	}
 }
 
@@ -161,16 +132,7 @@ class GhostTappingOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.ghostTapping;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.ghostTapping = !FlxG.save.data.ghostTapping;
-		daValue = FlxG.save.data.ghostTapping;
-		display = updateDisplay();
-		return true;
+		super('ghostTapping');
 	}
 
 	private override function updateDisplay():String
@@ -183,16 +145,7 @@ class AccuracyOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.accuracy;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.accuracy = !FlxG.save.data.accuracy;
-		daValue = FlxG.save.data.accuracy;
-		display = updateDisplay();
-		return true;
+		super('accuracy');
 	}
 
 	private override function updateDisplay():String
@@ -205,16 +158,7 @@ class OpponentNotesGlowOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.cpuNotesGlow;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.cpuNotesGlow = !FlxG.save.data.cpuNotesGlow;
-		daValue = FlxG.save.data.cpuNotesGlow;
-		display = updateDisplay();
-		return true;
+		super('cpuNotesGlow');
 	}
 
 	private override function updateDisplay():String
@@ -227,16 +171,7 @@ class SplooshOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.splooshes;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.splooshes = !FlxG.save.data.splooshes;
-		daValue = FlxG.save.data.splooshes;
-		display = updateDisplay();
-		return true;
+		super('splooshes');
 	}
 
 	private override function updateDisplay():String
@@ -249,16 +184,7 @@ class ModChartOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.modchart;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.modchart = !FlxG.save.data.modchart;
-		daValue = FlxG.save.data.modchart;
-		display = updateDisplay();
-		return true;
+		super('modchart');
 	}
 
 	private override function updateDisplay():String
@@ -271,16 +197,7 @@ class CacheOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.cache;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.cache = !FlxG.save.data.cache;
-		daValue = FlxG.save.data.cache;
-		display = updateDisplay();
-		return true;
+		super('cache');
 	}
 
 	private override function updateDisplay():String
@@ -293,16 +210,7 @@ class RatingOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.ratingCntr;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.ratingCntr = !FlxG.save.data.ratingCntr;
-		daValue = FlxG.save.data.ratingCntr;
-		display = updateDisplay();
-		return true;
+		super('ratingCntr');
 	}
 
 	private override function updateDisplay():String
@@ -315,16 +223,7 @@ class FPSCapOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.fpsCap;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.fpsCap = !FlxG.save.data.fpsCap;
-		daValue = FlxG.save.data.fpsCap;
-		display = updateDisplay();
-		return true;
+		super('fpsCap');
 	}
 
 	private override function updateDisplay():String
@@ -337,16 +236,13 @@ class FPSOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.fps;
+		super('fps');
 	}
 
 	public override function press():Bool
 	{
-		FlxG.save.data.fps = !FlxG.save.data.fps;
-		(cast(Lib.current.getChildAt(0), Main)).toggleFPS(FlxG.save.data.fps);
-		daValue = FlxG.save.data.fps;
-		display = updateDisplay();
+		super.press();
+		(cast(Lib.current.getChildAt(0), Main)).toggleFPS(daValue);
 		return true;
 	}
 
@@ -360,16 +256,13 @@ class MEMOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.mem;
+		super('mem');
 	}
 
 	public override function press():Bool
 	{
-		FlxG.save.data.mem = !FlxG.save.data.mem;
-		(cast(Lib.current.getChildAt(0), Main)).toggleMem(FlxG.save.data.mem);
-		daValue = FlxG.save.data.mem;
-		display = updateDisplay();
+		super.press();
+		(cast(Lib.current.getChildAt(0), Main)).toggleMem(daValue);
 		return true;
 	}
 
@@ -383,16 +276,13 @@ class VerOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.v;
+		super('v');
 	}
 
 	public override function press():Bool
 	{
-		FlxG.save.data.v = !FlxG.save.data.v;
-		(cast(Lib.current.getChildAt(0), Main)).toggleVers(FlxG.save.data.v);
-		daValue = FlxG.save.data.v;
-		display = updateDisplay();
+		super.press();
+		(cast(Lib.current.getChildAt(0), Main)).toggleVers(daValue);
 		return true;
 	}
 
@@ -402,20 +292,11 @@ class VerOption extends Option
 	}
 }
 
-class TransparentNotesOption extends Option
+class TransparentStrumsOption extends Option
 {
 	public function new()
 	{
-		super();
-		daValue = FlxG.save.data.transparentNotes;
-	}
-
-	public override function press():Bool
-	{
-		FlxG.save.data.transparentNotes = !FlxG.save.data.transparentNotes;
-		daValue = FlxG.save.data.transparentNotes;
-		display = updateDisplay();
-		return true;
+		super('transparentStrums');
 	}
 
 	private override function updateDisplay():String
