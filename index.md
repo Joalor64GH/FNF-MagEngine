@@ -37,6 +37,7 @@ FOR LINUX: install the git package in cmd: | sudo apt install git (ubuntu) | - a
 - haxelib install newgrounds
 - haxelib install hscript
 - haxelib install thx.color 0.19.1
+- haxelib install polymod 1.3.0 *IMPORTANT:* Make sure polymod is installed at 1.3.0 since newer versions are broken and will crash the game, and not load mods.
 - haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
 - haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
 ### FOR WINDOWS
