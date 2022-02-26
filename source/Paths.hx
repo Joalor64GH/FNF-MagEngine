@@ -34,6 +34,7 @@ class Paths
 		'songs',
 		'music',
 		'sounds',
+		'fonts',
 		'videos',
 		'images',
 		'weeks',
@@ -313,7 +314,7 @@ class Paths
 
 	inline static public function hscript(key:String)
 	{
-		return modFolder('scripts/$key.hx');
+		return modFolder('scripts/$key');
 	}
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)

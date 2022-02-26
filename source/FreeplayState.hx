@@ -14,6 +14,10 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 using StringTools;
 
@@ -37,10 +41,22 @@ class FreeplayState extends MusicBeatState
 	var bg:FlxSprite;
 	var intendedColor:Int;
 	var colorTween:FlxTween;
+	var songList:Dynamic;
 
 	override function create()
 	{
-		var songList = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
+		if (FileSystem.exists(Paths.modTxt('data/freeplaySonglist')) && FileSystem.exists(Paths.txt('data/freeplaySonglist'))) {
+			songList = File.getContent(Paths.modTxt('data/freeplaySonglist')).trim().split('\n');
+
+			for (i in 0...songList.length)
+				{
+					songList[i] = songList[i].trim();
+				}
+		
+		}
+		else {
+			songList = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
+		}
 
 		for (i in 0...songList.length)
 		{

@@ -88,6 +88,7 @@ class ModsMenu extends MusicBeatState
 	{
 		super.update(elapsed);
 
+		
 		if (page.length > 0)
 		{
 			if (controls.UP_P)
@@ -107,7 +108,7 @@ class ModsMenu extends MusicBeatState
 		{
 			PolymodHandler.loadMods();
 			FlxG.mouse.visible = false;
-			MusicBeatState.switchState(new MainMenuState());
+			LoadingState.loadAndSwitchState(new MainMenuState());
 		}
 
 		if (curSelected < 0)

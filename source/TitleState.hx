@@ -80,6 +80,7 @@ class TitleState extends MusicBeatState
 			#if MODS
 			// idk why i put these conditions mag is not available on mac anyway
 			PolymodHandler.loadMods();
+			ModList.getActiveMods(ModsMenuOption.enabledMods);
 			ModList.load();
 			#end
 

@@ -17,10 +17,11 @@ import Type.ValueType;
 
 using StringTools;
 
+// hscript supremacy
 class MagModChart
 {
-	public static var functionContinue = 0;
-	public static var functionStop = 1;
+	public static var functionContinue:Dynamic = 0;
+	public static var functionStop:Dynamic = 1;
 
 	#if SCRIPTS
 	public var lua:State = null;
@@ -30,9 +31,6 @@ class MagModChart
 	var daClose:Bool = false;
 	var currentPlaystate:PlayState = null;
 	var aboutToClose:Bool = false;
-
-	// important note:
-	///SOME of this from shadow mario, but this code is like 96 percent mine anyway.
 
 	public function new(luaScript:String)
 	{
@@ -47,8 +45,8 @@ class MagModChart
 
 		if (debugResult != 0 && debugResultString != null)
 		{
-			lime.app.Application.current.window.alert(debugResultString, 'Error on Lua Script, Go back to your IDE and check for errors.');
-			trace('Error on Lua Script, Go back to your IDE and check for errors.' + debugResultString);
+			lime.app.Application.current.window.alert(debugResultString, 'Error Parsing ModChart!');
+			trace('Error Parsing ModChart!' + debugResultString);
 
 			lua = null;
 
@@ -205,7 +203,7 @@ class MagModChart
 			}
 		});
 
-		// this is where my attention span fucking died and i just started reusing code lmao
+		// this is where my attention span died and i just started reusing code lmao
 		Lua_helper.add_callback(lua, 'removeFromGroup', function(obj:String, index:Int, dontdestroy:Bool = false)
 		{
 			if (Std.isOfType(Reflect.getProperty(currentPlaystate, obj), FlxTypedGroup))
@@ -388,7 +386,7 @@ class MagModChart
 			cancelTween(tag);
 			if (note < 0)
 				note = 0;
-			var iamcoolbro:FlxSprite = PlayState.babyArrow;
+			var iamcoolbro:FlxSprite;
 			iamcoolbro = currentPlaystate.strumLineNotes.members[note % currentPlaystate.strumLineNotes.length];
 
 			if (iamcoolbro != null)
@@ -408,7 +406,7 @@ class MagModChart
 			cancelTween(tag);
 			if (note < 0)
 				note = 0;
-			var iamcoolbro:FlxSprite = PlayState.babyArrow;
+			var iamcoolbro:FlxSprite;
 			iamcoolbro = currentPlaystate.strumLineNotes.members[note % currentPlaystate.strumLineNotes.length];
 
 			if (iamcoolbro != null)
@@ -428,7 +426,7 @@ class MagModChart
 			cancelTween(tag);
 			if (note < 0)
 				note = 0;
-			var iamcoolbro:FlxSprite = PlayState.babyArrow;
+			var iamcoolbro:FlxSprite;
 			iamcoolbro = currentPlaystate.strumLineNotes.members[note % currentPlaystate.strumLineNotes.length];
 
 			if (iamcoolbro != null)
@@ -448,7 +446,7 @@ class MagModChart
 			cancelTween(tag);
 			if (note < 0)
 				note = 0;
-			var iamcoolbro:FlxSprite = PlayState.babyArrow;
+			var iamcoolbro:FlxSprite;
 			iamcoolbro = currentPlaystate.strumLineNotes.members[note % currentPlaystate.strumLineNotes.length];
 
 			if (iamcoolbro != null)
@@ -755,39 +753,35 @@ class MagModChart
 		#end
 	}
 
-	public function call(event:String, args:Array<Dynamic>):Dynamic
-	{
+	public function call(event:String, args:Array<Dynamic>):Dynamic {
 		#if SCRIPTS
-		if (lua == null)
+		if(lua == null) {
 			return functionContinue;
+		}
 
 		Lua.getglobal(lua, event);
 
-		for (arg in args)
-		{
+		for (arg in args) {
 			Convert.toLua(lua, arg);
 		}
 
-		var debugResult:Null<Int> = Lua.pcall(lua, args.length, 1, 0);
-
-		if (debugResult != null && debugResultIsAllowed(lua, debugResult))
-		{
-			if (Lua.type(lua, -1) == Lua.LUA_TSTRING)
-			{
+		var result:Null<Int> = Lua.pcall(lua, args.length, 1, 0);
+		if(result != null) {
+			/*var resultStr:String = Lua.tostring(lua, result);
+			var error:String = Lua.tostring(lua, -1);
+			Lua.pop(lua, 1);*/
+			if(Lua.type(lua, -1) == Lua.LUA_TSTRING) {
 				var error:String = Lua.tostring(lua, -1);
-
 				Lua.pop(lua, 1);
-
-				if (error == 'attempted to call a nil value')
+				if(error == 'attempt to call a nil value') {
 					return functionContinue;
+				}
 			}
 
-			var conv:Dynamic = Convert.fromLua(lua, debugResult);
-
+			var conv:Dynamic = Convert.fromLua(lua, result);
 			return conv;
 		}
 		#end
-
 		return functionContinue;
 	}
 
@@ -843,7 +837,7 @@ class MagModChart
 		#end
 	}
 
-	// basically all that was taken since i fuckin suck at tweening
+	// basically all that was taken since i suck at tweening
 	function cancelTween(tag:String)
 	{
 		if (currentPlaystate.modchartTweens.exists(tag))
@@ -977,4 +971,10 @@ class MagModChart
 class LuaSprite extends FlxSprite
 {
 	public var wasAdded:Bool = false;
+
+	public function new(?x:Float = 0, ?y:Float = 0)
+	{
+		super(x, y);
+		antialiasing = true;
+	}
 }

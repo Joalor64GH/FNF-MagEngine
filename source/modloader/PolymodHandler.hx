@@ -1,7 +1,7 @@
 package modloader;
 
 // this is here so the game doesnt crash because of no framework params
-#if MODS
+#if (MODS && polymod)
 import polymod.Polymod;
 
 class PolymodHandler
@@ -14,15 +14,19 @@ class PolymodHandler
 		loadModMetadata();
 
 		Polymod.init({
-			modRoot: "mods/",
+			modRoot:"mods/",
 			dirs: ModList.getActiveMods(metadataArrays),
 			errorCallback: function(error:PolymodError)
 			{
-				trace(error.message);
+				//trace(error.message);
 			},
-			frameworkParams: {
-				assetLibraryPaths: ["songs" => "songs"]
-			}
+            frameworkParams: {
+                assetLibraryPaths: [
+                    "songs" => "songs",
+                    "shared" => "shared",
+                    "fonts" => "fonts"
+                ]
+            }
 		});
 	}
 

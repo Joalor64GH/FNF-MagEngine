@@ -15,6 +15,10 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#end
 
 using StringTools;
 
@@ -33,6 +37,19 @@ class CreditsMenu extends MusicBeatState
 	override function create()
 	{
 		var initCreditlist = CoolUtil.coolTextFile(Paths.txt('data/creditsList'));
+
+		if (FileSystem.exists(Paths.modTxt('data/creditsList')) && FileSystem.exists(Paths.txt('data/creditsList'))) {
+			initCreditlist = File.getContent(Paths.modTxt('data/creditsList')).trim().split('\n');
+
+			for (i in 0...initCreditlist.length)
+				{
+					initCreditlist[i] = initCreditlist[i].trim();
+				}
+		
+		}
+		else {
+			initCreditlist = CoolUtil.coolTextFile(Paths.txt('data/creditsList'));
+		}
 
 		for (i in 0...initCreditlist.length)
 		{
@@ -53,9 +70,6 @@ class CreditsMenu extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		// LOAD MUSIC
-
-		// LOAD CHARACTERS
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = FlxColor.PINK;

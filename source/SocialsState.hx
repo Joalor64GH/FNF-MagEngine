@@ -10,6 +10,10 @@ import flixel.effects.FlxFlicker;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
@@ -118,9 +122,19 @@ class SocialsState extends MusicBeatState
 				switch (optionShit[curSelected])
 				{
 					case 'youtube':
-						CoolUtil.openURL(OpenFlAssets.getText(Paths.txt('data/youtube')));
+						if (FileSystem.exists(Paths.modTxt('data/youtube')) && FileSystem.exists(Paths.txt('data/youtube'))) {
+							CoolUtil.openURL(File.getContent(Paths.modTxt('data/youtube')));
+						}
+						else {
+							CoolUtil.openURL(OpenFlAssets.getText(Paths.txt('data/youtube')));
+						}
 					case 'twitter':
-						CoolUtil.openURL(OpenFlAssets.getText(Paths.txt('data/twitter')));
+						if (FileSystem.exists(Paths.modTxt('data/twitter')) && FileSystem.exists(Paths.txt('data/twitter'))) {
+							CoolUtil.openURL(File.getContent(Paths.modTxt('data/twitter')));
+						}
+						else {
+							CoolUtil.openURL(OpenFlAssets.getText(Paths.txt('data/twitter')));
+						}
 				}
 			}
 		}
