@@ -29,6 +29,10 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#end
 
 using StringTools;
 
@@ -78,7 +82,6 @@ class TitleState extends MusicBeatState
 		if (!initialized)
 		{
 			#if MODS
-			// idk why i put these conditions mag is not available on mac anyway
 			PolymodHandler.loadMods();
 			ModList.getActiveMods(ModsMenuOption.enabledMods);
 			ModList.load();
@@ -141,19 +144,34 @@ class TitleState extends MusicBeatState
 		persistentUpdate = true;
 
 		logoBl = new FlxSprite(-150, -100);
-		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
+		#if MODS
+		if (FileSystem.exists(Paths.image('logoBumpin')) && FileSystem.exists(Paths.modIcon('logoBumpin'))) {
+			logoBl.frames = Paths.getModsSparrowAtlas('logoBumpin');
+		}
+		else {
+		#end
+		    logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
+		}
 		logoBl.antialiasing = true;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
+		
 		// logoBl.screenCenter();
 		// logoBl.color = FlxColor.BLACK;
 		logoBg = new FlxSprite().loadGraphic(Paths.image('bg', 'MagEngine'));
 		logoBg.screenCenter();
 		add(logoBg);
 
-		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
-		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
+		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);		
+		#if MODS
+		if (FileSystem.exists(Paths.image('gfDanceTitle')) && FileSystem.exists(Paths.modIcon('gfDanceTitle'))) {
+			gfDance.frames = Paths.getModsSparrowAtlas('gfDanceTitle');
+		}
+		else {
+		#end
+			gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
+		}
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		gfDance.antialiasing = true;
@@ -161,7 +179,14 @@ class TitleState extends MusicBeatState
 		add(logoBl);
 
 		titleText = new FlxSprite(150, FlxG.height * 0.8);
-		titleText.frames = Paths.getSparrowAtlas('titleEnter');
+		#if MODS
+		if (FileSystem.exists(Paths.image('titleEnter')) && FileSystem.exists(Paths.modIcon('titleEnter'))) {
+			titleText.frames = Paths.getModsSparrowAtlas('titleEnter');
+		}
+		else {
+		#end
+	        titleText.frames = Paths.getSparrowAtlas('titleEnter');
+		}
 		titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
 		titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
 		titleText.antialiasing = true;

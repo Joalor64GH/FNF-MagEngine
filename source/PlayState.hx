@@ -886,16 +886,16 @@ class PlayState extends MusicBeatState
 		scoreTxt.antialiasing = true;
 		add(scoreTxt);
 
+		ratingCntr = new FlxText(20, 0, 0, "", 20);
+		ratingCntr.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		ratingCntr.borderSize = 2;
+		ratingCntr.borderQuality = 2;
+		ratingCntr.scrollFactor.set();
+		ratingCntr.cameras = [camHUD];
+		ratingCntr.screenCenter(Y);
 		if (FlxG.save.data.ratingCntr)
 		{
-			ratingCntr = new FlxText(20, 0, 0, "", 20);
-			ratingCntr.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			ratingCntr.borderSize = 2;
-			ratingCntr.borderQuality = 2;
-			ratingCntr.scrollFactor.set();
-			ratingCntr.cameras = [camHUD];
-			ratingCntr.screenCenter(Y);
-			add(ratingCntr);
+		    add(ratingCntr);
 		}
 
 		strumLineNotes.cameras = [camHUD];
@@ -2619,6 +2619,7 @@ class PlayState extends MusicBeatState
 		{
 			var controlArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
 			var controlReleaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
+			var controlHoldArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
 			strums.forEach(function(spr:FlxSprite)
 			{
 				if (!isPlayer && staticAnim && spr.animation.finished)
@@ -2630,11 +2631,11 @@ class PlayState extends MusicBeatState
 					spr.centerOffsets();
 				}
 
-				if (isPlayer && staticAnim && spr.animation.finished)
+				if (!controlHoldArray[spr.ID] && isPlayer && staticAnim && spr.animation.finished)
 					{
 						if (FlxG.save.data.transparentNotes)
 							spr.alpha = noteTransparencyLevel;
-		
+
 						spr.animation.play('static');
 						spr.centerOffsets();
 					}
