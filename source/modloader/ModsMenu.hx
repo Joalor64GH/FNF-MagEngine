@@ -15,6 +15,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.ui.FlxButton;
 import lime.utils.Assets;
 
 class ModsMenu extends MusicBeatState
@@ -26,8 +27,11 @@ class ModsMenu extends MusicBeatState
 	public static var instance:ModsMenu;
 
 	public static var coolId:String;
+	public static var disableButton:FlxButton;
+	public static var enableButton:FlxButton;
 
 	var infoText:FlxText;
+	var infoTextcool:FlxText;
 
 	override function create()
 	{
@@ -35,7 +39,7 @@ class ModsMenu extends MusicBeatState
 
 		menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 
-		menuBG.color = FlxColor.PURPLE;
+		menuBG.color = FlxColor.GRAY;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
@@ -51,6 +55,59 @@ class ModsMenu extends MusicBeatState
 		infoText.antialiasing = true;
 		add(infoText);
 
+		if (ModList.modMetadatas != null && PolymodHandler.metadataArrays[curSelected] != null) {
+		infoTextcool = new FlxText(830, 340, 0, "", 12);
+		infoTextcool.scrollFactor.set();
+		infoTextcool.setFormat(Paths.font("funkin.otf"), 40, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		infoTextcool.borderSize = 2;
+		infoTextcool.screenCenter(Y);
+
+		var bg:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image("modbg"));
+		// bg.screenCenter(Y);
+		
+		var bgtwo:FlxSprite = new FlxSprite(720, 0).loadGraphic(Paths.image("modbg"));
+		bgtwo.screenCenter(Y);
+		add(bgtwo);
+
+		add(infoTextcool);
+
+		ModsMenu.enableButton = new FlxButton(bg.x + 1120, 309, "Enable Mod", function()
+            {
+                page.members[curSelected].Mod_Enabled = true;
+                if (!page.members[curSelected].enabledMods.contains(page.members[curSelected].Option_Value)) {
+					page.members[curSelected].enabledMods.push(page.members[curSelected].Option_Value);
+                }
+                ModList.setModEnabled(page.members[curSelected].Option_Value, page.members[curSelected].Mod_Enabled);
+            });
+
+			ModsMenu.disableButton = new FlxButton(bg.x + 1120, 380, "Disable Mod", function()
+				{
+					page.members[curSelected].Mod_Enabled = false;
+					if (page.members[curSelected].enabledMods.contains(page.members[curSelected].Option_Value)) {
+						page.members[curSelected].enabledMods.remove(page.members[curSelected].Option_Value);
+					}
+					ModList.setModEnabled(page.members[curSelected].Option_Value, page.members[curSelected].Mod_Enabled);
+				});
+
+				enableButton.setGraphicSize(150, 70);
+				enableButton.updateHitbox();
+				enableButton.color = FlxColor.GREEN;
+				enableButton.label.setFormat(Paths.font("pixel.otf"), 12, FlxColor.WHITE);
+				enableButton.label.fieldWidth = 135;
+				setLabelOffset(enableButton, 5, 22);
+
+				disableButton.setGraphicSize(150, 70);
+				disableButton.updateHitbox();
+				disableButton.color = FlxColor.RED;
+				disableButton.label.setFormat(Paths.font("pixel.otf"), 12, FlxColor.WHITE);
+				disableButton.label.fieldWidth = 135;
+				setLabelOffset(disableButton, 5, 22);
+
+				if (page.members != null) {
+				add(disableButton);
+				add(enableButton);
+				}
+			}
 		super.create();
 
 		PolymodHandler.loadModMetadata();
@@ -87,8 +144,14 @@ class ModsMenu extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-
-		
+		if (ModList.modMetadatas != null && PolymodHandler.metadataArrays[curSelected] != null) {
+		infoTextcool.text = ModList.modMetadatas.get(PolymodHandler.metadataArrays[curSelected]).description;
+		infoTextcool.visible = true;
+		infoTextcool.antialiasing = true;
+	    }
+		else {
+			remove(infoTextcool);
+		}
 		if (page.length > 0)
 		{
 			if (controls.UP_P)
@@ -121,9 +184,18 @@ class ModsMenu extends MusicBeatState
 
 		for (x in page.members)
 		{
+			
 			x.Alphabet_Text.targetY = bruh - curSelected;
 			bruh++;
 		}
 	}
+	//haxeflixel bro why
+	function setLabelOffset(button:FlxButton, x:Float, y:Float)
+		{
+			for (point in button.labelOffsets)
+			{
+				point.set(x, y);
+			}
+		}
 }
 #end

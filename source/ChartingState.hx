@@ -316,6 +316,19 @@ class ChartingState extends MusicBeatState
 		}
 		var events:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/eventList'));
 
+		if (FileSystem.exists(Paths.modTxt('custom_events/eventList')) && FileSystem.exists(Paths.txt('data/eventList'))) {
+			events = File.getContent(Paths.modTxt('custom_events/eventList')).trim().split('\n');
+
+			for (i in 0...events.length)
+				{
+					events[i] = events[i].trim();
+				}
+		
+		}
+		else {
+			events = CoolUtil.coolTextFile(Paths.txt('data/eventList'));
+		}
+
 		var player1DropDown = new FlxUIDropDownMenuCustom(10, 100, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
 		{
 			_song.player1 = characters[Std.parseInt(character)];

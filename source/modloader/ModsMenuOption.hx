@@ -18,14 +18,17 @@ class ModsMenuOption extends FlxTypedGroup<FlxSprite>
 	public var Alphabet_Text:Alphabet;
 	public var Mod_Icon:ModIcon;
 
-	public static var Mod_Enabled:Bool = false;
+	public var Mod_Enabled:Bool = false;
 
 	public var Option_Row:Int = 0;
 
 	public var Option_Name:String = "-";
 	public var Option_Value:String = "Template Mod";
 
-	public static var enabledMods:Array<String> = [];
+    public static var enableButton:FlxButton;
+
+	public var enabledMods:Array<String> = [];
+    public static var disableButton:FlxButton;
 
 	public function new(_Option_Name:String = "-", _Option_Value:String = "Template Mod", _Option_Row:Int = 0)
 	{
@@ -43,7 +46,7 @@ class ModsMenuOption extends FlxTypedGroup<FlxSprite>
 		Mod_Icon = new ModIcon(Option_Value);
 		Mod_Icon.sprTracker = Alphabet_Text;
 		add(Mod_Icon);
-
+            
 		Mod_Enabled = ModList.modList.get(Option_Value);
 
 		FlxG.mouse.visible = true;
@@ -53,36 +56,7 @@ class ModsMenuOption extends FlxTypedGroup<FlxSprite>
 	{
 		super.update(elapsed);
 
-		var enableButton:FlxButton = new FlxButton(920, 620, "Enable Mod", function()
-		{
-			Mod_Enabled = true;
-			enabledMods.push(Option_Value);
-			ModList.setModEnabled(Option_Value, Mod_Enabled);
-		});
-
-		enableButton.setGraphicSize(150, 70);
-		enableButton.updateHitbox();
-		enableButton.color = FlxColor.GREEN;
-		enableButton.label.setFormat(Paths.font("pixel.otf"), 12, FlxColor.WHITE, CENTER);
-		enableButton.label.y += 22;
-		enableButton.label.fieldWidth = 135;
-		add(enableButton);
-
-		var disableButton:FlxButton = new FlxButton(1100, 620, "Disable Mod", function()
-		{
-			Mod_Enabled = false;
-			enabledMods.remove(Option_Value);
-			ModList.setModEnabled(Option_Value, Mod_Enabled);
-		});
-
-		disableButton.setGraphicSize(150, 70);
-		disableButton.updateHitbox();
-		disableButton.color = FlxColor.RED;
-		disableButton.label.setFormat(Paths.font("pixel.otf"), 12, FlxColor.WHITE, CENTER);
-		disableButton.label.y += 22;
-		disableButton.label.fieldWidth = 135;
-		add(disableButton);
-
+		
 		if (Mod_Enabled)
 		{
 			Alphabet_Text.color = FlxColor.GREEN;

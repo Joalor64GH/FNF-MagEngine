@@ -21,7 +21,6 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.system.FlxSound;
 import flixel.system.ui.FlxSoundTray;
-import modloader.ModsMenuOption;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -82,8 +81,6 @@ class TitleState extends MusicBeatState
 		if (!initialized)
 		{
 			#if MODS
-			PolymodHandler.loadMods();
-			ModList.getActiveMods(ModsMenuOption.enabledMods);
 			ModList.load();
 			#end
 
@@ -418,6 +415,11 @@ class TitleState extends MusicBeatState
 			FlxG.camera.flash(FlxColor.WHITE, 4);
 			remove(credGroup);
 			skippedIntro = true;
+
+			// why tf was this removed
+			#if MODS
+			ModList.load();
+			#end
 		}
 	}
 }

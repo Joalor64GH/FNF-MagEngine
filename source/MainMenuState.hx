@@ -34,6 +34,7 @@ class MainMenuState extends MusicBeatState
 		#if MODS 'mods',
 		#end
 		'credits',
+		'editors',
 		'social',
 		'donate',
 		'options'
@@ -88,12 +89,16 @@ class MainMenuState extends MusicBeatState
 		add(menuItems);
 
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
+		var editors = Paths.getSparrowAtlas('FNF_main_menu_assets_sheet_TWO');
 
 		for (i in 0...optionShit.length)
 		{
 			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
 			var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + offset);
-			menuItem.frames = tex;
+			if (i == 4)
+				menuItem.frames = editors;
+			else
+				menuItem.frames = tex;
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
@@ -190,6 +195,8 @@ class MainMenuState extends MusicBeatState
 										MusicBeatState.switchState(new FreeplayState());
 									case 'credits':
 										MusicBeatState.switchState(new CreditsMenu());
+									case 'editors':
+										MusicBeatState.switchState(new tools.EditorMenuState());
 									#if MODS
 									case 'mods':
 										MusicBeatState.switchState(new ModsMenu());

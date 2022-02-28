@@ -11,6 +11,10 @@ import Song.MidSongEvent;
 import flixel.FlxCamera;
 import shaders.ChromaticAberration;
 import flixel.FlxG;
+import tools.StageEditor;
+import tools.StageEditor.LayerFile;
+import tools.StageEditor.StageFile;
+import tools.StageEditor.StageData;
 import flixel.FlxGame;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -336,6 +340,21 @@ class PlayState extends MusicBeatState
 		// Updating Discord Rich Presence.
 		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 		#end
+
+       
+		var stageData:StageFile = StageData.getStageFile(curStage);
+		if(stageData == null) {
+			stageData = {
+				name: "",
+				defaultZoom: 0.9,
+				isPixelStage: false,
+
+				boyfriend: [770, 100],
+				girlfriend: [400, 130],
+				opponent: [100, 100],
+				layerArray: []
+			};
+		}
 
 		switch (SONG.stage)
 		{
@@ -674,14 +693,16 @@ class PlayState extends MusicBeatState
 					stageCurtains.active = false;
 					add(stageCurtains);
 				}
-				#if MODS
-				default:
-					{
-						curStage = SONG.song + 'Stage';
-						var custombg:FlxSprite = new FlxSprite(-600, -500).loadGraphic(Paths.modsPng('images/stages/' + SONG.song + 'Stage'));
-						add(custombg);
-					}
-				#end
+				default: //custom stages
+				{
+				    curStage = stageData.name;
+				    for (layer in stageData.layerArray){
+				    var loadedLayer:FlxSprite = new FlxSprite(layer.xAxis, layer.yAxis).loadGraphic(Paths.image(layer.directory));
+					loadedLayer.scrollFactor.set(layer.scrollX, layer.scrollY);
+				    loadedLayer.setGraphicSize(Std.int(loadedLayer.width * layer.scale));
+					add(loadedLayer);
+			    }
+			}
 		}
 
 		isPixelStage = curStage.startsWith('school');

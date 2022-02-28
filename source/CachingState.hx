@@ -49,11 +49,11 @@ class CachingState extends MusicBeatState
 		bitmapData = new Map<String, FlxGraphic>();
 		bitmapData2 = new Map<String, FlxGraphic>();
 
-		logoBg = new FlxSprite().loadGraphic(Paths.image('bg', 'MagEngine'));
+		logoBg = new FlxSprite().loadGraphic(Paths.image('bg'));
 		logoBg.screenCenter();
 		add(logoBg);
 
-		logo = new FlxSprite().loadGraphic(Paths.image('melogo', 'MagEngine'));
+		logo = new FlxSprite().loadGraphic(Paths.image('melogo'));
 		logo.screenCenter();
 		logo.antialiasing = true;
 		add(logo);

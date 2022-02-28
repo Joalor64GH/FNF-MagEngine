@@ -14,8 +14,8 @@ import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
 import modloader.PolymodHandler;
 import modloader.ModsMenu;
-import modloader.ModList;
 import modloader.ModsMenuOption;
+import modloader.ModList;
 import flash.media.Sound;
 
 using StringTools;
@@ -26,6 +26,7 @@ class Paths
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 	static public var modDir:String = null;
 	public static var customSoundsLoaded:Map<String, Sound> = new Map();
+	public static var coolModsOption:ModsMenuOption;
 	public static var customImagesLoaded:Map<String, Bool> = new Map<String, Bool>();
 
 	public static var ignoredFolders:Array<String> = [
@@ -48,7 +49,7 @@ class Paths
 		currentLevel = name.toLowerCase();
 	}
 
-	static function getPath(file:String, type:AssetType, library:Null<String>)
+	public static function getPath(file:String, type:AssetType, ?library:Null<String>)
 	{
 		if (library != null)
 			return getLibraryPath(file, library);
@@ -244,13 +245,34 @@ class Paths
 			return imageToReturn;
 		#end
 
-		return getPath('images/$key.png', IMAGE, library);
+		return getPath('images/$key.png', IMAGE);
 	}
 
 	inline static public function font(key:String)
-	{
-		return 'assets/fonts/$key';
-	}
+		{
+			#if MODS
+			var file:String = modsFont(key);
+			if(FileSystem.exists(file)) {
+				return file;
+			}
+			#end
+			return 'assets/fonts/$key';
+		}
+
+	
+	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String)
+		{
+			#if MODS
+			if(FileSystem.exists(mods(key)) || FileSystem.exists(mods(key))) {
+				return true;
+			}
+			#end
+			
+			if(OpenFlAssets.exists(Paths.getPath(key, type, library))) {
+				return true;
+			}
+			return false;
+		}
 
 	inline static public function modTxt(key:String)
 	{
@@ -295,6 +317,10 @@ class Paths
 	inline static public function modVideo(key:String)
 	{
 		return modFolder('videos/' + key + '.' + VIDEO_EXT);
+	}
+
+	inline static public function modsFont(key:String) {
+		return modFolder('fonts/' + key);
 	}
 
 	inline static public function modsImages(key:String)
@@ -356,7 +382,7 @@ class Paths
 			}
 		}
 		if (FileSystem.exists('mods/' + PolymodHandler.swagMeta + '/' + key)
-			&& ModsMenuOption.enabledMods.contains(PolymodHandler.swagMeta))
+			&& coolModsOption.enabledMods.contains(PolymodHandler.swagMeta))
 		{
 			return 'mods/' + PolymodHandler.swagMeta + '/' + key;
 		}

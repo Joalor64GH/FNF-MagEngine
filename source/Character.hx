@@ -7,6 +7,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.Assets;
 import haxe.Json;
 import flixel.util.FlxColor;
+import animateatlas.AtlasFrameMaker;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
@@ -428,8 +429,10 @@ class Character extends FlxSprite
 					imagePNG = parsedJson.image;
 					animationsthing = parsedJson.animations;
 					barColor = FlxColor.fromRGB(parsedJson.healthbarColor[0], parsedJson.healthbarColor[1], parsedJson.healthbarColor[2]);
-
-					if (animationsthing != null && animationsthing.length > 0)
+					if (Paths.fileExists("mods/images/characters/" + parsedJson.image + ".json", TEXT)) {
+					frames = AtlasFrameMaker.construct("mods/custom_characters/" + parsedJson.image);
+					}
+					else if (animationsthing != null && animationsthing.length > 0)
 					{
 						for (anim in animationsthing)
 						{

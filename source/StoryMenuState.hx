@@ -140,7 +140,7 @@ class StoryMenuState extends MusicBeatState
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
 
-		var bg:FlxSprite = new FlxSprite(FlxG.width * 0.07, yellowBG.y + 420).loadGraphic(Paths.image('storybg', 'MagEngine'));
+		var bg:FlxSprite = new FlxSprite(FlxG.width * 0.07, yellowBG.y + 420).loadGraphic(Paths.image('storybg'));
 		bg.antialiasing = true;
 		bg.screenCenter(X);
 		bg.screenCenter(Y);
@@ -149,7 +149,7 @@ class StoryMenuState extends MusicBeatState
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
 
-		var itsanillusionn:FlxSprite = new FlxSprite().loadGraphic(Paths.image('illusion', 'MagEngine'));
+		var itsanillusionn:FlxSprite = new FlxSprite().loadGraphic(Paths.image('illusion'));
 		itsanillusionn.antialiasing = true;
 		add(itsanillusionn);
 
