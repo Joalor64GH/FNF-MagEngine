@@ -55,8 +55,7 @@ class ModsMenu extends MusicBeatState
 		infoText.antialiasing = true;
 		add(infoText);
 
-		if (ModList.modMetadatas != null && PolymodHandler.metadataArrays[curSelected] != null) {
-		infoTextcool = new FlxText(830, 340, 0, "", 12);
+		infoTextcool = new FlxText(750, 340, 0, "", 12);
 		infoTextcool.scrollFactor.set();
 		infoTextcool.setFormat(Paths.font("funkin.otf"), 40, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		infoTextcool.borderSize = 2;
@@ -67,9 +66,11 @@ class ModsMenu extends MusicBeatState
 		
 		var bgtwo:FlxSprite = new FlxSprite(720, 0).loadGraphic(Paths.image("modbg"));
 		bgtwo.screenCenter(Y);
+		if (page.members != null) {
 		add(bgtwo);
 
 		add(infoTextcool);
+		}
 
 		ModsMenu.enableButton = new FlxButton(bg.x + 1120, 309, "Enable Mod", function()
             {
@@ -107,7 +108,6 @@ class ModsMenu extends MusicBeatState
 				add(disableButton);
 				add(enableButton);
 				}
-			}
 		super.create();
 
 		PolymodHandler.loadModMetadata();
@@ -144,7 +144,7 @@ class ModsMenu extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		if (ModList.modMetadatas != null && PolymodHandler.metadataArrays[curSelected] != null) {
+		if (ModList.modMetadatas != null && PolymodHandler.metadataArrays != null) {
 		infoTextcool.text = ModList.modMetadatas.get(PolymodHandler.metadataArrays[curSelected]).description;
 		infoTextcool.visible = true;
 		infoTextcool.antialiasing = true;
