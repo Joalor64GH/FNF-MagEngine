@@ -763,8 +763,10 @@ class PlayState extends MusicBeatState
 				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
 			
 			default:
+				if (curStage == stageData.name) {
 			    dad.x = stageData.opponent[0];
 				dad.y = stageData.opponent[1];
+				}
 		}
 
 		boyfriend = new Boyfriend(770, 450, SONG.player1);
@@ -804,10 +806,12 @@ class PlayState extends MusicBeatState
 				gf.x += 180;
 				gf.y += 300;
 			default:
-				boyfriend.x = stageData.opponent[0];
-			    boyfriend.y = stageData.opponent[1];
+				if (curStage == stageData.name) {
+				boyfriend.x = stageData.boyfriend[0];
+			    boyfriend.y = stageData.boyfriend[1];
 				gf.x = stageData.girlfriend[0];
 				gf.y = stageData.girlfriend[1];
+				}
 		}
 
 		add(gf);
