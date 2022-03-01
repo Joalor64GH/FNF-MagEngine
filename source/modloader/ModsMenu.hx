@@ -29,6 +29,8 @@ class ModsMenu extends MusicBeatState
 	public static var coolId:String;
 	public static var disableButton:FlxButton;
 	public static var enableButton:FlxButton;
+	var bgtwo:FlxSprite;
+	var bg:FlxSprite;
 
 	var infoText:FlxText;
 	var infoTextcool:FlxText;
@@ -61,17 +63,50 @@ class ModsMenu extends MusicBeatState
 		infoTextcool.borderSize = 2;
 		infoTextcool.screenCenter(Y);
 
-		var bg:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.image("modbg"));
-		// bg.screenCenter(Y);
-		
-		var bgtwo:FlxSprite = new FlxSprite(720, 0).loadGraphic(Paths.image("modbg"));
-		bgtwo.screenCenter(Y);
-		if (page.members != null) {
-		add(bgtwo);
+		super.create();
 
-		add(infoTextcool);
+		PolymodHandler.loadModMetadata();
+
+		add(page);
+
+		loadMods();
+		FlxG.mouse.visible = true;
+	}
+
+	function loadMods()
+	{
+		page.forEachExists(function(option:ModsMenuOption)
+		{
+			page.remove(option);
+			option.kill();
+			option.destroy();
+		});
+
+		var optionLoopNum:Int = 0;
+
+		for (modId in PolymodHandler.metadataArrays)
+		{
+			var modOption = new ModsMenuOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
+			page.add(modOption);
+			optionLoopNum++;
+			coolId = modId;
 		}
 
+		if (optionLoopNum > 0) {
+		buildUI();
+		}
+
+		infoText.visible = (page.length == 0);
+	}
+
+	function buildUI() {
+
+		bg = new FlxSprite(0, 0).loadGraphic(Paths.image("modbg"));
+		// bg.screenCenter(Y);
+		
+		bgtwo = new FlxSprite(720, 0).loadGraphic(Paths.image("modbg"));
+		bgtwo.screenCenter(Y);
+		
 		ModsMenu.enableButton = new FlxButton(bg.x + 1120, 309, "Enable Mod", function()
             {
                 page.members[curSelected].Mod_Enabled = true;
@@ -104,54 +139,24 @@ class ModsMenu extends MusicBeatState
 				disableButton.label.fieldWidth = 135;
 				setLabelOffset(disableButton, 5, 22);
 
-				if (page.members != null) {
+				add(bgtwo);
+				add(infoTextcool);
 				add(disableButton);
 				add(enableButton);
-				}
-		super.create();
-
-		PolymodHandler.loadModMetadata();
-
-		add(page);
-
-		loadMods();
-		FlxG.mouse.visible = true;
-	}
-
-	function loadMods()
-	{
-		page.forEachExists(function(option:ModsMenuOption)
-		{
-			page.remove(option);
-			option.kill();
-			option.destroy();
-		});
-
-		var optionLoopNum:Int = 0;
-
-		for (modId in PolymodHandler.metadataArrays)
-		{
-			var modOption = new ModsMenuOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
-			page.add(modOption);
-			optionLoopNum++;
-
-			coolId = modId;
-		}
-
-		infoText.visible = (page.length == 0);
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		if (ModList.modMetadatas != null && PolymodHandler.metadataArrays != null) {
+
+		//a bit ugly but i was in a hurry 
+		if (page.length > 0) {
+		
 		infoTextcool.text = ModList.modMetadatas.get(PolymodHandler.metadataArrays[curSelected]).description;
 		infoTextcool.visible = true;
 		infoTextcool.antialiasing = true;
 	    }
-		else {
-			remove(infoTextcool);
-		}
+
 		if (page.length > 0)
 		{
 			if (controls.UP_P)
