@@ -696,6 +696,7 @@ class PlayState extends MusicBeatState
 				default: //custom stages
 				{
 				    curStage = stageData.name;
+					defaultCamZoom = stageData.defaultZoom;
 				    for (layer in stageData.layerArray){
 				    var loadedLayer:FlxSprite = new FlxSprite(layer.xAxis, layer.yAxis).loadGraphic(Paths.image(layer.directory));
 					loadedLayer.scrollFactor.set(layer.scrollX, layer.scrollY);
@@ -705,7 +706,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		isPixelStage = curStage.startsWith('school');
+		isPixelStage = curStage.startsWith('school') || stageData.isPixelStage;
 
 		var gfVersion:String = 'gf';
 
@@ -760,6 +761,10 @@ class PlayState extends MusicBeatState
 				dad.x -= 150;
 				dad.y += 100;
 				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
+			
+			default:
+			    dad.x = stageData.opponent[0];
+				dad.y = stageData.opponent[1];
 		}
 
 		boyfriend = new Boyfriend(770, 450, SONG.player1);
@@ -799,8 +804,10 @@ class PlayState extends MusicBeatState
 				gf.x += 180;
 				gf.y += 300;
 			default:
-				if (curStage == SONG.song.toLowerCase() + 'Stage')
-					boyfriend.x += 200;
+				boyfriend.x = stageData.opponent[0];
+			    boyfriend.y = stageData.opponent[1];
+				gf.x = stageData.girlfriend[0];
+				gf.y = stageData.girlfriend[1];
 		}
 
 		add(gf);

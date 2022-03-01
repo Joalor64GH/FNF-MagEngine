@@ -31,8 +31,10 @@ class Paths
 
 	public static var ignoredFolders:Array<String> = [
 		'custom_characters',
+		'custom_events',
 		'data',
 		'songs',
+		'stages',
 		'music',
 		'sounds',
 		'fonts',
