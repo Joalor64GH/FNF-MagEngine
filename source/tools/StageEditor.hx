@@ -316,7 +316,7 @@ class StageEditor extends MusicBeatState
         var assetName:String = directoryInputText.text.trim();
         var directoryLayer:String = "images/" + assetName + ".png";
         if(assetName != null && assetName.length > 0) {
-        if (FileSystem.exists("mods/" + directoryLayer)){
+        if (FileSystem.exists(Paths.modFolder(directoryLayer))){
             createdLayer.loadGraphic(Paths.modIcon(assetName));
         }
         else{
