@@ -422,15 +422,15 @@ class Character extends FlxSprite
 
 				default:
 					#if MODS
-					var charKey:String = 'mods/custom_characters/' + curCharacter + '.json';
+					var charKey:String = Paths.modFolder('custom_characters/' + curCharacter + '.json');
 					var rawJson = File.getContent(charKey);
 					var parsedJson:SwagCharacter = cast Json.parse(rawJson);
 					frames = Paths.getModsSparrowAtlas(parsedJson.image);
 					imagePNG = parsedJson.image;
 					animationsthing = parsedJson.animations;
 					barColor = FlxColor.fromRGB(parsedJson.healthbarColor[0], parsedJson.healthbarColor[1], parsedJson.healthbarColor[2]);
-					if (Paths.fileExists("mods/images/characters/" + parsedJson.image + ".json", TEXT)) {
-					frames = AtlasFrameMaker.construct("mods/custom_characters/" + parsedJson.image);
+					if (Paths.fileExists(Paths.modFolder("images/characters/") + parsedJson.image + ".json", TEXT)) {
+					frames = AtlasFrameMaker.construct(Paths.modFolder("custom_characters/") + parsedJson.image);
 					}
 					else if (animationsthing != null && animationsthing.length > 0)
 					{
@@ -485,7 +485,7 @@ class Character extends FlxSprite
 
 	public function loadOffsetFromthecoolFile(character:String)
 	{
-		var offset:Array<String> = CoolUtil.evenCoolerTextFile('mods/images/characters/' + character + "Offsets.txt");
+		var offset:Array<String> = CoolUtil.evenCoolerTextFile(Paths.modFolder('images/characters/' + character + "Offsets.txt"));
 
 		for (i in 0...offset.length)
 		{

@@ -26,6 +26,8 @@ class ModsMenu extends MusicBeatState
 
 	public static var instance:ModsMenu;
 
+	public static var enabledMods = [];
+
 	public static var coolId:String;
 	public static var disableButton:FlxButton;
 	public static var enableButton:FlxButton;
@@ -57,7 +59,7 @@ class ModsMenu extends MusicBeatState
 		infoText.antialiasing = true;
 		add(infoText);
 
-		infoTextcool = new FlxText(750, 340, 0, "", 12);
+		infoTextcool = new FlxText(340, 340, Std.int(FlxG.width * 0.9), "", 12);
 		infoTextcool.scrollFactor.set();
 		infoTextcool.setFormat(Paths.font("funkin.otf"), 40, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		infoTextcool.borderSize = 2;
@@ -110,8 +112,8 @@ class ModsMenu extends MusicBeatState
 		ModsMenu.enableButton = new FlxButton(bg.x + 1120, 309, "Enable Mod", function()
             {
                 page.members[curSelected].Mod_Enabled = true;
-                if (!page.members[curSelected].enabledMods.contains(page.members[curSelected].Option_Value)) {
-					page.members[curSelected].enabledMods.push(page.members[curSelected].Option_Value);
+                if (!enabledMods.contains(page.members[curSelected].Option_Value)) {
+					enabledMods.push(page.members[curSelected].Option_Value);
                 }
                 ModList.setModEnabled(page.members[curSelected].Option_Value, page.members[curSelected].Mod_Enabled);
             });
@@ -119,8 +121,8 @@ class ModsMenu extends MusicBeatState
 			ModsMenu.disableButton = new FlxButton(bg.x + 1120, 380, "Disable Mod", function()
 				{
 					page.members[curSelected].Mod_Enabled = false;
-					if (page.members[curSelected].enabledMods.contains(page.members[curSelected].Option_Value)) {
-						page.members[curSelected].enabledMods.remove(page.members[curSelected].Option_Value);
+					if (enabledMods.contains(page.members[curSelected].Option_Value)) {
+						enabledMods.remove(page.members[curSelected].Option_Value);
 					}
 					ModList.setModEnabled(page.members[curSelected].Option_Value, page.members[curSelected].Mod_Enabled);
 				});

@@ -26,7 +26,7 @@ class Paths
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 	static public var modDir:String = null;
 	public static var customSoundsLoaded:Map<String, Sound> = new Map();
-	public static var coolModsOption:ModsMenuOption;
+	public static var coolMods:ModsMenu;
 	public static var customImagesLoaded:Map<String, Bool> = new Map<String, Bool>();
 
 	public static var ignoredFolders:Array<String> = [
@@ -374,6 +374,21 @@ class Paths
 	static public function modFolder(key:String)
 	{
 		#if MODS
+		
+		var list:Array<String> = [];
+		var modsFolder:String = Paths.mods();
+		if(FileSystem.exists(modsFolder)) {
+			for (folder in FileSystem.readDirectory(modsFolder)) {
+				var path = haxe.io.Path.join([modsFolder, folder]);
+				if (sys.FileSystem.isDirectory(path) && !Paths.ignoredFolders.contains(folder) && !list.contains(folder)) {
+					list.push(folder);
+					for (i in 0...list.length){
+					modDir = list[i];
+					}
+				}
+			}
+		}
+		if (ModsMenu.enabledMods.contains(modDir)) {
 		if (modDir != null && modDir.length > 0)
 		{
 			// psych engine for the win
@@ -383,11 +398,7 @@ class Paths
 				return fileToCheck;
 			}
 		}
-		if (FileSystem.exists('mods/' + PolymodHandler.swagMeta + '/' + key)
-			&& coolModsOption.enabledMods.contains(PolymodHandler.swagMeta))
-		{
-			return 'mods/' + PolymodHandler.swagMeta + '/' + key;
-		}
+	 }
 
 		return 'mods/' + key;
 		#else

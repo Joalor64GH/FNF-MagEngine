@@ -26,8 +26,7 @@ class ModsMenuOption extends FlxTypedGroup<FlxSprite>
 	public var Option_Value:String = "Template Mod";
 
     public static var enableButton:FlxButton;
-
-	public var enabledMods:Array<String> = [];
+	
     public static var disableButton:FlxButton;
 
 	public function new(_Option_Name:String = "-", _Option_Value:String = "Template Mod", _Option_Row:Int = 0)
@@ -38,7 +37,8 @@ class ModsMenuOption extends FlxTypedGroup<FlxSprite>
 		this.Option_Value = _Option_Value;
 		this.Option_Row = _Option_Row;
 
-		Alphabet_Text = new Alphabet(0, 0 + (Option_Row * 100), Option_Name, true);
+		var scale:Float = Math.min(9.2 / (Option_Name.length), 1);
+		Alphabet_Text = new Alphabet(0, 0 + (Option_Row * 100), Option_Name, true, false, 0.05, scale);
 		Alphabet_Text.isMenuItem = true;
 		Alphabet_Text.targetY = Option_Row;
 		add(Alphabet_Text);
