@@ -388,7 +388,7 @@ class Paths
 				}
 			}
 		}
-		if (ModsMenu.enabledMods.contains(modDir)) {
+		if (ModList.getModEnabled(modDir)) {
 		if (modDir != null && modDir.length > 0)
 		{
 			// psych engine for the win
