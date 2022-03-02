@@ -420,30 +420,31 @@ class Character extends FlxSprite
 				barColor = 0xFF9a00f8;
 				playAnim('idle');
 
-				default:
-					#if MODS
-					var charKey:String = Paths.modFolder('custom_characters/' + curCharacter + '.json');
-					var rawJson = File.getContent(charKey);
-					var parsedJson:SwagCharacter = cast Json.parse(rawJson);
-					frames = Paths.getModsSparrowAtlas(parsedJson.image);
-					imagePNG = parsedJson.image;
-					animationsthing = parsedJson.animations;
-					barColor = FlxColor.fromRGB(parsedJson.healthbarColor[0], parsedJson.healthbarColor[1], parsedJson.healthbarColor[2]);
-					if (Paths.fileExists(Paths.modFolder("images/characters/") + parsedJson.image + ".json", TEXT)) {
+			default:
+				#if MODS
+				var charKey:String = Paths.modFolder('custom_characters/' + curCharacter + '.json');
+				var rawJson = File.getContent(charKey);
+				var parsedJson:SwagCharacter = cast Json.parse(rawJson);
+				frames = Paths.getModsSparrowAtlas(parsedJson.image);
+				imagePNG = parsedJson.image;
+				animationsthing = parsedJson.animations;
+				barColor = FlxColor.fromRGB(parsedJson.healthbarColor[0], parsedJson.healthbarColor[1], parsedJson.healthbarColor[2]);
+				if (Paths.fileExists(Paths.modFolder("images/characters/") + parsedJson.image + ".json", TEXT))
+				{
 					frames = AtlasFrameMaker.construct(Paths.modFolder("custom_characters/") + parsedJson.image);
-					}
-					else if (animationsthing != null && animationsthing.length > 0)
+				}
+				else if (animationsthing != null && animationsthing.length > 0)
+				{
+					for (anim in animationsthing)
 					{
-						for (anim in animationsthing)
-						{
-							var animAnim:String = '' + anim.anim;
-							var animName:String = '' + anim.name;
-							var animLoop:Bool = !!anim.loop;
-							loadOffsetFromthecoolFile(curCharacter);
-							animation.addByPrefix(animAnim, animName, 24, animLoop);
-						}
+						var animAnim:String = '' + anim.anim;
+						var animName:String = '' + anim.name;
+						var animLoop:Bool = !!anim.loop;
+						loadOffsetFromthecoolFile(curCharacter);
+						animation.addByPrefix(animAnim, animName, 24, animLoop);
 					}
-					#end
+				}
+				#end
 		}
 
 		recalculateDanceIdle();

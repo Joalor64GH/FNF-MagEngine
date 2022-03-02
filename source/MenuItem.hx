@@ -18,8 +18,9 @@ class MenuItem extends FlxSpriteGroup
 	{
 		super(x, y);
 		week = new FlxSprite().loadGraphic(Paths.image('storymenu/week' + weekNum));
-		if (weekNum < 7){
-		week.color = FlxColor.BLACK;
+		if (weekNum < 7)
+		{
+			week.color = FlxColor.BLACK;
 		}
 		add(week);
 	}

@@ -1,14 +1,11 @@
 package;
 
+import flixel.FlxSprite;
 #if desktop
 import Discord.DiscordClient;
-import sys.thread.Thread;
 #end
 import flixel.FlxG;
-import modloader.PolymodHandler;
-import modloader.ModList;
 import modloader.ModsMenu;
-import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.input.keyboard.FlxKey;
 import flixel.addons.display.FlxGridOverlay;
@@ -51,33 +48,6 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		#if MODS
-		if (sys.FileSystem.exists('mods/'))
-		{
-			var folders:Array<String> = [];
-			for (file in sys.FileSystem.readDirectory('mods/'))
-			{
-				var path = haxe.io.Path.join(['mods/', file]);
-				if (sys.FileSystem.isDirectory(path))
-				{
-					folders.push(file);
-				}
-			}
-		}
-		if (sys.FileSystem.exists('mods/' + ModsMenu.coolId + '/'))
-		{
-			var folders:Array<String> = [];
-			for (file in sys.FileSystem.readDirectory('mods/' + ModsMenu.coolId + '/'))
-			{
-				var path = haxe.io.Path.join(['mods/' + ModsMenu.coolId + '/', file]);
-				if (sys.FileSystem.isDirectory(path))
-				{
-					folders.push(file);
-				}
-			}
-		}
-		#end
-
 		if (!initialized)
 		{
 			#if MODS
@@ -141,49 +111,26 @@ class TitleState extends MusicBeatState
 		persistentUpdate = true;
 
 		logoBl = new FlxSprite(-150, -100);
-		#if MODS
-		if (FileSystem.exists(Paths.image('logoBumpin')) && FileSystem.exists(Paths.modIcon('logoBumpin'))) {
-			logoBl.frames = Paths.getModsSparrowAtlas('logoBumpin');
-		}
-		else {
-		#end
-		    logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
-		}
+		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = true;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
-		
 		// logoBl.screenCenter();
 		// logoBl.color = FlxColor.BLACK;
 		logoBg = new FlxSprite().loadGraphic(Paths.image('bg', 'MagEngine'));
 		logoBg.screenCenter();
 		add(logoBg);
-
-		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);		
-		#if MODS
-		if (FileSystem.exists(Paths.image('gfDanceTitle')) && FileSystem.exists(Paths.modIcon('gfDanceTitle'))) {
-			gfDance.frames = Paths.getModsSparrowAtlas('gfDanceTitle');
-		}
-		else {
-		#end
-			gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
-		}
+		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
+		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		gfDance.antialiasing = true;
 		add(gfDance);
 		add(logoBl);
-
 		titleText = new FlxSprite(150, FlxG.height * 0.8);
-		#if MODS
-		if (FileSystem.exists(Paths.image('titleEnter')) && FileSystem.exists(Paths.modIcon('titleEnter'))) {
-			titleText.frames = Paths.getModsSparrowAtlas('titleEnter');
-		}
-		else {
-		#end
-	        titleText.frames = Paths.getSparrowAtlas('titleEnter');
-		}
+		titleText.frames = Paths.getSparrowAtlas('titleEnter');
+
 		titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
 		titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
 		titleText.antialiasing = true;
@@ -191,29 +138,21 @@ class TitleState extends MusicBeatState
 		titleText.updateHitbox();
 		// titleText.screenCenter(X);
 		add(titleText);
-
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
 		logo.screenCenter();
 		logo.antialiasing = true;
 		// add(logo);
-
 		// FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
 		// FlxTween.tween(logo, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.1});
-
 		credGroup = new FlxGroup();
 		add(credGroup);
 		textGroup = new FlxGroup();
-
 		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		credGroup.add(blackScreen);
-
 		credTextShit = new Alphabet(0, 0, "ninjamuffin99\nPhantomArcade\nkawaisprite\nevilsk8er", true);
 		credTextShit.screenCenter();
-
 		// credTextShit.alignment = CENTER;
-
 		credTextShit.visible = false;
-
 		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('newgrounds_logo'));
 		add(ngSpr);
 		ngSpr.visible = false;
@@ -221,14 +160,11 @@ class TitleState extends MusicBeatState
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = true;
-
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
-
 		if (initialized)
 			skipIntro();
 		else
 			initialized = true;
-
 		// credGroup.add(credTextShit);
 	}
 

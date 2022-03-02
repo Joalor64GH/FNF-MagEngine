@@ -97,8 +97,7 @@ class OffsetsState extends MusicBeatState
 		boyfriend = new Boyfriend(770, 450);
 		add(boyfriend);
 
-		infoText = new FlxText(5, FlxG.height - 28, 0, "Drag and drop the ratings and numbers to change the offsets. Press RESET to reset the offsets.",
-			12);
+		infoText = new FlxText(5, FlxG.height - 28, 0, "Drag and drop the ratings and numbers to change the offsets. Press RESET to reset the offsets.", 12);
 		infoText.scrollFactor.set();
 		infoText.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		infoText.cameras = [camHUD];

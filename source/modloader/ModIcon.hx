@@ -1,6 +1,5 @@
 package modloader;
 
-#if sys
 import sys.io.File;
 import openfl.display.BitmapData;
 import flixel.FlxSprite;
@@ -31,4 +30,3 @@ class ModIcon extends FlxSprite
 			setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y - 30);
 	}
 }
-#end

@@ -26,9 +26,7 @@ using StringTools;
 
 class EditorMenuState extends MusicBeatState
 {
-	var optionShit:Array<String> = [
-		'Stage Editor'
-	];
+	var optionShit:Array<String> = ['Stage Editor'];
 
 	var confirming:Bool = false;
 
@@ -44,7 +42,6 @@ class EditorMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
-
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFF353535;
@@ -68,7 +65,6 @@ class EditorMenuState extends MusicBeatState
 		changeSelection();
 		// FlxG.sound.playMusic(Paths.music('title'), 0);
 		// FlxG.sound.music.fadeIn(2, 0, 0.8);
-
 
 		// JUST DOIN THIS SHIT FOR TESTING!!!
 		/* 
@@ -119,19 +115,19 @@ class EditorMenuState extends MusicBeatState
 
 		if (controls.ACCEPT && !confirming)
 		{
-				FlxG.sound.play(Paths.sound('confirmMenu'));
-				confirming = true;
-				FlxFlicker.flicker(grpOptionShit.members[curSelected], 1, 0.06, true, false, function(flick:FlxFlicker)
+			FlxG.sound.play(Paths.sound('confirmMenu'));
+			confirming = true;
+			FlxFlicker.flicker(grpOptionShit.members[curSelected], 1, 0.06, true, false, function(flick:FlxFlicker)
+			{
+				switch (optionShit[curSelected])
 				{
-				switch(optionShit[curSelected]) {
-
 					case 'Stage Editor':
 						LoadingState.loadAndSwitchState(new StageEditor());
 				}
 				FlxG.sound.music.volume = 0;
 				confirming = false;
-		        });
-	    }
+			});
+		}
 	}
 
 	function changeSelection(change:Int = 0)

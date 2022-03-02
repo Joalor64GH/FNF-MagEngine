@@ -45,16 +45,17 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-		if (FileSystem.exists(Paths.modTxt('data/freeplaySonglist')) && FileSystem.exists(Paths.txt('data/freeplaySonglist'))) {
+		if (FileSystem.exists(Paths.modTxt('data/freeplaySonglist')) && FileSystem.exists(Paths.txt('data/freeplaySonglist')))
+		{
 			songList = File.getContent(Paths.modTxt('data/freeplaySonglist')).trim().split('\n');
 
 			for (i in 0...songList.length)
-				{
-					songList[i] = songList[i].trim();
-				}
-		
+			{
+				songList[i] = songList[i].trim();
+			}
 		}
-		else {
+		else
+		{
 			songList = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
 		}
 
@@ -122,7 +123,8 @@ class FreeplayState extends MusicBeatState
 		infoBG.alpha = 0.5;
 		add(infoBG);
 
-		var infoText:FlxText = new FlxText(5, FlxG.height - 22, 0, "Press P to play the song instrumental, Press ACCEPT to play the song in freeplay mode.", 12);
+		var infoText:FlxText = new FlxText(5, FlxG.height - 22, 0, "Press P to play the song instrumental, Press ACCEPT to play the song in freeplay mode.",
+			12);
 		infoText.scrollFactor.set();
 		infoText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT);
 		infoText.antialiasing = true;

@@ -34,17 +34,9 @@ class OptionsMenu extends MusicBeatState
 	var options:Array<OptionCategory> = [
 		new OptionCategory("Preferences",
 			[
-				new DownscrollOption(),
-				new MiddlescrollOption(),
-				new GhostTappingOption(),
-				new AccuracyOption(),
-				new CacheOption(),
-				new FPSOption(),
+				new DownscrollOption(), new MiddlescrollOption(), new GhostTappingOption(), new AccuracyOption(), new CacheOption(), new FPSOption(),
 				new MEMOption(),
-				new VerOption(),
-				new RatingOption(),
-				new FPSCapOption()
-			]),
+				new VerOption(), new RatingOption(), new FPSCapOption()]),
 		new OptionCategory("Adjust Offsets"),
 		new OptionCategory("Controls"),
 		new OptionCategory("Notes", [new OpponentNotesGlowOption(), new SplooshOption(), new TransparentNotesOption()]),

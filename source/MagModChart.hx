@@ -753,27 +753,33 @@ class MagModChart
 		#end
 	}
 
-	public function call(event:String, args:Array<Dynamic>):Dynamic {
+	public function call(event:String, args:Array<Dynamic>):Dynamic
+	{
 		#if SCRIPTS
-		if(lua == null) {
+		if (lua == null)
+		{
 			return functionContinue;
 		}
 
 		Lua.getglobal(lua, event);
 
-		for (arg in args) {
+		for (arg in args)
+		{
 			Convert.toLua(lua, arg);
 		}
 
 		var result:Null<Int> = Lua.pcall(lua, args.length, 1, 0);
-		if(result != null) {
+		if (result != null)
+		{
 			/*var resultStr:String = Lua.tostring(lua, result);
-			var error:String = Lua.tostring(lua, -1);
-			Lua.pop(lua, 1);*/
-			if(Lua.type(lua, -1) == Lua.LUA_TSTRING) {
+				var error:String = Lua.tostring(lua, -1);
+				Lua.pop(lua, 1); */
+			if (Lua.type(lua, -1) == Lua.LUA_TSTRING)
+			{
 				var error:String = Lua.tostring(lua, -1);
 				Lua.pop(lua, 1);
-				if(error == 'attempt to call a nil value') {
+				if (error == 'attempt to call a nil value')
+				{
 					return functionContinue;
 				}
 			}

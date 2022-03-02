@@ -43,7 +43,7 @@
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web" />
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web" />
 
-	<define name="MODS" if="desktop" />
+	<!-- <define name="MODS" if="desktop" /> -->
 	<define name="SCRIPTS" if="desktop" />
 	<define name="CACHE" if="sys" />
 	<define name="PRELOAD_ALL" unless="web" />
@@ -116,7 +116,6 @@
 	<haxelib name="newgrounds" />
 	<haxelib name="faxe" if='switch' />
 	<haxelib name="linc_luajit" />
-	<haxelib name="polymod" />
 	<haxelib name="discord_rpc" if="desktop" />
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 

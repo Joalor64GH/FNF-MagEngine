@@ -1,9 +1,6 @@
 package modloader;
 
-#if MODS
 import flixel.FlxSubState;
-import polymod.Polymod.ModMetadata;
-import modloader.ModList;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.FlxState;
@@ -25,9 +22,9 @@ class ModsMenuOption extends FlxTypedGroup<FlxSprite>
 	public var Option_Name:String = "-";
 	public var Option_Value:String = "Template Mod";
 
-    public static var enableButton:FlxButton;
-	
-    public static var disableButton:FlxButton;
+	public static var enableButton:FlxButton;
+
+	public static var disableButton:FlxButton;
 
 	public function new(_Option_Name:String = "-", _Option_Value:String = "Template Mod", _Option_Row:Int = 0)
 	{
@@ -46,8 +43,8 @@ class ModsMenuOption extends FlxTypedGroup<FlxSprite>
 		Mod_Icon = new ModIcon(Option_Value);
 		Mod_Icon.sprTracker = Alphabet_Text;
 		add(Mod_Icon);
-            
-		Mod_Enabled = ModList.modList.get(Option_Value);
+
+		// Mod_Enabled = ModList.modList.get(Option_Value);
 
 		FlxG.mouse.visible = true;
 	}
@@ -56,15 +53,13 @@ class ModsMenuOption extends FlxTypedGroup<FlxSprite>
 	{
 		super.update(elapsed);
 
-		
-		if (Mod_Enabled)
-		{
-			Alphabet_Text.color = FlxColor.GREEN;
-		}
-		else
-		{
-			Alphabet_Text.color = FlxColor.RED;
-		}
+		// if (Mod_Enabled)
+		// {
+		// 	Alphabet_Text.color = FlxColor.GREEN;
+		// }
+		// else
+		// {
+		// 	Alphabet_Text.color = FlxColor.RED;
+		// }
 	}
 }
-#end

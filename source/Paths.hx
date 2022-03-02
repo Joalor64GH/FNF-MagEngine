@@ -12,10 +12,6 @@ import lime.utils.Assets;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
-import modloader.PolymodHandler;
-import modloader.ModsMenu;
-import modloader.ModsMenuOption;
-import modloader.ModList;
 import flash.media.Sound;
 
 using StringTools;
@@ -24,24 +20,9 @@ class Paths
 {
 	inline public static var VIDEO_EXT = "mp4";
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
-	static public var modDir:String = null;
-	public static var customSoundsLoaded:Map<String, Sound> = new Map();
-	public static var coolMods:ModsMenu;
-	public static var customImagesLoaded:Map<String, Bool> = new Map<String, Bool>();
 
 	public static var ignoredFolders:Array<String> = [
-		'custom_characters',
-		'custom_events',
-		'data',
-		'songs',
-		'stages',
-		'music',
-		'sounds',
-		'fonts',
-		'videos',
-		'images',
-		'weeks',
-		'scripts'
+		'custom_characters', 'custom_events', 'data', 'songs', 'stages', 'music', 'sounds', 'fonts', 'videos', 'images', 'weeks', 'scripts'
 	];
 
 	static var currentLevel:String;
@@ -251,30 +232,32 @@ class Paths
 	}
 
 	inline static public function font(key:String)
+	{
+		#if MODS
+		var file:String = modsFont(key);
+		if (FileSystem.exists(file))
 		{
-			#if MODS
-			var file:String = modsFont(key);
-			if(FileSystem.exists(file)) {
-				return file;
-			}
-			#end
-			return 'assets/fonts/$key';
+			return file;
 		}
+		#end
+		return 'assets/fonts/$key';
+	}
 
-	
 	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String)
+	{
+		#if MODS
+		if (FileSystem.exists(mods(key)) || FileSystem.exists(mods(key)))
 		{
-			#if MODS
-			if(FileSystem.exists(mods(key)) || FileSystem.exists(mods(key))) {
-				return true;
-			}
-			#end
-			
-			if(OpenFlAssets.exists(Paths.getPath(key, type, library))) {
-				return true;
-			}
-			return false;
+			return true;
 		}
+		#end
+
+		if (OpenFlAssets.exists(Paths.getPath(key, type, library)))
+		{
+			return true;
+		}
+		return false;
+	}
 
 	inline static public function modTxt(key:String)
 	{
@@ -321,7 +304,8 @@ class Paths
 		return modFolder('videos/' + key + '.' + VIDEO_EXT);
 	}
 
-	inline static public function modsFont(key:String) {
+	inline static public function modsFont(key:String)
+	{
 		return modFolder('fonts/' + key);
 	}
 
@@ -374,31 +358,35 @@ class Paths
 	static public function modFolder(key:String)
 	{
 		#if MODS
-		
 		var list:Array<String> = [];
 		var modsFolder:String = Paths.mods();
-		if(FileSystem.exists(modsFolder)) {
-			for (folder in FileSystem.readDirectory(modsFolder)) {
+		if (FileSystem.exists(modsFolder))
+		{
+			for (folder in FileSystem.readDirectory(modsFolder))
+			{
 				var path = haxe.io.Path.join([modsFolder, folder]);
-				if (sys.FileSystem.isDirectory(path) && !Paths.ignoredFolders.contains(folder) && !list.contains(folder)) {
+				if (sys.FileSystem.isDirectory(path) && !Paths.ignoredFolders.contains(folder) && !list.contains(folder))
+				{
 					list.push(folder);
-					for (i in 0...list.length){
-					modDir = list[i];
+					for (i in 0...list.length)
+					{
+						modDir = list[i];
 					}
 				}
 			}
 		}
-		if (ModList.getModEnabled(modDir)) {
-		if (modDir != null && modDir.length > 0)
+		if (ModList.getModEnabled(modDir))
 		{
-			// psych engine for the win
-			var fileToCheck:String = mods(modDir + '/' + key);
-			if (FileSystem.exists(fileToCheck))
+			if (modDir != null && modDir.length > 0)
 			{
-				return fileToCheck;
+				// psych engine for the win
+				var fileToCheck:String = mods(modDir + '/' + key);
+				if (FileSystem.exists(fileToCheck))
+				{
+					return fileToCheck;
+				}
 			}
 		}
-	 }
 
 		return 'mods/' + key;
 		#else

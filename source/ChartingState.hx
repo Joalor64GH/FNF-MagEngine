@@ -274,58 +274,62 @@ class ChartingState extends MusicBeatState
 		stepperBPM.name = 'song_bpm';
 
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/characterList'));
-		if (FileSystem.exists(Paths.modTxt('data/characterList')) && FileSystem.exists(Paths.txt('data/characterList'))) {
+		if (FileSystem.exists(Paths.modTxt('data/characterList')) && FileSystem.exists(Paths.txt('data/characterList')))
+		{
 			characters = File.getContent(Paths.modTxt('data/characterList')).trim().split('\n');
 
 			for (i in 0...characters.length)
-				{
-					characters[i] = characters[i].trim();
-				}
-		
+			{
+				characters[i] = characters[i].trim();
+			}
 		}
-		else {
+		else
+		{
 			characters = CoolUtil.coolTextFile(Paths.txt('data/characterList'));
 		}
 		var dialogueintros:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/dialogueIntroToggle'));
 		var videointros:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/videoIntroToggle'));
 		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/gfVersionList'));
 		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/stageList'));
-		if (FileSystem.exists(Paths.modTxt('data/stageList')) && FileSystem.exists(Paths.txt('data/stageList'))) {
+		if (FileSystem.exists(Paths.modTxt('data/stageList')) && FileSystem.exists(Paths.txt('data/stageList')))
+		{
 			stages = File.getContent(Paths.modTxt('data/stageList')).trim().split('\n');
 
 			for (i in 0...stages.length)
-				{
-					stages[i] = stages[i].trim();
-				}
-		
+			{
+				stages[i] = stages[i].trim();
+			}
 		}
-		else {
+		else
+		{
 			stages = CoolUtil.coolTextFile(Paths.txt('data/stageList'));
 		}
-		if (FileSystem.exists(Paths.modTxt('data/gfVersionList')) && FileSystem.exists(Paths.txt('data/gfVersionList'))) {
+		if (FileSystem.exists(Paths.modTxt('data/gfVersionList')) && FileSystem.exists(Paths.txt('data/gfVersionList')))
+		{
 			gfVersions = File.getContent(Paths.modTxt('data/gfVersionList')).trim().split('\n');
 
 			for (i in 0...gfVersions.length)
-				{
-					gfVersions[i] = gfVersions[i].trim();
-				}
-		
+			{
+				gfVersions[i] = gfVersions[i].trim();
+			}
 		}
-		else {
+		else
+		{
 			gfVersions = CoolUtil.coolTextFile(Paths.txt('data/gfVersionList'));
 		}
 		var events:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/eventList'));
 
-		if (FileSystem.exists(Paths.modTxt('custom_events/eventList')) && FileSystem.exists(Paths.txt('data/eventList'))) {
+		if (FileSystem.exists(Paths.modTxt('custom_events/eventList')) && FileSystem.exists(Paths.txt('data/eventList')))
+		{
 			events = File.getContent(Paths.modTxt('custom_events/eventList')).trim().split('\n');
 
 			for (i in 0...events.length)
-				{
-					events[i] = events[i].trim();
-				}
-		
+			{
+				events[i] = events[i].trim();
+			}
 		}
-		else {
+		else
+		{
 			events = CoolUtil.coolTextFile(Paths.txt('data/eventList'));
 		}
 

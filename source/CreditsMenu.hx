@@ -38,16 +38,17 @@ class CreditsMenu extends MusicBeatState
 	{
 		var initCreditlist = CoolUtil.coolTextFile(Paths.txt('data/creditsList'));
 
-		if (FileSystem.exists(Paths.modTxt('data/creditsList')) && FileSystem.exists(Paths.txt('data/creditsList'))) {
+		if (FileSystem.exists(Paths.modTxt('data/creditsList')) && FileSystem.exists(Paths.txt('data/creditsList')))
+		{
 			initCreditlist = File.getContent(Paths.modTxt('data/creditsList')).trim().split('\n');
 
 			for (i in 0...initCreditlist.length)
-				{
-					initCreditlist[i] = initCreditlist[i].trim();
-				}
-		
+			{
+				initCreditlist[i] = initCreditlist[i].trim();
+			}
 		}
-		else {
+		else
+		{
 			initCreditlist = CoolUtil.coolTextFile(Paths.txt('data/creditsList'));
 		}
 
@@ -69,7 +70,6 @@ class CreditsMenu extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
-
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = FlxColor.PINK;
