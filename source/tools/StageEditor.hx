@@ -313,22 +313,18 @@ class StageEditor extends MusicBeatState
            UI_stagebox.scrollFactor.set();
     }
     function searchForLayer() {
+        createdLayer.visible = false;
         var assetName:String = directoryInputText.text.trim();
         var directoryLayer:String = "images/" + assetName + ".png";
         if(assetName != null && assetName.length > 0) {
         if (FileSystem.exists(Paths.modFolder(directoryLayer))){
-            createdLayer.loadGraphic(Paths.modIcon(assetName));
+            createdLayer.loadGraphic(Paths.image(assetName));
+            createdLayer.visible = true;
         }
-        else{
-            createdLayer.visible = false;
-        }
-        if (Paths.fileExists(directoryLayer, IMAGE)){
+        else if (Paths.fileExists(directoryLayer, IMAGE)){
         createdLayer.loadGraphic(Paths.getPath(directoryLayer, IMAGE));
         createdLayer.visible = true;
-    }
-    else{
-        createdLayer.visible = false;
-    }
+        }
 }
 else{
     createdLayer.visible = false;

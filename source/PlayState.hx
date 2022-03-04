@@ -86,12 +86,18 @@ class PlayState extends MusicBeatState
 	public static var originalStoryPlaylistLength:Int = 0;
 	public static var storyDifficulty:Int = 1;
 
+	public static var eventName:String;
+	public static var eventPosition:Float;
+
 	public static var usedPlayFeatures:Bool = false;
 	public static var cpuControlled:Bool = false;
 	public static var practiceAllowed:Bool = false;
 
 	public var pauseHUD:FlxCamera;
 	public var _swagstage:SwagStage;
+
+	public var valueOne:Dynamic;
+	public var valueTwo:Dynamic;
 
 	public var stageKey:String;
 	public var rawJson:String;
@@ -121,6 +127,9 @@ class PlayState extends MusicBeatState
   private var cameraSpeed:Float = 1;
 
 	private var camFollow:FlxPoint;
+
+	public var time:Float;
+
 	private var camFollowPos:FlxObject;
 
 	private static var prevCamFollow:FlxPoint;
@@ -248,6 +257,8 @@ class PlayState extends MusicBeatState
 		persistentUpdate = true;
 		persistentDraw = true;
 
+		curStage = PlayState.SONG.stage;
+
 		if (SONG == null)
 			SONG = Song.loadFromJson('tutorial');
 
@@ -360,7 +371,6 @@ class PlayState extends MusicBeatState
 		{
 			case 'halloween':
 				{
-					curStage = 'spooky';
 					halloweenLevel = true;
 
 					var hallowTex = Paths.getSparrowAtlas('halloween_bg', 'week2');
@@ -377,7 +387,6 @@ class PlayState extends MusicBeatState
 				}
 			case 'philly':
 				{
-					curStage = 'philly';
 
 					var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('philly/sky', 'week3'));
 					bg.scrollFactor.set(0.1, 0.1);
@@ -420,7 +429,6 @@ class PlayState extends MusicBeatState
 				}
 			case 'limo':
 				{
-					curStage = 'limo';
 					defaultCamZoom = 0.90;
 
 					var skyBG:FlxSprite = new FlxSprite(-120, -50).loadGraphic(Paths.image('limo/limoSunset', 'week4'));
@@ -466,7 +474,6 @@ class PlayState extends MusicBeatState
 				}
 			case 'mall':
 				{
-					curStage = 'mall';
 
 					defaultCamZoom = 0.80;
 
@@ -525,7 +532,6 @@ class PlayState extends MusicBeatState
 				}
 			case 'mallEvil':
 				{
-					curStage = 'mallEvil';
 					var bg:FlxSprite = new FlxSprite(-400, -500).loadGraphic(Paths.image('christmas/evilBG', 'week5'));
 					bg.antialiasing = true;
 					bg.scrollFactor.set(0.2, 0.2);
@@ -545,7 +551,6 @@ class PlayState extends MusicBeatState
 				}
 			case 'school':
 				{
-					curStage = 'school';
 
 					// defaultCamZoom = 0.9;
 
@@ -613,7 +618,6 @@ class PlayState extends MusicBeatState
 				}
 			case 'schoolEvil':
 				{
-					curStage = 'schoolEvil';
 
 					var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
 					var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
@@ -670,7 +674,6 @@ class PlayState extends MusicBeatState
 			case 'stage':
 				{
 					defaultCamZoom = 0.9;
-					curStage = 'stage';
 					var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
 					bg.antialiasing = true;
 					bg.scrollFactor.set(0.9, 0.9);
@@ -695,7 +698,6 @@ class PlayState extends MusicBeatState
 				}
 				default: //custom stages
 				{
-				    curStage = stageData.name;
 					defaultCamZoom = stageData.defaultZoom;
 				    for (layer in stageData.layerArray){
 				    var loadedLayer:FlxSprite = new FlxSprite(layer.xAxis, layer.yAxis).loadGraphic(Paths.image(layer.directory));
@@ -976,6 +978,11 @@ class PlayState extends MusicBeatState
 						parser.allowMetadata;
 						var ast = parser.parseString(expr);
 						var interp = new hscript.Interp();
+						interp.variables.set("add", add);
+						interp.variables.set("remove", remove);
+						interp.variables.set("update", time);
+						interp.variables.set("stepHit", stepHit);
+						interp.variables.set("beatHit", beatHit);
 						interp.variables.set("PlayState", PlayState);
 						interp.variables.set("DiscordClient", DiscordClient);
 						interp.variables.set("WiggleEffectType",WiggleEffect.WiggleEffectType);
@@ -1025,82 +1032,7 @@ class PlayState extends MusicBeatState
 						interp.variables.set("Parser",hscript.Parser);
 						interp.variables.set("Interp",hscript.Interp);
 						interp.variables.set("ModsMenu",modloader.ModsMenu);
-						interp.execute(ast);
-						trace(interp.execute(ast));
-
-						filesInserted.push(file);
-					}
-				}
-			}
-		}
-
-		var filesInserted:Array<String> = [];
-		var folders:Array<String> = [Paths.getPreloadPath('custom_events/')];
-		folders.insert(0, Paths.modFolder('custom_events/'));
-		for (folder in folders)
-		{
-			if(FileSystem.exists(folder))
-			{
-				for (file in FileSystem.readDirectory(folder))
-				{
-					if (file.endsWith('.hx') && !filesInserted.contains(file))
-					{
-						var expr = File.getContent(Paths.hscript(file));
-						var parser = new hscript.Parser();
-						parser.allowTypes;
-						parser.allowJSON;
-						parser.allowMetadata;
-						var ast = parser.parseString(expr);
-						var interp = new hscript.Interp();
-						interp.variables.set("PlayState", PlayState);
-						interp.variables.set("DiscordClient", DiscordClient);
-						interp.variables.set("WiggleEffectType",WiggleEffect.WiggleEffectType);
-						interp.variables.set("FlxBasic",flixel.FlxBasic);
-						interp.variables.set("MidSongEvent",Song.MidSongEvent);
-						interp.variables.set("FlxCamera",flixel.FlxCamera);
-						interp.variables.set("ChromaticAberration",shaders.ChromaticAberration);
-						interp.variables.set("FlxG",flixel.FlxG);
-						interp.variables.set("FlxGame",flixel.FlxGame);
-						interp.variables.set("FlxObject",flixel.FlxObject);
-						interp.variables.set("FlxSprite",flixel.FlxSprite);
-						interp.variables.set("FlxState",flixel.FlxState);
-						interp.variables.set("FlxSubState",flixel.FlxSubState);
-						interp.variables.set("FlxGridOverlay",flixel.addons.display.FlxGridOverlay);
-						interp.variables.set("FlxTrail",flixel.addons.effects.FlxTrail);
-						interp.variables.set("FlxTrailArea",flixel.addons.effects.FlxTrailArea);
-						interp.variables.set("FlxEffectSprite",flixel.addons.effects.chainable.FlxEffectSprite);
-						interp.variables.set("FlxWaveEffect",flixel.addons.effects.chainable.FlxWaveEffect);
-						interp.variables.set("FlxTransitionableState",flixel.addons.transition.FlxTransitionableState);
-						interp.variables.set("FlxAtlas",flixel.graphics.atlas.FlxAtlas);
-						interp.variables.set("FlxAtlasFrames",flixel.graphics.frames.FlxAtlasFrames);
-						interp.variables.set("FlxTypedGroup",flixel.group.FlxGroup.FlxTypedGroup);
-						interp.variables.set("FlxMath",flixel.math.FlxMath);
-						interp.variables.set("FlxPoint",flixel.math.FlxPoint);
-						interp.variables.set("FlxRect",flixel.math.FlxRect);
-						interp.variables.set("FlxSound",flixel.system.FlxSound);
-						interp.variables.set("FlxText",flixel.text.FlxText);
-						interp.variables.set("FlxEase",flixel.tweens.FlxEase);
-						interp.variables.set("FlxTween",flixel.tweens.FlxTween);
-						interp.variables.set("FlxBar",flixel.ui.FlxBar);
-						interp.variables.set("FlxCollision",flixel.util.FlxCollision);
-						interp.variables.set("FlxSort",flixel.util.FlxSort);
-						interp.variables.set("FlxStringUtil",flixel.util.FlxStringUtil);
-						interp.variables.set("FlxTimer",flixel.util.FlxTimer);
-						interp.variables.set("Json",Json);
-						interp.variables.set("Assets",lime.utils.Assets);
-						interp.variables.set("ShaderFilter",openfl.filters.ShaderFilter);
-						interp.variables.set("Exception",haxe.Exception);
-						interp.variables.set("Lib",openfl.Lib);
-						interp.variables.set("OpenFlAssets",openfl.utils.Assets);
-						#if sys
-						interp.variables.set("File",sys.io.File);
-						interp.variables.set("FileSystem",sys.FileSystem);
-						interp.variables.set("FlxGraphic",flixel.graphics.FlxGraphic);
-						interp.variables.set("BitmapData",openfl.display.BitmapData);
-						#end
-						interp.variables.set("Parser",hscript.Parser);
-						interp.variables.set("Interp",hscript.Interp);
-						interp.variables.set("ModsMenu",modloader.ModsMenu);
+						interp.variables.set("Paths",Paths);
 						interp.execute(ast);
 						trace(interp.execute(ast));
 
@@ -1842,6 +1774,8 @@ class PlayState extends MusicBeatState
 		#if !debug
 		perfectMode = false;
 		#end
+
+		time = elapsed;
 		
 		if(!FlxG.save.data.fpsCap){
 			openfl.Lib.current.stage.frameRate = 999;
@@ -2969,6 +2903,12 @@ class PlayState extends MusicBeatState
 		}
 		for (i in SONG.events)
 		{
+
+			valueOne = i.valueOne;
+			valueTwo = i.valueTwo;
+			eventName = i.events;
+			eventPosition = i.eventPos;
+
 			if (curStep == i.eventPos)
 			{
 				#if sys
@@ -3002,11 +2942,106 @@ class PlayState extends MusicBeatState
 				if (i.events == 'character-change')
 				{
 					remove(dad);
-					dad = new Character(100, Std.parseFloat(i.valueTwo), i.valueOne);
+					dad = new Character(dad.x, Std.parseFloat(i.valueTwo), i.valueOne);
 					add(dad);
 				}
-				if (i.events == 'play-animation')
+				if (i.events == 'play-animation') {
 					dad.playAnim(i.valueOne);
+				}
+
+		#if (MODS && SCRIPTS)
+		var filesInsertedcool:Array<String> = [];
+		var folderscool:Array<String> = [Paths.getPreloadPath('custom_events/')];
+		folderscool.insert(0, Paths.modFolder('custom_events/'));
+		for (folder in folderscool)
+		{
+			if(FileSystem.exists(folder))
+			{
+				for (file in FileSystem.readDirectory(folder))
+				{
+					if (file.endsWith('.hx') && !filesInsertedcool.contains(file))
+					{
+						var expr = File.getContent(Paths.event(file));
+						var parser = new hscript.Parser();
+						parser.allowTypes;
+						parser.allowJSON;
+						parser.allowMetadata;
+						var ast = parser.parseString(expr);
+						var interp = new hscript.Interp();
+						interp.variables.set("add", add);
+						interp.variables.set("remove", remove);
+						interp.variables.set("update", time);
+						interp.variables.set("curStep", curStep);
+						interp.variables.set("curBeat", curBeat);
+						interp.variables.set("valueOne", valueOne);
+						interp.variables.set("valueTwo", valueTwo);
+						interp.variables.set("stepHit", stepHit);
+						interp.variables.set("beatHit", beatHit);
+						interp.variables.set("eventPosition", eventPosition);
+						interp.variables.set("eventName", eventName);
+						interp.variables.set("PlayState", PlayState);
+						interp.variables.set("DiscordClient", DiscordClient);
+						interp.variables.set("WiggleEffectType",WiggleEffect.WiggleEffectType);
+						interp.variables.set("FlxBasic",flixel.FlxBasic);
+						interp.variables.set("MidSongEvent",Song.MidSongEvent);
+						interp.variables.set("FlxCamera",flixel.FlxCamera);
+						interp.variables.set("ChromaticAberration",shaders.ChromaticAberration);
+						interp.variables.set("FlxG",flixel.FlxG);
+						interp.variables.set("FlxGame",flixel.FlxGame);
+						interp.variables.set("FlxObject",flixel.FlxObject);
+						interp.variables.set("FlxSprite",flixel.FlxSprite);
+						interp.variables.set("FlxState",flixel.FlxState);
+						interp.variables.set("FlxSubState",flixel.FlxSubState);
+						interp.variables.set("FlxGridOverlay",flixel.addons.display.FlxGridOverlay);
+						interp.variables.set("FlxTrail",flixel.addons.effects.FlxTrail);
+						interp.variables.set("FlxTrailArea",flixel.addons.effects.FlxTrailArea);
+						interp.variables.set("FlxEffectSprite",flixel.addons.effects.chainable.FlxEffectSprite);
+						interp.variables.set("FlxWaveEffect",flixel.addons.effects.chainable.FlxWaveEffect);
+						interp.variables.set("FlxTransitionableState",flixel.addons.transition.FlxTransitionableState);
+						interp.variables.set("FlxAtlas",flixel.graphics.atlas.FlxAtlas);
+						interp.variables.set("FlxAtlasFrames",flixel.graphics.frames.FlxAtlasFrames);
+						interp.variables.set("FlxTypedGroup",flixel.group.FlxGroup.FlxTypedGroup);
+						interp.variables.set("FlxMath",flixel.math.FlxMath);
+						interp.variables.set("FlxPoint",flixel.math.FlxPoint);
+						interp.variables.set("FlxRect",flixel.math.FlxRect);
+						interp.variables.set("FlxSound",flixel.system.FlxSound);
+						interp.variables.set("FlxText",flixel.text.FlxText);
+						interp.variables.set("FlxEase",flixel.tweens.FlxEase);
+						interp.variables.set("FlxTween",flixel.tweens.FlxTween);
+						interp.variables.set("FlxBar",flixel.ui.FlxBar);
+						interp.variables.set("FlxCollision",flixel.util.FlxCollision);
+						interp.variables.set("FlxSort",flixel.util.FlxSort);
+						interp.variables.set("FlxStringUtil",flixel.util.FlxStringUtil);
+						interp.variables.set("FlxTimer",flixel.util.FlxTimer);
+						interp.variables.set("Json",Json);
+						interp.variables.set("Assets",lime.utils.Assets);
+						interp.variables.set("ShaderFilter",openfl.filters.ShaderFilter);
+						interp.variables.set("Exception",haxe.Exception);
+						interp.variables.set("Lib",openfl.Lib);
+						interp.variables.set("OpenFlAssets",openfl.utils.Assets);
+						#if sys
+						interp.variables.set("File",sys.io.File);
+						interp.variables.set("FileSystem",sys.FileSystem);
+						interp.variables.set("FlxGraphic",flixel.graphics.FlxGraphic);
+						interp.variables.set("BitmapData",openfl.display.BitmapData);
+						#end
+						interp.variables.set("Parser",hscript.Parser);
+						interp.variables.set("Interp",hscript.Interp);
+						interp.variables.set("ModsMenu",modloader.ModsMenu);
+						interp.variables.set("Paths",Paths);
+						for (cooli in 0...filesInsertedcool.length) {
+							if (i.events == filesInsertedcool[cooli]) {
+								interp.execute(ast);
+							}
+						}
+						trace(interp.execute(ast));
+
+						filesInsertedcool.push(file);
+					}
+				}
+			}
+		}
+		#end
 
 				/*if (event.events == 'shake-screen'){
 						var coolCounter:Int = 0;

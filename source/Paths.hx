@@ -344,6 +344,10 @@ class Paths
 	{
 		return modFolder('scripts/$key');
 	}
+	inline static public function event(key:String)
+	{
+		return modFolder('custom_events/$key');
+	}
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)
 	{
