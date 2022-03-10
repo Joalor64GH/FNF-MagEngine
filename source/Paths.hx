@@ -141,7 +141,7 @@ class Paths
 
 	static public function sound(key:String, ?library:String):Dynamic
 	{
-		var sound:Sound = addCustomSound('sounds', key, library);
+		var sound:Sound = addCustomSound('sounds', key);
 		return sound;
 	}
 
@@ -167,7 +167,7 @@ class Paths
 
 	inline static public function music(key:String, ?library:String):Dynamic
 	{
-		var file:Sound = addCustomSound('music', key, library);
+		var file:Sound = addCustomSound('music', key);
 		return file;
 	}
 
