@@ -64,30 +64,31 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
-
-		if (FileSystem.exists(Paths.modTxt('weeks/weekList')) && FileSystem.exists(Paths.txt('weeks/weekList'))) {
+		if (FileSystem.exists(Paths.modTxt('weeks/weekList')) && FileSystem.exists(Paths.txt('weeks/weekList')))
+		{
 			weekthingy = File.getContent(Paths.modTxt('weeks/weekList')).trim().split('\n');
 
 			for (i in 0...weekthingy.length)
-				{
-					weekthingy[i] = weekthingy[i].trim();
-				}
-		
+			{
+				weekthingy[i] = weekthingy[i].trim();
+			}
 		}
-		else {
+		else
+		{
 			weekthingy = CoolUtil.coolTextFile(Paths.txt('weeks/weekList'));
 		}
 
-		if (FileSystem.exists(Paths.modTxt('data/weekNames')) && FileSystem.exists(Paths.txt('data/weekNames'))) {
+		if (FileSystem.exists(Paths.modTxt('data/weekNames')) && FileSystem.exists(Paths.txt('data/weekNames')))
+		{
 			weekNames = File.getContent(Paths.modTxt('data/weekNames')).trim().split('\n');
 
 			for (i in 0...weekNames.length)
-				{
-					weekNames[i] = weekNames[i].trim();
-				}
-		
+			{
+				weekNames[i] = weekNames[i].trim();
+			}
 		}
-		else {
+		else
+		{
 			weekNames = CoolUtil.coolTextFile(Paths.txt('data/weekNames'));
 		}
 

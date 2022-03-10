@@ -18,6 +18,10 @@ import io.newgrounds.NG;
 import lime.app.Application;
 import flixel.math.FlxMath;
 import modloader.ModsMenu;
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#end
 
 using StringTools;
 
@@ -28,7 +32,7 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = [
+	public var optionShit:Array<String> = [
 		'story mode',
 		'freeplay',
 		#if MODS 'mods',
@@ -90,6 +94,25 @@ class MainMenuState extends MusicBeatState
 
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
 		var editors = Paths.getSparrowAtlas('FNF_main_menu_assets_sheet_TWO');
+
+		if (FileSystem.exists(Paths.image('FNF_main_menu_assets')) && FileSystem.exists(Paths.modIcon('FNF_main_menu_assets')))
+		{
+			tex = Paths.getModsSparrowAtlas('FNF_main_menu_assets');
+		}
+		else
+		{
+			tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
+		}
+
+		if (FileSystem.exists(Paths.image('FNF_main_menu_assets_sheet_TWO'))
+			&& FileSystem.exists(Paths.modIcon('FNF_main_menu_assets_sheet_TWO')))
+		{
+			editors = Paths.getModsSparrowAtlas('FNF_main_menu_assets_sheet_TWO');
+		}
+		else
+		{
+			editors = Paths.getSparrowAtlas('FNF_main_menu_assets_sheet_TWO');
+		}
 
 		for (i in 0...optionShit.length)
 		{
@@ -205,6 +228,9 @@ class MainMenuState extends MusicBeatState
 										MusicBeatState.switchState(new SocialsState());
 									case 'options':
 										MusicBeatState.switchState(new OptionsMenu());
+
+									default:
+										MusicBeatState.switchState(new CustomState());
 								}
 							});
 						}

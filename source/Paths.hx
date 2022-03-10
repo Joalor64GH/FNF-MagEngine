@@ -28,20 +28,10 @@ class Paths
 	public static var customSoundsLoaded:Map<String, Sound> = new Map();
 	public static var coolMods:ModsMenu;
 	public static var customImagesLoaded:Map<String, Bool> = new Map<String, Bool>();
+	public static var localTrackedAssets:Array<String> = [];
 
 	public static var ignoredFolders:Array<String> = [
-		'custom_characters',
-		'custom_events',
-		'data',
-		'songs',
-		'stages',
-		'music',
-		'sounds',
-		'fonts',
-		'videos',
-		'images',
-		'weeks',
-		'scripts'
+		'custom_characters', 'custom_events', 'custom_states', 'data', 'songs', 'stages', 'music', 'sounds', 'fonts', 'videos', 'images', 'weeks', 'scripts'
 	];
 
 	static var currentLevel:String;
@@ -149,9 +139,10 @@ class Paths
 		return getPath('$key.json', TEXT, library);
 	}
 
-	static public function sound(key:String, ?library:String)
+	static public function sound(key:String, ?library:String):Dynamic
 	{
-		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
+		var sound:Sound = addCustomSound('sounds', key, library);
+		return sound;
 	}
 
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
@@ -174,9 +165,10 @@ class Paths
 		#end
 	}
 
-	inline static public function music(key:String, ?library:String)
+	inline static public function music(key:String, ?library:String):Dynamic
 	{
-		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
+		var file:Sound = addCustomSound('music', key, library);
+		return file;
 	}
 
 	inline static public function voices(song:String):Any
@@ -251,30 +243,32 @@ class Paths
 	}
 
 	inline static public function font(key:String)
+	{
+		#if MODS
+		var file:String = modsFont(key);
+		if (FileSystem.exists(file))
 		{
-			#if MODS
-			var file:String = modsFont(key);
-			if(FileSystem.exists(file)) {
-				return file;
-			}
-			#end
-			return 'assets/fonts/$key';
+			return file;
 		}
+		#end
+		return 'assets/fonts/$key';
+	}
 
-	
 	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String)
+	{
+		#if MODS
+		if (FileSystem.exists(mods(key)) || FileSystem.exists(mods(key)))
 		{
-			#if MODS
-			if(FileSystem.exists(mods(key)) || FileSystem.exists(mods(key))) {
-				return true;
-			}
-			#end
-			
-			if(OpenFlAssets.exists(Paths.getPath(key, type, library))) {
-				return true;
-			}
-			return false;
+			return true;
 		}
+		#end
+
+		if (OpenFlAssets.exists(Paths.getPath(key, type, library)))
+		{
+			return true;
+		}
+		return false;
+	}
 
 	inline static public function modTxt(key:String)
 	{
@@ -321,7 +315,8 @@ class Paths
 		return modFolder('videos/' + key + '.' + VIDEO_EXT);
 	}
 
-	inline static public function modsFont(key:String) {
+	inline static public function modsFont(key:String)
+	{
 		return modFolder('fonts/' + key);
 	}
 
@@ -340,10 +335,16 @@ class Paths
 		return modFolder('$key.lua');
 	}
 
+	inline static public function modSound(path:String, key:String)
+	{
+		return modFolder(path + '/' + key + '.' + SOUND_EXT);
+	}
+
 	inline static public function hscript(key:String)
 	{
 		return modFolder('scripts/$key');
 	}
+
 	inline static public function event(key:String)
 	{
 		return modFolder('custom_events/$key');
@@ -378,35 +379,67 @@ class Paths
 	static public function modFolder(key:String)
 	{
 		#if MODS
-		
 		var list:Array<String> = [];
 		var modsFolder:String = Paths.mods();
-		if(FileSystem.exists(modsFolder)) {
-			for (folder in FileSystem.readDirectory(modsFolder)) {
+		if (FileSystem.exists(modsFolder))
+		{
+			for (folder in FileSystem.readDirectory(modsFolder))
+			{
 				var path = haxe.io.Path.join([modsFolder, folder]);
-				if (sys.FileSystem.isDirectory(path) && !Paths.ignoredFolders.contains(folder) && !list.contains(folder)) {
+				if (sys.FileSystem.isDirectory(path) && !Paths.ignoredFolders.contains(folder) && !list.contains(folder))
+				{
 					list.push(folder);
-					for (i in 0...list.length){
-					modDir = list[i];
+					for (i in 0...list.length)
+					{
+						modDir = list[i];
 					}
 				}
 			}
 		}
-		if (ModList.getModEnabled(modDir)) {
-		if (modDir != null && modDir.length > 0)
+		if (ModList.getModEnabled(modDir))
 		{
-			// psych engine for the win
-			var fileToCheck:String = mods(modDir + '/' + key);
-			if (FileSystem.exists(fileToCheck))
+			if (modDir != null && modDir.length > 0)
 			{
-				return fileToCheck;
+				// psych engine for the win
+				var fileToCheck:String = mods(modDir + '/' + key);
+				if (FileSystem.exists(fileToCheck))
+				{
+					return fileToCheck;
+				}
 			}
 		}
-	 }
 
 		return 'mods/' + key;
 		#else
 		return key;
 		#end
+	}
+
+	public static var currentTrackedSounds:Map<String, Sound> = [];
+
+	public static function addCustomSound(path:String, key:String, ?library:String)
+	{
+		#if MODS_ALLOWED
+		var file:String = modSound(path, key);
+		if (FileSystem.exists(file))
+		{
+			if (!currentTrackedSounds.exists(file))
+			{
+				currentTrackedSounds.set(file, Sound.fromFile(file));
+			}
+			localTrackedAssets.push(key);
+			return currentTrackedSounds.get(file);
+		}
+		#end
+		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
+		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
+		if (!currentTrackedSounds.exists(gottenPath))
+			#if MODS_ALLOWED
+			currentTrackedSounds.set(gottenPath, Sound.fromFile('./' + gottenPath));
+			#else
+			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+			#end
+		localTrackedAssets.push(gottenPath);
+		return currentTrackedSounds.get(gottenPath);
 	}
 }

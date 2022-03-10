@@ -1,6 +1,5 @@
 package modloader;
 
-#if MODS
 import modloader.ModList;
 import modloader.PolymodHandler;
 import modloader.ModsMenuOption;
@@ -20,6 +19,7 @@ import lime.utils.Assets;
 
 class ModsMenu extends MusicBeatState
 {
+	#if MODS
 	var curSelected:Int = 0;
 
 	var page:FlxTypedGroup<ModsMenuOption> = new FlxTypedGroup<ModsMenuOption>();
@@ -31,6 +31,7 @@ class ModsMenu extends MusicBeatState
 	public static var coolId:String;
 	public static var disableButton:FlxButton;
 	public static var enableButton:FlxButton;
+
 	var bgtwo:FlxSprite;
 	var bg:FlxSprite;
 
@@ -94,70 +95,73 @@ class ModsMenu extends MusicBeatState
 			coolId = modId;
 		}
 
-		if (optionLoopNum > 0) {
-		buildUI();
+		if (optionLoopNum > 0)
+		{
+			buildUI();
 		}
 
 		infoText.visible = (page.length == 0);
 	}
 
-	function buildUI() {
-
+	function buildUI()
+	{
 		bg = new FlxSprite(0, 0).loadGraphic(Paths.image("modbg"));
 		// bg.screenCenter(Y);
-		
+
 		bgtwo = new FlxSprite(720, 0).loadGraphic(Paths.image("modbg"));
 		bgtwo.screenCenter(Y);
-		
+
 		ModsMenu.enableButton = new FlxButton(bg.x + 1120, 309, "Enable Mod", function()
-            {
-                page.members[curSelected].Mod_Enabled = true;
-                if (!enabledMods.contains(page.members[curSelected].Option_Value)) {
-					enabledMods.push(page.members[curSelected].Option_Value);
-                }
-                ModList.setModEnabled(page.members[curSelected].Option_Value, page.members[curSelected].Mod_Enabled);
-            });
+		{
+			page.members[curSelected].Mod_Enabled = true;
+			if (!enabledMods.contains(page.members[curSelected].Option_Value))
+			{
+				enabledMods.push(page.members[curSelected].Option_Value);
+			}
+			ModList.setModEnabled(page.members[curSelected].Option_Value, page.members[curSelected].Mod_Enabled);
+		});
 
-			ModsMenu.disableButton = new FlxButton(bg.x + 1120, 380, "Disable Mod", function()
-				{
-					page.members[curSelected].Mod_Enabled = false;
-					if (enabledMods.contains(page.members[curSelected].Option_Value)) {
-						enabledMods.remove(page.members[curSelected].Option_Value);
-					}
-					ModList.setModEnabled(page.members[curSelected].Option_Value, page.members[curSelected].Mod_Enabled);
-				});
+		ModsMenu.disableButton = new FlxButton(bg.x + 1120, 380, "Disable Mod", function()
+		{
+			page.members[curSelected].Mod_Enabled = false;
+			if (enabledMods.contains(page.members[curSelected].Option_Value))
+			{
+				enabledMods.remove(page.members[curSelected].Option_Value);
+			}
+			ModList.setModEnabled(page.members[curSelected].Option_Value, page.members[curSelected].Mod_Enabled);
+		});
 
-				enableButton.setGraphicSize(150, 70);
-				enableButton.updateHitbox();
-				enableButton.color = FlxColor.GREEN;
-				enableButton.label.setFormat(Paths.font("pixel.otf"), 12, FlxColor.WHITE);
-				enableButton.label.fieldWidth = 135;
-				setLabelOffset(enableButton, 5, 22);
+		enableButton.setGraphicSize(150, 70);
+		enableButton.updateHitbox();
+		enableButton.color = FlxColor.GREEN;
+		enableButton.label.setFormat(Paths.font("pixel.otf"), 12, FlxColor.WHITE);
+		enableButton.label.fieldWidth = 135;
+		setLabelOffset(enableButton, 5, 22);
 
-				disableButton.setGraphicSize(150, 70);
-				disableButton.updateHitbox();
-				disableButton.color = FlxColor.RED;
-				disableButton.label.setFormat(Paths.font("pixel.otf"), 12, FlxColor.WHITE);
-				disableButton.label.fieldWidth = 135;
-				setLabelOffset(disableButton, 5, 22);
+		disableButton.setGraphicSize(150, 70);
+		disableButton.updateHitbox();
+		disableButton.color = FlxColor.RED;
+		disableButton.label.setFormat(Paths.font("pixel.otf"), 12, FlxColor.WHITE);
+		disableButton.label.fieldWidth = 135;
+		setLabelOffset(disableButton, 5, 22);
 
-				add(bgtwo);
-				add(infoTextcool);
-				add(disableButton);
-				add(enableButton);
+		add(bgtwo);
+		add(infoTextcool);
+		add(disableButton);
+		add(enableButton);
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		//a bit ugly but i was in a hurry 
-		if (page.length > 0) {
-		
-		infoTextcool.text = ModList.modMetadatas.get(PolymodHandler.metadataArrays[curSelected]).description;
-		infoTextcool.visible = true;
-		infoTextcool.antialiasing = true;
-	    }
+		// a bit ugly but i was in a hurry
+		if (page.length > 0)
+		{
+			infoTextcool.text = ModList.modMetadatas.get(PolymodHandler.metadataArrays[curSelected]).description;
+			infoTextcool.visible = true;
+			infoTextcool.antialiasing = true;
+		}
 
 		if (page.length > 0)
 		{
@@ -191,18 +195,18 @@ class ModsMenu extends MusicBeatState
 
 		for (x in page.members)
 		{
-			
 			x.Alphabet_Text.targetY = bruh - curSelected;
 			bruh++;
 		}
 	}
-	//haxeflixel bro why
+
+	// haxeflixel bro why
 	function setLabelOffset(button:FlxButton, x:Float, y:Float)
+	{
+		for (point in button.labelOffsets)
 		{
-			for (point in button.labelOffsets)
-			{
-				point.set(x, y);
-			}
+			point.set(x, y);
 		}
+	}
+	#end
 }
-#end

@@ -591,18 +591,6 @@ class MagModChart
 			return curAmount;
 		});
 
-		Lua_helper.add_callback(lua, 'playSound', function(path:String = null, volume:Float = 1, ?library:String = 'shared')
-		{
-			if (path != null && OpenFlAssets.exists(Paths.sound(path, library)))
-				FlxG.sound.play(Paths.sound(path, library), volume);
-		});
-
-		Lua_helper.add_callback(lua, 'playMusic', function(path:String = null, volume:Float = 1, looped:Bool = false, ?library:String = 'shared')
-		{
-			if (path != null && OpenFlAssets.exists(Paths.music(path, library)))
-				FlxG.sound.playMusic(Paths.music(path, library), volume, looped);
-		});
-
 		Lua_helper.add_callback(lua, 'getSongPos', function(round:Bool = false):Float
 		{
 			if (!round)
@@ -753,27 +741,33 @@ class MagModChart
 		#end
 	}
 
-	public function call(event:String, args:Array<Dynamic>):Dynamic {
+	public function call(event:String, args:Array<Dynamic>):Dynamic
+	{
 		#if SCRIPTS
-		if(lua == null) {
+		if (lua == null)
+		{
 			return functionContinue;
 		}
 
 		Lua.getglobal(lua, event);
 
-		for (arg in args) {
+		for (arg in args)
+		{
 			Convert.toLua(lua, arg);
 		}
 
 		var result:Null<Int> = Lua.pcall(lua, args.length, 1, 0);
-		if(result != null) {
+		if (result != null)
+		{
 			/*var resultStr:String = Lua.tostring(lua, result);
-			var error:String = Lua.tostring(lua, -1);
-			Lua.pop(lua, 1);*/
-			if(Lua.type(lua, -1) == Lua.LUA_TSTRING) {
+				var error:String = Lua.tostring(lua, -1);
+				Lua.pop(lua, 1); */
+			if (Lua.type(lua, -1) == Lua.LUA_TSTRING)
+			{
 				var error:String = Lua.tostring(lua, -1);
 				Lua.pop(lua, 1);
-				if(error == 'attempt to call a nil value') {
+				if (error == 'attempt to call a nil value')
+				{
 					return functionContinue;
 				}
 			}

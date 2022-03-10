@@ -122,17 +122,21 @@ class SocialsState extends MusicBeatState
 				switch (optionShit[curSelected])
 				{
 					case 'youtube':
-						if (FileSystem.exists(Paths.modTxt('data/youtube')) && FileSystem.exists(Paths.txt('data/youtube'))) {
+						if (FileSystem.exists(Paths.modTxt('data/youtube')) && FileSystem.exists(Paths.txt('data/youtube')))
+						{
 							CoolUtil.openURL(File.getContent(Paths.modTxt('data/youtube')));
 						}
-						else {
+						else
+						{
 							CoolUtil.openURL(OpenFlAssets.getText(Paths.txt('data/youtube')));
 						}
 					case 'twitter':
-						if (FileSystem.exists(Paths.modTxt('data/twitter')) && FileSystem.exists(Paths.txt('data/twitter'))) {
+						if (FileSystem.exists(Paths.modTxt('data/twitter')) && FileSystem.exists(Paths.txt('data/twitter')))
+						{
 							CoolUtil.openURL(File.getContent(Paths.modTxt('data/twitter')));
 						}
-						else {
+						else
+						{
 							CoolUtil.openURL(OpenFlAssets.getText(Paths.txt('data/twitter')));
 						}
 				}

@@ -18,7 +18,7 @@ class OffsetsState extends MusicBeatState
 
 	var coolText:FlxText;
 	var rating:FlxSprite;
-	var comboNums:FlxSpriteGroup;
+	var createdLayer:FlxSpriteGroup;
 
 	var startMousePos:FlxPoint = new FlxPoint();
 	var startComboOffset:FlxPoint = new FlxPoint();
@@ -66,9 +66,9 @@ class OffsetsState extends MusicBeatState
 		rating.cameras = [camHUD];
 		add(rating);
 
-		comboNums = new FlxSpriteGroup();
-		comboNums.cameras = [camHUD];
-		add(comboNums);
+		createdLayer = new FlxSpriteGroup();
+		createdLayer.cameras = [camHUD];
+		add(createdLayer);
 
 		var seperatedScore:Array<Int> = [];
 		for (i in 0...3)
@@ -84,7 +84,7 @@ class OffsetsState extends MusicBeatState
 			numScore.setGraphicSize(Std.int(numScore.width * 0.5));
 			numScore.updateHitbox();
 			numScore.antialiasing = true;
-			comboNums.add(numScore);
+			createdLayer.add(numScore);
 			daLoop++;
 		}
 
@@ -97,8 +97,7 @@ class OffsetsState extends MusicBeatState
 		boyfriend = new Boyfriend(770, 450);
 		add(boyfriend);
 
-		infoText = new FlxText(5, FlxG.height - 28, 0, "Drag and drop the ratings and numbers to change the offsets. Press RESET to reset the offsets.",
-			12);
+		infoText = new FlxText(5, FlxG.height - 28, 0, "Drag and drop the ratings and numbers to change the offsets. Press RESET to reset the offsets.", 12);
 		infoText.scrollFactor.set();
 		infoText.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		infoText.cameras = [camHUD];
@@ -118,15 +117,18 @@ class OffsetsState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 
+		if (FlxG.save.data.comboOffset == null)
+			FlxG.save.data.comboOffset = [0, 0, 0, 0];
+
 		// mouse dragging code from psych engine
 		if (FlxG.mouse.justPressed)
 		{
 			holdingObjectType = null;
 			FlxG.mouse.getScreenPosition(camHUD, startMousePos);
-			if (startMousePos.x - comboNums.x >= 0
-				&& startMousePos.x - comboNums.x <= comboNums.width
-				&& startMousePos.y - comboNums.y >= 0
-				&& startMousePos.y - comboNums.y <= comboNums.height)
+			if (startMousePos.x - createdLayer.x >= 0
+				&& startMousePos.x - createdLayer.x <= createdLayer.width
+				&& startMousePos.y - createdLayer.y >= 0
+				&& startMousePos.y - createdLayer.y <= createdLayer.height)
 			{
 				holdingObjectType = true;
 				startComboOffset.x = FlxG.save.data.comboOffset[2];
@@ -194,9 +196,9 @@ class OffsetsState extends MusicBeatState
 		rating.x = coolText.x - 40 + FlxG.save.data.comboOffset[0];
 		rating.y -= 60 + FlxG.save.data.comboOffset[1];
 
-		comboNums.screenCenter();
-		comboNums.x = coolText.x - 90 + FlxG.save.data.comboOffset[2];
-		comboNums.y += 80 - FlxG.save.data.comboOffset[3];
+		createdLayer.screenCenter();
+		createdLayer.x = coolText.x - 90 + FlxG.save.data.comboOffset[2];
+		createdLayer.y += 80 - FlxG.save.data.comboOffset[3];
 		// reloadTexts();
 	}
 }
