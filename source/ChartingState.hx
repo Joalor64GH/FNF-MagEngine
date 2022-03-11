@@ -410,13 +410,6 @@ class ChartingState extends MusicBeatState
 		typingWaste = UI_valuebutsecond;
 		var addEv:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Add Event", function()
 		{
-			if (_song.events == null)
-				_song.events = [new MidSongEvent("none", 0, "", "")];
-
-			if (_song.events.length == 0)
-			{
-				_song.events = [new MidSongEvent("none", 0, "", "")];
-			}
 			swagEvent = new MidSongEvent(eventsDropDown.selectedLabel, swagEvent.eventPos, typingWaste.text, typingDiarehha.text);
 			eventsDropDown.selectedLabel = "none";
 			UI_value.text = "";
@@ -429,15 +422,10 @@ class ChartingState extends MusicBeatState
 		addEv.label.color = FlxColor.WHITE;
 		var removeEv = new FlxButton(reloadSong.x - 100, saveButton.y + 30, "Remove Event", function()
 		{
-			if (_song.events == null)
-				_song.events = [new MidSongEvent("none", 0, "", "")];
-
-			if (_song.events.length == 0)
-			{
-				_song.events = [new MidSongEvent("none", 0, "", "")];
-			}
 			swagEvent = new MidSongEvent(eventsDropDown.selectedLabel, swagEvent.eventPos, typingWaste.text, typingDiarehha.text);
+			if (_song.events != null) {
 			_song.events.remove(swagEvent);
+			}
 			eventsDropDown.selectedLabel = "none";
 			UI_value.text = "";
 			UI_event.text = "";

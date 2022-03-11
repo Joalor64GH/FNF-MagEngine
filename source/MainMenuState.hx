@@ -30,19 +30,11 @@ class MainMenuState extends MusicBeatState
 	static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
+	public var stateList:Array<CustomState>;
 
 	#if !switch
-	public var optionShit:Array<String> = [
-		'story mode',
-		'freeplay',
-		#if MODS 'mods',
-		#end
-		'credits',
-		'editors',
-		'social',
-		'donate',
-		'options'
-	];
+	//YOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+	public var optionShit:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/menuButtonList'));
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
@@ -57,6 +49,21 @@ class MainMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
+
+		optionShit = CoolUtil.coolTextFile(Paths.txt('data/menuButtonList'));
+		if (FileSystem.exists(Paths.modTxt('data/menuButtonList')) && FileSystem.exists(Paths.txt('data/menuButtonList')))
+		{
+			optionShit = File.getContent(Paths.modTxt('data/menuButtonList')).trim().split('\n');
+
+			for (i in 0...optionShit.length)
+			{
+				optionShit[i] = optionShit[i].trim();
+			}
+		}
+		else
+		{
+			optionShit = CoolUtil.coolTextFile(Paths.txt('data/menuButtonList'));
+		}
 
 		if (!FlxG.sound.music.playing)
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
@@ -118,10 +125,12 @@ class MainMenuState extends MusicBeatState
 		{
 			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
 			var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + offset);
-			if (i == 4)
+			switch (optionShit[i]) {
+			case 'editors':
 				menuItem.frames = editors;
-			else
+			default:
 				menuItem.frames = tex;
+			}
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
@@ -230,7 +239,9 @@ class MainMenuState extends MusicBeatState
 										MusicBeatState.switchState(new OptionsMenu());
 
 									default:
-										MusicBeatState.switchState(new CustomState());
+										if (stateList != null) {
+										MusicBeatState.switchState(new CustomState(stateList[curSelected].name, true));
+										}
 								}
 							});
 						}

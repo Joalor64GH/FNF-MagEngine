@@ -65,11 +65,12 @@ using StringTools;
 
 class CustomState extends FlxState
 {
-	var name:String;
+	public var name:String;
 	var isMenuState:Bool;
 	var menuState:MainMenuState;
+	public static var filesInserted:Array<String> = [];
 
-	public function new(?name:String = "", ?isMenuState:Bool = false)
+	public function new(name:String = "", isMenuState:Bool = false)
 	{
 		super();
 
@@ -93,10 +94,10 @@ class CustomState extends FlxState
 		if (isMenuState)
 		{
 			menuState.optionShit.push(name);
+			menuState.stateList.push(this);
 		}
 
 		#if (MODS && SCRIPTS)
-		var filesInserted:Array<String> = [];
 		var folders:Array<String> = [Paths.getPreloadPath('custom_states/')];
 		folders.insert(0, Paths.modFolder('custom_states/'));
 		for (folder in folders)
@@ -172,6 +173,8 @@ class CustomState extends FlxState
 						interp.variables.set("Paths", Paths);
 						interp.execute(ast);
 						trace(interp.execute(ast));
+
+						name = file;
 
 						filesInserted.push(file);
 					}
