@@ -83,7 +83,7 @@ class StageEditor extends MusicBeatState
 
 	var visualLayers:Array<FlxSprite> = [];
 
-	var createdLayer:FlxSprite;
+	var createdLayer:FlxSprite = new FlxSprite();
 
 	var boyfriend:Array<Dynamic>;
 	var girlfriend:Array<Dynamic>;
@@ -227,8 +227,8 @@ class StageEditor extends MusicBeatState
 		FlxG.mouse.visible = true;
 
 		dummyLayer = new FlxSprite();
-		dummyLayer.visible = false;
 		dummyLayer.cameras = [camhidden];
+		add(dummyLayer);
 		visualLayers.push(dummyLayer);
 
 		makePlaceholders();
@@ -284,10 +284,6 @@ class StageEditor extends MusicBeatState
 				flipY: isflippedY.checked
 			};
 
-			if (visualLayers.contains(dummyLayer))
-			{
-				visualLayers.remove(dummyLayer);
-			}
 			add(createdLayer);
 			visualLayers.push(createdLayer);
 			layerStepper.max = stageFile.layerArray.length;
