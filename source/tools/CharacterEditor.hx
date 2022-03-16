@@ -434,7 +434,7 @@ class CharacterEditor extends MusicBeatState
 			var assetName:String = directoryInputTextcool.text.trim();
 			if (assetName != null && assetName.length > 0)
 			{
-				if (FileSystem.exists(Paths.modsImages("characters/" + assetName)))
+				if (FileSystem.exists(Paths.modsImages(assetName)))
 				{
 					createdCharacter.frames = Paths.getModsSparrowAtlas(assetName);
 					createdCharacter.image = directoryInputTextcool.text.trim();
