@@ -2397,6 +2397,9 @@ class PlayState extends MusicBeatState
 			pixelShitPart2 = '-pixel';
 		}
 
+		if (FlxG.save.data.comboOffset == null)
+			FlxG.save.data.comboOffset = [0, 0, 0, 0];
+
 		rating.loadGraphic(Paths.image(pixelShitPart1 + daRating + pixelShitPart2));
 		rating.cameras = [camHUD];
 		rating.screenCenter();

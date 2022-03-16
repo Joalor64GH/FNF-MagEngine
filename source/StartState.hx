@@ -7,6 +7,7 @@ class StartState extends FlxState
 {
 	override public function create()
 	{
+		FlxG.save.bind('funkin', 'ninjamuffin99');
 		PlayerSettings.init();
         MagDefaults.init();
 

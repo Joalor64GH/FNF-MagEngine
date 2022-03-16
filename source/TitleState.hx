@@ -101,6 +101,9 @@ class TitleState extends MusicBeatState
 			var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
 			trace('NEWGROUNDS LOL');
 			#end
+
+			FlxG.save.bind('funkin', 'ninjamuffin99');
+			
 			PlayerSettings.init();
 			MagDefaults.init();
 
