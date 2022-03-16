@@ -30,10 +30,9 @@ class MainMenuState extends MusicBeatState
 	static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
-	public var stateList:Array<CustomState>;
 
 	#if !switch
-	//YOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+	// YOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 	public var optionShit:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/menuButtonList'));
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
@@ -125,12 +124,15 @@ class MainMenuState extends MusicBeatState
 		{
 			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
 			var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + offset);
-			switch (optionShit[i]) {
-			case 'editors':
-				menuItem.frames = editors;
-			default:
-				menuItem.frames = tex;
+			switch (optionShit[i])
+			{
+				case 'editors':
+					menuItem.frames = editors;
+				default:
+					menuItem.frames = tex;
 			}
+			menuItem.scale.x = 0.8;
+			menuItem.scale.y = 0.8;
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
@@ -239,9 +241,7 @@ class MainMenuState extends MusicBeatState
 										MusicBeatState.switchState(new OptionsMenu());
 
 									default:
-										if (stateList != null) {
-										MusicBeatState.switchState(new CustomState(stateList[curSelected].name, true));
-										}
+										MusicBeatState.switchState(new CustomState(optionShit[curSelected], true));
 								}
 							});
 						}
@@ -271,9 +271,14 @@ class MainMenuState extends MusicBeatState
 		{
 			spr.animation.play('idle');
 
+			FlxTween.tween(spr.scale, {x: 0.8}, 0.1, {ease: FlxEase.linear});
+			FlxTween.tween(spr.scale, {y: 0.8}, 0.1, {ease: FlxEase.linear});
+
 			if (spr.ID == curSelected)
 			{
 				spr.animation.play('selected');
+				FlxTween.tween(spr.scale, {x: 1}, 0.1, {ease: FlxEase.linear});
+				FlxTween.tween(spr.scale, {y: 1}, 0.1, {ease: FlxEase.linear});
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
 

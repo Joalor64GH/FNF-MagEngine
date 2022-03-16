@@ -12,6 +12,8 @@ import flixel.math.FlxMath;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.addons.text.FlxTypeText;
 import tools.StageEditor;
+import tools.CharacterEditor;
+import tools.WeekEditor;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
@@ -26,7 +28,7 @@ using StringTools;
 
 class EditorMenuState extends MusicBeatState
 {
-	var optionShit:Array<String> = ['Stage Editor'];
+	var optionShit:Array<String> = ['Stage Editor', 'Character Editor', 'Chart Editor', 'Week Editor'];
 
 	var confirming:Bool = false;
 
@@ -123,6 +125,15 @@ class EditorMenuState extends MusicBeatState
 				{
 					case 'Stage Editor':
 						LoadingState.loadAndSwitchState(new StageEditor());
+
+					case 'Character Editor':
+						LoadingState.loadAndSwitchState(new CharacterEditor());
+
+					case 'Chart Editor':
+						LoadingState.loadAndSwitchState(new ChartingState(), false);
+
+					case 'Week Editor':
+						LoadingState.loadAndSwitchState(new WeekEditor(), false);
 				}
 				FlxG.sound.music.volume = 0;
 				confirming = false;

@@ -1,4 +1,3 @@
-/// same code used in ke modified for use in me
 package;
 
 import lime.app.Application;

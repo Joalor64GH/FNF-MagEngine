@@ -11,6 +11,7 @@ import Song.MidSongEvent;
 import flixel.FlxCamera;
 import shaders.ChromaticAberration;
 import flixel.FlxG;
+import Controls.Control;
 import tools.StageEditor;
 import tools.StageEditor.LayerFile;
 import tools.StageEditor.StageFile;
@@ -63,11 +64,13 @@ import modloader.ModsMenu;
 
 using StringTools;
 
-class CustomState extends FlxState
+class CustomState extends MusicBeatState
 {
 	public var name:String;
+
 	var isMenuState:Bool;
 	var menuState:MainMenuState;
+
 	public static var filesInserted:Array<String> = [];
 
 	public function new(name:String = "", isMenuState:Bool = false)
@@ -76,27 +79,10 @@ class CustomState extends FlxState
 
 		this.name = name;
 		this.isMenuState = isMenuState;
+	}
 
-		var menuBG = new FlxSprite().loadGraphic(Paths.image('menuBG'));
-		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
-		menuBG.updateHitbox();
-		menuBG.screenCenter();
-		menuBG.antialiasing = true;
-
-		var infoText = new FlxText(0, 0, 0, "Hello, World!", 12);
-		infoText.scrollFactor.set();
-		infoText.setFormat("VCR OSD Mono", 35, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		infoText.borderSize = 2;
-		infoText.screenCenter();
-		infoText.visible = false;
-		infoText.antialiasing = true;
-
-		if (isMenuState)
-		{
-			menuState.optionShit.push(name);
-			menuState.stateList.push(this);
-		}
-
+	override public function create()
+	{
 		#if (MODS && SCRIPTS)
 		var folders:Array<String> = [Paths.getPreloadPath('custom_states/')];
 		folders.insert(0, Paths.modFolder('custom_states/'));
@@ -171,18 +157,13 @@ class CustomState extends FlxState
 						interp.variables.set("Interp", hscript.Interp);
 						interp.variables.set("ModsMenu", modloader.ModsMenu);
 						interp.variables.set("Paths", Paths);
-						interp.execute(ast);
-						trace(interp.execute(ast));
 
 						name = file;
 
-						filesInserted.push(file);
-					}
+						interp.execute(ast);
+						trace(interp.execute(ast));
 
-					if (file == null)
-					{
-						add(menuBG);
-						add(infoText);
+						filesInserted.push(file);
 					}
 				}
 			}
@@ -190,12 +171,13 @@ class CustomState extends FlxState
 		#end
 	}
 
-	override public function create()
-	{
-	}
-
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		if (controls.BACK)
+		{
+			MusicBeatState.switchState(new MainMenuState());
+		}
 	}
 }

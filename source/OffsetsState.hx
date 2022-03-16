@@ -43,13 +43,13 @@ class OffsetsState extends MusicBeatState
 
 		persistentUpdate = true;
 
-		var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback', 'shared'));
+		var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback', 'preload'));
 		bg.antialiasing = true;
 		bg.scrollFactor.set(0.9, 0.9);
 		bg.active = false;
 		add(bg);
 
-		var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront', 'shared'));
+		var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront', 'preload'));
 		stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
 		stageFront.updateHitbox();
 		stageFront.antialiasing = true;
@@ -61,7 +61,7 @@ class OffsetsState extends MusicBeatState
 		coolText.screenCenter();
 		coolText.x = FlxG.width * 0.35;
 
-		rating = new FlxSprite(300, 300).loadGraphic(Paths.image('sick', 'shared'));
+		rating = new FlxSprite(300, 300).loadGraphic(Paths.image('sick', 'preload'));
 		rating.setGraphicSize(Std.int(rating.width * 0.7));
 		rating.cameras = [camHUD];
 		add(rating);

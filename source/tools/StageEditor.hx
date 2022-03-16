@@ -59,8 +59,15 @@ class StageEditor extends MusicBeatState
 	var camFollow:FlxObject;
 	var confirmAdded:Bool = false;
 
+	public static var unsavedChanges:Bool = false;
+
+	var UI__character:FlxUITabMenu;
+	var blackBox:FlxSprite;
+
 	var ispixel:FlxUICheckBox;
 
+	var ormaybeido:FlxButton;
+	var idontcarelol:FlxButton;
 	var isflippedY:FlxUICheckBox;
 	var isflippedX:FlxUICheckBox;
 
@@ -110,6 +117,7 @@ class StageEditor extends MusicBeatState
 	private var camPeople:FlxCamera;
 	private var camshit:FlxCamera;
 	private var camhidden:FlxCamera;
+	private var camG:FlxCamera;
 
 	// so many text boxes lol
 	public static var nameInputText:FlxUIInputText;
@@ -164,6 +172,8 @@ class StageEditor extends MusicBeatState
 		camshit.bgColor.alpha = 0;
 		camhidden = new FlxCamera();
 		camhidden.bgColor.alpha = 0;
+		camG = new FlxCamera();
+		camG.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camEditor);
 		FlxG.cameras.add(camshit);
@@ -172,6 +182,7 @@ class StageEditor extends MusicBeatState
 		FlxG.cameras.add(camMenu);
 		FlxG.cameras.add(camTips);
 		FlxG.cameras.add(camGrid);
+		FlxG.cameras.add(camG);
 
 		FlxCamera.defaultCameras = [camEditor];
 
@@ -207,7 +218,7 @@ class StageEditor extends MusicBeatState
 
 		UI_stagebox.selected_tab_id = 'Layers';
 
-		var tipText:FlxText = new FlxText(FlxG.width - 20, FlxG.height, 0, "E/Q - Camera Zoom In/Out
+		var tipText:FlxText = new FlxText(FlxG.width - FlxG.width + 250, FlxG.height, 0, "E/Q - Camera Zoom In/Out
         \nArrow Keys/Hold And Drag\n - Move Layer
         \nR - Reset Current Zoom", 12);
 		tipText.cameras = [camTips];
@@ -292,6 +303,7 @@ class StageEditor extends MusicBeatState
 			remove(bg);
 			remove(stageFront);
 			remove(stageCurtains);
+			unsavedChanges = true;
 			// we need to make sure the created layer exists before being able to scale it or we'll experience a crash
 			if (stageFile.layerArray.contains(stageSwag))
 			{
@@ -320,10 +332,12 @@ class StageEditor extends MusicBeatState
 					flipX: isflippedX.checked,
 					flipY: isflippedY.checked
 				};
+				unsavedChanges = true;
 				deleteLayer();
 				xInputText.text = "" + 0;
 				yInputText.text = "" + 0;
 				layerStepper.value--;
+				layerStepper.max = stageFile.layerArray.length;
 				remove(createdLayer);
 				visualLayers.remove(createdLayer);
 				stageFile.layerArray.remove(stageSwag);
@@ -383,7 +397,7 @@ class StageEditor extends MusicBeatState
 		zoominputtext = new FlxUIInputText(15, opponentinputtext.y + 50, 200, "", 8);
 		var elabel = new FlxText(15, zoominputtext.y + 20, 64, 'Default Zoom');
 		dirinputtext = new FlxUIInputText(15, zoominputtext.y + 50, 200, "", 8);
-		var directorycoollabel = new FlxText(dirinputtext.x - 85, dirinputtext.y, 64, 'Stage Name');
+		var directorycoollabel = new FlxText(15, dirinputtext.y + 20, 64, 'Stage Name');
 
 		ispixel = new FlxUICheckBox(240, 220, null, null, "IsPixelStage", 100);
 		ischar = new FlxUICheckBox(240, 270, null, null, "Characters Are Visible", 100);
@@ -395,7 +409,7 @@ class StageEditor extends MusicBeatState
 			saveStage(stageFile);
 		});
 
-		var loadStuff:FlxButton = new FlxButton(240, 170, "Load Stage", function()
+		var loadStuff:FlxButton = new FlxButton(240, 70, "Load Stage", function()
 		{
 			loadStage();
 		});
@@ -406,6 +420,7 @@ class StageEditor extends MusicBeatState
 		tab_group_settings.add(ischar);
 		tab_group_settings.add(ispixel);
 		tab_group_settings.add(loadStuff);
+		tab_group_settings.add(bfInputText);
 		tab_group_settings.add(gfInputText);
 		tab_group_settings.add(opponentinputtext);
 		tab_group_settings.add(xlabel);
@@ -485,6 +500,7 @@ class StageEditor extends MusicBeatState
 				bg.visible = false;
 				stageFront.visible = false;
 				stageCurtains.visible = false;
+				unsavedChanges = true;
 			}
 			else
 			{
@@ -497,6 +513,7 @@ class StageEditor extends MusicBeatState
 				bg.visible = false;
 				stageFront.visible = false;
 				stageCurtains.visible = false;
+				unsavedChanges = true;
 			}
 			else
 			{
@@ -512,6 +529,7 @@ class StageEditor extends MusicBeatState
 	function deleteLayer()
 	{
 		remove(visualLayers[Std.int(layerStepper.value)]);
+		unsavedChanges = true;
 	}
 
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>)
@@ -569,6 +587,8 @@ class StageEditor extends MusicBeatState
 		{
 			stageFile = loadedFile;
 			loadedFile = null;
+
+			unsavedChanges = false;
 
 			reloadStages();
 		}
@@ -635,21 +655,25 @@ class StageEditor extends MusicBeatState
 		{
 			visualLayers[Std.int(layerStepper.value)].x -= 1;
 			xInputText.text = visualLayers[Std.int(layerStepper.value)].x + "";
+			unsavedChanges = true;
 		}
 		else if (FlxG.keys.pressed.RIGHT)
 		{
 			visualLayers[Std.int(layerStepper.value)].x += 1;
 			xInputText.text = visualLayers[Std.int(layerStepper.value)].x + "";
+			unsavedChanges = true;
 		}
 		else if (FlxG.keys.pressed.UP)
 		{
 			visualLayers[Std.int(layerStepper.value)].y -= 1;
 			yInputText.text = visualLayers[Std.int(layerStepper.value)].y + "";
+			unsavedChanges = true;
 		}
 		else if (FlxG.keys.pressed.DOWN)
 		{
 			visualLayers[Std.int(layerStepper.value)].y += 1;
 			yInputText.text = visualLayers[Std.int(layerStepper.value)].y + "";
+			unsavedChanges = true;
 		}
 
 		if (FlxG.mouse.justPressed)
@@ -701,10 +725,71 @@ class StageEditor extends MusicBeatState
 
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
-			MusicBeatState.switchState(new tools.EditorMenuState());
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			if (!unsavedChanges)
+			{
+				MusicBeatState.switchState(new tools.EditorMenuState());
+				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				FlxG.mouse.visible = true;
+			}
+			else
+			{
+				blackBox = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+				blackBox.cameras = [camG];
+				add(blackBox);
 
-			FlxG.mouse.visible = false;
+				var label:FlxText = null;
+
+				blackBox.alpha = 0.6;
+
+				var tabss = [{name: 'Warning', label: 'Warning'},];
+
+				UI__character = new FlxUITabMenu(null, tabss, true);
+
+				UI__character.resize(350, 300);
+				UI__character.scrollFactor.set();
+				UI__character.screenCenter();
+				UI__character.cameras = [camG];
+				add(UI__character);
+
+				idontcarelol = new FlxButton(140, 20, "Yes", function()
+				{
+					MusicBeatState.switchState(new tools.EditorMenuState());
+
+					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				});
+
+				idontcarelol.y += 400;
+				idontcarelol.screenCenter(X);
+				idontcarelol.color = FlxColor.RED;
+				idontcarelol.label.color = FlxColor.WHITE;
+
+				ormaybeido = new FlxButton(140, 20, "No", function()
+				{
+					remove(ormaybeido);
+					remove(idontcarelol);
+					remove(UI__character);
+					remove(blackBox);
+					remove(label);
+				});
+
+				ormaybeido.screenCenter(X);
+				ormaybeido.y += 370;
+				ormaybeido.color = FlxColor.GREEN;
+				ormaybeido.label.color = FlxColor.WHITE;
+
+				label = new FlxText(15, ormaybeido.y - 120, 260, 'You have unsaved changes!\nWould you like to exit anyways?\nOr not?');
+				label.setFormat(null, 12, FlxColor.WHITE, CENTER);
+				label.screenCenter(X);
+				label.cameras = [camG];
+				add(label);
+
+				idontcarelol.cameras = [camG];
+				ormaybeido.cameras = [camG];
+				add(ormaybeido);
+				add(idontcarelol);
+				FlxG.mouse.visible = true;
+			}
+
 			return;
 		}
 	}
@@ -714,6 +799,7 @@ class StageEditor extends MusicBeatState
 		visualLayers[Std.int(layerStepper.value)].screenCenter();
 		visualLayers[Std.int(layerStepper.value)].x = visualLayers[Std.int(layerStepper.value)].x - 40 + FlxG.save.data.layerPositions[0];
 		visualLayers[Std.int(layerStepper.value)].y -= 60 + FlxG.save.data.layerPositions[1];
+		unsavedChanges = true;
 	}
 
 	private static var _file:FileReference;
@@ -737,6 +823,7 @@ class StageEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+		unsavedChanges = false;
 		FlxG.log.notice("Successfully saved file.");
 	}
 

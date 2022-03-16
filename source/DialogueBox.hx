@@ -284,7 +284,7 @@ class DialogueBox extends FlxSpriteGroup
 					portraitLeft.animation.play('enter');
 				}
 
-			case 'dadcustom':
+			case 'opponent':
 				portraitRightCustom.visible = false;
 				if (!portraitLeftCustom.visible)
 				{
@@ -301,7 +301,7 @@ class DialogueBox extends FlxSpriteGroup
 					portraitRight.animation.play('enter');
 				}
 
-			case 'bfcustom':
+			case 'player':
 				portraitLeftCustom.visible = false;
 				if (!portraitRightCustom.visible)
 				{

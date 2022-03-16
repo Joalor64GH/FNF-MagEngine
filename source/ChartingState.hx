@@ -423,8 +423,9 @@ class ChartingState extends MusicBeatState
 		var removeEv = new FlxButton(reloadSong.x - 100, saveButton.y + 30, "Remove Event", function()
 		{
 			swagEvent = new MidSongEvent(eventsDropDown.selectedLabel, swagEvent.eventPos, typingWaste.text, typingDiarehha.text);
-			if (_song.events != null) {
-			_song.events.remove(swagEvent);
+			if (_song.events != null)
+			{
+				_song.events.remove(swagEvent);
 			}
 			eventsDropDown.selectedLabel = "none";
 			UI_value.text = "";

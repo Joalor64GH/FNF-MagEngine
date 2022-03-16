@@ -73,7 +73,7 @@ class PlayState extends MusicBeatState
 	public static var isStoryMode:Bool = false;
 	public static var isPixelStage:Bool = false;
 	public static var storyWeek:Int = 0;
-	public static var storyPlaylist:Array<String> = [];
+	public static var storyPlaylist:Array<Dynamic> = [];
 	public static var originalStoryPlaylistLength:Int = 0;
 	public static var storyDifficulty:Int = 1;
 
@@ -222,14 +222,6 @@ class PlayState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
-		// var gameCam:FlxCamera = FlxG.camera;
-		camGame = new FlxCamera();
-		camHUD = new FlxCamera();
-		camHUD.bgColor.alpha = 0;
-
-		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camHUD);
-
 		if (!FlxG.save.data.fpsCap)
 		{
 			openfl.Lib.current.stage.frameRate = 999;
@@ -238,6 +230,14 @@ class PlayState extends MusicBeatState
 		{
 			openfl.Lib.current.stage.frameRate = 120;
 		}
+
+		// var gameCam:FlxCamera = FlxG.camera;
+		camGame = new FlxCamera();
+		camHUD = new FlxCamera();
+		camHUD.bgColor.alpha = 0;
+
+		FlxG.cameras.reset(camGame);
+		FlxG.cameras.add(camHUD);
 
 		FlxCamera.defaultCameras = [camGame];
 
@@ -713,7 +713,6 @@ class PlayState extends MusicBeatState
 
 		gf = new Character(400, 130, gfVersion);
 		gf.scrollFactor.set(0.95, 0.95);
-
 		dad = new Character(100, 100, SONG.player2);
 
 		var camPos:FlxPoint = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
@@ -1607,6 +1606,11 @@ class PlayState extends MusicBeatState
 		if (isDad)
 		{
 			camFollow.set(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
+			if (dad.cameraPosition != null)
+			{
+				camFollow.x += dad.cameraPosition[0];
+				camFollow.y += dad.cameraPosition[1];
+			}
 			switch (dad.curCharacter)
 			{
 				case 'mom':
@@ -1926,9 +1930,6 @@ class PlayState extends MusicBeatState
 			iconP2.animation.curAnim.curFrame = 1;
 		else
 			iconP2.animation.curAnim.curFrame = 0;
-
-		if (FlxG.keys.justPressed.EIGHT)
-			MusicBeatState.switchState(new AnimationDebug(SONG.player2));
 
 		if (startingSong)
 		{

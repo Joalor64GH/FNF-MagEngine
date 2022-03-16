@@ -438,7 +438,7 @@ class StoryMenuState extends MusicBeatState
 	{
 		txtTracklist.text = '';
 
-		var stringThing:Array<String> = loadFromWeekJson(weeksArray[curWeek]).songs;
+		var stringThing:Array<Dynamic> = loadFromWeekJson(weeksArray[curWeek]).songs;
 
 		for (i in stringThing)
 		{
@@ -459,15 +459,23 @@ class StoryMenuState extends MusicBeatState
 
 typedef SwagWeek =
 {
-	var songs:Array<String>;
+	var songs:Array<Dynamic>;
 }
 
 class Week
 {
-	public var songs:Array<String>;
+	public var songs:Array<Dynamic>;
 
 	public function new(swagWeek:SwagWeek)
 	{
 		songs = swagWeek.songs;
+	}
+
+	public static function createWeek():SwagWeek
+	{
+		var week:SwagWeek = {
+			songs: ["Bopeebo", "Fresh", "Dad Battle"]
+		};
+		return week;
 	}
 }

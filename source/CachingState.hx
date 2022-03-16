@@ -42,6 +42,10 @@ class CachingState extends MusicBeatState
 
 	override function create()
 	{
+		if (!FlxG.save.data.cache)
+		{
+			MusicBeatState.switchState(new TitleState());
+		}
 		FlxG.mouse.visible = false;
 
 		FlxG.worldBounds.set(0, 0);
