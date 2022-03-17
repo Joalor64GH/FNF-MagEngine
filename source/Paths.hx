@@ -364,15 +364,12 @@ class Paths
 				}
 			}
 		}
-		else if (ModList.getModEnabled(modDir))
+		if (modDir != null && modDir.length > 0)
 		{
-			if (modDir != null && modDir.length > 0)
+			var fileToCheck:String = mods(modDir + '/' + key);
+			if (FileSystem.exists(fileToCheck) && ModList.getModEnabled(modDir))
 			{
-				var fileToCheck:String = mods(modDir + '/' + key);
-				if (FileSystem.exists(fileToCheck))
-				{
-					return fileToCheck;
-				}
+				return fileToCheck;
 			}
 		}
 
