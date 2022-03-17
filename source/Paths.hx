@@ -1,6 +1,6 @@
 package;
 
-#if sys
+#if MODS
 import sys.io.File;
 import sys.FileSystem;
 #end
@@ -65,25 +65,6 @@ class Paths
 		return path.toLowerCase().replace(' ', '-');
 	}
 
-	static function getModPath(file:String, type:AssetType, library:Null<String>)
-	{
-		if (library != null)
-			return getLibraryPath(file, library);
-
-		if (currentLevel != null)
-		{
-			var levelPath = getLibrarymodPathForce(file, currentLevel);
-			if (OpenFlAssets.exists(levelPath, type))
-				return levelPath;
-
-			levelPath = getLibrarymodPathForce(file, "images");
-			if (OpenFlAssets.exists(levelPath, type))
-				return levelPath;
-		}
-
-		return getmodPreloadPath(file);
-	}
-
 	static public function getLibraryPath(file:String, library = "preload")
 	{
 		return if (library == "preload" || library == "default") getPreloadPath(file); else getLibraryPathForce(file, library);
@@ -97,16 +78,6 @@ class Paths
 	inline public static function getPreloadPath(file:String)
 	{
 		return 'assets/$file';
-	}
-
-	inline static function getLibrarymodPathForce(file:String, library:String)
-	{
-		return '$library:mods/$library/$file';
-	}
-
-	inline static function getmodPreloadPath(file:String)
-	{
-		return 'mods/$file';
 	}
 
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String)
@@ -261,15 +232,16 @@ class Paths
 		{
 			return true;
 		}
-		#end
-
+        #else
 		if (OpenFlAssets.exists(Paths.getPath(key, type, library)))
 		{
 			return true;
 		}
+		#end
 		return false;
 	}
 
+	#if MODS
 	inline static public function modTxt(key:String)
 	{
 		return modFolder('$key.txt');
@@ -357,7 +329,6 @@ class Paths
 
 	inline static public function getModsSparrowAtlas(key:String, ?library:String)
 	{
-		#if MODS
 		var imageLoaded:FlxGraphic = addCustomGraphic(key);
 		var xmlExists:Bool = false;
 		if (FileSystem.exists(modsXml(key)))
@@ -367,10 +338,8 @@ class Paths
 
 		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
 			(xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
-		#end
 	}
 
-	// why, spirit?
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
@@ -378,7 +347,6 @@ class Paths
 
 	static public function modFolder(key:String)
 	{
-		#if MODS
 		var list:Array<String> = [];
 		var modsFolder:String = Paths.mods();
 		if (FileSystem.exists(modsFolder))
@@ -396,11 +364,10 @@ class Paths
 				}
 			}
 		}
-		if (ModList.getModEnabled(modDir))
+		else if (ModList.getModEnabled(modDir))
 		{
 			if (modDir != null && modDir.length > 0)
 			{
-				// psych engine for the win
 				var fileToCheck:String = mods(modDir + '/' + key);
 				if (FileSystem.exists(fileToCheck))
 				{
@@ -410,16 +377,14 @@ class Paths
 		}
 
 		return 'mods/' + key;
-		#else
-		return key;
-		#end
 	}
+	#end
 
 	public static var currentTrackedSounds:Map<String, Sound> = [];
 
 	public static function addCustomSound(path:String, key:String, ?library:String)
 	{
-		#if MODS_ALLOWED
+		#if MODS
 		var file:String = modSound(path, key);
 		if (FileSystem.exists(file))
 		{
@@ -434,7 +399,7 @@ class Paths
 		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);
 		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
 		if (!currentTrackedSounds.exists(gottenPath))
-			#if MODS_ALLOWED
+			#if MODS
 			currentTrackedSounds.set(gottenPath, Sound.fromFile('./' + gottenPath));
 			#else
 			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(getPath('$path/$key.$SOUND_EXT', SOUND, library)));
