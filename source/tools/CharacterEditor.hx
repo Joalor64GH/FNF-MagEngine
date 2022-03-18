@@ -530,7 +530,7 @@ class CharacterEditor extends MusicBeatState
 		var assetName:String = directoryInputTextcool.text.trim();
 		if (assetName != null && assetName.length > 0)
 		{
-			if (FileSystem.exists(Paths.modsImages("characters/" + assetName)))
+			if (FileSystem.exists(Paths.modsImages(assetName)))
 			{
 				createdCharacter.frames = Paths.getModsSparrowAtlas(assetName);
 				createdCharacter.image = directoryInputTextcool.text.trim();
@@ -570,6 +570,9 @@ class CharacterEditor extends MusicBeatState
 			coolInputText.text = char.anim;
 			nameInputText.text = char.name;
 			isflippedX.checked = char.loop;
+			createdCharacter.animation.addByPrefix(char.anim, char.name, 24, char.loop);
+			createdCharacter.addOffset(char.anim, char.offsets[0],
+			char.offsets[1]);
 		}
 	}
 
