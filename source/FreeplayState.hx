@@ -47,12 +47,7 @@ class FreeplayState extends MusicBeatState
 	{
 		if (FileSystem.exists(Paths.modTxt('data/freeplaySonglist')) && FileSystem.exists(Paths.txt('data/freeplaySonglist')))
 		{
-			songList = File.getContent(Paths.modTxt('data/freeplaySonglist')).trim().split('\n');
-
-			for (i in 0...songList.length)
-			{
-				songList[i] = songList[i].trim();
-			}
+			songList = CoolUtil.evenCoolerTextFile(Paths.modTxt('data/freeplaySonglist'));
 		}
 		else
 		{

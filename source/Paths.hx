@@ -241,7 +241,6 @@ class Paths
 		return false;
 	}
 
-	#if MODS
 	inline static public function modTxt(key:String)
 	{
 		return modFolder('$key.txt');
@@ -347,6 +346,7 @@ class Paths
 
 	static public function modFolder(key:String)
 	{
+		#if MODS
 		var list:Array<String> = [];
 		var modsFolder:String = Paths.mods();
 		if (FileSystem.exists(modsFolder))
@@ -374,8 +374,10 @@ class Paths
 		}
 
 		return 'mods/' + key;
+		#else
+		return key;
+		#end
 	}
-	#end
 
 	public static var currentTrackedSounds:Map<String, Sound> = [];
 
