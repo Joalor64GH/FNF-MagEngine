@@ -476,6 +476,12 @@ class Character extends FlxSprite
 				varflipX = parsedJson.flipX;
 				flipY = varflipY;
 				flipX = varflipX;
+				if (parsedJson.scale != 1)
+				{
+					scalecool = parsedJson.scale;
+					setGraphicSize(Std.int(width * scalecool));
+					updateHitbox();
+				}
 				cameraPosition = parsedJson.cameraPosition;
 				healthbarColor = parsedJson.healthbarColor;
 				barColor = FlxColor.fromRGB(parsedJson.healthbarColor[0], parsedJson.healthbarColor[1], parsedJson.healthbarColor[2]);

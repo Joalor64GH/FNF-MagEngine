@@ -513,6 +513,7 @@ class CharacterEditor extends MusicBeatState
 		fInputText.text = swagCharacter.cameraPosition[0] + ", " + swagCharacter.cameraPosition[1];
 		isflipX.checked = swagCharacter.flipX;
 		isflipY.checked = swagCharacter.flipY;
+		scaleStepper.value = swagCharacter.scale;
 		if (FileSystem.exists(Paths.txt('images/characters/' + createdCharacter.curCharacter + "Offsets")))
 		{
 			createdCharacter.loadOffsetFromFile(createdCharacter.curCharacter, 'shared');
@@ -571,8 +572,7 @@ class CharacterEditor extends MusicBeatState
 			nameInputText.text = char.name;
 			isflippedX.checked = char.loop;
 			createdCharacter.animation.addByPrefix(char.anim, char.name, 24, char.loop);
-			createdCharacter.addOffset(char.anim, char.offsets[0],
-			char.offsets[1]);
+			createdCharacter.addOffset(char.anim, char.offsets[0], char.offsets[1]);
 		}
 	}
 
@@ -723,6 +723,8 @@ class CharacterEditor extends MusicBeatState
 		createdCharacter.varflipX = isflipX.checked;
 		createdCharacter.varflipY = isflipY.checked;
 		createdCharacter.scalecool = scaleStepper.value;
+		
+		createdCharacter.setGraphicSize(Std.int(createdCharacter.width * createdCharacter.scalecool));
 
 		var STRING = fInputText.text.trim().split(", ");
 		var x = Std.parseInt(STRING[0].trim());
