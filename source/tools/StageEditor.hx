@@ -489,6 +489,7 @@ class StageEditor extends MusicBeatState
 
 	function searchForLayer()
 	{
+		visualLayers[Std.int(layerStepper.value)].visible = false;
 		var assetName:String = directoryInputText.text.trim();
 		var directoryLayer:String = "images/" + assetName + ".png";
 		if (assetName != null && assetName.length > 0)
@@ -502,11 +503,7 @@ class StageEditor extends MusicBeatState
 				stageCurtains.visible = false;
 				unsavedChanges = true;
 			}
-			else
-			{
-				visualLayers[Std.int(layerStepper.value)].visible = false;
-			}
-			if (Paths.fileExists(directoryLayer, IMAGE))
+			else if (Paths.fileExists(directoryLayer, IMAGE))
 			{
 				visualLayers[Std.int(layerStepper.value)].loadGraphic(Paths.getPath(directoryLayer, IMAGE));
 				visualLayers[Std.int(layerStepper.value)].visible = true;
@@ -514,10 +511,6 @@ class StageEditor extends MusicBeatState
 				stageFront.visible = false;
 				stageCurtains.visible = false;
 				unsavedChanges = true;
-			}
-			else
-			{
-				visualLayers[Std.int(layerStepper.value)].visible = false;
 			}
 		}
 		else
