@@ -5,6 +5,9 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import flixel.FlxG;
+#if sys
+import sys.FileSystem;
+#end
 #if MODS
 import polymod.format.ParseRules.TargetSignatureElement;
 #end
@@ -94,8 +97,6 @@ class Note extends FlxSprite
 			{
 				case 1:
 					{
-						frames = Paths.getSparrowAtlas('HURT_NOTE_assets');
-
 						animation.addByPrefix('greenScroll', 'green0');
 						animation.addByPrefix('redScroll', 'red0');
 						animation.addByPrefix('blueScroll', 'blue0');
@@ -116,8 +117,14 @@ class Note extends FlxSprite
 					}
 				default:
 					{
-						frames = Paths.getSparrowAtlas('NOTE_assets');
-
+						if (FileSystem.exists(Paths.skinFolder('notes/NOTE_assets.png')))
+						{
+							frames = Paths.getSkinsSparrowAtlas('notes/NOTE_assets');
+						}
+						else
+						{
+							frames = Paths.getSparrowAtlas('NOTE_assets');
+						}
 						animation.addByPrefix('greenScroll', 'green0');
 						animation.addByPrefix('redScroll', 'red0');
 						animation.addByPrefix('blueScroll', 'blue0');

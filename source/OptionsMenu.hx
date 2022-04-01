@@ -35,7 +35,7 @@ class OptionsMenu extends MusicBeatState
 			[
 				new DownscrollOption(), new MiddlescrollOption(), new GhostTappingOption(), new AccuracyOption(), new CacheOption(), new FPSOption(),
 				new MEMOption(),
-				new VerOption(), new RatingOption(), new FPSCapOption()]),
+				new VerOption(), new RatingOption(), new FPSCapOption(), new LogsOption()]),
 		new OptionCategory("Adjust Offsets"),
 		new OptionCategory("Controls"),
 		new OptionCategory("Notes", [new OpponentNotesGlowOption(), new SplooshOption(), new TransparentNotesOption()]),

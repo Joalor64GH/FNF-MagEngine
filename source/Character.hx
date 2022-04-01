@@ -98,7 +98,14 @@ class Character extends FlxSprite
 		{
 			case 'gf':
 				imageDir = 'GF_assets';
-				tex = Paths.getSparrowAtlas(imageDir, 'shared');
+				if (FileSystem.exists(Paths.skinFolder('girlfriend/GF_assets.png')))
+				{
+					tex = Paths.getSkinsSparrowAtlas('girlfriend/' + imageDir);
+				}
+				else
+				{
+					tex = Paths.getSparrowAtlas(imageDir, 'shared');
+				}
 				frames = tex;
 				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
 				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
@@ -285,7 +292,15 @@ class Character extends FlxSprite
 
 			case 'bf':
 				imageDir = 'BOYFRIEND';
-				var tex = Paths.getSparrowAtlas(imageDir, 'shared');
+				var tex:FlxAtlasFrames;
+				if (FileSystem.exists(Paths.skinFolder('boyfriend/BOYFRIEND.png')))
+				{
+					tex = Paths.getSkinsSparrowAtlas('boyfriend/' + imageDir);
+				}
+				else
+				{
+					tex = Paths.getSparrowAtlas(imageDir, 'shared');
+				}
 				frames = tex;
 				animation.addByPrefix('idle', 'BF idle dance', 24, false);
 				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);

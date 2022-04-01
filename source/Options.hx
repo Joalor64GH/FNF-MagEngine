@@ -113,6 +113,28 @@ class DownscrollOption extends Option
 	}
 }
 
+class LogsOption extends Option
+{
+	public function new()
+	{
+		super();
+		daValue = FlxG.save.data.logsAllowed;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.logsAllowed = !FlxG.save.data.logsAllowed;
+		daValue = FlxG.save.data.logsAllowed;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Save Logs";
+	}
+}
+
 class MiddlescrollOption extends Option
 {
 	public function new()

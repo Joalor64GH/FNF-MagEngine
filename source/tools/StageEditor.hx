@@ -714,7 +714,7 @@ class StageEditor extends MusicBeatState
 
 		camMenu.zoom = FlxG.camera.zoom;
 		camPeople.zoom = FlxG.camera.zoom;
-		camGrid.zoom = FlxG.camera.zoom;
+		camGrid.zoom = FlxG.camera.zoom + Std.parseFloat(zoominputtext.text);
 
 		if (FlxG.keys.justPressed.ESCAPE)
 		{

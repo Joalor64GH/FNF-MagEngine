@@ -9,7 +9,7 @@ class StartState extends FlxState
 	{
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 		PlayerSettings.init();
-        MagDefaults.init();
+		MagDefaults.init();
 
 		#if (CACHE && !debug)
 		if (FlxG.save.data.cache)

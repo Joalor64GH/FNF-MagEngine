@@ -723,7 +723,7 @@ class CharacterEditor extends MusicBeatState
 		createdCharacter.varflipX = isflipX.checked;
 		createdCharacter.varflipY = isflipY.checked;
 		createdCharacter.scalecool = scaleStepper.value;
-		
+
 		createdCharacter.setGraphicSize(Std.int(createdCharacter.width * createdCharacter.scalecool));
 
 		var STRING = fInputText.text.trim().split(", ");

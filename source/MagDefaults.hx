@@ -16,6 +16,9 @@ class MagDefaults
 		if (FlxG.save.data.accuracy == null)
 			FlxG.save.data.accuracy = true;
 
+		if (FlxG.save.data.logsAllowed == null)
+			FlxG.save.data.logsAllowed = false;
+
 		if (FlxG.save.data.cpuNotesGlow == null)
 			FlxG.save.data.cpuNotesGlow = true;
 

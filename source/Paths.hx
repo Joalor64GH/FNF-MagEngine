@@ -16,6 +16,7 @@ import modloader.PolymodHandler;
 import modloader.ModsMenu;
 import modloader.ModsMenuOption;
 import modloader.ModList;
+import skinloader.SkinList;
 import flash.media.Sound;
 
 using StringTools;
@@ -25,6 +26,7 @@ class Paths
 	inline public static var VIDEO_EXT = "mp4";
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 	static public var modDir:String = null;
+	static public var skinsDir:String = null;
 	public static var customSoundsLoaded:Map<String, Sound> = new Map();
 	public static var coolMods:ModsMenu;
 	public static var customImagesLoaded:Map<String, Bool> = new Map<String, Bool>();
@@ -33,6 +35,7 @@ class Paths
 	public static var ignoredFolders:Array<String> = [
 		'custom_characters', 'custom_events', 'custom_states', 'data', 'songs', 'stages', 'music', 'sounds', 'fonts', 'videos', 'images', 'weeks', 'scripts'
 	];
+	public static var ignoredSkinFolders:Array<String> = ['girlfriend', 'boyfriend', 'notes', 'images'];
 
 	static var currentLevel:String;
 
@@ -198,6 +201,18 @@ class Paths
 			}
 			return FlxG.bitmap.get(key);
 		}
+		else if (FileSystem.exists(skinImages(key)))
+		{
+			if (!customImagesLoaded.exists(key))
+			{
+				var newBitmap:BitmapData = BitmapData.fromFile(skinImages(key));
+				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(newBitmap, false, key);
+				newGraphic.persist = true;
+				FlxG.bitmap.addGraphic(newGraphic);
+				customImagesLoaded.set(key, true);
+			}
+			return FlxG.bitmap.get(key);
+		}
 		#end
 		return null;
 	}
@@ -232,7 +247,7 @@ class Paths
 		{
 			return true;
 		}
-        #else
+		#else
 		if (OpenFlAssets.exists(Paths.getPath(key, type, library)))
 		{
 			return true;
@@ -281,6 +296,11 @@ class Paths
 		return modFolder('images/' + key + '.xml');
 	}
 
+	inline static public function skinsXml(key:String)
+	{
+		return skinFolder(key + '.xml');
+	}
+
 	inline static public function modVideo(key:String)
 	{
 		return modFolder('videos/' + key + '.' + VIDEO_EXT);
@@ -294,6 +314,11 @@ class Paths
 	inline static public function modsImages(key:String)
 	{
 		return modFolder('images/' + key + '.png');
+	}
+
+	inline static public function skinImages(key:String)
+	{
+		return skinFolder(key + '.png');
 	}
 
 	inline static public function modsPng(key:String)
@@ -321,6 +346,16 @@ class Paths
 		return modFolder('custom_events/$key');
 	}
 
+	inline static public function skins(key:String = '')
+	{
+		return 'skins/' + key;
+	}
+
+	inline static public function skinPack(key:String)
+	{
+		return skinFolder(key);
+	}
+
 	inline static public function getSparrowAtlas(key:String, ?library:String)
 	{
 		return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
@@ -337,6 +372,19 @@ class Paths
 
 		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
 			(xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
+	}
+
+	inline static public function getSkinsSparrowAtlas(key:String, ?library:String)
+	{
+		var imageLoaded:FlxGraphic = addCustomGraphic(key);
+		var xmlExists:Bool = false;
+		if (FileSystem.exists(skinsXml(key)))
+		{
+			xmlExists = true;
+		}
+
+		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
+			(xmlExists ? File.getContent(skinsXml(key)) : file('$key.xml', library)));
 	}
 
 	inline static public function getPackerAtlas(key:String, ?library:String)
@@ -374,6 +422,41 @@ class Paths
 		}
 
 		return 'mods/' + key;
+		#else
+		return key;
+		#end
+	}
+
+	static public function skinFolder(key:String)
+	{
+		#if MODS
+		var list:Array<String> = [];
+		var skinsFolder:String = Paths.skins();
+		if (FileSystem.exists(skinsFolder))
+		{
+			for (folder in FileSystem.readDirectory(skinsFolder))
+			{
+				var path = haxe.io.Path.join([skinsFolder, folder]);
+				if (sys.FileSystem.isDirectory(path) && !Paths.ignoredSkinFolders.contains(folder) && !list.contains(folder))
+				{
+					list.push(folder);
+					for (i in 0...list.length)
+					{
+						skinsDir = list[i];
+					}
+				}
+			}
+		}
+		if (skinsDir != null && skinsDir.length > 0)
+		{
+			var fileToCheck:String = skins(skinsDir + '/' + key);
+			if (FileSystem.exists(fileToCheck) && SkinList.getskinEnabled(skinsDir))
+			{
+				return fileToCheck;
+			}
+		}
+
+		return 'skins/' + key;
 		#else
 		return key;
 		#end

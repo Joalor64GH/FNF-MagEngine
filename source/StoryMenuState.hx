@@ -64,6 +64,8 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
+		LoggingUtil.writeToLogFile('Switching To The Story Menu!');
+
 		if (FileSystem.exists(Paths.modTxt('weeks/weekList')) && FileSystem.exists(Paths.txt('weeks/weekList')))
 		{
 			weekthingy = File.getContent(Paths.modTxt('weeks/weekList')).trim().split('\n');
@@ -94,6 +96,7 @@ class StoryMenuState extends MusicBeatState
 
 		function getJSON(path:String):SwagWeek
 		{
+			LoggingUtil.writeToLogFile('Initializing Week .JSONs!');
 			var rawJson:String = null;
 			#if sys
 			// we use file.getcontent so it reads from the mods folder
@@ -290,6 +293,8 @@ class StoryMenuState extends MusicBeatState
 			{
 				swagbf.animation.play('hey');
 
+				LoggingUtil.writeToLogFile('Selected A Week! Switching To PlayState...');
+
 				if (stopspamming == false)
 				{
 					FlxG.sound.play(Paths.sound('titleShoot'));
@@ -377,6 +382,8 @@ class StoryMenuState extends MusicBeatState
 
 	function loadFromWeekJson(jsonInput:String):SwagWeek
 	{
+		LoggingUtil.writeToLogFile('Parsing Week .JSONs!');
+
 		var rawJson = null;
 
 		#if MODS

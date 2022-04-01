@@ -601,7 +601,7 @@ class Controls extends FlxActionSet
 
 		#if (haxe >= "4.0.0")
 		for (control => buttons in buttonMap)
-			inline bindButtons(control, id, buttons);
+		inline bindButtons(control, id, buttons);
 		#else
 		for (control in buttonMap.keys())
 			bindButtons(control, id, buttonMap[control]);
@@ -614,7 +614,7 @@ class Controls extends FlxActionSet
 
 		#if (haxe >= "4.0.0")
 		for (control => buttons in buttonMap)
-			inline bindButtons(control, id, buttons);
+		inline bindButtons(control, id, buttons);
 		#else
 		for (control in buttonMap.keys())
 			bindButtons(control, id, buttonMap[control]);

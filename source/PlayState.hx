@@ -80,6 +80,8 @@ class PlayState extends MusicBeatState
 	public static var eventName:String;
 	public static var eventPosition:Float;
 
+	var interp:Interp = new Interp();
+
 	public static var usedPlayFeatures:Bool = false;
 	public static var cpuControlled:Bool = false;
 	public static var practiceAllowed:Bool = false;
@@ -219,6 +221,15 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		callOnHscript("create");
+
+		LoggingUtil.writeToLogFile('In The PlayState!');
+		LoggingUtil.writeToLogFile('Searching For Modcharts...');
+		LoggingUtil.writeToLogFile('Searching For Scripts...');
+		LoggingUtil.writeToLogFile('Searching For Event Scripts...');
+		LoggingUtil.writeToLogFile('Searching For Dialogues...');
+		LoggingUtil.writeToLogFile('Loading Song...');
+
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
@@ -286,7 +297,10 @@ class PlayState extends MusicBeatState
 				#if MODS
 				daPath = Paths.modTxt(path);
 				if (FileSystem.exists(daPath))
+				{
+					LoggingUtil.writeToLogFile('Dialogue Found!');
 					dialogue = CoolUtil.evenCoolerTextFile(daPath);
+				}
 				else
 				{
 					daPath = Paths.txt(path);
@@ -938,12 +952,14 @@ class PlayState extends MusicBeatState
 
 		if (Assets.exists(Paths.lua(luaFile, 'preload')))
 		{
+			LoggingUtil.writeToLogFile('Modchart Found!');
 			luaFile = Paths.lua(luaFile, 'preload');
 			luaArray.push(new MagModChart(luaFile));
 		}
 		#if MODS
 		else if (FileSystem.exists(Paths.modLua(luaFile)))
 		{
+			LoggingUtil.writeToLogFile('Modchart Found!');
 			luaFile = Paths.modLua(luaFile);
 			luaArray.push(new MagModChart(luaFile));
 		}
@@ -961,19 +977,30 @@ class PlayState extends MusicBeatState
 				{
 					if (file.endsWith('.hx') && !filesInserted.contains(file))
 					{
+						LoggingUtil.writeToLogFile('Script Found!');
+
 						var expr = File.getContent(Paths.hscript(file));
 						var parser = new hscript.Parser();
 						parser.allowTypes;
 						parser.allowJSON;
 						parser.allowMetadata;
 						var ast = parser.parseString(expr);
-						var interp = new hscript.Interp();
-						interp.variables.set("add", add);
+						interp.variables.set("add", function()
+						{
+						});
 						interp.variables.set("CustomState", CustomState);
-						interp.variables.set("remove", remove);
-						interp.variables.set("update", time);
-						interp.variables.set("stepHit", stepHit);
-						interp.variables.set("beatHit", beatHit);
+						interp.variables.set("remove", function()
+						{
+						});
+						interp.variables.set("update", function(elapsed:Float)
+						{
+						});
+						interp.variables.set("stepHit", function()
+						{
+						});
+						interp.variables.set("beatHit", function()
+						{
+						});
 						interp.variables.set("PlayState", PlayState);
 						interp.variables.set("DiscordClient", DiscordClient);
 						interp.variables.set("WiggleEffectType", WiggleEffect.WiggleEffectType);
@@ -1519,7 +1546,14 @@ class PlayState extends MusicBeatState
 			}
 			else
 			{
-				babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
+				if (FileSystem.exists(Paths.skinFolder('notes/NOTE_assets.png')))
+				{
+					babyArrow.frames = Paths.getSkinsSparrowAtlas('notes/NOTE_assets');
+				}
+				else
+				{
+					babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
+				}
 				babyArrow.animation.addByPrefix('green', 'arrowUP');
 				babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
 				babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
@@ -1766,6 +1800,8 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		callOnHscript("update");
+
 		#if !debug
 		perfectMode = false;
 		#end
@@ -2869,6 +2905,10 @@ class PlayState extends MusicBeatState
 	function trainReset():Void
 	{
 		gf.playAnim('hairFall');
+		if (gf.animation.curAnim.finished)
+		{
+			gf.playAnim('danceRight');
+		}
 		phillyTrain.x = FlxG.width + 200;
 		trainMoving = false;
 		// trainSound.stop();
@@ -2892,11 +2932,12 @@ class PlayState extends MusicBeatState
 
 	override function stepHit()
 	{
+		callOnHscript("stepHit");
+
 		super.stepHit();
-		if (SONG.events == null)
-		{
-			SONG.events = [new MidSongEvent('none', 0, '', '')];
-		}
+
+	if (SONG.events != null)
+	{
 		for (i in SONG.events)
 		{
 			valueOne = i.valueOne;
@@ -2957,22 +2998,31 @@ class PlayState extends MusicBeatState
 						{
 							if (file.endsWith('.hx') && !filesInsertedcool.contains(file))
 							{
+								LoggingUtil.writeToLogFile('Event Script Found!');
 								var expr = File.getContent(Paths.event(file));
 								var parser = new hscript.Parser();
 								parser.allowTypes;
 								parser.allowJSON;
 								parser.allowMetadata;
 								var ast = parser.parseString(expr);
-								var interp = new hscript.Interp();
-								interp.variables.set("add", add);
-								interp.variables.set("remove", remove);
-								interp.variables.set("update", time);
-								interp.variables.set("curStep", curStep);
-								interp.variables.set("curBeat", curBeat);
+								interp.variables.set("add", function()
+								{
+								});
+								interp.variables.set("CustomState", CustomState);
+								interp.variables.set("remove", function()
+								{
+								});
+								interp.variables.set("update", function(elapsed:Float)
+								{
+								});
+								interp.variables.set("stepHit", function()
+								{
+								});
+								interp.variables.set("beatHit", function()
+								{
+								});
 								interp.variables.set("valueOne", valueOne);
 								interp.variables.set("valueTwo", valueTwo);
-								interp.variables.set("stepHit", stepHit);
-								interp.variables.set("beatHit", beatHit);
 								interp.variables.set("eventPosition", eventPosition);
 								interp.variables.set("eventName", eventName);
 								interp.variables.set("PlayState", PlayState);
@@ -3073,6 +3123,7 @@ class PlayState extends MusicBeatState
 				 */
 			}
 		}
+	}
 		if (FlxG.sound.music.time > Conductor.songPosition + 20 || FlxG.sound.music.time < Conductor.songPosition - 20)
 			resyncVocals();
 
@@ -3088,6 +3139,8 @@ class PlayState extends MusicBeatState
 
 	override function beatHit()
 	{
+		callOnHscript("beat");
+
 		super.beatHit();
 
 		if (generatedMusic)
@@ -3210,6 +3263,31 @@ class PlayState extends MusicBeatState
 			luaArray[i].set(variable, arg);
 		}
 		#end
+	}
+
+	public function callOnHscript(functionToCall:String, ?params:Array<Any>):Dynamic
+	{
+		if (interp == null)
+		{
+			return null;
+		}
+		if (interp.variables.exists(functionToCall))
+		{
+			var functionH = interp.variables.get(functionToCall);
+			if (params == null)
+			{
+				var result = null;
+				result = functionH();
+				return result;
+			}
+			else
+			{
+				var result = null;
+				result = Reflect.callMethod(null, functionH, params);
+				return result;
+			}
+		}
+		return null;
 	}
 
 	var curLight:Int = 0;

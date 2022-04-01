@@ -13,6 +13,7 @@ import flixel.FlxState;
 import flixel.input.keyboard.FlxKey;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.TransitionData;
+import skinloader.SkinList;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup;
@@ -44,6 +45,7 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
+	var updateAvailable:Bool = false;
 
 	var curWacky:Array<String> = [];
 
@@ -78,10 +80,25 @@ class TitleState extends MusicBeatState
 		}
 		#end
 
+		var http = new haxe.Http("https://raw.githubusercontent.com/magnumsrtisswag/MagEngine-Public/main/gameVersion.txt");
+
+		http.onData = function(data:String)
+		{
+			var updateVersion = data.split('\n')[0].trim();
+			var curVersion:String = Application.current.meta.get('version');
+			if (updateVersion != curVersion)
+			{
+				updateAvailable = true;
+			}
+		}
+
+		http.request();
+
 		if (!initialized)
 		{
 			#if MODS
 			ModList.load();
+			SkinList.load();
 			#end
 
 			#if desktop
@@ -101,7 +118,11 @@ class TitleState extends MusicBeatState
 			var ng:NGio = new NGio(APIStuff.API, APIStuff.EncKey);
 			trace('NEWGROUNDS LOL');
 			#end
-		
+
+			LoggingUtil.makeLogFile();
+			LoggingUtil.writeToLogFile('Initializing Mag Engine...');
+			LoggingUtil.writeToLogFile('Checking For Updates...');
+
 			Highscore.load();
 		}
 
@@ -119,6 +140,7 @@ class TitleState extends MusicBeatState
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
 			startIntro();
+			LoggingUtil.writeToLogFile('Successfully Initialized Mag Engine!');
 		});
 		#end
 	}
@@ -131,6 +153,7 @@ class TitleState extends MusicBeatState
 
 	function startIntro()
 	{
+		LoggingUtil.writeToLogFile('Starting Intro...');
 		if (!initialized)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
@@ -145,6 +168,7 @@ class TitleState extends MusicBeatState
 		if (FileSystem.exists(Paths.image('logoBumpin')) && FileSystem.exists(Paths.modIcon('logoBumpin')))
 		{
 			logoBl.frames = Paths.getModsSparrowAtlas('logoBumpin');
+			LoggingUtil.writeToLogFile('Found A Modded Logo!');
 		}
 		else
 		{
@@ -169,6 +193,7 @@ class TitleState extends MusicBeatState
 		if (FileSystem.exists(Paths.image('gfDanceTitle')) && FileSystem.exists(Paths.modIcon('gfDanceTitle')))
 		{
 			gfDance.frames = Paths.getModsSparrowAtlas('gfDanceTitle');
+			LoggingUtil.writeToLogFile('Found A Modded Title Girlfriend!');
 		}
 		else
 		{
@@ -188,6 +213,7 @@ class TitleState extends MusicBeatState
 		if (FileSystem.exists(Paths.image('titleEnter')) && FileSystem.exists(Paths.modIcon('titleEnter')))
 		{
 			titleText.frames = Paths.getModsSparrowAtlas('titleEnter');
+			LoggingUtil.writeToLogFile('Found A Modded Title Text!');
 		}
 		else
 		{
@@ -313,7 +339,16 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(0.1, function(tmr:FlxTimer)
 			{
-				MusicBeatState.switchState(new MainMenuState());
+				if (updateAvailable)
+				{
+					MusicBeatState.switchState(new OutdatedSubState());
+					LoggingUtil.writeToLogFile('Mag Engine Is Outdated!');
+				}
+				else
+				{
+					LoggingUtil.writeToLogFile('No Updates Found! Switching To The Main Menu...');
+					MusicBeatState.switchState(new MainMenuState());
+				}
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
@@ -427,10 +462,11 @@ class TitleState extends MusicBeatState
 			FlxG.camera.flash(FlxColor.WHITE, 4);
 			remove(credGroup);
 			skippedIntro = true;
-			
+
 			// why tf was this removed
 			#if MODS
 			ModList.load();
+			SkinList.load();
 			#end
 		}
 	}

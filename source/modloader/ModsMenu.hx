@@ -40,6 +40,8 @@ class ModsMenu extends MusicBeatState
 
 	override function create()
 	{
+		LoggingUtil.writeToLogFile('In The Mods Menu!');
+
 		var menuBG:FlxSprite;
 
 		menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));

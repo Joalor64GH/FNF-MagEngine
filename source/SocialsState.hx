@@ -37,6 +37,8 @@ class SocialsState extends MusicBeatState
 
 	override function create()
 	{
+		LoggingUtil.writeToLogFile('In The Socials Menu!');
+
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);

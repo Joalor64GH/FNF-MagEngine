@@ -49,6 +49,8 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
+		LoggingUtil.writeToLogFile('Menu Buttons Are: ' + optionShit.join('\n') + ', ');
+
 		optionShit = CoolUtil.coolTextFile(Paths.txt('data/menuButtonList'));
 		if (FileSystem.exists(Paths.modTxt('data/menuButtonList')) && FileSystem.exists(Paths.txt('data/menuButtonList')))
 		{
@@ -98,41 +100,21 @@ class MainMenuState extends MusicBeatState
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
-		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
-		var editors = Paths.getSparrowAtlas('FNF_main_menu_assets_sheet_TWO');
-
-		if (FileSystem.exists(Paths.image('FNF_main_menu_assets')) && FileSystem.exists(Paths.modIcon('FNF_main_menu_assets')))
-		{
-			tex = Paths.getModsSparrowAtlas('FNF_main_menu_assets');
-		}
-		else
-		{
-			tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
-		}
-
-		if (FileSystem.exists(Paths.image('FNF_main_menu_assets_sheet_TWO'))
-			&& FileSystem.exists(Paths.modIcon('FNF_main_menu_assets_sheet_TWO')))
-		{
-			editors = Paths.getModsSparrowAtlas('FNF_main_menu_assets_sheet_TWO');
-		}
-		else
-		{
-			editors = Paths.getSparrowAtlas('FNF_main_menu_assets_sheet_TWO');
-		}
-
 		for (i in 0...optionShit.length)
 		{
 			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
 			var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + offset);
-			switch (optionShit[i])
-			{
-				case 'editors':
-					menuItem.frames = editors;
-				default:
-					menuItem.frames = tex;
-			}
 			menuItem.scale.x = 0.8;
 			menuItem.scale.y = 0.8;
+			if (FileSystem.exists(Paths.image('menubuttons/' + optionShit[i]))
+				&& FileSystem.exists(Paths.modIcon('menubuttons/' + optionShit[i])))
+			{
+				menuItem.frames = Paths.getModsSparrowAtlas('menubuttons/' + optionShit[i]);
+			}
+			else
+			{
+				menuItem.frames = Paths.getSparrowAtlas('menubuttons/' + optionShit[i]);
+			}
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
@@ -225,23 +207,34 @@ class MainMenuState extends MusicBeatState
 								{
 									case 'story mode':
 										MusicBeatState.switchState(new StoryMenuState());
+										LoggingUtil.writeToLogFile('Selected Story Mode!');
 									case 'freeplay':
 										MusicBeatState.switchState(new FreeplayState());
+										LoggingUtil.writeToLogFile('Selected Freeplay!');
 									case 'credits':
 										MusicBeatState.switchState(new CreditsMenu());
+										LoggingUtil.writeToLogFile('Selected Credits!');
 									case 'editors':
 										MusicBeatState.switchState(new tools.EditorMenuState());
+										LoggingUtil.writeToLogFile('Selected Editors!');
 									#if MODS
 									case 'mods':
 										MusicBeatState.switchState(new ModsMenu());
+										LoggingUtil.writeToLogFile('Selected Mods!');
 									#end
 									case 'social':
 										MusicBeatState.switchState(new SocialsState());
+										LoggingUtil.writeToLogFile('Selected Social!');
 									case 'options':
 										MusicBeatState.switchState(new OptionsMenu());
+										LoggingUtil.writeToLogFile('Selected Options!');
+									case 'skins':
+										MusicBeatState.switchState(new skinloader.SkinsMenu());
+										LoggingUtil.writeToLogFile('Selected Skins!');
 
 									default:
 										MusicBeatState.switchState(new CustomState(optionShit[curSelected], true));
+										LoggingUtil.writeToLogFile('Selected A Custom State!');
 								}
 							});
 						}
