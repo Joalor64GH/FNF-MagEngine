@@ -2,6 +2,9 @@ package;
 
 import flixel.FlxG;
 import lime.utils.Assets;
+#if sys
+import sys.FileSystem;
+#end
 
 using StringTools;
 
@@ -136,5 +139,25 @@ class CoolUtil
 			}
 		}
 		return maxKey;
+	}
+
+	public static function deleteFolderContents(deletedFile:String)
+	{
+		#if sys
+		if (!FileSystem.exists(deletedFile))
+			return;
+		for (file in FileSystem.readDirectory(deletedFile))
+		{
+			if (FileSystem.isDirectory(deletedFile + "/" + file))
+			{
+				deleteFolderContents(deletedFile + "/" + file);
+				FileSystem.deleteDirectory(deletedFile + "/" + file);
+			}
+			else
+			{
+				FileSystem.deleteFile(deletedFile + "/" + file);
+			}
+		}
+		#end
 	}
 }

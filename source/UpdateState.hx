@@ -9,12 +9,14 @@ import flixel.FlxState;
 import sys.io.Process;
 import openfl.events.Event;
 import cpp.vm.Thread;
+import openfl.events.ProgressEvent;
 import flixel.ui.FlxBar;
 import flixel.FlxG;
 import openfl.net.URLLoader;
 import openfl.net.URLStream;
 import flixel.addons.ui.FlxUIInputText;
 import openfl.net.URLRequest;
+import lime.app.Application;
 import openfl.utils.ByteArray;
 import sys.FileSystem;
 import flixel.util.FlxTimer;
@@ -105,18 +107,27 @@ class UpdateState extends MusicBeatState
 
 			var firstReturnedFile = fileArray.shift();
 
-			if (FileSystem.exists(firstReturnedFile) && FileSystem.stat(firstReturnedFile).size > 0)
+			if (FileSystem.exists('./updateCache/$firstReturnedFile') && FileSystem.stat('./updateCache/$firstReturnedFile').size > 0)
 			{
 				finishedFiles++;
 				initUpdate();
 				return;
 			}
 
-			var fileLocation = "https://raw.githubusercontent.com/magnumsrtisswag/MagEngine-Public/main/compiledFiles";
+			var fileLocation = "https://raw.githubusercontent.com/magnumsrtisswag/MagEngine-Public/main/compiledFiles/";
+
+			var emptyArray:Array<Dynamic> = [];
 
 			var fileLoader = new URLRequest('$fileLocation/$firstReturnedFile'.replace(" ", "%20"));
 
-			var writtenFile:FileOutput = File.write(firstReturnedFile, true);
+			var emptyArray:Array<Dynamic> = [];
+			var cleanedDirectory = [
+				for (i => o in (emptyArray = firstReturnedFile.replace("\\", "/").split("/")))
+					if (i < emptyArray.length - 1) o
+			].join("/");
+			FileSystem.createDirectory('updateCache/' + cleanedDirectory);
+
+			var writtenFile:FileOutput = File.write('updateCache/$firstReturnedFile', true);
 
 			fileDownload.addEventListener(IOErrorEvent.IO_ERROR, function(exceptionThrown)
 			{
@@ -145,7 +156,7 @@ class UpdateState extends MusicBeatState
 
 					File.copy('Mag Engine.exe', 'Updater.exe');
 
-					new Process('start /B Updater.exe update', null);
+					new Process('start /B Updater.exe startUpdate');
 
 					System.exit(0);
 				}

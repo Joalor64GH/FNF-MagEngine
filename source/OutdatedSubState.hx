@@ -30,12 +30,13 @@ class OutdatedSubState extends MusicBeatState
 				+ " while the most recent version of Mag Engine is "
 				+ "v"
 				+ data
-				+ "! Press SPACE to go to Github, ENTER to update in game,\nor ESCAPE to ignore this!", 32);
+				+ "! Press SPACE to go to Github, ENTER to update in game,\nor ESCAPE to ignore this!",
+				32);
 			txt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER);
 			txt.screenCenter();
 			add(txt);
 		}
-		
+
 		http.request();
 	}
 

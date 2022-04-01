@@ -7,6 +7,12 @@ import flixel.FlxState;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.Event;
+#if sys
+import sys.FileSystem;
+import sys.io.Process;
+import sys.io.File;
+#end
+import openfl.system.System;
 
 class Main extends Sprite
 {
@@ -23,8 +29,45 @@ class Main extends Sprite
 	public static function main():Void
 	{
 		// quick checks
+		var rawCommand = Sys.args();
+		if (rawCommand.contains('startUpdate'))
+		{
+			var cleanUp:String->String->Void = null;
+			cleanUp = function(curPath, newPath)
+			{
+				FileSystem.createDirectory(curPath);
+				FileSystem.createDirectory(newPath);
+				for (file in FileSystem.readDirectory(curPath))
+				{
+					if (FileSystem.isDirectory(curPath + "/" + file))
+					{
+						cleanUp(curPath + "/" + file, newPath + "/" + file);
+					}
+					else
+					{
+						File.copy(curPath + "/" + file, newPath + "/" + file);
+					}
+				}
+			}
+			cleanUp('./updateCache', '.');
+			CoolUtil.deleteFolderContents('./updateCache');
+			FileSystem.deleteDirectory('./updateCache');
+			new Process('start /B "" "Mag Engine.exe"', null);
+			System.exit(0);
+		}
+		else
+		{
+			try
+			{
+				if (FileSystem.exists("Updater.exe"))
+					FileSystem.deleteFile('Updater.exe');
+			}
+			catch (thrownException)
+			{
+			}
 
-		Lib.current.addChild(new Main());
+			Lib.current.addChild(new Main());
+		}
 	}
 
 	public function new()
