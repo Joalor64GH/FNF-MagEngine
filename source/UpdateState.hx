@@ -1,3 +1,6 @@
+// heavily based off of the psych engine pull request I made (See: https://github.com/ShadowMario/FNF-PsychEngine/pull/7973), Just putting this here so people don't think I stole 
+// from some dude's pr lol
+
 package;
 
 import openfl.events.IOErrorEvent;
