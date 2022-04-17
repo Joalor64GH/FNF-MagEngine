@@ -57,6 +57,7 @@ class StageEditor extends MusicBeatState
 	var defaultZoom:Float;
 	var isPixelStage:Bool;
 	var camFollow:FlxObject;
+	var alreadyPressed:Bool = false;
 	var confirmAdded:Bool = false;
 
 	public static var unsavedChanges:Bool = false;
@@ -394,7 +395,7 @@ class StageEditor extends MusicBeatState
 		var gflabel = new FlxText(15, gfInputText.y + 20, 64, 'GirlFriend Position');
 		opponentinputtext = new FlxUIInputText(15, gfInputText.y + 50, 200, "100, 100", 8);
 		var ylabel = new FlxText(15, opponentinputtext.y + 20, 64, 'Opponent Position');
-		zoominputtext = new FlxUIInputText(15, opponentinputtext.y + 50, 200, "", 8);
+		zoominputtext = new FlxUIInputText(15, opponentinputtext.y + 50, 200, "0.9", 8);
 		var elabel = new FlxText(15, zoominputtext.y + 20, 64, 'Default Zoom');
 		dirinputtext = new FlxUIInputText(15, zoominputtext.y + 50, 200, "", 8);
 		var directorycoollabel = new FlxText(15, dirinputtext.y + 20, 64, 'Stage Name');
@@ -714,7 +715,7 @@ class StageEditor extends MusicBeatState
 
 		camMenu.zoom = FlxG.camera.zoom;
 		camPeople.zoom = FlxG.camera.zoom;
-		camGrid.zoom = FlxG.camera.zoom + Std.parseFloat(zoominputtext.text);
+		camGrid.zoom = FlxG.camera.zoom * Std.parseFloat(zoominputtext.text);
 
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
@@ -726,63 +727,69 @@ class StageEditor extends MusicBeatState
 			}
 			else
 			{
-				blackBox = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-				blackBox.cameras = [camG];
-				add(blackBox);
-
-				var label:FlxText = null;
-
-				blackBox.alpha = 0.6;
-
-				var tabss = [{name: 'Warning', label: 'Warning'},];
-
-				UI__character = new FlxUITabMenu(null, tabss, true);
-
-				UI__character.resize(350, 300);
-				UI__character.scrollFactor.set();
-				UI__character.screenCenter();
-				UI__character.cameras = [camG];
-				add(UI__character);
-
-				idontcarelol = new FlxButton(140, 20, "Yes", function()
+				if (!alreadyPressed)
 				{
-					MusicBeatState.switchState(new tools.EditorMenuState());
+					alreadyPressed = true;
+					blackBox = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+					blackBox.cameras = [camG];
+					add(blackBox);
 
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
-				});
+					var label:FlxText = null;
 
-				idontcarelol.y += 400;
-				idontcarelol.screenCenter(X);
-				idontcarelol.color = FlxColor.RED;
-				idontcarelol.label.color = FlxColor.WHITE;
+					blackBox.alpha = 0.6;
 
-				ormaybeido = new FlxButton(140, 20, "No", function()
-				{
-					remove(ormaybeido);
-					remove(idontcarelol);
-					remove(UI__character);
-					remove(blackBox);
-					remove(label);
-				});
+					var tabss = [{name: 'Warning', label: 'Warning'},];
 
-				ormaybeido.screenCenter(X);
-				ormaybeido.y += 370;
-				ormaybeido.color = FlxColor.GREEN;
-				ormaybeido.label.color = FlxColor.WHITE;
+					UI__character = new FlxUITabMenu(null, tabss, true);
 
-				label = new FlxText(15, ormaybeido.y - 120, 260, 'You have unsaved changes!\nWould you like to exit anyways?\nOr not?');
-				label.setFormat(null, 12, FlxColor.WHITE, CENTER);
-				label.screenCenter(X);
-				label.cameras = [camG];
-				add(label);
+					UI__character.resize(350, 300);
+					UI__character.scrollFactor.set();
+					UI__character.screenCenter();
+					UI__character.cameras = [camG];
+					add(UI__character);
 
-				idontcarelol.cameras = [camG];
-				ormaybeido.cameras = [camG];
-				add(ormaybeido);
-				add(idontcarelol);
-				FlxG.mouse.visible = true;
+					idontcarelol = new FlxButton(140, 20, "Yes", function()
+					{
+						alreadyPressed = false;
+						
+						MusicBeatState.switchState(new tools.EditorMenuState());
+
+						FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					});
+
+					idontcarelol.y += 400;
+					idontcarelol.screenCenter(X);
+					idontcarelol.color = FlxColor.RED;
+					idontcarelol.label.color = FlxColor.WHITE;
+
+					ormaybeido = new FlxButton(140, 20, "No", function()
+					{
+						alreadyPressed = false;
+						remove(ormaybeido);
+						remove(idontcarelol);
+						remove(UI__character);
+						remove(blackBox);
+						remove(label);
+					});
+
+					ormaybeido.screenCenter(X);
+					ormaybeido.y += 370;
+					ormaybeido.color = FlxColor.GREEN;
+					ormaybeido.label.color = FlxColor.WHITE;
+
+					label = new FlxText(15, ormaybeido.y - 120, 260, 'You have unsaved changes!\nWould you like to exit anyways?\nOr not?');
+					label.setFormat(null, 12, FlxColor.WHITE, CENTER);
+					label.screenCenter(X);
+					label.cameras = [camG];
+					add(label);
+
+					idontcarelol.cameras = [camG];
+					ormaybeido.cameras = [camG];
+					add(ormaybeido);
+					add(idontcarelol);
+					FlxG.mouse.visible = true;
+				}
 			}
-
 			return;
 		}
 	}

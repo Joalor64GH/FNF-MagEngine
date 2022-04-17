@@ -46,6 +46,15 @@ class CachingState extends MusicBeatState
 
 		FlxG.worldBounds.set(0, 0);
 
+		if (!FlxG.save.data.fpsCap)
+		{
+			FlxG.updateFramerate = 999;
+		}
+		else
+		{
+			FlxG.updateFramerate = 120;
+		}
+
 		bitmapData = new Map<String, FlxGraphic>();
 		bitmapData2 = new Map<String, FlxGraphic>();
 

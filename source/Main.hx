@@ -49,19 +49,22 @@ class Main extends Sprite
 					}
 				}
 			}
-			cleanUp('updateCache', '.');
-			CoolUtil.deleteFolderContents('updateCache');
-			FileSystem.deleteDirectory('updateCache');
+			cleanUp('./updateCache', '.');
+			CoolUtil.deleteFolderContents('./updateCache');
+			FileSystem.deleteDirectory('./updateCache');
 			new Process('start /B "" "Mag Engine.exe"', null);
 			System.exit(0);
 		}
 		else
 		{
-
-			if (FileSystem.exists("Updater.exe")) {
-				FileSystem.deleteFile('Updater.exe');
+			try
+			{
+				if (FileSystem.exists("Updater.exe"))
+					FileSystem.deleteFile('Updater.exe');
 			}
-
+			catch (thrownException)
+			{
+			}
 
 			Lib.current.addChild(new Main());
 		}

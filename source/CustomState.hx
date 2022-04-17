@@ -73,6 +73,8 @@ class CustomState extends MusicBeatState
 
 	public static var filesInserted:Array<String> = [];
 
+	public static var interp:Interp;
+
 	public function new(name:String = "", isMenuState:Bool = false)
 	{
 		super();
@@ -99,12 +101,15 @@ class CustomState extends MusicBeatState
 						parser.allowTypes;
 						parser.allowJSON;
 						parser.allowMetadata;
+						interp = new Interp();
 						var ast = parser.parseString(expr);
-						var interp = new hscript.Interp();
 						interp.variables.set("add", add);
-						interp.variables.set("update", update);
-						interp.variables.set("create", create);
-						interp.variables.set("name", name);
+						interp.variables.set("update", function(elapsed:Float)
+						{
+						});
+						interp.variables.set("create", function()
+						{
+						});
 						interp.variables.set("CustomState", CustomState);
 						interp.variables.set("remove", remove);
 						interp.variables.set("PlayState", PlayState);
@@ -169,15 +174,43 @@ class CustomState extends MusicBeatState
 			}
 		}
 		#end
+		callOnHscript("create");
 	}
 
 	override public function update(elapsed:Float)
 	{
+		callOnHscript("update");
+
 		super.update(elapsed);
 
 		if (controls.BACK)
 		{
 			MusicBeatState.switchState(new MainMenuState());
 		}
+	}
+
+	public function callOnHscript(functionToCall:String, ?params:Array<Any>):Dynamic
+	{
+		if (interp == null)
+		{
+			return null;
+		}
+		if (interp.variables.exists(functionToCall))
+		{
+			var functionH = interp.variables.get(functionToCall);
+			if (params == null)
+			{
+				var result = null;
+				result = functionH();
+				return result;
+			}
+			else
+			{
+				var result = null;
+				result = Reflect.callMethod(null, functionH, params);
+				return result;
+			}
+		}
+		return null;
 	}
 }

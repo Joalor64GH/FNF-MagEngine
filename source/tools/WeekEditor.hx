@@ -56,6 +56,7 @@ class WeekEditor extends MusicBeatState
 	var idontcarelol:FlxButton;
 
 	var UI__character:FlxUITabMenu;
+	var alreadyPressed:Bool = false;
 	var blackBox:FlxSprite;
 
 	public static var unsavedChanges:Bool = false;
@@ -177,58 +178,64 @@ class WeekEditor extends MusicBeatState
 			}
 			else
 			{
-				blackBox = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-				add(blackBox);
-
-				var label:FlxText = null;
-
-				blackBox.alpha = 0.6;
-
-				var tabss = [{name: 'Warning', label: 'Warning'},];
-
-				UI__character = new FlxUITabMenu(null, tabss, true);
-
-				UI__character.resize(350, 300);
-				UI__character.scrollFactor.set();
-				UI__character.screenCenter();
-				add(UI__character);
-
-				idontcarelol = new FlxButton(140, 20, "Yes", function()
+				if (!alreadyPressed)
 				{
-					MusicBeatState.switchState(new tools.EditorMenuState());
+					alreadyPressed = true;
+					blackBox = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+					add(blackBox);
 
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
-				});
+					var label:FlxText = null;
 
-				idontcarelol.y += 400;
-				idontcarelol.screenCenter(X);
-				idontcarelol.color = FlxColor.RED;
-				idontcarelol.label.color = FlxColor.WHITE;
+					blackBox.alpha = 0.6;
 
-				ormaybeido = new FlxButton(140, 20, "No", function()
-				{
-					remove(ormaybeido);
-					remove(idontcarelol);
-					remove(UI__character);
-					remove(blackBox);
-					remove(label);
-				});
+					var tabss = [{name: 'Warning', label: 'Warning'},];
 
-				ormaybeido.screenCenter(X);
-				ormaybeido.y += 370;
-				ormaybeido.color = FlxColor.GREEN;
-				ormaybeido.label.color = FlxColor.WHITE;
+					UI__character = new FlxUITabMenu(null, tabss, true);
 
-				label = new FlxText(15, ormaybeido.y - 120, 260, 'You have unsaved changes!\nWould you like to exit anyways?\nOr not?');
-				label.setFormat(null, 12, FlxColor.WHITE, CENTER);
-				label.screenCenter(X);
-				add(label);
+					UI__character.resize(350, 300);
+					UI__character.scrollFactor.set();
+					UI__character.screenCenter();
+					add(UI__character);
 
-				add(ormaybeido);
-				add(idontcarelol);
-				FlxG.mouse.visible = true;
+					idontcarelol = new FlxButton(140, 20, "Yes", function()
+					{
+						alreadyPressed = false;
+						
+						MusicBeatState.switchState(new tools.EditorMenuState());
+
+						FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					});
+
+					idontcarelol.y += 400;
+					idontcarelol.screenCenter(X);
+					idontcarelol.color = FlxColor.RED;
+					idontcarelol.label.color = FlxColor.WHITE;
+
+					ormaybeido = new FlxButton(140, 20, "No", function()
+					{
+						alreadyPressed = false;
+						remove(ormaybeido);
+						remove(idontcarelol);
+						remove(UI__character);
+						remove(blackBox);
+						remove(label);
+					});
+
+					ormaybeido.screenCenter(X);
+					ormaybeido.y += 370;
+					ormaybeido.color = FlxColor.GREEN;
+					ormaybeido.label.color = FlxColor.WHITE;
+
+					label = new FlxText(15, ormaybeido.y - 120, 260, 'You have unsaved changes!\nWould you like to exit anyways?\nOr not?');
+					label.setFormat(null, 12, FlxColor.WHITE, CENTER);
+					label.screenCenter(X);
+					add(label);
+
+					add(ormaybeido);
+					add(idontcarelol);
+					FlxG.mouse.visible = true;
+				}
 			}
-
 			return;
 		}
 	}
