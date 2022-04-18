@@ -984,6 +984,7 @@ class PlayState extends MusicBeatState
 						parser.allowTypes;
 						parser.allowJSON;
 						parser.allowMetadata;
+						setDefaultVariables();
 						var ast = parser.parseString(expr);
 
 						interp.execute(ast);
