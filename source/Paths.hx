@@ -346,6 +346,11 @@ class Paths
 		return modFolder('custom_events/$key');
 	}
 
+	inline static public function state(key:String)
+	{
+		return modFolder('custom_states/$key');
+	}
+	
 	inline static public function skins(key:String = '')
 	{
 		return 'skins/' + key;

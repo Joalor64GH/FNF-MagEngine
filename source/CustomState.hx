@@ -96,7 +96,7 @@ class CustomState extends MusicBeatState
 				{
 					if (file.endsWith('.hx') && !filesInserted.contains(file))
 					{
-						var expr = File.getContent(Paths.hscript(file));
+						var expr = File.getContent(Paths.state(file));
 						var parser = new hscript.Parser();
 						parser.allowTypes;
 						parser.allowJSON;
