@@ -85,6 +85,8 @@ class CustomState extends MusicBeatState
 
 	override public function create()
 	{
+		super.create();
+		
 		#if (MODS && SCRIPTS)
 		var folders:Array<String> = [Paths.getPreloadPath('custom_states/')];
 		folders.insert(0, Paths.modFolder('custom_states/'));

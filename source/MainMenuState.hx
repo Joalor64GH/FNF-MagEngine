@@ -106,8 +106,8 @@ class MainMenuState extends MusicBeatState
 			var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + offset);
 			menuItem.scale.x = 0.8;
 			menuItem.scale.y = 0.8;
-			if (FileSystem.exists(Paths.image('menubuttons/' + optionShit[i]))
-				&& FileSystem.exists(Paths.modIcon('menubuttons/' + optionShit[i])))
+			trace(optionShit[i]);
+			if (FileSystem.exists(Paths.modIcon('menubuttons/' + optionShit[i])))
 			{
 				menuItem.frames = Paths.getModsSparrowAtlas('menubuttons/' + optionShit[i]);
 			}
