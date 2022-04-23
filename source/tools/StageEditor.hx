@@ -296,6 +296,7 @@ class StageEditor extends MusicBeatState
 				flipY: isflippedY.checked
 			};
 
+			createdLayer = new FlxSprite();
 			add(createdLayer);
 			visualLayers.push(createdLayer);
 			layerStepper.max = stageFile.layerArray.length;
