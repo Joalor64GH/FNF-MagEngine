@@ -165,7 +165,7 @@ class TitleState extends MusicBeatState
 
 		logoBl = new FlxSprite(-150, -100);
 		#if MODS
-		if (FileSystem.exists(Paths.image('assets/images/logoBumpin.png')) && FileSystem.exists(Paths.modIcon('logoBumpin')))
+		if (FileSystem.exists('assets/images/logoBumpin.png') && FileSystem.exists(Paths.modIcon('logoBumpin')))
 		{
 			logoBl.frames = Paths.getModsSparrowAtlas('logoBumpin');
 			LoggingUtil.writeToLogFile('Found A Modded Logo!');
@@ -210,7 +210,7 @@ class TitleState extends MusicBeatState
 
 		#if MODS
 		titleText = new FlxSprite(150, FlxG.height * 0.8);
-		if (FileSystem.exists(Paths.image('assets/images/titleEnter.png')) && FileSystem.exists(Paths.modIcon('titleEnter')))
+		if (FileSystem.exists('assets/images/titleEnter.png') && FileSystem.exists(Paths.modIcon('titleEnter')))
 		{
 			titleText.frames = Paths.getModsSparrowAtlas('titleEnter');
 			LoggingUtil.writeToLogFile('Found A Modded Title Text!');
