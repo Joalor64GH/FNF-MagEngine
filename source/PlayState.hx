@@ -2922,6 +2922,11 @@ class PlayState extends MusicBeatState
 						dad.playAnim(i.valueOne);
 					}
 
+					if (i.events == 'none')
+					{
+						
+					}
+
 					#if (MODS && SCRIPTS)
 					var filesInsertedcool:Array<String> = [];
 					var folderscool:Array<String> = [Paths.getPreloadPath('custom_events/')];
