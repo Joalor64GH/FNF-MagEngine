@@ -7,6 +7,9 @@ import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.util.FlxTimer;
 import flixel.system.FlxSound;
+#if sys
+import sys.FileSystem;
+#end
 
 using StringTools;
 
@@ -391,7 +394,19 @@ class AlphaCharacter extends FlxSprite
 	public function new(x:Float, y:Float, textSize:Float)
 	{
 		super(x, y);
-		var tex = Paths.getSparrowAtlas('alphabet');
+		var tex:FlxAtlasFrames;
+		#if MODS
+		if (FileSystem.exists('assets/images/alphabet.png') && FileSystem.exists(Paths.modIcon('alphabet'))) {
+
+			tex = Paths.getModsSparrowAtlas('alphabet');
+		}
+		else {
+
+			tex = Paths.getSparrowAtlas('alphabet');
+		}
+		#else
+		tex = Paths.getSparrowAtlas('alphabet');
+		#end
 		frames = tex;
 
 		setGraphicSize(Std.int(width * textSize));
