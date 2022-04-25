@@ -105,7 +105,6 @@ class PlayState extends MusicBeatState
 
 	public var dad:Character;
 	public var gf:Character;
-	public var event:MidSongEvent = new MidSongEvent('none', 0, '', '');
 	public var boyfriend:Boyfriend;
 
 	private var notes:FlxTypedGroup<Note>;
@@ -2876,11 +2875,6 @@ class PlayState extends MusicBeatState
 		{
 			for (i in SONG.events)
 			{
-				valueOne = i.valueOne;
-				valueTwo = i.valueTwo;
-				eventName = i.events;
-				eventPosition = i.eventPos;
-
 				if (curStep == i.eventPos)
 				{
 					#if sys
@@ -2958,10 +2952,10 @@ class PlayState extends MusicBeatState
 									interp.variables.set("beatHit", function()
 									{
 									});
-									interp.variables.set("valueOne", valueOne);
-									interp.variables.set("valueTwo", valueTwo);
-									interp.variables.set("eventPosition", eventPosition);
-									interp.variables.set("eventName", eventName);
+									interp.variables.set("valueOne", i.valueOne);
+									interp.variables.set("valueTwo", i.valueTwo);
+									interp.variables.set("eventPosition", i.eventPos);
+									interp.variables.set("eventName", i.events);
 									interp.variables.set("PlayState", PlayState);
 									interp.variables.set("DiscordClient", DiscordClient);
 									interp.variables.set("WiggleEffectType", WiggleEffect.WiggleEffectType);
