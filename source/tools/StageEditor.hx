@@ -505,9 +505,9 @@ class StageEditor extends MusicBeatState
 				stageCurtains.visible = false;
 				unsavedChanges = true;
 			}
-			else if (Paths.fileExists(directoryLayer, IMAGE))
+			else if (FileSystem.exists('assets/' + directoryLayer) || FileSystem.exists('assets/shared/' + directoryLayer))
 			{
-				visualLayers[Std.int(layerStepper.value)].loadGraphic(Paths.getPath(directoryLayer, IMAGE));
+				visualLayers[Std.int(layerStepper.value)].loadGraphic(Paths.image(assetName));
 				visualLayers[Std.int(layerStepper.value)].visible = true;
 				bg.visible = false;
 				stageFront.visible = false;
