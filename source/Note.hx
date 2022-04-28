@@ -97,6 +97,8 @@ class Note extends FlxSprite
 			{
 				case 1:
 					{
+						frames = Paths.getSparrowAtlas('HURT_NOTE_assets');
+
 						animation.addByPrefix('greenScroll', 'green0');
 						animation.addByPrefix('redScroll', 'red0');
 						animation.addByPrefix('blueScroll', 'blue0');
