@@ -1,2 +1,1 @@
 Mag Engine.exe
-mods/custom_notetypes/noteTypeList.txt
