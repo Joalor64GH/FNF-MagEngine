@@ -348,9 +348,14 @@ class Paths
 
 	inline static public function state(key:String)
 	{
-	    return modFolder('custom_states/$key');
+		return modFolder('custom_states/$key');
 	}
-		
+
+	inline static public function note(key:String)
+	{
+		return modFolder('custom_notetypes/$key');
+	}
+
 	inline static public function skins(key:String = '')
 	{
 		return 'skins/' + key;

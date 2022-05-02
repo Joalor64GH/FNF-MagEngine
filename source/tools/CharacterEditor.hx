@@ -791,7 +791,7 @@ class CharacterEditor extends MusicBeatState
 					idontcarelol = new FlxButton(140, 20, "Yes", function()
 					{
 						alreadyPressed = false;
-						
+
 						MusicBeatState.switchState(new tools.EditorMenuState());
 
 						FlxG.sound.playMusic(Paths.music('freakyMenu'));

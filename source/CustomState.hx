@@ -85,8 +85,6 @@ class CustomState extends MusicBeatState
 
 	override public function create()
 	{
-		super.create();
-		
 		#if (MODS && SCRIPTS)
 		var folders:Array<String> = [Paths.getPreloadPath('custom_states/')];
 		folders.insert(0, Paths.modFolder('custom_states/'));
@@ -100,9 +98,9 @@ class CustomState extends MusicBeatState
 					{
 						var expr = File.getContent(Paths.state(file));
 						var parser = new hscript.Parser();
-						parser.allowTypes;
-						parser.allowJSON;
-						parser.allowMetadata;
+						parser.allowTypes = true;
+						parser.allowJSON = true;
+						parser.allowMetadata = true;
 						interp = new Interp();
 						var ast = parser.parseString(expr);
 						interp.variables.set("add", add);
@@ -177,16 +175,19 @@ class CustomState extends MusicBeatState
 		}
 		#end
 		callOnHscript("create");
+
+		super.create();
 	}
 
 	override public function update(elapsed:Float)
 	{
-		callOnHscript("update");
+		callOnHscript("update", [elapsed]);
 
 		super.update(elapsed);
 
 		if (controls.BACK)
 		{
+			FlxG.resetState();
 			MusicBeatState.switchState(new MainMenuState());
 		}
 	}

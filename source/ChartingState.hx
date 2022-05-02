@@ -385,11 +385,11 @@ class ChartingState extends MusicBeatState
 		var videolabel = new FlxText(140, 80, 64, 'Videos');
 
 		if (_song.events == null)
-			_song.events = [new MidSongEvent("none", 0, "", "")];
+			_song.events = [new MidSongEvent("none", 0, "placeholder", "placeholder")];
 
 		if (_song.events.length == 0)
 		{
-			_song.events = [new MidSongEvent("none", 0, "", "")];
+			_song.events = [new MidSongEvent("none", 0, "placeholder", "placeholder")];
 		}
 
 		eventsDropDown = new FlxUIDropDownMenuCustom(10, 100, FlxUIDropDownMenuCustom.makeStrIdLabelArray(events, true), function(event:String)
@@ -559,6 +559,20 @@ class ChartingState extends MusicBeatState
 	function addNoteUI():Void
 	{
 		var noteTypes:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/noteTypeList'));
+
+		if (FileSystem.exists(Paths.modTxt('custom_notetypes/noteTypeList')) && FileSystem.exists(Paths.txt('data/noteTypeList')))
+		{
+			noteTypes = File.getContent(Paths.modTxt('custom_notetypes/noteTypeList')).trim().split('\n');
+
+			for (i in 0...noteTypes.length)
+			{
+				noteTypes[i] = noteTypes[i].trim();
+			}
+		}
+		else
+		{
+			noteTypes = CoolUtil.coolTextFile(Paths.txt('data/noteTypeList'));
+		}
 
 		var tab_group_note = new FlxUI(null, UI_box);
 		tab_group_note.name = 'Note';
@@ -1057,8 +1071,9 @@ class ChartingState extends MusicBeatState
 			var daStrumTime = i[0];
 			var daSus = i[2];
 			var daType = i[3];
+			var daCustomNote = i[4];
 
-			var note:Note = new Note(daStrumTime, daNoteInfo % 4, false, null, false, daType);
+			var note:Note = new Note(daStrumTime, daNoteInfo % 4, false, null, false, daType, daCustomNote);
 			note.sustainLength = daSus;
 			note.setGraphicSize(GRID_SIZE, GRID_SIZE);
 			note.updateHitbox();
@@ -1083,8 +1098,9 @@ class ChartingState extends MusicBeatState
 				var daStrumTime = i[0];
 				var daSus = i[2];
 				var daType = i[3];
+				var daCustomNote = i[4];
 
-				var note:Note = new Note(daStrumTime, daNoteInfo % 4, false, null, false, daType);
+				var note:Note = new Note(daStrumTime, daNoteInfo % 4, false, null, false, daType, daCustomNote);
 				note.sustainLength = daSus;
 				note.setGraphicSize(GRID_SIZE, GRID_SIZE);
 				note.updateHitbox();
@@ -1173,6 +1189,17 @@ class ChartingState extends MusicBeatState
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteSus = 0;
 		var noteType = 0;
+		var curCustomNote = "";
+		for (noteFile in FileSystem.readDirectory(Paths.modFolder('custom_notetypes/')))
+		{
+			if (noteFile.endsWith(".hx"))
+			{
+				if (noteTypeDropDown.selectedLabel == noteFile.replace(".hx", ""))
+				{
+					curCustomNote = noteFile.replace(".hx", "");
+				}
+			}
+		}
 		if (noteTypeDropDown.selectedLabel == 'hurt-note')
 			noteType = 1;
 		if (noteTypeDropDown.selectedLabel == 'kill-note')
@@ -1180,7 +1207,7 @@ class ChartingState extends MusicBeatState
 			noteType = 2;
 		}
 
-		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType]);
+		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType, curCustomNote]);
 
 		curSelectedNote = _song.notes[curSection].sectionNotes[_song.notes[curSection].sectionNotes.length - 1];
 

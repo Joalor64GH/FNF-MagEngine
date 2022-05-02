@@ -396,12 +396,12 @@ class AlphaCharacter extends FlxSprite
 		super(x, y);
 		var tex:FlxAtlasFrames;
 		#if MODS
-		if (FileSystem.exists('assets/images/alphabet.png') && FileSystem.exists(Paths.modIcon('alphabet'))) {
-
+		if (FileSystem.exists('assets/images/alphabet.png') && FileSystem.exists(Paths.modIcon('alphabet')))
+		{
 			tex = Paths.getModsSparrowAtlas('alphabet');
 		}
-		else {
-
+		else
+		{
 			tex = Paths.getSparrowAtlas('alphabet');
 		}
 		#else

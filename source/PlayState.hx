@@ -216,6 +216,8 @@ class PlayState extends MusicBeatState
 	var detailsPausedText:String = "";
 	#end
 
+	var dummyNote:Note;
+
 	private var luaArray:Array<MagModChart> = [];
 
 	override public function create()
@@ -947,24 +949,23 @@ class PlayState extends MusicBeatState
 
 		setOnLuas('startingSong', startingSong);
 
-		var luaFile:String = 'data/' + PlayState.SONG.song.toLowerCase() + '/modchart';
+		var file:String = 'data/' + PlayState.SONG.song.toLowerCase() + '/modchart';
 
-		if (Assets.exists(Paths.lua(luaFile, 'preload')))
+		if (Assets.exists(Paths.lua(file, 'preload')))
 		{
 			LoggingUtil.writeToLogFile('Modchart Found!');
-			luaFile = Paths.lua(luaFile, 'preload');
-			luaArray.push(new MagModChart(luaFile));
+			file = Paths.lua(file, 'preload');
+			luaArray.push(new MagModChart(file));
 		}
 		#if MODS
-		else if (FileSystem.exists(Paths.modLua(luaFile)))
+		else if (FileSystem.exists(Paths.modLua(file)))
 		{
 			LoggingUtil.writeToLogFile('Modchart Found!');
-			luaFile = Paths.modLua(luaFile);
-			luaArray.push(new MagModChart(luaFile));
+			file = Paths.modLua(file);
+			luaArray.push(new MagModChart(file));
 		}
 		#end
 
-		#if (MODS && SCRIPTS)
 		var filesInserted:Array<String> = [];
 		var folders:Array<String> = [Paths.getPreloadPath('scripts/')];
 		folders.insert(0, Paths.modFolder('scripts/'));
@@ -974,15 +975,24 @@ class PlayState extends MusicBeatState
 			{
 				for (file in FileSystem.readDirectory(folder))
 				{
+					if (file.endsWith('.lua') && !filesInserted.contains(file))
+					{
+						LoggingUtil.writeToLogFile('Global Modchart Found!');
+
+						luaArray.push(new MagModChart(folder + file));
+
+						filesInserted.push(file);
+					}
+
 					if (file.endsWith('.hx') && !filesInserted.contains(file))
 					{
 						LoggingUtil.writeToLogFile('Script Found!');
 
 						var expr = File.getContent(Paths.hscript(file));
 						var parser = new hscript.Parser();
-						parser.allowTypes;
-						parser.allowJSON;
-						parser.allowMetadata;
+						parser.allowTypes = true;
+						parser.allowJSON = true;
+						parser.allowMetadata = true;
 						setDefaultVariables();
 						var ast = parser.parseString(expr);
 
@@ -994,7 +1004,109 @@ class PlayState extends MusicBeatState
 				}
 			}
 		}
-		#end
+
+		for (noteFile in FileSystem.readDirectory(Paths.modFolder('custom_notetypes/')))
+		{
+			if (noteFile != null)
+			{
+				var filesInserted:Array<String> = [];
+				var folders:Array<String> = [Paths.getPreloadPath('custom_notetypes/')];
+				folders.insert(0, Paths.modFolder('custom_notetypes/'));
+				for (folder in folders)
+				{
+					if (FileSystem.exists(folder))
+					{
+						for (file in FileSystem.readDirectory(folder))
+						{
+							if (file.endsWith('.hx') && !filesInserted.contains(file))
+							{
+								// Dummy variable to prevent the note script from crashing
+								var expr = File.getContent(Paths.note(file));
+								var parser = new hscript.Parser();
+								parser.allowTypes = true;
+								parser.allowJSON = true;
+								parser.allowMetadata = true;
+								var ast = parser.parseString(expr);
+								interp.variables.set("add", add);
+								interp.variables.set("note", new FlxSprite());
+								interp.variables.set("update", function(elapsed:Float)
+								{
+								});
+								interp.variables.set("create", function()
+								{
+								});
+								interp.variables.set("noteMiss", function(note:Note)
+								{
+								});
+								interp.variables.set("goodNoteHit", function(note:Note)
+								{
+								});
+								interp.variables.set("CustomState", CustomState);
+								interp.variables.set("remove", remove);
+								interp.variables.set("PlayState", PlayState);
+								interp.variables.set("DiscordClient", DiscordClient);
+								interp.variables.set("WiggleEffectType", WiggleEffect.WiggleEffectType);
+								interp.variables.set("FlxBasic", flixel.FlxBasic);
+								interp.variables.set("MidSongEvent", Song.MidSongEvent);
+								interp.variables.set("FlxCamera", flixel.FlxCamera);
+								interp.variables.set("ChromaticAberration", shaders.ChromaticAberration);
+								interp.variables.set("FlxG", flixel.FlxG);
+								interp.variables.set("FlxGame", flixel.FlxGame);
+								interp.variables.set("FlxObject", flixel.FlxObject);
+								interp.variables.set("FlxSprite", flixel.FlxSprite);
+								interp.variables.set("FlxState", flixel.FlxState);
+								interp.variables.set("FlxSubState", flixel.FlxSubState);
+								interp.variables.set("FlxGridOverlay", flixel.addons.display.FlxGridOverlay);
+								interp.variables.set("FlxTrail", flixel.addons.effects.FlxTrail);
+								interp.variables.set("FlxTrailArea", flixel.addons.effects.FlxTrailArea);
+								interp.variables.set("FlxEffectSprite", flixel.addons.effects.chainable.FlxEffectSprite);
+								interp.variables.set("FlxWaveEffect", flixel.addons.effects.chainable.FlxWaveEffect);
+								interp.variables.set("FlxTransitionableState", flixel.addons.transition.FlxTransitionableState);
+								interp.variables.set("FlxAtlas", flixel.graphics.atlas.FlxAtlas);
+								interp.variables.set("FlxAtlasFrames", flixel.graphics.frames.FlxAtlasFrames);
+								interp.variables.set("FlxTypedGroup", flixel.group.FlxGroup.FlxTypedGroup);
+								interp.variables.set("FlxMath", flixel.math.FlxMath);
+								interp.variables.set("FlxPoint", flixel.math.FlxPoint);
+								interp.variables.set("FlxRect", flixel.math.FlxRect);
+								interp.variables.set("FlxSound", flixel.system.FlxSound);
+								interp.variables.set("FlxText", flixel.text.FlxText);
+								interp.variables.set("FlxEase", flixel.tweens.FlxEase);
+								interp.variables.set("FlxTween", flixel.tweens.FlxTween);
+								interp.variables.set("FlxBar", flixel.ui.FlxBar);
+								interp.variables.set("FlxCollision", flixel.util.FlxCollision);
+								interp.variables.set("FlxSort", flixel.util.FlxSort);
+								interp.variables.set("FlxStringUtil", flixel.util.FlxStringUtil);
+								interp.variables.set("FlxTimer", flixel.util.FlxTimer);
+								interp.variables.set("Json", Json);
+								interp.variables.set("Assets", lime.utils.Assets);
+								interp.variables.set("ShaderFilter", openfl.filters.ShaderFilter);
+								interp.variables.set("Exception", haxe.Exception);
+								interp.variables.set("Lib", openfl.Lib);
+								interp.variables.set("OpenFlAssets", openfl.utils.Assets);
+								#if sys
+								interp.variables.set("File", sys.io.File);
+								interp.variables.set("FileSystem", sys.FileSystem);
+								interp.variables.set("FlxGraphic", flixel.graphics.FlxGraphic);
+								interp.variables.set("BitmapData", openfl.display.BitmapData);
+								#end
+								interp.variables.set("Parser", hscript.Parser);
+								interp.variables.set("Interp", hscript.Interp);
+								interp.variables.set("ModsMenu", modloader.ModsMenu);
+								interp.variables.set("Paths", Paths);
+								interp.variables.set("Note", Note);
+								interp.variables.set("health", this.health);
+								interp.variables.set("CurrentPlayState", this);
+
+								interp.execute(ast);
+								trace(interp.execute(ast));
+
+								filesInserted.push(file);
+							}
+						}
+					}
+				}
+			}
+		}
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -1371,6 +1483,7 @@ class PlayState extends MusicBeatState
 				var daStrumTime:Float = songNotes[0];
 				var daNoteData:Int = Std.int(songNotes[1] % 4);
 				var daNoteType:Int = songNotes[3];
+				var daCustomNote:String = songNotes[4];
 				var gottaHitNote:Bool = section.mustHitSection;
 
 				if (songNotes[1] > 3)
@@ -1384,7 +1497,7 @@ class PlayState extends MusicBeatState
 				else
 					oldNote = null;
 
-				var swagNote:Note = new Note(daStrumTime, daNoteData, isPixelStage, oldNote, false, daNoteType);
+				var swagNote:Note = new Note(daStrumTime, daNoteData, isPixelStage, oldNote, false, daNoteType, daCustomNote);
 				swagNote.sustainLength = songNotes[2];
 				swagNote.scrollFactor.set(0, 0);
 
@@ -1735,7 +1848,7 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
-		callOnHscript("update");
+		callOnHscript("update", [elapsed]);
 
 		if (!FlxG.save.data.fpsCap)
 		{
@@ -2162,6 +2275,7 @@ class PlayState extends MusicBeatState
 				boyfriend.dance();
 			}
 
+			interp.variables.set("health", health);
 			setOnLuas('health', health);
 			setOnLuas('botplayEnabled', cpuControlled);
 			setOnLuas('downscrollEnabled', FlxG.save.data.downscroll);
@@ -2610,7 +2724,7 @@ class PlayState extends MusicBeatState
 	function noteMiss(note:Note):Void
 	{
 		// miss when note is offscreen
-		if (!practiceAllowed && note.noteType != 1 && note.noteType != 2)
+		if (!practiceAllowed && note.noteType == 0)
 		{
 			health -= 0.0475;
 			combo = 0;
@@ -2621,6 +2735,8 @@ class PlayState extends MusicBeatState
 
 			charSing(boyfriend, Math.abs(note.noteData), "miss");
 			vocals.volume = 0;
+
+			callOnHscript('noteMiss', [note]);
 		}
 	}
 
@@ -2714,6 +2830,8 @@ class PlayState extends MusicBeatState
 	{
 		if (!note.wasGoodHit)
 		{
+			callOnHscript('goodNoteHit', [note]); 
+
 			if (cpuControlled && note.isDangerousNote)
 				return;
 
@@ -2918,7 +3036,6 @@ class PlayState extends MusicBeatState
 
 					if (i.events == 'none')
 					{
-						
 					}
 
 					#if (MODS && SCRIPTS)
@@ -2936,9 +3053,9 @@ class PlayState extends MusicBeatState
 									LoggingUtil.writeToLogFile('Event Script Found!');
 									var expr = File.getContent(Paths.event(file));
 									var parser = new hscript.Parser();
-									parser.allowTypes;
-									parser.allowJSON;
-									parser.allowMetadata;
+									parser.allowTypes = true;
+									parser.allowJSON = true;
+									parser.allowMetadata = true;
 									var ast = parser.parseString(expr);
 									interp.variables.set("add", add);
 									interp.variables.set("CustomState", CustomState);
@@ -2952,6 +3069,7 @@ class PlayState extends MusicBeatState
 									interp.variables.set("beatHit", function()
 									{
 									});
+									interp.variables.set("inCutscene", inCutscene);
 									interp.variables.set("valueOne", i.valueOne);
 									interp.variables.set("valueTwo", i.valueTwo);
 									interp.variables.set("eventPosition", i.eventPos);
@@ -3006,6 +3124,7 @@ class PlayState extends MusicBeatState
 									interp.variables.set("Interp", hscript.Interp);
 									interp.variables.set("ModsMenu", modloader.ModsMenu);
 									interp.variables.set("Paths", Paths);
+									interp.variables.set("CurrentPlaystate", this);
 									for (cooli in 0...filesInsertedcool.length)
 									{
 										if (i.events == filesInsertedcool[cooli])
@@ -3238,6 +3357,13 @@ class PlayState extends MusicBeatState
 		interp.variables.set("beatHit", function()
 		{
 		});
+		interp.variables.set("update", function(elapsed:Float)
+		{
+		});
+		interp.variables.set("create", function()
+	    {
+     	});
+		interp.variables.set("inCutscene", inCutscene);
 		interp.variables.set("PlayState", PlayState);
 		interp.variables.set("DiscordClient", DiscordClient);
 		interp.variables.set("WiggleEffectType", WiggleEffect.WiggleEffectType);
@@ -3277,6 +3403,7 @@ class PlayState extends MusicBeatState
 		interp.variables.set("ShaderFilter", openfl.filters.ShaderFilter);
 		interp.variables.set("Exception", haxe.Exception);
 		interp.variables.set("Lib", openfl.Lib);
+		interp.variables.set("CurrentPlaystate", this);
 		interp.variables.set("OpenFlAssets", openfl.utils.Assets);
 		#if sys
 		interp.variables.set("File", sys.io.File);

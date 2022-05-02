@@ -155,6 +155,13 @@ class ModsMenu extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		#if desktop
+		if (FlxG.keys.justPressed.SEVEN)
+		{
+			MusicBeatState.switchState(new modloader.ModDownloadState());
+		}
+		#end
+
 		super.update(elapsed);
 
 		// a bit ugly but i was in a hurry

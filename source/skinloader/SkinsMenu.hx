@@ -156,6 +156,13 @@ class SkinsMenu extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		#if desktop
+		if (FlxG.keys.justPressed.SEVEN)
+		{
+			MusicBeatState.switchState(new skinloader.SkinDownloadState());
+		}
+		#end
+
 		super.update(elapsed);
 
 		// a bit ugly but i was in a hurry
