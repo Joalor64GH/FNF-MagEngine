@@ -44,6 +44,8 @@ class UpdateState extends MusicBeatState
 	public static var coolText:FlxText;
 	public static var finishedFiles:Int = 0;
 
+	var fileArray:Array<String> = [];
+
 	var firstFileDownloaded:Bool = false;
 
 	override public function create()
@@ -70,6 +72,8 @@ class UpdateState extends MusicBeatState
 		coolText.y += 200;
 		add(coolText);
 
+		requestData();
+
 		new FlxTimer().start(3, function(tmr:FlxTimer)
 		{
 			initUpdate();
@@ -78,30 +82,39 @@ class UpdateState extends MusicBeatState
 		super.create();
 	}
 
-	var remoteList = new haxe.Http("https://raw.githubusercontent.com/magnumsrtisswag/MagEngine-Public/main/updateFiles.txt");
+	public function requestData()
+	{
+		var remoteList = new haxe.Http("https://raw.githubusercontent.com/magnumsrtisswag/MagEngine-Public/main/updateFiles.txt");
+		remoteList.onData = function(swagDat:String)
+		{
+			fileArray = swagDat.trim().split('\n');
+		}
+		remoteList.onError = function(error)
+		{
+			LoggingUtil.writeToLogFile('Update Failed! Error: ' + error);
+			coolText.text = "Error: " + error;
+		}
+
+		remoteList.request();
+	}
 
 	public function initUpdate()
 	{
 		var fileDownload = new URLLoader();
 		fileDownload.dataFormat = BINARY;
 
-		coolText.text = "Gathering Update Files...";
-
-		remoteList.onData = function(swagDat:String)
+		if (fileArray != null)
 		{
-			var fileArray:Array<String> = swagDat.trim().split('\n');
+			coolText.text = "Gathering Update Files...";
+            
+			LoggingUtil.writeToLogFile('Recieved Update Data!');
 
-			if (!firstFileDownloaded)
-			{
-				LoggingUtil.writeToLogFile('Recieved Update Data!');
-
-				var progressBar = new FlxBar(0, 0, LEFT_TO_RIGHT, Std.int(FlxG.width * 0.75), 30, this, "finishedFiles", 0, fileArray.length);
-				progressBar.createFilledBar(FlxColor.GRAY, FlxColor.GREEN, true, FlxColor.BLACK);
-				progressBar.screenCenter(X);
-				progressBar.y = coolText.y + 100;
-				progressBar.scrollFactor.set(0, 0);
-				add(progressBar);
-			}
+			var progressBar = new FlxBar(0, 0, LEFT_TO_RIGHT, Std.int(FlxG.width * 0.75), 30, this, "finishedFiles", 0, fileArray.length);
+			progressBar.createFilledBar(FlxColor.GRAY, FlxColor.GREEN, true, FlxColor.BLACK);
+			progressBar.screenCenter(X);
+			progressBar.y = coolText.y + 100;
+			progressBar.scrollFactor.set(0, 0);
+			add(progressBar);
 
 			coolText.text = "Downloading Update Files... (" + finishedFiles + "/" + fileArray.length + ")";
 
@@ -169,13 +182,5 @@ class UpdateState extends MusicBeatState
 
 			fileDownload.load(fileLoader);
 		}
-
-		remoteList.onError = function(error)
-		{
-			LoggingUtil.writeToLogFile('Update Failed! Error: ' + error);
-			coolText.text = "Error: " + error;
-		}
-
-		remoteList.request();
 	}
 }
