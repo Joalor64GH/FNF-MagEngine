@@ -44,6 +44,8 @@ class UpdateState extends MusicBeatState
 	public static var coolText:FlxText;
 	public static var finishedFiles:Int = 0;
 
+	var firstFileDownloaded:Bool = false;
+
 	override public function create()
 	{
 		LoggingUtil.writeToLogFile('Starting Update...');
@@ -76,6 +78,8 @@ class UpdateState extends MusicBeatState
 		super.create();
 	}
 
+	var remoteList = new haxe.Http("https://raw.githubusercontent.com/magnumsrtisswag/MagEngine-Public/main/updateFiles.txt");
+
 	public function initUpdate()
 	{
 		var fileDownload = new URLLoader();
@@ -83,29 +87,30 @@ class UpdateState extends MusicBeatState
 
 		coolText.text = "Gathering Update Files...";
 
-		var remoteList = new haxe.Http("https://raw.githubusercontent.com/magnumsrtisswag/MagEngine-Public/main/updateFiles.txt");
-
 		remoteList.onData = function(swagDat:String)
 		{
-			LoggingUtil.writeToLogFile('Recieved Update Data!');
-
 			var fileArray:Array<String> = swagDat.trim().split('\n');
 
-			var progressBar = new FlxBar(0, 0, LEFT_TO_RIGHT, Std.int(FlxG.width * 0.75), 30, this, "finishedFiles", 0, fileArray.length);
-			progressBar.createGradientBar([FlxColor.GRAY], [FlxColor.RED, FlxColor.GREEN], 1, 90, true, 0xFF000000);
-			progressBar.screenCenter(X);
-			progressBar.y = coolText.y + 100;
-			progressBar.scrollFactor.set(0, 0);
-			add(progressBar);
+			if (!firstFileDownloaded)
+			{
+				LoggingUtil.writeToLogFile('Recieved Update Data!');
+
+				var progressBar = new FlxBar(0, 0, LEFT_TO_RIGHT, Std.int(FlxG.width * 0.75), 30, this, "finishedFiles", 0, fileArray.length);
+				progressBar.createFilledBar(FlxColor.GRAY, FlxColor.GREEN, true, FlxColor.BLACK);
+				progressBar.screenCenter(X);
+				progressBar.y = coolText.y + 100;
+				progressBar.scrollFactor.set(0, 0);
+				add(progressBar);
+			}
 
 			coolText.text = "Downloading Update Files... (" + finishedFiles + "/" + fileArray.length + ")";
+
+			var firstReturnedFile = fileArray.shift();
 
 			for (i in 0...fileArray.length)
 			{
 				fileArray[i] = fileArray[i].trim();
 			}
-
-			var firstReturnedFile = fileArray.shift();
 
 			if (FileSystem.exists('./updateCache/$firstReturnedFile') && FileSystem.stat('./updateCache/$firstReturnedFile').size > 0)
 			{

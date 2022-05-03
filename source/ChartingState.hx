@@ -422,10 +422,16 @@ class ChartingState extends MusicBeatState
 		addEv.label.color = FlxColor.WHITE;
 		var removeEv = new FlxButton(reloadSong.x - 100, saveButton.y + 30, "Remove Event", function()
 		{
-			swagEvent = new MidSongEvent(eventsDropDown.selectedLabel, swagEvent.eventPos, typingWaste.text, typingDiarehha.text);
 			if (_song.events != null)
 			{
-				_song.events.remove(swagEvent);
+				for (i in 0..._song.events.length)
+				{
+					if (_song.events[i].eventPos == Std.parseFloat(typingCrap.text)
+						&& _song.events[i].events == eventsDropDown.selectedLabel)
+					{
+						_song.events.remove(_song.events[i]);
+					}
+				}
 			}
 			eventsDropDown.selectedLabel = "none";
 			UI_value.text = "";

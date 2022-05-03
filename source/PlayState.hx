@@ -2830,7 +2830,7 @@ class PlayState extends MusicBeatState
 	{
 		if (!note.wasGoodHit)
 		{
-			callOnHscript('goodNoteHit', [note]); 
+			callOnHscript('goodNoteHit', [note]);
 
 			if (cpuControlled && note.isDangerousNote)
 				return;
@@ -3124,7 +3124,7 @@ class PlayState extends MusicBeatState
 									interp.variables.set("Interp", hscript.Interp);
 									interp.variables.set("ModsMenu", modloader.ModsMenu);
 									interp.variables.set("Paths", Paths);
-									interp.variables.set("CurrentPlaystate", this);
+									interp.variables.set("CurrentPlayState", this);
 									for (cooli in 0...filesInsertedcool.length)
 									{
 										if (i.events == filesInsertedcool[cooli])
@@ -3361,9 +3361,9 @@ class PlayState extends MusicBeatState
 		{
 		});
 		interp.variables.set("create", function()
-	    {
-     	});
-		interp.variables.set("inCutscene", inCutscene);
+		{
+		});
+		interp.variables.set("inCutscene", this.inCutscene);
 		interp.variables.set("PlayState", PlayState);
 		interp.variables.set("DiscordClient", DiscordClient);
 		interp.variables.set("WiggleEffectType", WiggleEffect.WiggleEffectType);
@@ -3403,7 +3403,7 @@ class PlayState extends MusicBeatState
 		interp.variables.set("ShaderFilter", openfl.filters.ShaderFilter);
 		interp.variables.set("Exception", haxe.Exception);
 		interp.variables.set("Lib", openfl.Lib);
-		interp.variables.set("CurrentPlaystate", this);
+		interp.variables.set("CurrentPlayState", this);
 		interp.variables.set("OpenFlAssets", openfl.utils.Assets);
 		#if sys
 		interp.variables.set("File", sys.io.File);
