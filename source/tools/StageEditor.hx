@@ -91,7 +91,7 @@ class StageEditor extends MusicBeatState
 
 	var visualLayers:Array<FlxSprite> = [];
 
-	var createdLayer:FlxSprite = new FlxSprite();
+	var createdLayer:FlxSprite;
 
 	var boyfriend:Array<Dynamic>;
 	var girlfriend:Array<Dynamic>;
@@ -239,7 +239,7 @@ class StageEditor extends MusicBeatState
 		FlxG.mouse.visible = true;
 
 		dummyLayer = new FlxSprite();
-		dummyLayer.cameras = [camhidden];
+		dummyLayer.visible = false;
 		add(dummyLayer);
 		visualLayers.push(dummyLayer);
 
