@@ -299,9 +299,9 @@ class StageEditor extends MusicBeatState
 			createdLayer = new FlxSprite();
 			add(createdLayer);
 			visualLayers.push(createdLayer);
+			stageFile.layerArray.push(stageSwag);
 			layerStepper.max = stageFile.layerArray.length;
 			layerStepper.value++;
-			stageFile.layerArray.push(stageSwag);
 			remove(bg);
 			remove(stageFront);
 			remove(stageCurtains);
@@ -338,11 +338,11 @@ class StageEditor extends MusicBeatState
 				deleteLayer();
 				xInputText.text = "" + 0;
 				yInputText.text = "" + 0;
+				stageFile.layerArray.remove(stageSwag);
 				layerStepper.value--;
 				layerStepper.max = stageFile.layerArray.length;
 				remove(createdLayer);
 				visualLayers.remove(createdLayer);
-				stageFile.layerArray.remove(stageSwag);
 			}
 		});
 
