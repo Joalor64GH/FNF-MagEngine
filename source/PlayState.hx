@@ -1043,6 +1043,7 @@ class PlayState extends MusicBeatState
 								});
 								interp.variables.set("CustomState", CustomState);
 								interp.variables.set("remove", remove);
+								interp.variables.set("inCutscene", this.inCutscene);
 								interp.variables.set("PlayState", PlayState);
 								interp.variables.set("DiscordClient", DiscordClient);
 								interp.variables.set("WiggleEffectType", WiggleEffect.WiggleEffectType);
@@ -2723,8 +2724,10 @@ class PlayState extends MusicBeatState
 
 	function noteMiss(note:Note):Void
 	{
-		// miss when note is offscreen
-		if (!practiceAllowed && note.noteType == 0)
+		// miss when note is offscreen	
+		callOnHscript('noteMiss', [note]);
+
+		if (!practiceAllowed && note.noteType != 1 && note.noteType != 2 && note.customNote == "")
 		{
 			health -= 0.0475;
 			combo = 0;
@@ -2735,8 +2738,6 @@ class PlayState extends MusicBeatState
 
 			charSing(boyfriend, Math.abs(note.noteData), "miss");
 			vocals.volume = 0;
-
-			callOnHscript('noteMiss', [note]);
 		}
 	}
 
@@ -3069,7 +3070,7 @@ class PlayState extends MusicBeatState
 									interp.variables.set("beatHit", function()
 									{
 									});
-									interp.variables.set("inCutscene", inCutscene);
+									interp.variables.set("inCutscene", this.inCutscene);
 									interp.variables.set("valueOne", i.valueOne);
 									interp.variables.set("valueTwo", i.valueTwo);
 									interp.variables.set("eventPosition", i.eventPos);

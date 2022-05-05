@@ -111,6 +111,7 @@ class CustomState extends MusicBeatState
 						{
 						});
 						interp.variables.set("CustomState", CustomState);
+						interp.variables.set("CurrentCustomState", this);
 						interp.variables.set("remove", remove);
 						interp.variables.set("PlayState", PlayState);
 						interp.variables.set("DiscordClient", DiscordClient);
