@@ -106,7 +106,7 @@ class UpdateState extends MusicBeatState
 		if (fileArray != null)
 		{
 			coolText.text = "Gathering Update Files...";
-            
+
 			LoggingUtil.writeToLogFile('Recieved Update Data!');
 
 			var progressBar = new FlxBar(0, 0, LEFT_TO_RIGHT, Std.int(FlxG.width * 0.75), 30, this, "finishedFiles", 0, fileArray.length);

@@ -91,7 +91,7 @@ class StageEditor extends MusicBeatState
 
 	var visualLayers:Array<FlxSprite> = [];
 
-	var createdLayer:FlxSprite;
+	var createdLayer:FlxSprite = new FlxSprite();
 
 	var boyfriend:Array<Dynamic>;
 	var girlfriend:Array<Dynamic>;
@@ -209,6 +209,9 @@ class StageEditor extends MusicBeatState
 		UI_stagebox.y = UI_box.y + UI_box.height;
 		UI_stagebox.scrollFactor.set();
 		add(UI_stagebox);
+		
+		add(createdLayer);
+		visualLayers.push(createdLayer);
 
 		addLayersUI();
 		addSettingsUI();
@@ -237,12 +240,7 @@ class StageEditor extends MusicBeatState
 		add(gridOutline);
 
 		FlxG.mouse.visible = true;
-
-		dummyLayer = new FlxSprite();
-		dummyLayer.visible = false;
-		add(dummyLayer);
-		visualLayers.push(dummyLayer);
-
+		
 		makePlaceholders();
 
 		super.create();
@@ -295,7 +293,7 @@ class StageEditor extends MusicBeatState
 				flipX: isflippedX.checked,
 				flipY: isflippedY.checked
 			};
-
+		
 			createdLayer = new FlxSprite();
 			add(createdLayer);
 			visualLayers.push(createdLayer);
@@ -317,6 +315,8 @@ class StageEditor extends MusicBeatState
 					}
 				}
 			}
+			remove(createdLayer);
+			add(createdLayer);
 		});
 
 		var removeLayer:FlxButton = new FlxButton(40, 20, "Remove Layer", function()
@@ -334,15 +334,13 @@ class StageEditor extends MusicBeatState
 					flipX: isflippedX.checked,
 					flipY: isflippedY.checked
 				};
+				stageFile.layerArray.remove(stageSwag);
 				unsavedChanges = true;
 				deleteLayer();
 				xInputText.text = "" + 0;
 				yInputText.text = "" + 0;
-				stageFile.layerArray.remove(stageSwag);
 				layerStepper.value--;
-				layerStepper.max = stageFile.layerArray.length;
-				remove(createdLayer);
-				visualLayers.remove(createdLayer);
+				layerStepper.max--;
 			}
 		});
 
@@ -491,12 +489,11 @@ class StageEditor extends MusicBeatState
 
 	function searchForLayer()
 	{
-		visualLayers[Std.int(layerStepper.value)].visible = false;
 		var assetName:String = directoryInputText.text.trim();
 		var directoryLayer:String = "images/" + assetName + ".png";
 		if (assetName != null && assetName.length > 0)
 		{
-			if (FileSystem.exists(Paths.modFolder(directoryLayer)))
+			if (FileSystem.exists(Paths.modFolder(directoryLayer)) || FileSystem.exists('assets/' + directoryLayer) || FileSystem.exists('assets/shared/' + directoryLayer))
 			{
 				visualLayers[Std.int(layerStepper.value)].loadGraphic(Paths.image(assetName));
 				visualLayers[Std.int(layerStepper.value)].visible = true;
@@ -505,20 +502,15 @@ class StageEditor extends MusicBeatState
 				stageCurtains.visible = false;
 				unsavedChanges = true;
 			}
-			else if (FileSystem.exists('assets/' + directoryLayer) || FileSystem.exists('assets/shared/' + directoryLayer))
-			{
-				visualLayers[Std.int(layerStepper.value)].loadGraphic(Paths.image(assetName));
-				visualLayers[Std.int(layerStepper.value)].visible = true;
-				bg.visible = false;
-				stageFront.visible = false;
-				stageCurtains.visible = false;
-				unsavedChanges = true;
+			else {
+				visualLayers[Std.int(layerStepper.value)].visible = false;
 			}
 		}
 		else
 		{
 			visualLayers[Std.int(layerStepper.value)].visible = false;
 		}
+
 	}
 
 	function deleteLayer()
@@ -716,7 +708,7 @@ class StageEditor extends MusicBeatState
 
 		camMenu.zoom = FlxG.camera.zoom;
 		camPeople.zoom = FlxG.camera.zoom;
-		camGrid.zoom = FlxG.camera.zoom * Std.parseFloat(zoominputtext.text);
+		camGrid.zoom = FlxG.camera.zoom / Std.parseFloat(zoominputtext.text);
 
 		if (FlxG.keys.justPressed.ESCAPE)
 		{

@@ -2724,7 +2724,7 @@ class PlayState extends MusicBeatState
 
 	function noteMiss(note:Note):Void
 	{
-		// miss when note is offscreen	
+		// miss when note is offscreen
 		callOnHscript('noteMiss', [note]);
 
 		if (!practiceAllowed && note.noteType != 1 && note.noteType != 2 && note.customNote == "")
