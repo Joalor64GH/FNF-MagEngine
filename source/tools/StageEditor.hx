@@ -323,24 +323,29 @@ class StageEditor extends MusicBeatState
 		{
 			if (!noStage)
 			{
-				var stageSwag:LayerFile = {
-					name: nameInputText.text,
-					directory: directoryInputText.text,
-					xAxis: Std.parseFloat(xInputText.text),
-					yAxis: Std.parseFloat(yInputText.text),
-					scrollY: Std.parseFloat(stepperscrollX.text),
-					scrollX: Std.parseFloat(stepperscrollY.text),
-					scale: scaleStepper.value,
-					flipX: isflippedX.checked,
-					flipY: isflippedY.checked
-				};
-				stageFile.layerArray.remove(stageSwag);
-				unsavedChanges = true;
-				deleteLayer();
-				xInputText.text = "" + 0;
-				yInputText.text = "" + 0;
-				layerStepper.value--;
-				layerStepper.max--;
+				if (stageFile.layerArray != null && stageFile.layerArray.length > 0)
+					{
+						for (i in 0...stageFile.layerArray.length)
+						{
+							if (nameInputText.text != null
+								&& directoryInputText.text != null
+								&& nameInputText.text != ""
+								&& directoryInputText.text != ""
+								&& stageFile.layerArray[i].name == nameInputText.text
+								&& stageFile.layerArray[i].directory == directoryInputText.text)
+							{
+								unsavedChanges = true;
+								deleteLayer();
+								xInputText.text = "" + 0;
+								yInputText.text = "" + 0;
+								stageFile.layerArray.remove(stageFile.layerArray[i]);
+								layerStepper.value--;
+								layerStepper.max--;
+								remove(visualLayers[Std.int(layerStepper.value)]);
+								visualLayers.remove(visualLayers[Std.int(layerStepper.value)]);
+							}
+						}
+					}
 			}
 		});
 
