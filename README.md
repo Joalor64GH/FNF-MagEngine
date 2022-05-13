@@ -28,6 +28,19 @@ Credits and features can be found below.
 
 ## Features
 
+# Awesome Mod Support
+
+You can code in .hx files in the mods/scripts folder, having great control over the game as well as not even touching the source code!
+Although, this is not required to make a softcoded mod!
+
+# In Game Updater
+
+Tired Of Downloading the entire engine again, every update? Say no more!
+
+# In Game Mod And Skin Installers
+
+Download Mag Engine Mods Directly From Your Game!
+
 # Custom State And Menu Support
 
 ![thumb18](https://user-images.githubusercontent.com/90519370/168314967-809eaa27-53ff-465b-a61c-ee8a67f7eeab.png)
