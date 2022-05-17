@@ -1,89 +1,114 @@
-# Friday Night Funkin
+### Friday Night Funkin: Mag Engine
 
-This is the repository for Friday Night Funkin, a game originally made for Ludum Dare 47 "Stuck In a Loop".
+This is the repository for Friday Night Funkin': Mag Engine, a modding engine for Friday Night Funkin', that requires no code to use.
+The compiling guide is on the engine's website: https://magnumsrtisswag.github.io/MagEngine-Public/
+Credits and features can be found below.
 
-Play the Ludum Dare prototype here: https://ninja-muffin24.itch.io/friday-night-funkin
-Play the Newgrounds one here: https://www.newgrounds.com/portal/view/770371
-Support the project on the itch.io page: https://ninja-muffin24.itch.io/funkin
+## Mag Engine Team
 
-IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN SOURCE YOUR MOD AS WELL
+- [Magnumsrt](https://twitter.com/MagnumsrtYT) - Coding And Art
+- [Stilic](https://gamebanana.com/members/1893262) - Assistant Coding
 
-## Credits / shoutouts
+## Credits
+
+- [KadeDeveloper](https://twitter.com/kade0912) - Option Category Substate Code, And Judgement Counter Code
+- [Yoshubs](https://twitter.com/yoshubs) - New Input System
+- [PolybiusProxy](https://twitter.com/polybiusproxy) And [BrightFyre](https://twitter.com/fyre_bright) - MP4 Video Extension
+- [Shadow Mario](https://twitter.com/Shadow_Mario_) - Custom Bitmap Loading Code, Custom Sound Loading Code, Mod Directory Code, Color Tweens In The Freeplay Menu, Some Lua Callbacks, And Downscroll Code
+- [Leather128](https://twitter.com/leather128) - Polymod handling code, And Mod Alphabet Option code
+- [NonsenseHumor](https://twitter.com/NonsenseNH) - Drew the "YouTube" button in the socials menu
+- [YoshiCrafter29](https://twitter.com/YoshiCrafter29) - Loading Bar Code and Directory loading code in the Updater
+- [Verwex](https://gamebanana.com/members/1664988) - Pixel Note Splashes
+
+## Friday Night Funkin' Team
 
 - [ninjamuffin99 (me!)](https://twitter.com/ninja_muffin99) - Programmer
 - [PhantomArcade3K](https://twitter.com/phantomarcade3k) and [Evilsk8r](https://twitter.com/evilsk8r) - Art
 - [Kawaisprite](https://twitter.com/kawaisprite) - Musician
 
-This game was made with love to Newgrounds and its community. Extra love to Tom Fulp.
+## Features
 
-## Build instructions
+# Awesome Mod Support
 
-THESE INSTRUCTIONS ARE FOR COMPILING THE GAME'S SOURCE CODE!!!
+You can code in .hx files in the mods/scripts folder, having great control over the game as well as not even touching the source code!
+Although, this is not required to make a softcoded mod!
 
-IF YOU WANT TO JUST DOWNLOAD AND INSTALL AND PLAY THE GAME NORMALLY, GO TO ITCH.IO TO DOWNLOAD THE GAME FOR PC, MAC, AND LINUX!!
+# In Game Updater
 
-https://ninja-muffin24.itch.io/funkin
+Tired Of Downloading the entire engine again, every update? Say no more!
 
-IF YOU WANT TO COMPILE THE GAME YOURSELF, CONTINUE READING!!!
+# In Game Mod And Skin Installers
 
-### Installing the Required Programs
+Download Mag Engine Mods Directly From Your Game!
 
-First, you need to install Haxe and HaxeFlixel. I'm too lazy to write and keep updated with that setup (which is pretty simple). 
-1. [Install Haxe 4.1.5](https://haxe.org/download/version/4.1.5/) (Download 4.1.5 instead of 4.2.0 because 4.2.0 is broken and is not working with gits properly...)
-2. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/) after downloading Haxe
+# Custom State And Menu Support
 
-Other installations you'd need are the additional libraries, a fully updated list will be in `Project.xml` in the project root. Currently, these are all of the things you need to install:
-```
-flixel
-flixel-addons
-flixel-ui
-hscript
-newgrounds
-```
-So for each of those type `haxelib install [library]` so shit like `haxelib install newgrounds`
+![thumb18](https://user-images.githubusercontent.com/90519370/168314967-809eaa27-53ff-465b-a61c-ee8a67f7eeab.png)
 
-You'll also need to install a couple things that involve Gits. To do this, you need to do a few things first.
-1. Download [git-scm](https://git-scm.com/downloads). Works for Windows, Mac, and Linux, just select your build.
-2. Follow instructions to install the application properly.
-3. Run `haxelib git polymod https://github.com/larsiusprime/polymod.git` to install Polymod.
-4. Run `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc` to install Discord RPC.
+# Easy To Use But Still Vanilla Dialogue Boxes 
 
-You should have everything ready for compiling the game! Follow the guide below to continue!
+# Brand New, Fully Customizable, Title Screen
 
-At the moment, you can optionally fix the transition bug in songs with zoomed-out cameras.
-- Run `haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons` in the terminal/command-prompt.
+![thumbn1](https://user-images.githubusercontent.com/90519370/168313214-4aab8595-c702-423b-a6cc-87127ee473c3.png)
 
-### Ignored files
+# New Main Menu
 
-I gitignore the API keys for the game so that no one can nab them and post fake high scores on the leaderboards. But because of that the game
-doesn't compile without it.
+![thumbn2](https://user-images.githubusercontent.com/90519370/168313399-3b83cfdb-a349-40ce-9c85-4dd479db2492.png)
 
-Just make a file in `/source` and call it `APIStuff.hx`, and copy & paste this into it
+# Week Seven Style Options Menu
 
-```haxe
-package;
+![thumbn3](https://user-images.githubusercontent.com/90519370/168313578-db7b5142-84f8-4be6-a5f3-961c5d8c5794.png)
 
-class APIStuff
-{
-	public static var API:String = "";
-	public static var EncKey:String = "";
-}
+# Mod Loader/Unloader
 
-```
+![thumbn4](https://user-images.githubusercontent.com/90519370/168313718-1a8edc73-52c3-4bef-80ce-d7570ee8abb0.png)
 
-and you should be good to go there.
+# Skin Pack Support And Skin Pack Loader/Unloader
 
-### Compiling game
-NOTE: If you see any messages relating to deprecated packages, ignore them. They're just warnings that don't affect compiling
+![thumbn5](https://user-images.githubusercontent.com/90519370/168313800-23f0b85f-c926-47fc-8480-c70ae85ce0f2.png)
 
-Once you have all those installed, it's pretty easy to compile the game. You just need to run `lime test html5 -debug` in the root of the project to build and run the HTML5 version. (command prompt navigation guide can be found here: [https://ninjamuffin99.newgrounds.com/news/post/1090480](https://ninjamuffin99.newgrounds.com/news/post/1090480))
-To run it from your desktop (Windows, Mac, Linux) it can be a bit more involved. For Linux, you only need to open a terminal in the project directory and run `lime test linux -debug` and then run the executable file in export/release/linux/bin. For Windows, you need to install Visual Studio Community 2019. While installing VSC, don't click on any of the options to install workloads. Instead, go to the individual components tab and choose the following:
-* MSVC v142 - VS 2019 C++ x64/x86 build tools
-* Windows SDK (10.0.17763.0)
+# Socials Menu
 
-Once that is done you can open up a command line in the project's directory and run `lime test windows -debug`. Once that command finishes (it takes forever even on a higher end PC), you can run FNF from the .exe file under export\release\windows\bin
-As for Mac, 'lime test mac -debug' should work, if not the internet surely has a guide on how to compile Haxe stuff for Mac.
+![thumbn6](https://user-images.githubusercontent.com/90519370/168313878-ab04d17b-9147-4655-9a99-57d340bb0d56.png)
 
-### Additional guides
+# Simple But Easy To Use Credits Menu
 
-- [Command line basics](https://ninjamuffin99.newgrounds.com/news/post/1090480)
+![thumb7](https://user-images.githubusercontent.com/90519370/168313998-a3b23d85-46e9-42f1-929e-e1c9c93757f2.png)
+
+# Week Seven Style Freeplay Menu
+
+![thumbn8](https://user-images.githubusercontent.com/90519370/168314082-9b33490e-c3c0-4a2c-8622-bc712e376138.png)
+
+# New Recoded And Redesigned Story Menu
+
+![thumbn9](https://user-images.githubusercontent.com/90519370/168314238-0024584b-e415-4889-83f3-35f9213c9c16.png)
+
+# Simple But Still Vanilla User Interface
+
+![thumbn10](https://user-images.githubusercontent.com/90519370/168314377-0ab9c690-f7e7-41f4-93f9-3daa8fd16d6a.png)
+
+# New But Still Vanilla Chart Editor
+
+![thumb11](https://user-images.githubusercontent.com/90519370/168314544-fbccec36-606e-4817-8f12-f9698328f9c3.png)
+
+![thumb12](https://user-images.githubusercontent.com/90519370/168314571-26eba0c4-6a0a-48af-8293-36c85958adea.png)
+
+# Three New Useful Editors
+
+![thumb13](https://user-images.githubusercontent.com/90519370/168314666-76cdcfbd-c7f8-4f97-b20e-342b55fd632e.png)
+
+# Stage Editor
+
+![thumb14](https://user-images.githubusercontent.com/90519370/168314710-2038e3d9-8fe0-441f-ad50-decb49071e5c.png)
+
+# Character Editor
+
+![thumb15](https://user-images.githubusercontent.com/90519370/168314741-2822d772-e92b-4969-afc8-c06f03316cea.png)
+
+# Week Editor
+
+![thumb16](https://user-images.githubusercontent.com/90519370/168314803-093e08a1-96f3-4bd6-8cb8-3f577cdc4915.png)
+
+# Progress Protection™
+
+![thumb17](https://user-images.githubusercontent.com/90519370/168314917-e2e5a64d-af66-45a0-be9f-484fc58dc21f.png)
