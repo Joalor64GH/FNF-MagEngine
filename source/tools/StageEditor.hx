@@ -209,7 +209,7 @@ class StageEditor extends MusicBeatState
 		UI_stagebox.y = UI_box.y + UI_box.height;
 		UI_stagebox.scrollFactor.set();
 		add(UI_stagebox);
-		
+
 		add(createdLayer);
 		visualLayers.push(createdLayer);
 
@@ -240,7 +240,7 @@ class StageEditor extends MusicBeatState
 		add(gridOutline);
 
 		FlxG.mouse.visible = true;
-		
+
 		makePlaceholders();
 
 		super.create();
@@ -293,7 +293,7 @@ class StageEditor extends MusicBeatState
 				flipX: isflippedX.checked,
 				flipY: isflippedY.checked
 			};
-		
+
 			createdLayer = new FlxSprite();
 			add(createdLayer);
 			visualLayers.push(createdLayer);
@@ -324,28 +324,28 @@ class StageEditor extends MusicBeatState
 			if (!noStage)
 			{
 				if (stageFile.layerArray != null && stageFile.layerArray.length > 0)
+				{
+					for (i in 0...stageFile.layerArray.length)
 					{
-						for (i in 0...stageFile.layerArray.length)
+						if (nameInputText.text != null
+							&& directoryInputText.text != null
+							&& nameInputText.text != ""
+							&& directoryInputText.text != ""
+							&& stageFile.layerArray[i].name == nameInputText.text
+							&& stageFile.layerArray[i].directory == directoryInputText.text)
 						{
-							if (nameInputText.text != null
-								&& directoryInputText.text != null
-								&& nameInputText.text != ""
-								&& directoryInputText.text != ""
-								&& stageFile.layerArray[i].name == nameInputText.text
-								&& stageFile.layerArray[i].directory == directoryInputText.text)
-							{
-								unsavedChanges = true;
-								deleteLayer();
-								xInputText.text = "" + 0;
-								yInputText.text = "" + 0;
-								stageFile.layerArray.remove(stageFile.layerArray[i]);
-								layerStepper.value--;
-								layerStepper.max--;
-								remove(visualLayers[Std.int(layerStepper.value)]);
-								visualLayers.remove(visualLayers[Std.int(layerStepper.value)]);
-							}
+							unsavedChanges = true;
+							deleteLayer();
+							xInputText.text = "" + 0;
+							yInputText.text = "" + 0;
+							stageFile.layerArray.remove(stageFile.layerArray[i]);
+							layerStepper.value--;
+							layerStepper.max--;
+							remove(visualLayers[Std.int(layerStepper.value)]);
+							visualLayers.remove(visualLayers[Std.int(layerStepper.value)]);
 						}
 					}
+				}
 			}
 		});
 
@@ -498,7 +498,9 @@ class StageEditor extends MusicBeatState
 		var directoryLayer:String = "images/" + assetName + ".png";
 		if (assetName != null && assetName.length > 0)
 		{
-			if (FileSystem.exists(Paths.modFolder(directoryLayer)) || FileSystem.exists('assets/' + directoryLayer) || FileSystem.exists('assets/shared/' + directoryLayer))
+			if (FileSystem.exists(Paths.modFolder(directoryLayer))
+				|| FileSystem.exists('assets/' + directoryLayer)
+				|| FileSystem.exists('assets/shared/' + directoryLayer))
 			{
 				visualLayers[Std.int(layerStepper.value)].loadGraphic(Paths.image(assetName));
 				visualLayers[Std.int(layerStepper.value)].visible = true;
@@ -507,7 +509,8 @@ class StageEditor extends MusicBeatState
 				stageCurtains.visible = false;
 				unsavedChanges = true;
 			}
-			else {
+			else
+			{
 				visualLayers[Std.int(layerStepper.value)].visible = false;
 			}
 		}
@@ -515,7 +518,6 @@ class StageEditor extends MusicBeatState
 		{
 			visualLayers[Std.int(layerStepper.value)].visible = false;
 		}
-
 	}
 
 	function deleteLayer()

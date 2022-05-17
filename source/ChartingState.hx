@@ -538,7 +538,7 @@ class ChartingState extends MusicBeatState
 
 		check_mustHitSection = new FlxUICheckBox(10, 30, null, null, "Must hit section", 100);
 		check_mustHitSection.name = 'check_mustHit';
-		check_mustHitSection.checked = true;
+		check_mustHitSection.checked = _song.notes[curSection].mustHitSection;
 		// _song.needsVoices = check_mustHit.checked;
 
 		check_altAnim = new FlxUICheckBox(10, 400, null, null, "Alt Animation", 100);
@@ -645,7 +645,61 @@ class ChartingState extends MusicBeatState
 		 */
 	}
 
-	// FlxG.log.add(id + " WEED " + sender + " WEED " + data + " WEED " + params)
+	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>)
+	{
+		if (id == FlxUICheckBox.CLICK_EVENT)
+		{
+			var check:FlxUICheckBox = cast sender;
+			var label = check.getLabel().text;
+			switch (label)
+			{
+				case 'Must hit section':
+					_song.notes[curSection].mustHitSection = check.checked;
+
+					updateHeads();
+
+				case 'Change BPM':
+					_song.notes[curSection].changeBPM = check.checked;
+					FlxG.log.add('changed bpm shit');
+				case "Alt Animation":
+					_song.notes[curSection].altAnim = check.checked;
+			}
+		}
+		else if (id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper))
+		{
+			var nums:FlxUINumericStepper = cast sender;
+			var wname = nums.name;
+			FlxG.log.add(wname);
+			if (wname == 'section_length')
+			{
+				_song.notes[curSection].lengthInSteps = Std.int(nums.value);
+				updateGrid();
+			}
+			else if (wname == 'song_speed')
+			{
+				_song.speed = nums.value;
+			}
+			else if (wname == 'song_bpm')
+			{
+				tempBpm = Std.int(nums.value);
+				Conductor.mapBPMChanges(_song);
+				Conductor.changeBPM(Std.int(nums.value));
+			}
+			else if (wname == 'note_susLength')
+			{
+				curSelectedNote[2] = nums.value;
+				updateGrid();
+			}
+			else if (wname == 'section_bpm')
+			{
+				_song.notes[curSection].bpm = Std.int(nums.value);
+				updateGrid();
+			}
+		}
+
+		// FlxG.log.add(id + " WEED " + sender + " WEED " + data + " WEED " + params);
+	}
+
 	var updatedSection:Bool = false;
 
 	/* this function got owned LOL
