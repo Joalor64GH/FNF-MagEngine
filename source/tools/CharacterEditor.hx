@@ -309,13 +309,20 @@ class CharacterEditor extends MusicBeatState
 				offsets: lastOffsets
 			};
 
-			createdCharacter.animation.addByPrefix(swaggyAnim.anim, swaggyAnim.name, 24, swaggyAnim.loop);
-
-			if (!createdCharacter.animOffsets.exists(swaggyAnim.anim))
+			try
 			{
-				createdCharacter.addOffset(swaggyAnim.anim, 0, 0);
+				createdCharacter.animation.addByPrefix(swaggyAnim.anim, swaggyAnim.name, 24, swaggyAnim.loop);
+
+				if (!createdCharacter.animOffsets.exists(swaggyAnim.anim))
+				{
+					createdCharacter.addOffset(swaggyAnim.anim, 0, 0);
+				}
+				createdCharacter.animationsthing.push(swaggyAnim);
 			}
-			createdCharacter.animationsthing.push(swaggyAnim);
+			catch (e)
+			{
+				trace("Failed to create character animation, does it exist?");
+			}
 
 			if (lastAnim == coolInputText.text)
 			{

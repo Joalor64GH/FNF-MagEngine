@@ -1,7 +1,8 @@
 Magnumsrt:Main Developer
 Stilic:Assistant Developer
-Shadow Mario:Mod Support
+Shadow Mario:Mod Support Help
 RozeBud:KeyBinds Menu
 Yoshubs:New Inputs
-BrightFyre:MP4 Video Support
+PolyProxy:MP4 Video Support
+Smokey:Adobe Animate Texture Atlas Support
 Leather128:Polymod Enabling And Disabling Code

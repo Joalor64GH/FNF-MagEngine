@@ -104,8 +104,8 @@ class MainMenuState extends MusicBeatState
 		{
 			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
 			var menuItem:FlxSprite = new FlxSprite(0, (i * 140) + offset);
-			menuItem.scale.x = 0.8;
-			menuItem.scale.y = 0.8;
+			menuItem.scale.x = 1;
+			menuItem.scale.y = 1;
 			trace(optionShit[i]);
 			if (FileSystem.exists(Paths.modIcon('menubuttons/' + optionShit[i])))
 			{
@@ -264,14 +264,14 @@ class MainMenuState extends MusicBeatState
 		{
 			spr.animation.play('idle');
 
-			FlxTween.tween(spr.scale, {x: 0.8}, 0.1, {ease: FlxEase.linear});
-			FlxTween.tween(spr.scale, {y: 0.8}, 0.1, {ease: FlxEase.linear});
+			FlxTween.tween(spr.scale, {x: 1}, 0.1, {ease: FlxEase.linear});
+			FlxTween.tween(spr.scale, {y: 1}, 0.1, {ease: FlxEase.linear});
 
 			if (spr.ID == curSelected)
 			{
 				spr.animation.play('selected');
-				FlxTween.tween(spr.scale, {x: 1}, 0.1, {ease: FlxEase.linear});
-				FlxTween.tween(spr.scale, {y: 1}, 0.1, {ease: FlxEase.linear});
+				FlxTween.tween(spr.scale, {x: 1.2}, 0.1, {ease: FlxEase.linear});
+				FlxTween.tween(spr.scale, {y: 1.2}, 0.1, {ease: FlxEase.linear});
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
 
