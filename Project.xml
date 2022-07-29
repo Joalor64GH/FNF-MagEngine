@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Mag Engine" file="Mag Engine" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="1.4.2h" company="Magnumsrt" />
+	<app title="Friday Night Funkin': Mag Engine" file="Mag Engine" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="1.5h" company="Magnumsrt" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -55,7 +55,7 @@
 
 	<define name="MODS" if="desktop" />
 	<define name="SCRIPTS" if="desktop" />
-	<define name="CACHE" if="sys" />
+	<define name="CACHE" unless="desktop" />
 	<define name="PRELOAD_ALL" unless="web" />
 
 	<section if="PRELOAD_ALL">
@@ -132,6 +132,7 @@
 	<haxelib name="faxe" if='switch' />
 	<haxelib name="linc_luajit" />
 	<haxelib name="polymod" />
+     <haxelib name="hxCodec" if="desktop || android" />
 	<haxelib name="discord_rpc" if="desktop" />
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 

@@ -1003,7 +1003,23 @@ class PlayState extends MusicBeatState
 								});
 								interp.variables.set("import", function(classToResolve:String)
 								{
-									interp.variables.set(classToResolve, Type.resolveClass(classToResolve));
+									interp.variables.set(classToResolve.replace(" ", ""), Type.resolveClass(classToResolve.replace(" ", "")));
+									var trimmedClass = "";
+									if (classToResolve.contains("."))
+									{
+										for (i in 0...classToResolve.split(".").length)
+										{
+											if (i != classToResolve.split(".").length - 1)
+											{
+												trimmedClass = classToResolve.replace(classToResolve.split(".")[i], "");
+											}
+											else
+											{
+												interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""),
+													Type.resolveClass(classToResolve.replace(" ", "")));
+											}
+										}
+									}
 								});
 								interp.variables.set("create", function()
 								{
@@ -2798,7 +2814,7 @@ class PlayState extends MusicBeatState
 		{
 			for (i in SONG.events)
 			{
-				if (curStep == i.eventPos)
+				if (curStep == Reflect.field(i, "eventPos"))
 				{
 					if (Reflect.field(i, "events") == 'image')
 					{
@@ -2825,7 +2841,7 @@ class PlayState extends MusicBeatState
 					}
 					if (Reflect.field(i, "events") == 'play-animation')
 					{
-						dad.playAnim(i.valueOne);
+						dad.playAnim(Reflect.field(i, "valueOne"));
 					}
 
 					if (Reflect.field(i, "events") == 'none')
@@ -2864,7 +2880,29 @@ class PlayState extends MusicBeatState
 									});
 									interp.variables.set("import", function(classToResolve:String)
 									{
-										interp.variables.set(classToResolve, Type.resolveClass(classToResolve));
+										interp.variables.set(classToResolve.replace(" ", ""), Type.resolveClass(classToResolve.replace(" ", "")));
+										var trimmedClass = "";
+										if (classToResolve.contains("."))
+										{
+											for (i in 0...classToResolve.split(".").length)
+											{
+												if (i != classToResolve.split(".").length - 1)
+												{
+													trimmedClass = classToResolve.replace(classToResolve.split(".")[i], "");
+												}
+												else
+												{
+													interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""),
+														Type.resolveClass(classToResolve.replace(" ", "")));
+												}
+											}
+										}
+									});
+									interp.variables.set("noteMiss", function(note:Note)
+									{
+									});
+									interp.variables.set("goodNoteHit", function(note:Note)
+									{
 									});
 									interp.variables.set("valueOne", Reflect.field(i, "valueOne"));
 									interp.variables.set("valueTwo", Reflect.field(i, "valueTwo"));
@@ -3069,9 +3107,30 @@ class PlayState extends MusicBeatState
 		});
 		interp.variables.set("import", function(classToResolve:String)
 		{
-			interp.variables.set(classToResolve, Type.resolveClass(classToResolve));
+			interp.variables.set(classToResolve.replace(" ", ""), Type.resolveClass(classToResolve.replace(" ", "")));
+			var trimmedClass = "";
+			if (classToResolve.contains("."))
+			{
+				for (i in 0...classToResolve.split(".").length)
+				{
+					if (i != classToResolve.split(".").length - 1)
+					{
+						trimmedClass = classToResolve.replace(classToResolve.split(".")[i], "");
+					}
+					else
+					{
+						interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""), Type.resolveClass(classToResolve.replace(" ", "")));
+					}
+				}
+			}
 		});
 		interp.variables.set("game", this);
+		interp.variables.set("noteMiss", function(note:Note)
+		{
+		});
+		interp.variables.set("goodNoteHit", function(note:Note)
+		{
+		});
 	}
 
 	var curLight:Int = 0;

@@ -173,7 +173,22 @@ class Note extends FlxSprite
 					});
 					interp.variables.set("import", function(classToResolve:String)
 					{
-						interp.variables.set(classToResolve, Type.resolveClass(classToResolve));
+						interp.variables.set(classToResolve.replace(" ", ""), Type.resolveClass(classToResolve.replace(" ", "")));
+						var trimmedClass = "";
+						if (classToResolve.contains("."))
+						{
+							for (i in 0...classToResolve.split(".").length)
+							{
+								if (i != classToResolve.split(".").length - 1)
+								{
+									trimmedClass = classToResolve.replace(classToResolve.split(".")[i], "");
+								}
+								else
+								{
+									interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""), Type.resolveClass(classToResolve.replace(" ", "")));
+								}
+							}
+						}
 					});
 					interp.variables.set("note", this);
 

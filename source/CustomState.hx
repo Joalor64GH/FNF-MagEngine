@@ -110,7 +110,23 @@ class CustomState extends MusicBeatState
 						});
 						interp.variables.set("import", function(classToResolve:String)
 						{
-							interp.variables.set(classToResolve, Type.resolveClass(classToResolve));
+							interp.variables.set(classToResolve.replace(" ", ""), Type.resolveClass(classToResolve.replace(" ", "")));
+							var trimmedClass = "";
+							if (classToResolve.contains("."))
+							{
+								for (i in 0...classToResolve.split(".").length)
+								{
+									if (i != classToResolve.split(".").length - 1)
+									{
+										trimmedClass = classToResolve.replace(classToResolve.split(".")[i], "");
+									}
+									else
+									{
+										interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""),
+											Type.resolveClass(classToResolve.replace(" ", "")));
+									}
+								}
+							}
 						});
 						interp.variables.set("state", this);
 						interp.variables.set("remove", remove);
@@ -138,7 +154,6 @@ class CustomState extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			FlxG.resetState();
 			MusicBeatState.switchState(new MainMenuState());
 		}
 	}
