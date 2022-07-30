@@ -84,6 +84,8 @@ class CustomState extends MusicBeatState
 
 	override public function create()
 	{
+		interp = null;
+
 		var folders:Array<String> = [Paths.getPreloadPath('custom_states/')];
 		folders.insert(0, Paths.modFolder('custom_states/'));
 		for (folder in folders)
@@ -122,6 +124,14 @@ class CustomState extends MusicBeatState
 									}
 									else
 									{
+										var alphabet = "abcdefghijklmnopqrstuvwusyz";
+										for (alphachar in alphabet.split(""))
+										{
+											if (trimmedClass.contains("." + alphachar.toUpperCase()))
+											{
+												trimmedClass = trimmedClass.replace(trimmedClass.split("." + alphachar.toUpperCase())[0], "");
+											}
+										}
 										interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""),
 											Type.resolveClass(classToResolve.replace(" ", "")));
 									}

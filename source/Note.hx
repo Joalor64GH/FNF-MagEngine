@@ -185,6 +185,14 @@ class Note extends FlxSprite
 								}
 								else
 								{
+									var alphabet = "abcdefghijklmnopqrstuvwusyz";
+									for (alphachar in alphabet.split(""))
+									{
+										if (trimmedClass.contains("." + alphachar.toUpperCase()))
+										{
+											trimmedClass = trimmedClass.replace(trimmedClass.split("." + alphachar.toUpperCase())[0], "");
+										}
+									}
 									interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""), Type.resolveClass(classToResolve.replace(" ", "")));
 								}
 							}

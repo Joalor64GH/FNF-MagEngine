@@ -1007,17 +1007,26 @@ class PlayState extends MusicBeatState
 									var trimmedClass = "";
 									if (classToResolve.contains("."))
 									{
+										trimmedClass = ("." + classToResolve);
 										for (i in 0...classToResolve.split(".").length)
 										{
 											if (i != classToResolve.split(".").length - 1)
 											{
-												trimmedClass = classToResolve.replace(classToResolve.split(".")[i], "");
+												trimmedClass = classToResolve.replace(classToResolve.split(".")[i].replace(".", ""), "");
 											}
 											else
 											{
-												interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""),
-													Type.resolveClass(classToResolve.replace(" ", "")));
+												var alphabet = "abcdefghijklmnopqrstuvwusyz";
+												for (alphachar in alphabet.split(""))
+												{
+													if (trimmedClass.contains("." + alphachar.toUpperCase()))
+													{
+														trimmedClass = trimmedClass.replace(trimmedClass.split("." + alphachar.toUpperCase())[0], "");
+													}
+												}
 											}
+											interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""),
+												Type.resolveClass(classToResolve.replace(" ", "")));
 										}
 									}
 								});
@@ -2884,6 +2893,7 @@ class PlayState extends MusicBeatState
 										var trimmedClass = "";
 										if (classToResolve.contains("."))
 										{
+											trimmedClass = ("." + classToResolve);
 											for (i in 0...classToResolve.split(".").length)
 											{
 												if (i != classToResolve.split(".").length - 1)
@@ -2892,6 +2902,14 @@ class PlayState extends MusicBeatState
 												}
 												else
 												{
+													var alphabet = "abcdefghijklmnopqrstuvwusyz";
+													for (alphachar in alphabet.split(""))
+													{
+														if (trimmedClass.contains("." + alphachar.toUpperCase()))
+														{
+															trimmedClass = trimmedClass.replace(trimmedClass.split("." + alphachar.toUpperCase())[0], "");
+														}
+													}
 													interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""),
 														Type.resolveClass(classToResolve.replace(" ", "")));
 												}
@@ -3119,6 +3137,14 @@ class PlayState extends MusicBeatState
 					}
 					else
 					{
+						var alphabet = "abcdefghijklmnopqrstuvwusyz";
+						for (alphachar in alphabet.split(""))
+						{
+							if (trimmedClass.contains("." + alphachar.toUpperCase()))
+							{
+								trimmedClass = trimmedClass.replace(trimmedClass.split("." + alphachar.toUpperCase())[0], "");
+							}
+						}
 						interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""), Type.resolveClass(classToResolve.replace(" ", "")));
 					}
 				}
