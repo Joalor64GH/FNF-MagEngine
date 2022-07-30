@@ -3,5 +3,5 @@ python3.dll
 python310.dll
 assets/data/creditsList.txt
 assets/data/eventList.txt
-mods/data/eventList.txt
+mods/custom_events/eventList.txt
 assets/images/ABSOLUTELYNOTwait.png
