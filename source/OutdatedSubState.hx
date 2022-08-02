@@ -15,6 +15,9 @@ class OutdatedSubState extends MusicBeatState
 
 	override function create()
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		super.create();
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		add(bg);

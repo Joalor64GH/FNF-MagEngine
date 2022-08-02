@@ -53,6 +53,9 @@ class KeyBindMenu extends FlxSubState
 
 	override function create()
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		for (i in 0...keys.length)
 		{
 			var k = keys[i];

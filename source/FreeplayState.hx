@@ -45,6 +45,9 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		if (FileSystem.exists(Paths.modTxt('data/freeplaySonglist')) && FileSystem.exists(Paths.txt('data/freeplaySonglist')))
 		{
 			songList = CoolUtil.evenCoolerTextFile(Paths.modTxt('data/freeplaySonglist'));
@@ -112,18 +115,6 @@ class FreeplayState extends MusicBeatState
 		add(diffText);
 
 		add(scoreText);
-
-		var infoBG:FlxSprite = new FlxSprite(0, FlxG.height - 25).makeGraphic(FlxG.width, 25, FlxColor.BLACK);
-		infoBG.scrollFactor.set();
-		infoBG.alpha = 0.5;
-		add(infoBG);
-
-		var infoText:FlxText = new FlxText(5, FlxG.height - 22, 0, "Press P to play the song instrumental, Press ACCEPT to play the song in freeplay mode.",
-			12);
-		infoText.scrollFactor.set();
-		infoText.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT);
-		infoText.antialiasing = true;
-		add(infoText);
 
 		bg.color = songs[curSelected].color;
 		intendedColor = bg.color;

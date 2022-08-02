@@ -37,6 +37,9 @@ class PauseSubState extends MusicBeatSubstate
 
 	public function new(x:Float, y:Float)
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		super();
 		menuItems = menuItemswhyhaxe;
 

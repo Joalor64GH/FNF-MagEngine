@@ -50,6 +50,9 @@ class UpdateState extends MusicBeatState
 
 	override public function create()
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		LoggingUtil.writeToLogFile('Starting Update...');
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));

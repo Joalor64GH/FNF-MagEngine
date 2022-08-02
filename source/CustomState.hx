@@ -84,68 +84,71 @@ class CustomState extends MusicBeatState
 
 	override public function create()
 	{
-		interp = null;
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
 
 		var folders:Array<String> = [Paths.getPreloadPath('custom_states/')];
 		folders.insert(0, Paths.modFolder('custom_states/'));
-		for (folder in folders)
+		if (interp == null)
 		{
-			if (FileSystem.exists(folder))
+			for (folder in folders)
 			{
-				for (file in FileSystem.readDirectory(folder))
+				if (FileSystem.exists(folder))
 				{
-					if (file.endsWith('.hx') && !filesInserted.contains(file))
+					for (file in FileSystem.readDirectory(folder))
 					{
-						var expr = File.getContent(Paths.state(file));
-						var parser = new hscript.Parser();
-						parser.allowTypes = true;
-						parser.allowJSON = true;
-						parser.allowMetadata = true;
-						interp = new Interp();
-						var ast = parser.parseString(expr);
-						interp.variables.set("add", add);
-						interp.variables.set("update", function(elapsed:Float)
+						if (file.endsWith('.hx') && !filesInserted.contains(file))
 						{
-						});
-						interp.variables.set("create", function()
-						{
-						});
-						interp.variables.set("import", function(classToResolve:String)
-						{
-							interp.variables.set(classToResolve.replace(" ", ""), Type.resolveClass(classToResolve.replace(" ", "")));
-							var trimmedClass = "";
-							if (classToResolve.contains("."))
+							var expr = File.getContent(Paths.state(file));
+							var parser = new hscript.Parser();
+							parser.allowTypes = true;
+							parser.allowJSON = true;
+							parser.allowMetadata = true;
+							interp = new Interp();
+							var ast = parser.parseString(expr);
+							interp.variables.set("add", add);
+							interp.variables.set("update", function(elapsed:Float)
 							{
-								for (i in 0...classToResolve.split(".").length)
+							});
+							interp.variables.set("create", function()
+							{
+							});
+							interp.variables.set("import", function(classToResolve:String)
+							{
+								interp.variables.set(classToResolve.replace(" ", ""), Type.resolveClass(classToResolve.replace(" ", "")));
+								var trimmedClass = "";
+								if (classToResolve.contains("."))
 								{
-									if (i != classToResolve.split(".").length - 1)
+									for (i in 0...classToResolve.split(".").length)
 									{
-										trimmedClass = classToResolve.replace(classToResolve.split(".")[i], "");
-									}
-									else
-									{
-										var alphabet = "abcdefghijklmnopqrstuvwusyz";
-										for (alphachar in alphabet.split(""))
+										if (i != classToResolve.split(".").length - 1)
 										{
-											if (trimmedClass.contains("." + alphachar.toUpperCase()))
-											{
-												trimmedClass = trimmedClass.replace(trimmedClass.split("." + alphachar.toUpperCase())[0], "");
-											}
+											trimmedClass = classToResolve.replace(classToResolve.split(".")[i], "");
 										}
-										interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""),
-											Type.resolveClass(classToResolve.replace(" ", "")));
+										else
+										{
+											var alphabet = "abcdefghijklmnopqrstuvwusyz";
+											for (alphachar in alphabet.split(""))
+											{
+												if (trimmedClass.contains("." + alphachar.toUpperCase()))
+												{
+													trimmedClass = trimmedClass.replace(trimmedClass.split("." + alphachar.toUpperCase())[0], "");
+												}
+											}
+											interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""),
+												Type.resolveClass(classToResolve.replace(" ", "")));
+										}
 									}
 								}
-							}
-						});
-						interp.variables.set("state", this);
-						interp.variables.set("remove", remove);
-						name = file;
+							});
+							interp.variables.set("state", this);
+							interp.variables.set("remove", remove);
+							name = file;
 
-						interp.execute(ast);
-						trace(interp.execute(ast));
+							interp.execute(ast);
 
-						filesInserted.push(file);
+							filesInserted.push(file);
+						}
 					}
 				}
 			}
@@ -164,6 +167,7 @@ class CustomState extends MusicBeatState
 
 		if (controls.BACK)
 		{
+			FlxG.resetState();
 			MusicBeatState.switchState(new MainMenuState());
 		}
 	}

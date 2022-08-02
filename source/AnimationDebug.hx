@@ -30,6 +30,9 @@ class AnimationDebug extends MusicBeatState
 
 	override function create()
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		FlxG.sound.music.stop();
 
 		var gridBG:FlxSprite = FlxGridOverlay.create(10, 10);

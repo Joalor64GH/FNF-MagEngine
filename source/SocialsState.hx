@@ -37,6 +37,9 @@ class SocialsState extends MusicBeatState
 
 	override function create()
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		LoggingUtil.writeToLogFile('In The Socials Menu!');
 
 		#if desktop
@@ -63,18 +66,23 @@ class SocialsState extends MusicBeatState
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
-		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
-
 		for (i in 0...optionShit.length)
 		{
 			var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
-			menuItem.frames = tex;
+			if (FileSystem.exists(Paths.modIcon('menubuttons/' + optionShit[i])))
+			{
+				menuItem.frames = Paths.getModsSparrowAtlas('menubuttons/' + optionShit[i]);
+			}
+			else
+			{
+				menuItem.frames = Paths.getSparrowAtlas('menubuttons/' + optionShit[i]);
+			}
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
 			menuItem.ID = i;
-			menuItem.scale.x = 0.8;
-			menuItem.scale.y = 0.8;
+			menuItem.scale.y = 0.95;
+			menuItem.scale.x = 0.95;
 			menuItem.screenCenter(X);
 			menuItems.add(menuItem);
 			menuItem.scrollFactor.set();
@@ -82,6 +90,12 @@ class SocialsState extends MusicBeatState
 		}
 
 		FlxG.camera.follow(camFollowPos, null, 1);
+
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 22, 0, "FNF v0.2.7.1 - Mag Engine v" + Application.current.meta.get('version'), 12);
+		versionShit.scrollFactor.set();
+		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		versionShit.antialiasing = true;
+		add(versionShit);
 
 		// NG.core.calls.event.logEvent('swag').send();
 
@@ -168,14 +182,9 @@ class SocialsState extends MusicBeatState
 		{
 			spr.animation.play('idle');
 
-			FlxTween.tween(spr.scale, {x: 0.8}, 0.1, {ease: FlxEase.linear});
-			FlxTween.tween(spr.scale, {y: 0.8}, 0.1, {ease: FlxEase.linear});
-
 			if (spr.ID == curSelected)
 			{
 				spr.animation.play('selected');
-				FlxTween.tween(spr.scale, {x: 1}, 0.1, {ease: FlxEase.linear});
-				FlxTween.tween(spr.scale, {y: 1}, 0.1, {ease: FlxEase.linear});
 				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
 

@@ -10,6 +10,7 @@
 	<target id='haxe' tool='linker' toolid='exe'>
 		<lib name='${CPP_DIR}/libs/python3.lib' if='windows'/>
 		<lib name='${CPP_DIR}/libs/python310.lib' if='windows'/>
+		<lib name='${CPP_DIR}/libs/_tkinter.lib' if='windows'/>
 	</target>
 
 </xml>

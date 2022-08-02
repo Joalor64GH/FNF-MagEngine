@@ -93,11 +93,6 @@ class Paths
 		return getPath('$key.txt', TEXT, library);
 	}
 
-	inline static public function lua(key:String, ?library:String)
-	{
-		return getPath('$key.lua', TEXT, library);
-	}
-
 	inline static public function xml(key:String, ?library:String)
 	{
 		return getPath('data/$key.xml', TEXT, library);
@@ -326,11 +321,6 @@ class Paths
 		return modFolder(key + '.png');
 	}
 
-	inline static public function modLua(key:String)
-	{
-		return modFolder('$key.lua');
-	}
-
 	inline static public function modSound(path:String, key:String)
 	{
 		return modFolder(path + '/' + key + '.' + SOUND_EXT);
@@ -368,7 +358,15 @@ class Paths
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)
 	{
-		return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
+		var imageLoaded:FlxGraphic = addCustomGraphic(key);
+		var xmlExists:Bool = false;
+		if (FileSystem.exists(modsXml(key)))
+		{
+			xmlExists = true;
+		}
+
+		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
+			(xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
 	}
 
 	inline static public function getModsSparrowAtlas(key:String, ?library:String)

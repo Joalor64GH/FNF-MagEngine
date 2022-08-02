@@ -64,6 +64,9 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		LoggingUtil.writeToLogFile('Switching To The Story Menu!');
 
 		if (FileSystem.exists(Paths.modTxt('weeks/weekList')) && FileSystem.exists(Paths.txt('weeks/weekList')))

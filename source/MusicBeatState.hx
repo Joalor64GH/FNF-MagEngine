@@ -22,6 +22,9 @@ class MusicBeatState extends FlxUIState
 
 	override function create()
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
 		super.create();
 
@@ -47,6 +50,9 @@ class MusicBeatState extends FlxUIState
 
 	public static function switchState(nextState:FlxState)
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		// Custom made Trans in
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;

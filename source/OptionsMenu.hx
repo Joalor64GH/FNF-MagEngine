@@ -36,7 +36,6 @@ class OptionsMenu extends MusicBeatState
 				new DownscrollOption(), new MiddlescrollOption(), new GhostTappingOption(), new AccuracyOption(), new CacheOption(), new FPSOption(),
 				new MEMOption(),
 				new VerOption(), new RatingOption(), new FPSCapOption(), new LogsOption()]),
-		new OptionCategory("Adjust Offsets"),
 		new OptionCategory("Controls"),
 		new OptionCategory("Notes", [new OpponentNotesGlowOption(), new SplooshOption(), new TransparentNotesOption()]),
 		new OptionCategory("Exit")
@@ -56,6 +55,9 @@ class OptionsMenu extends MusicBeatState
 
 	override function create()
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		instance = this;
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuDesat"));
 
@@ -155,8 +157,6 @@ class OptionsMenu extends MusicBeatState
 						grpCheckboxes.members[curSelected].daValue = currentSelectedCat.getOptions()[curSelected].daValue;
 						grpControls.members[curSelected].changeText(currentSelectedCat.getOptions()[curSelected].getDisplay());
 					}
-					else if (options[curSelected].getName() == "Adjust Offsets")
-						MusicBeatState.switchState(new OffsetsState());
 					else if (options[curSelected].getName() == "Controls")
 						openSubState(new KeyBindMenu());
 					else if (options[curSelected].getName() == "Exit")

@@ -53,6 +53,9 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		#if MODS
 		if (sys.FileSystem.exists('mods/'))
 		{
@@ -447,7 +450,21 @@ class TitleState extends MusicBeatState
 				addMoreText('Funkin');
 			// credTextShit.text += '\nNight';
 			case 15:
-				addMoreText('Mag Engine'); // credTextShit.text += '\nFunkin';
+				if (FileSystem.exists(Paths.txt("data/gameTitle")) || FileSystem.exists(Paths.modTxt("data/gameTitle")))
+				{
+					if (FileSystem.exists(Paths.modTxt("data/gameTitle")))
+					{
+						addMoreText(File.getContent(Paths.modTxt("data/gameTitle")));
+					}
+					else if (FileSystem.exists(Paths.txt("data/gameTitle")))
+					{
+						addMoreText(File.getContent(Paths.txt("data/gameTitle")));
+					}
+				}
+				else
+				{
+					addMoreText('Mag Engine');
+				}
 			case 16:
 				skipIntro();
 		}

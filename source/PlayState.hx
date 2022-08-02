@@ -225,6 +225,8 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		MemoryManager.freeTrashedAssets();
+
 		play = this;
 
 		LoggingUtil.writeToLogFile('In The PlayState!');
@@ -2844,9 +2846,8 @@ class PlayState extends MusicBeatState
 					}
 					if (Reflect.field(i, "events") == 'character-change')
 					{
-						remove(dad);
-						dad = new Character(dad.x, Std.parseFloat(Reflect.field(i, "valueTwo")), Reflect.field(i, "valueOne"));
-						add(dad);
+						SONG.player2 = Reflect.field(i, "valueOne");
+						dad.curCharacter = Reflect.field(i, "valueOne");
 					}
 					if (Reflect.field(i, "events") == 'play-animation')
 					{
