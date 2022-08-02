@@ -6,4 +6,25 @@ assets/data/creditsList.txt
 assets/data/eventList.txt
 mods/custom_events/eventList.txt
 assets/images/ABSOLUTELYNOTwait.png
-assets/images/menubuttons/.
+assets/images/menubuttons/credits.png
+assets/images/menubuttons/credits.xml
+assets/images/menubuttons/donate.png
+assets/images/menubuttons/donate.xml
+assets/images/menubuttons/editors.png
+assets/images/menubuttons/editors.xml
+assets/images/menubuttons/freeplay.png
+assets/images/menubuttons/freeplay.xml
+assets/images/menubuttons/mods.png
+assets/images/menubuttons/mods.xml
+assets/images/menubuttons/options.png
+assets/images/menubuttons/options.xml
+assets/images/menubuttons/skins.png
+assets/images/menubuttons/skins.xml
+assets/images/menubuttons/social.png
+assets/images/menubuttons/social.xml
+assets/images/menubuttons/story mode.png
+assets/images/menubuttons/story mode.xml
+assets/images/menubuttons/twitter.png
+assets/images/menubuttons/twitter.xml
+assets/images/menubuttons/youtube.png
+assets/images/menubuttons/youtube.xml
