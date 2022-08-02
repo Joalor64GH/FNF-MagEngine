@@ -126,14 +126,19 @@ class MainMenuState extends MusicBeatState
 			var scr:Float = (optionShit.length - 4) * 0.135;
 			if (optionShit.length < optionShit.length - 1)
 				scr = 0;
-			if (i > 9)
-			{
-				bg.width = bg.width + 0.15;
-				magenta.width = magenta.width + 0.15;
-			}
 			menuItem.scrollFactor.set(0, scr);
 			menuItem.antialiasing = true;
 			menuItem.updateHitbox();
+		}
+
+		if (optionShit.length > 9)
+		{
+			bg.setGraphicSize(Std.int((magenta.width * 1.15 + optionShit.length - 9) - 1));
+		}
+
+		if (optionShit.length > 9)
+		{
+			magenta.setGraphicSize(Std.int((magenta.width * 1.15 + optionShit.length - 9) - 1));
 		}
 
 		FlxG.camera.follow(camFollowPos, null, 1);

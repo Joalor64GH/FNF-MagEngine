@@ -87,68 +87,67 @@ class CustomState extends MusicBeatState
 		MemoryManager.freeTrashedAssets();
 		MemoryManager.freeAllAssets();
 
+		filesInserted = [];
+
 		var folders:Array<String> = [Paths.getPreloadPath('custom_states/')];
 		folders.insert(0, Paths.modFolder('custom_states/'));
-		if (interp == null)
+		for (folder in folders)
 		{
-			for (folder in folders)
+			if (FileSystem.exists(folder))
 			{
-				if (FileSystem.exists(folder))
+				for (file in FileSystem.readDirectory(folder))
 				{
-					for (file in FileSystem.readDirectory(folder))
+					if (file.endsWith('.hx') && !filesInserted.contains(file))
 					{
-						if (file.endsWith('.hx') && !filesInserted.contains(file))
+						var expr = File.getContent(Paths.state(file));
+						var parser = new hscript.Parser();
+						parser.allowTypes = true;
+						parser.allowJSON = true;
+						parser.allowMetadata = true;
+						interp = new Interp();
+						var ast = parser.parseString(expr);
+						interp.variables.set("add", add);
+						interp.variables.set("update", function(elapsed:Float)
 						{
-							var expr = File.getContent(Paths.state(file));
-							var parser = new hscript.Parser();
-							parser.allowTypes = true;
-							parser.allowJSON = true;
-							parser.allowMetadata = true;
-							interp = new Interp();
-							var ast = parser.parseString(expr);
-							interp.variables.set("add", add);
-							interp.variables.set("update", function(elapsed:Float)
+						});
+						interp.variables.set("create", function()
+						{
+						});
+						interp.variables.set("import", function(classToResolve:String)
+						{
+							interp.variables.set(classToResolve.replace(" ", ""), Type.resolveClass(classToResolve.replace(" ", "")));
+							var trimmedClass = "";
+							if (classToResolve.contains("."))
 							{
-							});
-							interp.variables.set("create", function()
-							{
-							});
-							interp.variables.set("import", function(classToResolve:String)
-							{
-								interp.variables.set(classToResolve.replace(" ", ""), Type.resolveClass(classToResolve.replace(" ", "")));
-								var trimmedClass = "";
-								if (classToResolve.contains("."))
+								for (i in 0...classToResolve.split(".").length)
 								{
-									for (i in 0...classToResolve.split(".").length)
+									if (i != classToResolve.split(".").length - 1)
 									{
-										if (i != classToResolve.split(".").length - 1)
+										trimmedClass = classToResolve.replace(classToResolve.split(".")[i], "");
+									}
+									else
+									{
+										var alphabet = "abcdefghijklmnopqrstuvwusyz";
+										for (alphachar in alphabet.split(""))
 										{
-											trimmedClass = classToResolve.replace(classToResolve.split(".")[i], "");
-										}
-										else
-										{
-											var alphabet = "abcdefghijklmnopqrstuvwusyz";
-											for (alphachar in alphabet.split(""))
+											if (trimmedClass.contains("." + alphachar.toUpperCase()))
 											{
-												if (trimmedClass.contains("." + alphachar.toUpperCase()))
-												{
-													trimmedClass = trimmedClass.replace(trimmedClass.split("." + alphachar.toUpperCase())[0], "");
-												}
+												trimmedClass = trimmedClass.replace(trimmedClass.split("." + alphachar.toUpperCase())[0], "");
 											}
-											interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""),
-												Type.resolveClass(classToResolve.replace(" ", "")));
 										}
+										interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""),
+											Type.resolveClass(classToResolve.replace(" ", "")));
 									}
 								}
-							});
-							interp.variables.set("state", this);
-							interp.variables.set("remove", remove);
-							name = file;
+							}
+						});
+						interp.variables.set("state", this);
+						interp.variables.set("remove", remove);
+						name = file;
 
-							interp.execute(ast);
+						interp.execute(ast);
 
-							filesInserted.push(file);
-						}
+						filesInserted.push(file);
 					}
 				}
 			}

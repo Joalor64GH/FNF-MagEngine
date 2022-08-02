@@ -193,6 +193,7 @@ class Paths
 				newGraphic.persist = true;
 				FlxG.bitmap.addGraphic(newGraphic);
 				customImagesLoaded.set(key, true);
+				localTrackedAssets.push(key);
 			}
 			return FlxG.bitmap.get(key);
 		}
@@ -205,6 +206,7 @@ class Paths
 				newGraphic.persist = true;
 				FlxG.bitmap.addGraphic(newGraphic);
 				customImagesLoaded.set(key, true);
+				localTrackedAssets.push(key);
 			}
 			return FlxG.bitmap.get(key);
 		}

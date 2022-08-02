@@ -12,7 +12,7 @@ class MemoryManager
 		@:privateAccess
 		for (asset in FlxG.bitmap._cache.keys())
 		{
-			if (Paths.localTrackedAssets.contains(asset))
+			if (Paths.localTrackedAssets.contains(asset) && !Paths.customImagesLoaded.exists(asset))
 			{
 				if (FlxG.bitmap._cache.get(asset) != null)
 				{
@@ -35,13 +35,16 @@ class MemoryManager
 		System.gc();
 	}
 
-	public static function freeAllAssets()
+	public static function freeAllAssets(isTrans:Bool = false)
 	{
-		@:privateAccess
-		FlxG.bitmap._cache = [];
+		if (isTrans)
+		{
+			@:privateAccess
+			FlxG.bitmap._cache = [];
 
-		OpenFLAssets.cache.clear();
-		Paths.localTrackedAssets = [];
-		System.gc();
+			OpenFLAssets.cache.clear();
+			Paths.localTrackedAssets = [];
+			System.gc();
+		}
 	}
 }

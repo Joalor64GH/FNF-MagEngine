@@ -712,6 +712,7 @@ class PlayState extends MusicBeatState
 						loadedLayer.setGraphicSize(Std.int(loadedLayer.width * layer.scale));
 						loadedLayer.flipX = layer.flipX;
 						loadedLayer.flipY = layer.flipY;
+						loadedLayer.antialiasing = true;
 						add(loadedLayer);
 					}
 				}
@@ -2790,10 +2791,11 @@ class PlayState extends MusicBeatState
 	function trainReset():Void
 	{
 		gf.playAnim('hairFall');
-		if (gf.animation.curAnim.finished)
+		// I cannot believe I never fixed this earlier
+		new FlxTimer().start(0.5, function(tmr:FlxTimer)
 		{
 			gf.playAnim('danceRight');
-		}
+		});
 		phillyTrain.x = FlxG.width + 200;
 		trainMoving = false;
 		// trainSound.stop();
