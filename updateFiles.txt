@@ -132,3 +132,4 @@ assets/week7/sounds/jeffGameover/jeffGameover-22.ogg
 assets/week7/sounds/jeffGameover/jeffGameover-23.ogg
 assets/week7/sounds/jeffGameover/jeffGameover-24.ogg
 assets/week7/sounds/jeffGameover/jeffGameover-25.ogg
+assets/images/storymenu/week7.png
