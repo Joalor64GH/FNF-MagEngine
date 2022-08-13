@@ -70,7 +70,7 @@ class Highscore
 		var diffic:String = CoolUtil.difficultyStuff[diff][0];
 		if (diffic != null)
 		{
-			if (diffic != "Normal")
+			if (diffic != "normal")
 			{
 				daSong += "-" + diffic;
 			}

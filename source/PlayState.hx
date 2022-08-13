@@ -337,7 +337,7 @@ class PlayState extends MusicBeatState
 			if (storyDifficulty == i)
 			{
 				var formattedDifficulty = CoolUtil.difficultyString();
-				var firstLetter = formattedDifficulty.split('')[0].split('')[1];
+				var firstLetter = formattedDifficulty.split('')[0];
 				formattedDifficulty = firstLetter.toUpperCase() + formattedDifficulty.toLowerCase();
 				formattedDifficulty = formattedDifficulty.replace(firstLetter.toUpperCase() + firstLetter.toLowerCase(), firstLetter.toUpperCase());
 				storyDifficultyText = formattedDifficulty;
