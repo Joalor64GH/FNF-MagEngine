@@ -133,3 +133,6 @@ assets/week7/sounds/jeffGameover/jeffGameover-23.ogg
 assets/week7/sounds/jeffGameover/jeffGameover-24.ogg
 assets/week7/sounds/jeffGameover/jeffGameover-25.ogg
 assets/images/storymenu/week7.png
+assets/images/storymenudifficulties/easy.png
+assets/images/storymenudifficulties/normal.png
+assets/images/storymenudifficulties/hard.png
