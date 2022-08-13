@@ -136,3 +136,6 @@ assets/images/storymenu/week7.png
 assets/images/storymenudifficulties/easy.png
 assets/images/storymenudifficulties/normal.png
 assets/images/storymenudifficulties/hard.png
+assets/videos/gunsCutscene.mp4
+assets/videos/stressCutscene.mp4
+assets/videos/ughCutscene.mp4
