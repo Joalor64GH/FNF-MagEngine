@@ -139,3 +139,4 @@ assets/images/storymenudifficulties/hard.png
 assets/videos/gunsCutscene.mp4
 assets/videos/stressCutscene.mp4
 assets/videos/ughCutscene.mp4
+assets/weeks/weekList.txt
