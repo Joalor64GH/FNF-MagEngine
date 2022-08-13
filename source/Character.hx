@@ -1,5 +1,6 @@
 package;
 
+import Section.SwagSection;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;
@@ -78,6 +79,8 @@ class Character extends FlxSprite
 
 	public var imageDir:String = "BOYFRIEND";
 
+	public var animationNotes:Array<Dynamic> = [];
+
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
 		super(x, y);
@@ -100,7 +103,7 @@ class Character extends FlxSprite
 				imageDir = 'GF_assets';
 				if (FileSystem.exists(Paths.skinFolder('girlfriend/GF_assets.png')))
 				{
-					tex = Paths.getSkinsSparrowAtlas('girlfriend/' + imageDir);
+					tex = Paths.getSparrowAtlas('girlfriend/' + imageDir);
 				}
 				else
 				{
@@ -171,6 +174,16 @@ class Character extends FlxSprite
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 				updateHitbox();
 				antialiasing = false;
+
+			case 'gf-tankmen':
+				frames = Paths.getSparrowAtlas('characters/gfTankmen');
+				animation.addByIndices('sad', 'GF Crying at Gunpoint', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, true);
+				animation.addByIndices('danceLeft', 'GF Dancing at Gunpoint', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+				animation.addByIndices('danceRight', 'GF Dancing at Gunpoint', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+
+				loadOffsetFromFile('gf');
+
+				playAnim('danceRight');
 
 			case 'dad':
 				// DAD ANIMATION LOADING CODE
@@ -290,12 +303,25 @@ class Character extends FlxSprite
 
 				flipX = true;
 
+			case 'pico-speaker':
+				frames = Paths.getSparrowAtlas('characters/picoSpeaker');
+				animation.addByPrefix('shoot1', 'Pico shoot 1');
+				animation.addByPrefix('shoot2', 'Pico shoot 2');
+				animation.addByPrefix('shoot3', 'Pico shoot 3');
+				animation.addByPrefix('shoot4', 'Pico shoot 4');
+
+				loadOffsetFromFile(curCharacter);
+
+				playAnim('shoot1');
+
+				loadMappedAnims();
+
 			case 'bf':
 				imageDir = 'BOYFRIEND';
 				var tex:FlxAtlasFrames;
 				if (FileSystem.exists(Paths.skinFolder('boyfriend/BOYFRIEND.png')))
 				{
-					tex = Paths.getSkinsSparrowAtlas('boyfriend/' + imageDir);
+					tex = Paths.getSparrowAtlas('boyfriend/' + imageDir);
 				}
 				else
 				{
@@ -408,6 +434,38 @@ class Character extends FlxSprite
 				barColor = 0xFF31b0d1;
 				flipX = true;
 
+			case 'bf-holding-gf':
+				frames = Paths.getSparrowAtlas('characters/bfAndGF');
+				animation.addByPrefix('idle', 'BF idle dance');
+				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0');
+				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0');
+				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0');
+				animation.addByPrefix('singUP', 'BF NOTE UP0');
+				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS');
+				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS');
+				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS');
+				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS');
+
+				animation.addByPrefix('bfCatch', 'BF catches GF');
+
+				loadOffsetFromFile(curCharacter);
+				barColor = 0xFF31b0d1;
+				playAnim('idle');
+
+				flipX = true;
+			case 'bf-holding-gf-dead':
+				frames = Paths.getSparrowAtlas('characters/bfHoldingGF-DEAD');
+				animation.addByPrefix('singUP', 'BF Dead with GF Loop', 24, false);
+				animation.addByPrefix('firstDeath', 'BF Dies with GF', 24, false);
+				animation.addByPrefix('deathLoop', 'BF Dead with GF Loop', 24, false);
+				animation.addByPrefix('deathConfirm', 'RETRY confirm holding gf', 24, false);
+
+				loadOffsetFromFile(curCharacter);
+				barColor = 0xFF31b0d1;
+				playAnim('firstDeath');
+
+				flipX = true;
+
 			case 'senpai':
 				imageDir = 'characters/senpai';
 				frames = Paths.getSparrowAtlas(imageDir, 'shared');
@@ -478,6 +536,37 @@ class Character extends FlxSprite
 				barColor = 0xFF9a00f8;
 				playAnim('idle');
 
+			case 'tankman':
+				frames = Paths.getSparrowAtlas('characters/tankmanCaptain');
+				animation.addByPrefix('idle', 'Tankman Idle Dance');
+				if (isPlayer)
+				{
+					animation.addByPrefix('singLEFT', 'Tankman Note Left ');
+					animation.addByPrefix('singRIGHT', 'Tankman Right Note ');
+					animation.addByPrefix('singLEFTmiss', 'Tankman Note Left MISS');
+					animation.addByPrefix('singRIGHTmiss', 'Tankman Right Note MISS');
+				}
+				else
+				{
+					animation.addByPrefix('singLEFT', 'Tankman Right Note ');
+					animation.addByPrefix('singRIGHT', 'Tankman Note Left ');
+					animation.addByPrefix('singLEFTmiss', 'Tankman Right Note MISS');
+					animation.addByPrefix('singRIGHTmiss', 'Tankman Note Left MISS');
+				}
+				animation.addByPrefix('singUP', 'Tankman UP note ');
+				animation.addByPrefix('singDOWN', 'Tankman DOWN note ');
+				animation.addByPrefix('singUPmiss', 'Tankman UP note MISS');
+				animation.addByPrefix('singDOWNmiss', 'Tankman DOWN note MISS');
+
+				animation.addByPrefix('singDOWN-alt', 'PRETTY GOOD', 24, false);
+				animation.addByPrefix('singUP-alt', 'TANKMAN UGH');
+
+				loadOffsetFromFile(curCharacter);
+				barColor = 0xFFE1E1E1;
+				playAnim('idle');
+
+				flipX = true;
+
 			default:
 				#if MODS
 				var charKey:String = Paths.modFolder('custom_characters/' + curCharacter + '.json');
@@ -547,6 +636,26 @@ class Character extends FlxSprite
 		}
 	}
 
+	function loadMappedAnims()
+	{
+		var sections:Array<SwagSection> = cast Song.loadFromJson('picospeaker', 'stress').notes;
+		for (section in sections)
+		{
+			for (note in section.sectionNotes)
+			{
+				animationNotes.push(note);
+			}
+		}
+		TankmenBG.animationNotes = animationNotes;
+		trace(animationNotes);
+		animationNotes.sort(sortAnims);
+	}
+
+	function sortAnims(x, y)
+	{
+		return x[0] < y[0] ? -1 : x[0] > y[0] ? 1 : 0;
+	}
+
 	public function loadOffsetFromFile(character:String, library:String = 'shared')
 	{
 		var offset:Array<String> = CoolUtil.coolTextFile(Paths.txt('images/characters/' + character + "Offsets", library));
@@ -587,6 +696,30 @@ class Character extends FlxSprite
 
 			if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
 				playAnim(animation.curAnim.name + '-loop');
+		}
+		switch (curCharacter)
+		{
+			case 'gf':
+				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+					playAnim('danceRight');
+			case 'pico-speaker':
+				if (animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
+				{
+					trace("played shoot anim" + animationNotes[0][1]);
+					var shotDirection:Int = 1;
+					if (animationNotes[0][1] >= 2)
+					{
+						shotDirection = 3;
+					}
+					shotDirection += FlxG.random.int(0, 1);
+
+					playAnim('shoot' + shotDirection, true);
+					animationNotes.shift();
+				}
+				if (animation.curAnim.finished)
+				{
+					playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
+				}
 		}
 		super.update(elapsed);
 	}

@@ -48,11 +48,11 @@ class CachingState extends MusicBeatState
 
 		if (!FlxG.save.data.fpsCap)
 		{
-			FlxG.updateFramerate = 999;
+			openfl.Lib.current.stage.frameRate = 999;
 		}
 		else
 		{
-			FlxG.updateFramerate = 120;
+			openfl.Lib.current.stage.frameRate = 120;
 		}
 
 		bitmapData = new Map<String, FlxGraphic>();

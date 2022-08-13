@@ -33,9 +33,8 @@ class OptionsMenu extends MusicBeatState
 	var options:Array<OptionCategory> = [
 		new OptionCategory("Preferences",
 			[
-				new DownscrollOption(), new MiddlescrollOption(), new GhostTappingOption(), new AccuracyOption(), new CacheOption(), new FPSOption(),
-				new MEMOption(),
-				new VerOption(), new RatingOption(), new FPSCapOption(), new LogsOption()]),
+				new DownscrollOption(), new MiddlescrollOption(), new ScrollOption(), new ResetOption(), new GhostTappingOption(), new AccuracyOption(),
+				new CacheOption(), new FPSOption(), new MEMOption(), new VerOption(), new RatingOption(), new FPSCapOption(), new LogsOption()]),
 		new OptionCategory("Controls"),
 		new OptionCategory("Notes", [new OpponentNotesGlowOption(), new SplooshOption(), new TransparentNotesOption()]),
 		new OptionCategory("Exit")
@@ -57,6 +56,11 @@ class OptionsMenu extends MusicBeatState
 	{
 		MemoryManager.freeTrashedAssets();
 		MemoryManager.freeAllAssets();
+
+		if (FlxG.save.data.mousescroll)
+		{
+			FlxG.save.data.mousescroll = true;
+		}
 
 		instance = this;
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuDesat"));
@@ -97,6 +101,15 @@ class OptionsMenu extends MusicBeatState
 	{
 		super.update(elapsed);
 
+		if (!FlxG.save.data.mousescroll)
+		{
+			FlxG.mouse.visible = false;
+		}
+		else
+		{
+			FlxG.mouse.visible = true;
+		}
+
 		if (acceptInput && !confirming)
 		{
 			if (controls.BACK)
@@ -125,6 +138,12 @@ class OptionsMenu extends MusicBeatState
 				changeSelection(1);
 			}
 
+			if (FlxG.mouse.wheel != 0 && FlxG.save.data.mousescroll)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+				changeSelection(-FlxG.mouse.wheel);
+			}
+
 			if (isCat)
 			{
 				if (currentSelectedCat.getOptions()[curSelected].getAccept())
@@ -146,7 +165,7 @@ class OptionsMenu extends MusicBeatState
 				}
 			}
 
-			if (controls.ACCEPT)
+			if (controls.ACCEPT || (FlxG.mouse.justPressed && FlxG.save.data.mousescroll))
 			{
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 				confirming = true;

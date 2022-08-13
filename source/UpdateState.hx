@@ -42,11 +42,16 @@ using StringTools;
 class UpdateState extends MusicBeatState
 {
 	public static var coolText:FlxText;
-	public static var finishedFiles:Int = 0;
+
+	public var finishedFiles:Float = 0;
 
 	var fileArray:Array<String> = [];
 
 	var firstFileDownloaded:Bool = false;
+
+	var originalFileArrayLength:Int = 0;
+
+	var progressBar:FlxBar;
 
 	override public function create()
 	{
@@ -76,6 +81,15 @@ class UpdateState extends MusicBeatState
 		add(coolText);
 
 		requestData();
+
+		originalFileArrayLength = fileArray.length;
+
+		progressBar = new FlxBar(0, 0, LEFT_TO_RIGHT, Std.int(FlxG.width * 0.75), 30, this, "finishedFiles", 0, originalFileArrayLength);
+		progressBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME, true, FlxColor.BLACK);
+		progressBar.screenCenter(X);
+		progressBar.y = coolText.y + 100;
+		progressBar.scrollFactor.set(0, 0);
+		add(progressBar);
 
 		new FlxTimer().start(3, function(tmr:FlxTimer)
 		{
@@ -112,14 +126,7 @@ class UpdateState extends MusicBeatState
 
 			LoggingUtil.writeToLogFile('Recieved Update Data!');
 
-			var progressBar = new FlxBar(0, 0, LEFT_TO_RIGHT, Std.int(FlxG.width * 0.75), 30, this, "finishedFiles", 0, fileArray.length);
-			progressBar.createFilledBar(FlxColor.GRAY, FlxColor.GREEN, true, FlxColor.BLACK);
-			progressBar.screenCenter(X);
-			progressBar.y = coolText.y + 100;
-			progressBar.scrollFactor.set(0, 0);
-			add(progressBar);
-
-			coolText.text = "Downloading Update Files... (" + finishedFiles + "/" + fileArray.length + ")";
+			coolText.text = "Downloading Update Files... (" + finishedFiles + "/" + originalFileArrayLength + ")";
 
 			var firstReturnedFile = fileArray.shift();
 

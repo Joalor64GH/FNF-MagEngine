@@ -40,9 +40,17 @@ class ModsMenu extends MusicBeatState
 
 	override function create()
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		LoggingUtil.writeToLogFile('In The Mods Menu!');
 
 		var menuBG:FlxSprite;
+
+		if (FlxG.save.data.mousescroll)
+		{
+			FlxG.mouse.visible = true;
+		}
 
 		menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 
@@ -185,12 +193,21 @@ class ModsMenu extends MusicBeatState
 				curSelected++;
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			}
+
+			if (FlxG.mouse.wheel != 0 && FlxG.save.data.mousescroll)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+				curSelected += -FlxG.mouse.wheel;
+			}
 		}
 
 		if (controls.BACK)
 		{
 			PolymodHandler.loadMods();
-			FlxG.mouse.visible = false;
+			if (!FlxG.save.data.mousescroll)
+			{
+				FlxG.mouse.visible = false;
+			}
 			LoadingState.loadAndSwitchState(new MainMenuState());
 		}
 

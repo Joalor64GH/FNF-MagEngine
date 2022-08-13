@@ -445,3 +445,47 @@ class TransparentNotesOption extends Option
 		return "Transparent Strums";
 	}
 }
+
+class ResetOption extends Option
+{
+	public function new()
+	{
+		super();
+		daValue = FlxG.save.data.canReset;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.canReset = !FlxG.save.data.canReset;
+		daValue = FlxG.save.data.canReset;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Reset Button";
+	}
+}
+
+class ScrollOption extends Option
+{
+	public function new()
+	{
+		super();
+		daValue = FlxG.save.data.mousescroll;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.mousescroll = !FlxG.save.data.mousescroll;
+		daValue = FlxG.save.data.mousescroll;
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Mouse Scrolling";
+	}
+}

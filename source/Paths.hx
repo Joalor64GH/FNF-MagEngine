@@ -315,7 +315,7 @@ class Paths
 
 	inline static public function skinImages(key:String)
 	{
-		return skinFolder(key + '.png');
+		return skinFolder('images/' + key + '.png');
 	}
 
 	inline static public function modsPng(key:String)
@@ -375,26 +375,24 @@ class Paths
 	{
 		var imageLoaded:FlxGraphic = addCustomGraphic(key);
 		var xmlExists:Bool = false;
-		if (FileSystem.exists(modsXml(key)))
+		var skinsExists:Bool = false;
+		if (FileSystem.exists(skinsXml(key)))
+		{
+			skinsExists = true;
+		}
+		else if (FileSystem.exists(modsXml(key)))
 		{
 			xmlExists = true;
+		}
+
+		if (skinsExists)
+		{
+			return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
+				(xmlExists ? File.getContent(skinsXml(key)) : file('$key.xml', library)));
 		}
 
 		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
 			(xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
-	}
-
-	inline static public function getSkinsSparrowAtlas(key:String, ?library:String)
-	{
-		var imageLoaded:FlxGraphic = addCustomGraphic(key);
-		var xmlExists:Bool = false;
-		if (FileSystem.exists(skinsXml(key)))
-		{
-			xmlExists = true;
-		}
-
-		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
-			(xmlExists ? File.getContent(skinsXml(key)) : file('$key.xml', library)));
 	}
 
 	inline static public function getPackerAtlas(key:String, ?library:String)

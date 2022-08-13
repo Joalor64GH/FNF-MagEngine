@@ -40,6 +40,9 @@ class SkinsMenu extends MusicBeatState
 
 	override function create()
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		LoggingUtil.writeToLogFile('In The Skins Menu!');
 
 		var menuBG:FlxSprite;
@@ -185,6 +188,12 @@ class SkinsMenu extends MusicBeatState
 			{
 				curSelected++;
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			}
+
+			if (FlxG.mouse.wheel != 0 && FlxG.save.data.mousescroll)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+				curSelected += -FlxG.mouse.wheel;
 			}
 		}
 

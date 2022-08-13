@@ -40,6 +40,11 @@ class SocialsState extends MusicBeatState
 		MemoryManager.freeTrashedAssets();
 		MemoryManager.freeAllAssets();
 
+		if (FlxG.save.data.mousescroll)
+		{
+			FlxG.mouse.visible = true;
+		}
+
 		LoggingUtil.writeToLogFile('In The Socials Menu!');
 
 		#if desktop
@@ -135,7 +140,13 @@ class SocialsState extends MusicBeatState
 				MusicBeatState.switchState(new MainMenuState());
 			}
 
-			if (controls.ACCEPT)
+			if (FlxG.mouse.wheel != 0 && FlxG.save.data.mousescroll)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+				changeItem(-FlxG.mouse.wheel);
+			}
+
+			if (controls.ACCEPT || (FlxG.mouse.justPressed && FlxG.save.data.mousescroll))
 			{
 				switch (optionShit[curSelected])
 				{

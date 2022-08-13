@@ -163,7 +163,7 @@ class DialogueBox extends FlxSpriteGroup
 		swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 32);
 		swagDialogue.setFormat(Paths.font("funkin.otf"), 50);
 		swagDialogue.color = FlxColor.BLACK;
-		swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+		swagDialogue.sounds = [FlxG.sound.load(Paths.sound('SNAP'), 0.6)];
 		add(swagDialogue);
 
 		dialogue = new Alphabet(0, 80, "", false, true);
@@ -184,6 +184,7 @@ class DialogueBox extends FlxSpriteGroup
 			dropText.color = 0xFFD89494;
 			swagDialogue.setFormat(Paths.font("pixel.otf"), 32);
 			swagDialogue.color = 0xFF3F2021;
+			swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		}
 		else if (PlayState.SONG.song.toLowerCase() == 'roses')
 		{
@@ -192,6 +193,7 @@ class DialogueBox extends FlxSpriteGroup
 			dropText.color = 0xFFD89494;
 			swagDialogue.setFormat(Paths.font("pixel.otf"), 32);
 			swagDialogue.color = 0xFF3F2021;
+			swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		}
 		else if (PlayState.SONG.song.toLowerCase() == 'thorns')
 		{
@@ -199,6 +201,7 @@ class DialogueBox extends FlxSpriteGroup
 			swagDialogue.color = FlxColor.WHITE;
 			dropText.color = FlxColor.BLACK;
 			swagDialogue.setFormat(Paths.font("pixel.otf"), 32);
+			swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		}
 
 		dropText.text = swagDialogue.text;

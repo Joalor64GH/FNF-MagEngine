@@ -17,3 +17,6 @@ Winter Horrorland:monster:5:0xFFA0D1FF
 Senpai:senpai:6:0xFFFF78BF
 Roses:senpai:6:0xFFFF78BF
 Thorns:spirit:6:0xFFFF78BF
+Ugh:tankman:7:0xFFf6b604
+Guns:tankman:7:0xFFf6b604
+Stress:tankman:7:0xFFf6b604

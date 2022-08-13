@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Mag Engine" file="Mag Engine" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="1.5.1h" company="Magnumsrt" />
+	<app title="Friday Night Funkin': Mag Engine" file="Mag Engine" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="1.5.2" company="Magnumsrt" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -68,6 +68,7 @@
 		<library name="week4" preload="true" />
 		<library name="week5" preload="true" />
 		<library name="week6" preload="true" />
+		<library name="week7" preload="true" />
 	</section>
 
 	<section unless="PRELOAD_ALL">
@@ -80,6 +81,7 @@
 		<library name="week4" preload="false" />
 		<library name="week5" preload="false" />
 		<library name="week6" preload="false" />
+		<library name="week7" preload="false" />
 	</section>
 
 	<assets path="assets/songs" library="songs" exclude="*.ogg" if="web" />
@@ -100,6 +102,9 @@
 	<assets path="assets/week5" library="week5" exclude="*.mp3" unless="web" />
 	<assets path="assets/week6" library="week6" exclude="*.ogg" if="web" />
 	<assets path="assets/week6" library="week6" exclude="*.mp3" unless="web" />
+	<assets path="assets/week7" library="week7"    exclude="*.ogg" if="web"/>
+	<assets path="assets/week7" library="week7"    exclude="*.mp3|*.mp4" unless="web"/>
+
 
 	<assets path="assets/videos" exclude="*.mp3" if="web" />
 	<assets path="assets/videos" exclude="*.ogg" unless="web" />
@@ -130,9 +135,9 @@
 	<haxelib name="flixel-ui" />
 	<haxelib name="newgrounds" />
 	<haxelib name="faxe" if='switch' />
-	<haxelib name="linc_luajit" />
 	<haxelib name="polymod" />
      <haxelib name="hxCodec" if="desktop || android" />
+     <haxelib name="flixel-shadertoy-shader" />
 	<haxelib name="discord_rpc" if="desktop" />
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 

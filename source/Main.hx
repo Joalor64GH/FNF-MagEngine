@@ -57,14 +57,8 @@ class Main extends Sprite
 		}
 		else
 		{
-			try
-			{
-				if (FileSystem.exists("Updater.exe"))
-					FileSystem.deleteFile('Updater.exe');
-			}
-			catch (thrownException)
-			{
-			}
+			if (FileSystem.exists("Updater.exe"))
+				FileSystem.deleteFile('Updater.exe');
 
 			Lib.current.addChild(new Main());
 		}

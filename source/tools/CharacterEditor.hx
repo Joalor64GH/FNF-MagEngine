@@ -471,6 +471,14 @@ class CharacterEditor extends MusicBeatState
 		{
 			iconP2.visible = false;
 			var assetName:String = yoInputText.text.trim();
+			createdCharacter.healthbarColor = [
+				Std.parseInt(bfInputText.text.split(", ")[0]),
+				Std.parseInt(bfInputText.text.split(", ")[1].split(", ")[0]),
+				Std.parseInt(bfInputText.text.split(", ")[1].split(", ")[1])
+			];
+
+			healthBarBG.color = FlxColor.fromRGB(Std.parseInt(bfInputText.text.split(", ")[0]), Std.parseInt(bfInputText.text.split(", ")[1].split(", ")[0]),
+				Std.parseInt(bfInputText.text.split(", ")[1].split(", ")[1]));
 			if (assetName != null && assetName.length > 0)
 			{
 				if (FileSystem.exists(Paths.modsImages('icons/icon-' + assetName)))

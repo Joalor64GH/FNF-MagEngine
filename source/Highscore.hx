@@ -1,6 +1,12 @@
 package;
 
 import flixel.FlxG;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
+
+using StringTools;
 
 class Highscore
 {
@@ -55,15 +61,24 @@ class Highscore
 		FlxG.save.flush();
 	}
 
-	public static function formatSong(song:String, diff:Int):String
+	public static function formatSong(song:String, diff:Null<Int> = null):String
 	{
+		if (diff == null)
+			diff = PlayState.storyDifficulty;
+
 		var daSong:String = song;
-
-		if (diff == 0)
-			daSong += '-easy';
-		else if (diff == 2)
-			daSong += '-hard';
-
+		var diffic:String = CoolUtil.difficultyStuff[diff][0];
+		if (diffic != null)
+		{
+			if (diffic != "Normal")
+			{
+				daSong += "-" + diffic;
+			}
+			else
+			{
+				daSong += "";
+			}
+		}
 		return daSong;
 	}
 

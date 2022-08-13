@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="UGH_NOTE_assets.png">
+	<!-- Created with Adobe Animate version 22.0.7.214 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="blueugh0000" x="0" y="0" width="157" height="154"/>
+	<SubTexture name="greenugh0000" x="157" y="0" width="157" height="154"/>
+	<SubTexture name="purpleugh0000" x="314" y="0" width="154" height="157"/>
+	<SubTexture name="redugh0000" x="0" y="157" width="154" height="157"/>
+</TextureAtlas>

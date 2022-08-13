@@ -43,6 +43,8 @@ typedef SwagSong =
 	var gfVersion:String;
 	public var dialoguetoggle:String;
 	public var videotoggle:String;
+	public var cutscenetoggle:String;
+	public var cutsceneScript:String;
 }
 
 class Song
@@ -59,6 +61,8 @@ class Song
 	public var gfVersion:String = 'gf';
 	public var dialoguetoggle:String = 'false';
 	public var videotoggle:String = 'false';
+	public var cutsceneScript:String = '';
+	public var cutscenetoggle:String = 'false';
 	public var events:Array<MidSongEvent>;
 
 	public function new(song, notes, bpm)

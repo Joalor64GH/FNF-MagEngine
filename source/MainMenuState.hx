@@ -47,6 +47,11 @@ class MainMenuState extends MusicBeatState
 		MemoryManager.freeTrashedAssets();
 		MemoryManager.freeAllAssets();
 
+		if (FlxG.save.data.mousescroll)
+		{
+			FlxG.mouse.visible = true;
+		}
+
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -146,7 +151,8 @@ class MainMenuState extends MusicBeatState
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 22, 0, "FNF v0.2.7.1 - Mag Engine v" + Application.current.meta.get('version'), 12);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 22, 0, "Friday Night Funkin' v0.2.8 - Mag Engine v" + Application.current.meta.get('version'),
+			12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		versionShit.antialiasing = true;
@@ -184,9 +190,21 @@ class MainMenuState extends MusicBeatState
 			}
 
 			if (controls.BACK)
+			{
+				if (FlxG.save.data.mousescroll)
+				{
+					FlxG.mouse.visible = false;
+				}
 				MusicBeatState.switchState(new TitleState());
+			}
 
-			if (controls.ACCEPT)
+			if (FlxG.mouse.wheel != 0 && FlxG.save.data.mousescroll)
+			{
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+				changeItem(-FlxG.mouse.wheel);
+			}
+
+			if (controls.ACCEPT || (FlxG.mouse.justPressed && FlxG.save.data.mousescroll))
 			{
 				if (optionShit[curSelected] == 'donate')
 					CoolUtil.openURL('https://ninja-muffin24.itch.io/funkin');

@@ -40,10 +40,18 @@ class EditorMenuState extends MusicBeatState
 
 	override function create()
 	{
+		MemoryManager.freeTrashedAssets();
+		MemoryManager.freeAllAssets();
+
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
+
+		if (FlxG.save.data.mousescroll)
+		{
+			FlxG.mouse.visible = true;
+		}
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFF353535;
@@ -115,7 +123,12 @@ class EditorMenuState extends MusicBeatState
 		if (controls.BACK && !confirming)
 			MusicBeatState.switchState(new MainMenuState());
 
-		if (controls.ACCEPT && !confirming)
+		if (FlxG.mouse.wheel != 0 && FlxG.save.data.mousescroll && !confirming)
+		{
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			changeSelection(-FlxG.mouse.wheel);
+		}
+		if ((controls.ACCEPT && !confirming) || (FlxG.mouse.justPressed && FlxG.save.data.mousescroll && !confirming))
 		{
 			FlxG.sound.play(Paths.sound('confirmMenu'));
 			confirming = true;

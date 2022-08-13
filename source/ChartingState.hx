@@ -80,6 +80,10 @@ class ChartingState extends MusicBeatState
 	var nextRenderedSustains:FlxTypedGroup<FlxSprite>;
 	var nextRenderedNotes:FlxTypedGroup<Note>;
 
+	var cutscenedropdown:FlxUIDropDownMenuCustom;
+	var cutscenescriptconf:FlxUIInputText;
+	var cutscrlabel:FlxText;
+
 	var gridBG:FlxSprite;
 
 	var _song:SwagSong;
@@ -164,6 +168,8 @@ class ChartingState extends MusicBeatState
 				stage: 'stage',
 				dialoguetoggle: 'false',
 				videotoggle: 'false',
+				cutscenetoggle: 'false',
+				cutsceneScript: '',
 				speed: 1,
 				validScore: false
 			};
@@ -290,8 +296,9 @@ class ChartingState extends MusicBeatState
 		{
 			characters = CoolUtil.coolTextFile(Paths.txt('data/characterList'));
 		}
-		var dialogueintros:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/dialogueIntroToggle'));
-		var videointros:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/videoIntroToggle'));
+		var dialogueintros:Array<String> = ['false', 'true'];
+		var cutSceneIntros:Array<String> = ['false', 'true'];
+		var videointros:Array<String> = ['false', 'true'];
 		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/gfVersionList'));
 		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/stageList'));
 		if (FileSystem.exists(Paths.modTxt('data/stageList')) && FileSystem.exists(Paths.txt('data/stageList')))
@@ -385,6 +392,24 @@ class ChartingState extends MusicBeatState
 		});
 		viddropdown.selectedLabel = _song.videotoggle;
 
+		cutscenedropdown = new FlxUIDropDownMenuCustom(10, 180, FlxUIDropDownMenuCustom.makeStrIdLabelArray(cutSceneIntros, true), function(cutintro:String)
+		{
+			_song.cutscenetoggle = cutSceneIntros[Std.parseInt(cutintro)];
+		});
+		cutscenedropdown.selectedLabel = _song.cutscenetoggle;
+
+		var cutlabel = new FlxText(10, 160, 64, 'Cutscenes');
+		var UI_event = new FlxUIInputText(140, 105, 120, "", 8);
+		cutscenescriptconf = new FlxUIInputText(140, 180, 120, "", 8);
+		cutscenescriptconf.visible = false;
+		if (_song.cutsceneScript != null)
+		{
+			cutscenescriptconf.text = _song.cutsceneScript;
+		}
+
+		cutscrlabel = new FlxText(140, 150, 64, 'Cutscene Script Name');
+		cutscrlabel.visible = false;
+
 		var videolabel = new FlxText(140, 80, 64, 'Videos');
 
 		if (_song.events == null)
@@ -476,6 +501,10 @@ class ChartingState extends MusicBeatState
 		tab_group_intro.add(dialoguelabel);
 		tab_group_intro.add(viddropdown);
 		tab_group_intro.add(videolabel);
+		tab_group_intro.add(cutscenedropdown);
+		tab_group_intro.add(cutlabel);
+		tab_group_intro.add(cutscenescriptconf);
+		tab_group_intro.add(cutscrlabel);
 
 		var tab_group_events = new FlxUI(null, UI_box);
 		tab_group_events.name = "Events";
@@ -824,6 +853,22 @@ class ChartingState extends MusicBeatState
 		if (FlxG.keys.justPressed.Q)
 		{
 			changeNoteSustain(-Conductor.stepCrochet);
+		}
+
+		if (cutscenedropdown.selectedLabel == 'true' && !cutscenescriptconf.visible)
+		{
+			cutscenescriptconf.visible = true;
+			cutscrlabel.visible = true;
+		}
+		else if (cutscenedropdown.selectedLabel == 'false' && cutscenescriptconf.visible)
+		{
+			cutscenescriptconf.visible = false;
+			cutscrlabel.visible = false;
+		}
+
+		if (cutscenescriptconf.text != "" && cutscenescriptconf.visible)
+		{
+			_song.cutsceneScript = cutscenescriptconf.text;
 		}
 
 		if (FlxG.keys.justPressed.TAB)
@@ -1266,9 +1311,9 @@ class ChartingState extends MusicBeatState
 		if (noteTypeDropDown.selectedLabel == 'hurt-note')
 			noteType = 1;
 		if (noteTypeDropDown.selectedLabel == 'kill-note')
-		{
 			noteType = 2;
-		}
+		if (noteTypeDropDown.selectedLabel == 'ugh-note')
+			noteType = 3;
 
 		_song.notes[curSection].sectionNotes.push([noteStrum, noteData, noteSus, noteType, curCustomNote]);
 

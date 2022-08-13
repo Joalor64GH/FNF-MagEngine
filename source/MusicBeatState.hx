@@ -17,8 +17,6 @@ class MusicBeatState extends FlxUIState
 	private var curBeat:Int = 0;
 	private var controls(get, never):Controls;
 
-	private static var firstTimeVisited:Array<FlxState> = [];
-
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
@@ -52,14 +50,7 @@ class MusicBeatState extends FlxUIState
 
 	public static function switchState(nextState:FlxState)
 	{
-		firstTimeVisited.push(nextState);
-
 		MemoryManager.freeTrashedAssets();
-
-		if (!firstTimeVisited.contains(nextState))
-		{
-			MemoryManager.freeAllAssets(true);
-		}
 
 		// Custom made Trans in
 		var curState:Dynamic = FlxG.state;

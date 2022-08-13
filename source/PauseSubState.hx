@@ -22,7 +22,7 @@ class PauseSubState extends MusicBeatSubstate
 		'Resume',
 		'Restart Song',
 		'Change Difficulty',
-		'Toggle Botplay',
+		'Botplay',
 		'Toggle Practice Mode',
 		'Exit to menu'
 	];
@@ -75,7 +75,7 @@ class PauseSubState extends MusicBeatSubstate
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
-		var blueballedTxt:FlxText = new FlxText(20, 15 + 64, 0, "Blueballed: " + PlayState.bbCounter, 32);
+		var blueballedTxt:FlxText = new FlxText(20, 15 + 64, 0, "Blue balled: " + PlayState.bbCounter, 32);
 		blueballedTxt.scrollFactor.set();
 		blueballedTxt.setFormat(Paths.font('vcr.ttf'), 32);
 		blueballedTxt.updateHitbox();
@@ -175,7 +175,7 @@ class PauseSubState extends MusicBeatSubstate
 					FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 					PlayState.practiceAllowed = !PlayState.practiceAllowed;
 					practiceTxt.visible = PlayState.practiceAllowed;
-				case "Toggle Botplay":
+				case "Botplay":
 					FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 					PlayState.cpuControlled = !PlayState.cpuControlled;
 					botplayTxt.visible = PlayState.cpuControlled;
@@ -183,6 +183,8 @@ class PauseSubState extends MusicBeatSubstate
 					MusicBeatState.resetState();
 				case "Exit to menu":
 					PlayState.bbCounter = 0;
+					PlayState.seenCutscene = false;
+
 					if (PlayState.isStoryMode)
 						MusicBeatState.switchState(new StoryMenuState());
 					else

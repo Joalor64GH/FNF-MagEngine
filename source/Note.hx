@@ -127,11 +127,22 @@ class Note extends FlxSprite
 
 						setGraphicSize(Std.int(width * 0.7));
 					}
+				case 3:
+					{
+						frames = Paths.getSparrowAtlas('UGH_NOTE_assets');
+
+						animation.addByPrefix('greenScroll', 'greenugh');
+						animation.addByPrefix('redScroll', 'redugh');
+						animation.addByPrefix('blueScroll', 'blueugh');
+						animation.addByPrefix('purpleScroll', 'purpleugh');
+
+						setGraphicSize(Std.int(width * 0.7));
+					}
 				default:
 					{
 						if (FileSystem.exists(Paths.skinFolder('notes/NOTE_assets.png')))
 						{
-							frames = Paths.getSkinsSparrowAtlas('notes/NOTE_assets');
+							frames = Paths.getSparrowAtlas('notes/NOTE_assets');
 						}
 						else
 						{
@@ -157,53 +168,51 @@ class Note extends FlxSprite
 			}
 			if (customNote != null && customNote != "" && Math.isNaN(Std.parseFloat(customNote)))
 			{
+				var interp = new Interp();
+				var expr = File.getContent(Paths.note(customNote + ".hx"));
+				var parser = new hscript.Parser();
+				parser.allowTypes = true;
+				parser.allowJSON = true;
+				parser.allowMetadata = true;
+				var ast = parser.parseString(expr);
+				interp.variables.set("update", function(elapsed:Float)
 				{
-					var interp = new Interp();
-					var expr = File.getContent(Paths.note(customNote + ".hx"));
-					var parser = new hscript.Parser();
-					parser.allowTypes = true;
-					parser.allowJSON = true;
-					parser.allowMetadata = true;
-					var ast = parser.parseString(expr);
-					interp.variables.set("update", function(elapsed:Float)
+				});
+				interp.variables.set("create", function()
+				{
+				});
+				interp.variables.set("import", function(classToResolve:String)
+				{
+					interp.variables.set(classToResolve.replace(" ", ""), Type.resolveClass(classToResolve.replace(" ", "")));
+					var trimmedClass = "";
+					if (classToResolve.contains("."))
 					{
-					});
-					interp.variables.set("create", function()
-					{
-					});
-					interp.variables.set("import", function(classToResolve:String)
-					{
-						interp.variables.set(classToResolve.replace(" ", ""), Type.resolveClass(classToResolve.replace(" ", "")));
-						var trimmedClass = "";
-						if (classToResolve.contains("."))
+						for (i in 0...classToResolve.split(".").length)
 						{
-							for (i in 0...classToResolve.split(".").length)
+							if (i != classToResolve.split(".").length - 1)
 							{
-								if (i != classToResolve.split(".").length - 1)
+								trimmedClass = classToResolve.replace(classToResolve.split(".")[i], "");
+							}
+							else
+							{
+								var alphabet = "abcdefghijklmnopqrstuvwusyz";
+								for (alphachar in alphabet.split(""))
 								{
-									trimmedClass = classToResolve.replace(classToResolve.split(".")[i], "");
-								}
-								else
-								{
-									var alphabet = "abcdefghijklmnopqrstuvwusyz";
-									for (alphachar in alphabet.split(""))
+									if (trimmedClass.contains("." + alphachar.toUpperCase()))
 									{
-										if (trimmedClass.contains("." + alphachar.toUpperCase()))
-										{
-											trimmedClass = trimmedClass.replace(trimmedClass.split("." + alphachar.toUpperCase())[0], "");
-										}
+										trimmedClass = trimmedClass.replace(trimmedClass.split("." + alphachar.toUpperCase())[0], "");
 									}
-									interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""), Type.resolveClass(classToResolve.replace(" ", "")));
 								}
+								interp.variables.set(trimmedClass.replace(" ", "").replace(".", ""), Type.resolveClass(classToResolve.replace(" ", "")));
 							}
 						}
-					});
-					interp.variables.set("note", this);
+					}
+				});
+				interp.variables.set("note", this);
 
-					interp.execute(ast);
+				interp.execute(ast);
 
-					setGraphicSize(Std.int(width * 0.7));
-				}
+				setGraphicSize(Std.int(width * 0.7));
 			}
 		}
 		updateHitbox();
@@ -285,6 +294,11 @@ class Note extends FlxSprite
 		}
 
 		if (isSustainNote && prevNote.noteType == 2)
+		{
+			this.kill();
+		}
+
+		if (isSustainNote && prevNote.noteType == 3)
 		{
 			this.kill();
 		}

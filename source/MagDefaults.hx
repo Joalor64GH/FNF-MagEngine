@@ -52,6 +52,12 @@ class MagDefaults
 		if (FlxG.save.data.fpsCap == null)
 			FlxG.save.data.fpsCap = true;
 
+		if (FlxG.save.data.canReset == null)
+			FlxG.save.data.canReset = true;
+
+		if (FlxG.save.data.mousescroll == null)
+			FlxG.save.data.mousescroll = true;
+
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();
 	}

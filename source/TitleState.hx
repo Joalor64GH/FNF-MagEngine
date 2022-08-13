@@ -396,13 +396,20 @@ class TitleState extends MusicBeatState
 	{
 		super.beatHit();
 
-		logoBl.animation.play('bump');
+		if (logoBl != null)
+		{
+			logoBl.animation.play('bump');
+		}
+
 		danceLeft = !danceLeft;
 
-		if (danceLeft)
-			gfDance.animation.play('danceRight');
-		else
-			gfDance.animation.play('danceLeft');
+		if (gfDance != null)
+		{
+			if (danceLeft)
+				gfDance.animation.play('danceRight');
+			else
+				gfDance.animation.play('danceLeft');
+		}
 
 		FlxG.log.add(curBeat);
 

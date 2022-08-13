@@ -39,6 +39,11 @@ class CreditsMenu extends MusicBeatState
 		MemoryManager.freeTrashedAssets();
 		MemoryManager.freeAllAssets();
 
+		if (FlxG.save.data.mousescroll)
+		{
+			FlxG.mouse.visible = true;
+		}
+
 		var initCreditlist = CoolUtil.coolTextFile(Paths.txt('data/creditsList'));
 
 		if (FileSystem.exists(Paths.modTxt('data/creditsList')) && FileSystem.exists(Paths.txt('data/creditsList')))
@@ -152,6 +157,12 @@ class CreditsMenu extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			changeSelection(shiftMult);
+		}
+
+		if (FlxG.mouse.wheel != 0 && FlxG.save.data.mousescroll)
+		{
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+			changeSelection(-FlxG.mouse.wheel);
 		}
 
 		if (controls.BACK)
