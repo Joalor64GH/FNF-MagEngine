@@ -1,6 +1,4 @@
 Mag Engine.exe
-python3.dll
-python310.dll
 assets/data/creditsList.txt
 assets/data/eventList.txt
 mods/custom_events/eventList.txt
