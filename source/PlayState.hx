@@ -61,7 +61,9 @@ import hscript.Expr;
 import hscript.Parser;
 import hscript.Interp;
 import modloader.ModsMenu;
+#if SCRIPTS_PYTHON
 import pythonUtil.Python;
+#end
 
 using StringTools;
 
@@ -1092,7 +1094,9 @@ class PlayState extends MusicBeatState
 
 					if (file.endsWith('.py') && !filesInserted.contains(file))
 					{
+						#if SCRIPTS_PYTHON
 						Python.doFile(folder + file);
+						#end
 
 						filesInserted.push(file);
 					}
@@ -1130,7 +1134,9 @@ class PlayState extends MusicBeatState
 
 					if (file.endsWith('.py') && !filesInserted.contains(file))
 					{
+						#if SCRIPTS_PYTHON
 						Python.doFile(folder + file);
+						#end
 
 						filesInserted.push(file);
 					}

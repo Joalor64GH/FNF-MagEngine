@@ -55,6 +55,7 @@
 
 	<define name="MODS" if="desktop" />
 	<define name="SCRIPTS" if="desktop" />
+	<define name="SCRIPTS_PYTHON" if="windows" />
 	<define name="CACHE" unless="windows" />
 	<define name="PRELOAD_ALL" unless="web" />
 
