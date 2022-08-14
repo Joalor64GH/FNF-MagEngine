@@ -2559,6 +2559,10 @@ class PlayState extends MusicBeatState
 			else
 			{
 				var difficulty:String = "-" + CoolUtil.difficultyString().toLowerCase();
+				if (difficulty == "-normal")
+				{
+					difficulty = "";
+				}
 
 				trace('LOADING NEXT SONG');
 				trace(PlayState.storyPlaylist[0].toLowerCase() + difficulty);
