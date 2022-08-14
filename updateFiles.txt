@@ -97,8 +97,8 @@ assets/week7/images/tankRolling.png
 assets/week7/images/tankRolling.xml
 assets/week7/images/tankRuins.png
 assets/week7/images/tankSky.png
-assets/week7/images/tankmanWatchtower.png
-assets/week7/images/tankmanWatchtower.xml
+assets/week7/images/tankWatchtower.png
+assets/week7/images/tankWatchtower.xml
 assets/week7/music/DISTORTO.ogg
 assets/week7/sounds/bfBeep.ogg
 assets/week7/sounds/killYou.ogg
