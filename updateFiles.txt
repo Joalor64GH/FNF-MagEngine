@@ -93,7 +93,6 @@ assets/week7/images/tankGround.png
 assets/week7/images/tankmanKilled1.png
 assets/week7/images/tankmanKilled1.xml
 assets/week7/images/tankMountains.png
-assets/week7/images/tankMountains.xml
 assets/week7/images/tankRolling.png
 assets/week7/images/tankRolling.xml
 assets/week7/images/tankRuins.png
