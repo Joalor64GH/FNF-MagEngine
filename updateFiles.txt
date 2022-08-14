@@ -140,3 +140,7 @@ assets/videos/gunsCutscene.mp4
 assets/videos/stressCutscene.mp4
 assets/videos/ughCutscene.mp4
 assets/weeks/weekList.txt
+assets/data/weekNames.txt
+assets/images/bg.png
+assets/images/gfDanceTitle.png
+assets/images/gfDanceTitle.xml

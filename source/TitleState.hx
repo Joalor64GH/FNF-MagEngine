@@ -432,6 +432,7 @@ class TitleState extends MusicBeatState
 			case 7:
 				addMoreText('magnumsrt');
 				addMoreText('stilic');
+				addMoreText('foxdeveloper');
 			// credTextShit.text += '\nNewgrounds';
 			case 8:
 				deleteCoolText();
