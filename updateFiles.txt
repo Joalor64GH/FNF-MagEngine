@@ -141,3 +141,4 @@ assets/data/weekNames.txt
 assets/images/bg.png
 assets/images/gfDanceTitle.png
 assets/images/gfDanceTitle.xml
+assets/mods/custom_substates/Placeholder.txt

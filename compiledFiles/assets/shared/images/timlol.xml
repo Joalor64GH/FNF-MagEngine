@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="timlol.png">
+	<!-- Created with Adobe Animate version 22.0.7.214 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="_tim0000" x="0" y="0" width="669" height="956" frameX="-69" frameY="0" frameWidth="809" frameHeight="956"/>
+	<SubTexture name="_tim0001" x="669" y="0" width="763" height="700" frameX="-9" frameY="-88" frameWidth="809" frameHeight="956"/>
+	<SubTexture name="_tim0002" x="0" y="956" width="809" height="713" frameX="0" frameY="-78" frameWidth="809" frameHeight="956"/>
+	<SubTexture name="_tim0003" x="809" y="956" width="809" height="713" frameX="0" frameY="-78" frameWidth="809" frameHeight="956"/>
+	<SubTexture name="_tim0004" x="669" y="0" width="763" height="700" frameX="-9" frameY="-73" frameWidth="809" frameHeight="956"/>
+	<SubTexture name="_tim0005" x="0" y="0" width="669" height="956" frameX="-69" frameY="0" frameWidth="809" frameHeight="956"/>
+</TextureAtlas>

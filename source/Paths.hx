@@ -343,6 +343,11 @@ class Paths
 		return modFolder('custom_states/$key');
 	}
 
+	inline static public function substate(key:String)
+	{
+		return modFolder('custom_substates/$key');
+	}
+
 	inline static public function note(key:String)
 	{
 		return modFolder('custom_notetypes/$key');

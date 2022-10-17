@@ -61,9 +61,7 @@ import hscript.Expr;
 import hscript.Parser;
 import hscript.Interp;
 import modloader.ModsMenu;
-#if SCRIPTS_PYTHON
 import pythonUtil.Python;
-#end
 
 using StringTools;
 
@@ -1094,9 +1092,7 @@ class PlayState extends MusicBeatState
 
 					if (file.endsWith('.py') && !filesInserted.contains(file))
 					{
-						#if SCRIPTS_PYTHON
 						Python.doFile(folder + file);
-						#end
 
 						filesInserted.push(file);
 					}
@@ -1134,9 +1130,7 @@ class PlayState extends MusicBeatState
 
 					if (file.endsWith('.py') && !filesInserted.contains(file))
 					{
-						#if SCRIPTS_PYTHON
 						Python.doFile(folder + file);
-						#end
 
 						filesInserted.push(file);
 					}
@@ -1246,9 +1240,8 @@ class PlayState extends MusicBeatState
 								interp.variables.set("onCountdown", function()
 								{
 								});
-								interp.variables.set("openCustomState", function(stateName:String)
+								interp.variables.set("onEvent", function()
 								{
-									MusicBeatState.switchState(new CustomState(stateName, false));
 								});
 								interp.variables.set("game", this);
 
@@ -2115,6 +2108,16 @@ class PlayState extends MusicBeatState
 			}
 		}
 		return null;
+	}
+
+	public function openCustomState(stateName:String)
+	{
+		MusicBeatState.switchState(new CustomState(stateName, false));
+	}
+
+	public function openCustomSubState(stateName:String)
+	{
+		openSubState(new CustomSubState(stateName, false));
 	}
 
 	override public function update(elapsed:Float)
@@ -3309,9 +3312,8 @@ class PlayState extends MusicBeatState
 									interp.variables.set("onCountdown", function()
 									{
 									});
-									interp.variables.set("openCustomState", function(stateName:String)
+									interp.variables.set("onEvent", function()
 									{
-										MusicBeatState.switchState(new CustomState(stateName, false));
 									});
 									interp.variables.set("valueOne", Reflect.field(i, "valueOne"));
 									interp.variables.set("valueTwo", Reflect.field(i, "valueTwo"));
@@ -3332,6 +3334,7 @@ class PlayState extends MusicBeatState
 							}
 						}
 					}
+					callOnHscript("onEvent");
 					#end
 
 					/*if (event.events == 'shake-screen'){
@@ -3601,9 +3604,8 @@ class PlayState extends MusicBeatState
 		interp.variables.set("onCountdown", function()
 		{
 		});
-		interp.variables.set("openCustomState", function(stateName:String)
+		interp.variables.set("onEvent", function()
 		{
-			MusicBeatState.switchState(new CustomState(stateName, false));
 		});
 	}
 
