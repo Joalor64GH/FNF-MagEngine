@@ -335,8 +335,7 @@ class FreeplayState extends MusicBeatState
 			weekthingy = CoolUtil.coolTextFile(Paths.txt('weeks/weekList'));
 		}
 
-		if (FileSystem.exists(Paths.modTxt('weeks/' + weekthingy[songs[curSelected].week] + "Difficulties"))
-			&& FileSystem.exists(Paths.txt('weeks/' + weekthingy[songs[curSelected].week] + "Difficulties")))
+		if (FileSystem.exists(Paths.modTxt('weeks/' + weekthingy[songs[curSelected].week] + "Difficulties")))
 		{
 			weekdiff = File.getContent(Paths.modTxt('weeks/' + weekthingy[songs[curSelected].week] + "Difficulties")).trim().split('\n');
 

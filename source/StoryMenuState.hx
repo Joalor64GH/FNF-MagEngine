@@ -130,8 +130,7 @@ class StoryMenuState extends MusicBeatState
 
 		var weekdiff:Array<String> = [];
 
-		if (FileSystem.exists(Paths.modTxt('weeks/' + weeksArray[curWeek] + "Difficulties"))
-			&& FileSystem.exists(Paths.txt('weeks/' + weeksArray[curWeek] + "Difficulties")))
+		if (FileSystem.exists(Paths.modTxt('weeks/' + weeksArray[curWeek] + "Difficulties")))
 		{
 			weekdiff = File.getContent(Paths.modTxt('weeks/' + weeksArray[curWeek] + "Difficulties")).trim().split('\n');
 
@@ -280,8 +279,7 @@ class StoryMenuState extends MusicBeatState
 
 		var weekdiff:Array<String> = [];
 
-		if (FileSystem.exists(Paths.modTxt('weeks/' + weeksArray[curWeek] + "Difficulties"))
-			&& FileSystem.exists(Paths.txt('weeks/' + weeksArray[curWeek] + "Difficulties")))
+		if (FileSystem.exists(Paths.modTxt('weeks/' + weeksArray[curWeek] + "Difficulties")))
 		{
 			weekdiff = File.getContent(Paths.modTxt('weeks/' + weeksArray[curWeek] + "Difficulties")).trim().split('\n');
 
@@ -526,8 +524,7 @@ class StoryMenuState extends MusicBeatState
 			weekthingy = CoolUtil.coolTextFile(Paths.txt('weeks/weekList'));
 		}
 
-		if (FileSystem.exists(Paths.modTxt('weeks/' + weekthingy[curWeek] + "Difficulties"))
-			&& FileSystem.exists(Paths.txt('weeks/' + weekthingy[curWeek] + "Difficulties")))
+		if (FileSystem.exists(Paths.modTxt('weeks/' + weekthingy[curWeek] + "Difficulties")))
 		{
 			weekdiff = File.getContent(Paths.modTxt('weeks/' + weekthingy[curWeek] + "Difficulties")).trim().split('\n');
 
