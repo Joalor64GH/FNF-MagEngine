@@ -7,7 +7,7 @@ Credits and features can be found below.
 
 ## Mag Engine Team
 
-- [Magnumsrt](https://twitter.com/MagnumsrtYT) - Coding And Art
+- [Magnumsrt (me!)](https://twitter.com/MagnumsrtYT) - Coding And Art
 - [Stilic](https://gamebanana.com/members/1893262) - Assistant Coding
 
 ## Credits
@@ -22,7 +22,7 @@ Credits and features can be found below.
 
 ## Friday Night Funkin' Team
 
-- [ninjamuffin99 (me!)](https://twitter.com/ninja_muffin99) - Programmer
+- [ninjamuffin99(https://twitter.com/ninja_muffin99) - Programmer
 - [PhantomArcade3K](https://twitter.com/phantomarcade3k) and [Evilsk8r](https://twitter.com/evilsk8r) - Art
 - [Kawaisprite](https://twitter.com/kawaisprite) - Musician
 
