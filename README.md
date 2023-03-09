@@ -43,8 +43,6 @@ Download Mag Engine Mods Directly From Your Game!
 
 # Custom State And Menu Support
 
-![thumb18](https://user-images.githubusercontent.com/90519370/168314967-809eaa27-53ff-465b-a61c-ee8a67f7eeab.png)
-
 # Easy To Use But Still Vanilla Dialogue Boxes 
 
 # Brand New, Fully Customizable, Title Screen
