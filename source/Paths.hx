@@ -12,11 +12,11 @@ import lime.utils.Assets;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
-import modloader.PolymodHandler;
-import modloader.ModsMenu;
-import modloader.ModsMenuOption;
-import modloader.ModList;
-import skinloader.SkinList;
+import states.menus.modloader.PolymodHandler;
+import states.menus.modloader.ModsMenu;
+import states.menus.modloader.ModsMenuOption;
+import states.menus.modloader.ModList;
+import states.menus.skinloader.SkinList;
 import flash.media.Sound;
 
 using StringTools;
@@ -367,13 +367,16 @@ class Paths
 	{
 		var imageLoaded:FlxGraphic = addCustomGraphic(key);
 		var xmlExists:Bool = false;
+		#if MODS
 		if (FileSystem.exists(modsXml(key)))
 		{
 			xmlExists = true;
 		}
-
 		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
 			(xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
+		#else
+		return FlxAtlasFrames.fromSparrow(image(key, library), file('images/$key.xml', library));
+		#end
 	}
 
 	inline static public function getModsSparrowAtlas(key:String, ?library:String)
@@ -381,23 +384,31 @@ class Paths
 		var imageLoaded:FlxGraphic = addCustomGraphic(key);
 		var xmlExists:Bool = false;
 		var skinsExists:Bool = false;
+		#if SKINS
 		if (FileSystem.exists(skinsXml(key)))
 		{
 			skinsExists = true;
 		}
-		else if (FileSystem.exists(modsXml(key)))
+		#end
+		#if MODS
+		if (FileSystem.exists(modsXml(key)))
 		{
 			xmlExists = true;
 		}
-
+		#end
+		#if SKINS
 		if (skinsExists)
 		{
 			return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
 				(xmlExists ? File.getContent(skinsXml(key)) : file('$key.xml', library)));
 		}
-
+		#end
+		#if MODS
 		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)),
 			(xmlExists ? File.getContent(modsXml(key)) : file('images/$key.xml', library)));
+		#else
+		return null;
+		#end
 	}
 
 	inline static public function getPackerAtlas(key:String, ?library:String)

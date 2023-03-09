@@ -12,7 +12,14 @@ import sys.FileSystem;
 import sys.io.Process;
 import sys.io.File;
 #end
+#if CRASH_DUMPING
+import openfl.events.UncaughtErrorEvent;
+import haxe.CallStack;
+import lime.app.Application;
+#end
 import openfl.system.System;
+import states.StartState;
+import system.SimpleInfoDisplay;
 
 class Main extends Sprite
 {
@@ -24,11 +31,11 @@ class Main extends Sprite
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 
-	// You can pretty much ignore everything from here on - your code should go in your states.
+	// You can pretty much ignore everything from here on your code should go in your states.
 
 	public static function main():Void
 	{
-		// quick checks
+		#if UPDATER
 		var rawCommand = Sys.args();
 		if (rawCommand.contains('startUpdate'))
 		{
@@ -62,6 +69,9 @@ class Main extends Sprite
 
 			Lib.current.addChild(new Main());
 		}
+		#else
+		Lib.current.addChild(new Main());
+		#end
 	}
 
 	public function new()
@@ -105,7 +115,7 @@ class Main extends Sprite
 		framerate = 60;
 		#end
 
-		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
+		addChild(new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
 		display = new SimpleInfoDisplay(10, 3, 0xFFFFFF);
@@ -122,6 +132,15 @@ class Main extends Sprite
 			(cast(Lib.current.getChildAt(0), Main)).toggleVers(FlxG.save.data.v);
 
 		FlxG.mouse.visible = false;
+
+		#if html5
+		FlxG.autoPause = false;
+		FlxG.mouse.visible = false;
+		#end
+
+		#if CRASH_DUMPING
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, programError);
+		#end
 	}
 
 	public static var display:SimpleInfoDisplay;
@@ -145,4 +164,50 @@ class Main extends Sprite
 	{
 		display.defaultTextFormat = new TextFormat(font, (font == "_sans" ? 12 : 14), display.textColor);
 	}
+
+	#if CRASH_DUMPING
+	public static function programError(e:UncaughtErrorEvent)
+	{
+		var stackTrace:Array<StackItem> = CallStack.exceptionStack(true);
+		var theTime = logging.LoggingUtil.time;
+		var theMessage:String = "";
+		var theStackTrace:String = "";
+
+		if (FlxG.save.data.logsAllowed)
+			theMessage = '\nPlease report the issue at: https://github.com/Magnumsrt/MagEngine-Public/issues \n\nThe stack trace has been saved to:\n${Sys.getCwd()}/logs/$theTime.log';
+		else
+			theMessage = '\nPlease report the issue at: https://github.com/Magnumsrt/MagEngine-Public/issues';
+
+		for (item in stackTrace)
+		{
+			switch (item)
+			{
+				case CFunction:
+					theStackTrace += "Called from a C Function\n";
+				case Module(m):
+					theStackTrace += "At module: " + m + "\n";
+				case FilePos(s, file, line, column):
+					if (column != null)
+						theStackTrace += "Called from: " + file + ":" + line + " column: " + column + "\n";
+					else
+						theStackTrace += "Called from: " + file + ":" + line + "\n";
+				case Method(classname, method):
+					theStackTrace += "Called from method: " + method + " in class: " + classname + "\n";
+				case LocalFunction(v):
+					theStackTrace += "Called from a local function: " + v + "\n";
+				default:
+					trace(item);
+			}
+		}
+
+		logging.LoggingUtil.writeToLogFile(e.error + "\n" + theStackTrace);
+
+		theStackTrace = 'Uncaught Error | Exit Code: 1\n\n${e.error}\n\n' + theStackTrace;
+		theMessage = theStackTrace + theMessage;
+
+		Application.current.window.alert(theMessage, e.error);
+		DiscordClient.shutdown();
+		Sys.exit(1);
+	}
+	#end
 }

@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Mag Engine" file="Mag Engine" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="1.5.4h" company="Magnumsrt" />
+	<app title="Friday Night Funkin': Mag Engine" file="Mag Engine" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="1.5.5" company="Magnumsrt" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -53,9 +53,22 @@
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web" />
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web" />
 
-	<define name="MODS" if="desktop" />
-	<define name="SCRIPTS" if="desktop" />
-	<define name="CACHE" unless="windows" />
+	<!-- Customize these defines to your liking -->
+
+	<define name="MODS" if="desktop"/>
+	<define name="SKINS" if="desktop"/>
+	<define name="SCRIPTS" unless="web" />
+	<define name="LOGS" if="desktop" />
+	<define name="CACHE" unless="windows || web" />
+	<define name="HXCODEC" if="windows" unless="32bit"/>
+	<define name="CRASH_DUMPING" if="desktop" />
+	<define name="HSCRIPT_ERRORS" if="desktop" />
+
+	<!-- You should remove these two defines if you are making a source code mod -->
+
+	<define name="UPDATE_CHECKING" if="desktop"/>
+	<define name="UPDATER" if="windows" unless="32bit"/>
+
 	<define name="PRELOAD_ALL" unless="web" />
 
 	<section if="PRELOAD_ALL">
@@ -102,8 +115,8 @@
 	<assets path="assets/week5" library="week5" exclude="*.mp3" unless="web" />
 	<assets path="assets/week6" library="week6" exclude="*.ogg" if="web" />
 	<assets path="assets/week6" library="week6" exclude="*.mp3" unless="web" />
-	<assets path="assets/week7" library="week7"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week7" library="week7"    exclude="*.mp3|*.mp4" unless="web"/>
+	<assets path="assets/week7" library="week7" exclude="*.ogg" if="web"/>
+	<assets path="assets/week7" library="week7" exclude="*.mp3|*.mp4" unless="web"/>
 
 
 	<assets path="assets/videos" exclude="*.mp3" if="web" />
@@ -136,8 +149,8 @@
 	<haxelib name="newgrounds" />
 	<haxelib name="faxe" if='switch' />
 	<haxelib name="polymod" />
-     <haxelib name="hxCodec" if="desktop || android" />
-     <haxelib name="flixel-shadertoy-shader" />
+    <haxelib name="hxCodec" if="desktop || android" />
+    <haxelib name="flixel-shadertoy-shader" />
 	<haxelib name="discord_rpc" if="desktop" />
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
@@ -172,6 +185,7 @@
 
 	<!--Disable the Flixel core focus lost screen-->
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
+	<define name="hscriptPos" if="HSCRIPT_ERRORS"/>
 
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
@@ -179,6 +193,9 @@
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
+	<haxedef name="HXCPP_CHECK_POINTER" if="CRASH_DUMPING" />
+	<haxedef name="HXCPP_STACK_LINE" if="CRASH_DUMPING" />
+	
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
