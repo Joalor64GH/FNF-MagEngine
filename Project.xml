@@ -146,7 +146,6 @@
 	<haxelib name="flixel-addons" />
 
 	<haxelib name="flixel-ui" />
-	<haxelib name="newgrounds" />
 	<haxelib name="faxe" if='switch' />
 	<haxelib name="polymod" />
     <haxelib name="hxCodec" if="desktop || android" />
