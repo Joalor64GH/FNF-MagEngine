@@ -13,7 +13,7 @@ Credits and features can be found below.
 ## Credits
 
 - [KadeDeveloper](https://twitter.com/kade0912) - Option Category Substate Code, And Judgement Counter Code
-- [Yoshubs](https://twitter.com/yoshubs) - New Input System
+- [Yoshubs](https://twitter.com/yoshubs) - New Input System used on versions -1.5 
 - [PolybiusProxy](https://twitter.com/polybiusproxy) And [BrightFyre](https://twitter.com/fyre_bright) - MP4 Video Extension
 - [Shadow Mario](https://twitter.com/Shadow_Mario_) - Custom Bitmap Loading Code, Custom Sound Loading Code, Mod Directory Code, Color Tweens In The Freeplay Menu, Some Lua Callbacks [Old], And Downscroll Code
 - [Leather128](https://twitter.com/leather128) - Polymod handling code, And Mod Alphabet Option code
