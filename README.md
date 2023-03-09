@@ -1,7 +1,8 @@
 ### Friday Night Funkin: Mag Engine
 
-This is the repository for Friday Night Funkin': Mag Engine, a modding engine for Friday Night Funkin', that requires no code to use.
-The compiling guide is on the engine's website: https://magnumsrtisswag.github.io/MagEngine-Public/
+![melogo](https://user-images.githubusercontent.com/90519370/223881553-4820e594-c16d-4799-97ac-fa45a7906bf2.png)
+
+This is the repository for Friday Night Funkin': Mag Engine, a modding engine for Friday Night Funkin' that requires no code to use.
 Credits and features can be found below.
 
 ## Mag Engine Team
