@@ -17,7 +17,6 @@ import sys.io.File;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import io.newgrounds.NG;
 import lime.app.Application;
 import flixel.math.FlxMath;
 import openfl.utils.Assets as OpenFlAssets;
