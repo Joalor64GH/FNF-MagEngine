@@ -1064,7 +1064,7 @@ class PlayState extends MusicBeatState
 		// Song specific scripts
 		var filesInserted:Array<String> = [];
 		var folders:Array<String> = [Paths.getPreloadPath('scripts/')];
-		var path:String = 'data/' + SONG.song.toLowerCase() + '/' + SONG.song.toLowerCase();
+		var path:String = 'data/' + SONG.song.toLowerCase() + '/';
 		folders.insert(0, Paths.modFolder(path));
 
 		for (folder in folders)
@@ -1077,7 +1077,7 @@ class PlayState extends MusicBeatState
 					{
 						LoggingUtil.writeToLogFile('Script Found!');
 
-						var expr = File.getContent(Paths.hscript(file));
+						var expr = File.getContent(folder + file);
 						var hscriptInst = new HScriptHandler(expr, HScriptType.SCRIPT_SONG, file);
 
 						hscriptInst.interpExecute();
