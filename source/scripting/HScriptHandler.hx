@@ -191,6 +191,18 @@ class HScriptHandler
 		interp.variables.set("noteMissPress", function(dir:Int = 1)
 		{
 		});
+		interp.variables.set("noteMiss", function(note:Note)
+		{
+		});
+		interp.variables.set("goodNoteHit", function(note:Note)
+		{
+		});
+		interp.variables.set("boyfriendNoteHit", function()
+		{
+		});
+		interp.variables.set("opponentNoteHit", function()
+		{
+		});
 	}
 
 	public function interpExecute()
