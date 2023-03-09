@@ -1489,9 +1489,9 @@ class PlayState extends MusicBeatState
 	#if MODS
 	function loadCutscene(scriptStr:String)
 	{
-		if (FileSystem.exists(Paths.mods("custom_cutscenes/" + scriptStr)))
+		if (FileSystem.exists(Paths.modFolder("custom_cutscenes/" + scriptStr)))
 		{
-			var expr = File.getContent(Paths.mods("custom_cutscenes/" + scriptStr));
+			var expr = File.getContent(Paths.modFolder("custom_cutscenes/" + scriptStr));
 			var hscriptInst = new HScriptHandler(expr, HScriptType.SCRIPT_CUTSCENE, scriptStr);
 			hscriptInst.interpExecute();
 
@@ -3243,7 +3243,7 @@ class PlayState extends MusicBeatState
 							{
 								if ((file.endsWith('.hx') || file.endsWith(".hscript")) && !filesInsertedcool.contains(file))
 								{
-									var expr = File.getContent(Paths.hscript(file));
+									var expr = File.getContent(Paths.event(file));
 									var hscriptInst = new HScriptHandler(expr, HScriptType.SCRIPT_EVENT, file);
 
 									hscriptInst.getInterp().variables.set("valueOne", Reflect.field(i, "valueOne"));
