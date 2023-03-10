@@ -1170,10 +1170,6 @@ class ChartingState extends MusicBeatState
 			curRenderedSustains.remove(curRenderedSustains.members[0], true);
 		}
 
-		for (ev in _song.events)
-		{
-		}
-
 		var sectionInfo:Array<Dynamic> = _song.notes[curSection].sectionNotes;
 
 		if (_song.notes[curSection].changeBPM && _song.notes[curSection].bpm > 0)
