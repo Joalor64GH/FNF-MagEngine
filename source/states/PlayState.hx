@@ -92,8 +92,9 @@ class PlayState extends MusicBeatState
 	public static var eventPosition:Float;
 
 	#if SCRIPTS
-	public static var hscriptArray:Array<HScriptHandler> = [];
+	public var hscriptArray:Array<HScriptHandler> = [];
 	#end
+
 	public static var play:PlayState;
 
 	public static var usedPlayFeatures:Bool = false;
@@ -243,6 +244,7 @@ class PlayState extends MusicBeatState
 		MemoryManager.freeTrashedAssets();
 
 		play = this;
+		hscriptArray = [];
 
 		LoggingUtil.writeToLogFile('In The PlayState!');
 		LoggingUtil.writeToLogFile('Searching For Modcharts...');
@@ -1153,44 +1155,6 @@ class PlayState extends MusicBeatState
 				}
 			}
 		}
-
-		#if (MODS && SCRIPTS)
-		for (noteFile in FileSystem.readDirectory(Paths.modFolder('custom_notetypes/')))
-		{
-			if (noteFile != null)
-			{
-				var filesInserted:Array<String> = [];
-				var folders:Array<String> = [Paths.getPreloadPath('custom_notetypes/')];
-				folders.insert(0, Paths.modFolder('custom_notetypes/'));
-				for (folder in folders)
-				{
-					if (FileSystem.exists(folder))
-					{
-						for (file in FileSystem.readDirectory(folder))
-						{
-							if ((file.endsWith('.hx') || file.endsWith(".hscript")) && !filesInserted.contains(file))
-							{
-								LoggingUtil.writeToLogFile('Note Script Found!');
-
-								var expr = File.getContent(Paths.note(file));
-								var hscriptInst = new HScriptHandler(expr, HScriptType.SCRIPT_SONG, file);
-
-								var dummyNote = new Note(0.0, 0);
-								dummyNote.visible = false;
-
-								hscriptInst.getInterp().variables.set("note", dummyNote);
-								hscriptInst.interpExecute();
-
-								hscriptArray.push(hscriptInst);
-
-								filesInserted.push(file);
-							}
-						}
-					}
-				}
-			}
-		}
-		#end
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
