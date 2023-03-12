@@ -184,6 +184,7 @@ class Note extends FlxSprite
 					var hscriptInst = new HScriptHandler(expr, HScriptType.SCRIPT_NOTETYPE, customNote + ext);
 
 					hscriptInst.getInterp().variables.set("note", this);
+					hscriptInst.getInterp().variables.set("game", new PlayState());
 					hscriptInst.interpExecute();
 
 					hscriptArray.push(hscriptInst);
