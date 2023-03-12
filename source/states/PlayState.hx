@@ -390,6 +390,9 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
+		NoteSplash.texPixel = Paths.image('weeb/pixelUI/noteSplashes-pixels', 'week6');
+		NoteSplash.tex = Paths.getSparrowAtlas('noteSplashes', 'shared');
+
 		switch (SONG.stage)
 		{
 			case 'halloween':

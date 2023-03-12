@@ -2,16 +2,20 @@ package ui;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.graphics.frames.FlxAtlasFrames;
 
 class NoteSplash extends FlxSprite
 {
+	public static var tex:FlxAtlasFrames;
+	public static var texPixel:String = "";
+
 	public function new(x:Float, y:Float, noteData:Int, ?isPixelNote:Bool = false)
 	{
 		super(x, y);
 
 		if (isPixelNote)
 		{
-			loadGraphic(Paths.image('weeb/pixelUI/noteSplashes-pixels', 'week6'), true, 50, 50);
+			loadGraphic(texPixel, true, 50, 50);
 			animation.add('splash 0 0', [0, 1, 2, 3], 24, false);
 			animation.add('splash 1 0', [4, 5, 6, 7], 24, false);
 			animation.add('splash 0 1', [8, 9, 10, 11], 24, false);
@@ -28,7 +32,7 @@ class NoteSplash extends FlxSprite
 		}
 		else
 		{
-			frames = Paths.getSparrowAtlas('noteSplashes', 'shared');
+			frames = tex;
 			animation.addByPrefix('splash 0 0', 'note impact 1 purple', 24, false);
 			animation.addByPrefix('splash 0 1', 'note impact 1  blue', 24, false);
 			animation.addByPrefix('splash 0 2', 'note impact 1 green', 24, false);
