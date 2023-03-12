@@ -118,6 +118,9 @@ class HScriptHandler
 			}
 		});
 
+		if (type == HScriptType.SCRIPT_NOTETYPE)
+			return;
+
 		interp.variables.set("stepHit", function()
 		{
 		});

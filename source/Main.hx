@@ -174,7 +174,7 @@ class Main extends Sprite
 		var theStackTrace:String = "";
 
 		if (FlxG.save.data.logsAllowed)
-			theMessage = '\nPlease report the issue at: https://github.com/Magnumsrt/MagEngine-Public/issues \n\nThe stack trace has been saved to:\n${Sys.getCwd()}/logs/$theTime.log';
+			theMessage = '\nPlease report the issue at: https://github.com/Magnumsrt/MagEngine-Public/issues \n\nThe stack trace has been saved to:\n${Sys.getCwd()}logs/$theTime.log';
 		else
 			theMessage = '\nPlease report the issue at: https://github.com/Magnumsrt/MagEngine-Public/issues';
 

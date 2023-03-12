@@ -1172,10 +1172,13 @@ class PlayState extends MusicBeatState
 							{
 								LoggingUtil.writeToLogFile('Note Script Found!');
 
-								var expr = File.getContent(Paths.hscript(file));
-								var hscriptInst = new HScriptHandler(expr, HScriptType.SCRIPT_NOTETYPE, file);
+								var expr = File.getContent(Paths.note(file));
+								var hscriptInst = new HScriptHandler(expr, HScriptType.SCRIPT_SONG, file);
 
-								hscriptInst.getInterp().variables.set("note", new FlxSprite());
+								var dummyNote = new Note(0.0, 0);
+								dummyNote.visible = false;
+
+								hscriptInst.getInterp().variables.set("note", dummyNote);
 								hscriptInst.interpExecute();
 
 								hscriptArray.push(hscriptInst);

@@ -33,6 +33,8 @@ class Note extends FlxSprite
 	public var prevNote:Note;
 	public var isDangerousNote:Bool = false;
 
+	public var hscriptArray:Array<HScriptHandler> = [];
+
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 
@@ -139,35 +141,33 @@ class Note extends FlxSprite
 
 						setGraphicSize(Std.int(width * 0.7));
 					}
-					#if SCRIPTS
-					default:
+				default:
+					{
+						if (FileSystem.exists(Paths.skinFolder('notes/NOTE_assets.png')))
 						{
-							if (FileSystem.exists(Paths.skinFolder('notes/NOTE_assets.png')))
-							{
-								frames = Paths.getSparrowAtlas('notes/NOTE_assets');
-							}
-							else
-							{
-								frames = Paths.getSparrowAtlas('NOTE_assets');
-							}
-							animation.addByPrefix('greenScroll', 'green0');
-							animation.addByPrefix('redScroll', 'red0');
-							animation.addByPrefix('blueScroll', 'blue0');
-							animation.addByPrefix('purpleScroll', 'purple0');
-
-							animation.addByPrefix('purpleholdend', 'pruple end hold');
-							animation.addByPrefix('greenholdend', 'green hold end');
-							animation.addByPrefix('redholdend', 'red hold end');
-							animation.addByPrefix('blueholdend', 'blue hold end');
-
-							animation.addByPrefix('purplehold', 'purple hold piece');
-							animation.addByPrefix('greenhold', 'green hold piece');
-							animation.addByPrefix('redhold', 'red hold piece');
-							animation.addByPrefix('bluehold', 'blue hold piece');
-
-							setGraphicSize(Std.int(width * 0.7));
+							frames = Paths.getSparrowAtlas('notes/NOTE_assets');
 						}
-					#end
+						else
+						{
+							frames = Paths.getSparrowAtlas('NOTE_assets');
+						}
+						animation.addByPrefix('greenScroll', 'green0');
+						animation.addByPrefix('redScroll', 'red0');
+						animation.addByPrefix('blueScroll', 'blue0');
+						animation.addByPrefix('purpleScroll', 'purple0');
+
+						animation.addByPrefix('purpleholdend', 'pruple end hold');
+						animation.addByPrefix('greenholdend', 'green hold end');
+						animation.addByPrefix('redholdend', 'red hold end');
+						animation.addByPrefix('blueholdend', 'blue hold end');
+
+						animation.addByPrefix('purplehold', 'purple hold piece');
+						animation.addByPrefix('greenhold', 'green hold piece');
+						animation.addByPrefix('redhold', 'red hold piece');
+						animation.addByPrefix('bluehold', 'blue hold piece');
+
+						setGraphicSize(Std.int(width * 0.7));
+					}
 			}
 			#if SCRIPTS
 			if (customNote != null && customNote != "" && Math.isNaN(Std.parseFloat(customNote)))
@@ -186,11 +186,15 @@ class Note extends FlxSprite
 					hscriptInst.getInterp().variables.set("note", this);
 					hscriptInst.interpExecute();
 
+					hscriptArray.push(hscriptInst);
+
 					setGraphicSize(Std.int(width * 0.7));
 				}
 			}
 			#end
 		}
+		callOnHScript("create");
+
 		updateHitbox();
 
 		switch (noteData)
@@ -258,11 +262,14 @@ class Note extends FlxSprite
 				// prevNote.setGraphicSize();
 			}
 		}
+		callOnHScript("createPost");
 	}
 
 	override function update(elapsed:Float)
 	{
-		super.update(elapsed / 2);
+		callOnHScript("update");
+
+		super.update(elapsed);
 
 		if (isSustainNote && prevNote.noteType == 1)
 		{
@@ -311,5 +318,40 @@ class Note extends FlxSprite
 			if (alpha > 0.3)
 				alpha = 0.3;
 		}
+
+		callOnHScript("updatePost");
+	}
+
+	public function callOnHScript(functionToCall:String, ?params:Array<Any>):Dynamic
+	{
+		#if (MODS && SCRIPTS)
+		for (hscript in hscriptArray)
+		{
+			var interp = hscript.getInterp();
+			if (interp == null)
+			{
+				return null;
+			}
+			if (interp.variables.exists(functionToCall))
+			{
+				var functionH = interp.variables.get(functionToCall);
+				if (params == null)
+				{
+					var result = null;
+					result = functionH();
+					return result;
+				}
+				else
+				{
+					var result = null;
+					result = Reflect.callMethod(null, functionH, params);
+					return result;
+				}
+			}
+		}
+		return null;
+		#else
+		return null;
+		#end
 	}
 }
