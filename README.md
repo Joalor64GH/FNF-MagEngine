@@ -9,6 +9,7 @@ Credits and features can be found below.
 
 - [Magnumsrt (me!)](https://twitter.com/MagnumsrtYT) - Coding And Art
 - [Stilic](https://gamebanana.com/members/1893262) - Assistant Coding
+- [Fox](https://gamebanana.com/members/2071573) - Made the logo and multiple backgrounds
 
 ## Credits
 
